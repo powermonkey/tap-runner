@@ -7,6 +7,9 @@ import com.rcam.game.TapRunner;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = TapRunner.WIDTH;
+		config.height = TapRunner.HEIGHT;
+		config.title = TapRunner.TITLE;
 		new LwjglApplication(new TapRunner(), config);
 	}
 }
