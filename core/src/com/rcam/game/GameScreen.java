@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -11,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
  * Created by Rod on 4/14/2017.
  */
 
-public class GameScreen implements Screen{
+public class GameScreen implements Screen, GestureDetector.GestureListener{
     static final int GROUND_COUNT = 2;
     final TapRunner game;
     Texture bg;
@@ -31,11 +32,13 @@ public class GameScreen implements Screen{
 
         grounds.add(new Ground(0));
         grounds.add(new Ground(grnd.getTexture().getWidth()));
+
+        GestureDetector gd = new GestureDetector(20, 0.4f, 0.4f, 0.15f, this);
+        Gdx.input.setInputProcessor(gd);
     }
 
     public void handleInput() {
-        if(Gdx.input.justTouched())
-            runner.run();
+
     }
 
     @Override
@@ -92,5 +95,53 @@ public class GameScreen implements Screen{
     public void dispose() {
         runner.dispose();
         grnd.dispose();
+    }
+
+    @Override
+    public boolean touchDown(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean tap(float x, float y, int count, int button) {
+        runner.run();
+        return true;
+    }
+
+    @Override
+    public boolean longPress(float x, float y) {
+        if(runner.isOnGround)
+            runner.jump();
+        return false;
+    }
+
+    @Override
+    public boolean fling(float velocityX, float velocityY, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY) {
+        return false;
+    }
+
+    @Override
+    public boolean panStop(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean zoom(float initialDistance, float distance) {
+        return false;
+    }
+
+    @Override
+    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+        return false;
+    }
+
+    @Override
+    public void pinchStop() {
+
     }
 }
