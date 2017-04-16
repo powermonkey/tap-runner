@@ -4,22 +4,32 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Rod on 4/14/2017.
  */
 
-public class GameScreen implements Screen, GestureDetector.GestureListener{
-    static final int GROUND_COUNT = 2;
+public class GameScreen implements Screen{
     final TapRunner game;
     Texture bg;
     OrthographicCamera cam;
     Runner runner;
     Array<Ground> grounds;
     Ground grnd;
+
+    Stage stage;
+    TextButton button1, button2;
+    TextButton.TextButtonStyle textButtonStyle;
+    BitmapFont font;
+
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -33,8 +43,51 @@ public class GameScreen implements Screen, GestureDetector.GestureListener{
         grounds.add(new Ground(0));
         grounds.add(new Ground(grnd.getTexture().getWidth()));
 
-        GestureDetector gd = new GestureDetector(20, 0.4f, 0.4f, 0.15f, this);
-        Gdx.input.setInputProcessor(gd);
+        Skin mySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        font = new BitmapFont();
+        Table table = new Table();
+        table.setFillParent(true);
+//        table.setDebug(true);
+
+
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        TextButton button1 = new TextButton("Run",mySkin,"arcade");
+        button1.addListener(new InputListener(){
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("Press a Button");
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                runner.run();
+                return true;
+            }
+        });
+
+        TextButton button2 = new TextButton("Jump",mySkin,"arcade");
+        button2.addListener(new InputListener(){
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("Press a Button");
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                if(runner.isOnGround)
+                    runner.jump();
+                return true;
+            }
+        });
+
+        table.add(button1).padLeft(20).width(100).height(100).expandX();
+        table.add(button2).padRight(20).width(100).height(100).expandX();
+        table.row();
+        table.center().bottom();
+        table.padBottom(50);
+        stage.addActor(table);
     }
 
     public void handleInput() {
@@ -64,6 +117,8 @@ public class GameScreen implements Screen, GestureDetector.GestureListener{
 
         game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
         game.batch.end();
+        stage.act();
+        stage.draw();
     }
 
     @Override
@@ -95,53 +150,5 @@ public class GameScreen implements Screen, GestureDetector.GestureListener{
     public void dispose() {
         runner.dispose();
         grnd.dispose();
-    }
-
-    @Override
-    public boolean touchDown(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean tap(float x, float y, int count, int button) {
-        runner.run();
-        return true;
-    }
-
-    @Override
-    public boolean longPress(float x, float y) {
-        if(runner.isOnGround)
-            runner.jump();
-        return false;
-    }
-
-    @Override
-    public boolean fling(float velocityX, float velocityY, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY) {
-        return false;
-    }
-
-    @Override
-    public boolean panStop(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean zoom(float initialDistance, float distance) {
-        return false;
-    }
-
-    @Override
-    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-        return false;
-    }
-
-    @Override
-    public void pinchStop() {
-
     }
 }
