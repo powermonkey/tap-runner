@@ -8,10 +8,10 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class Runner {
-    static final int FRICTION = -5;
-    static final int GRAVITY = -5;
-    static final int HIGH_SPEED = 1000;
-    static final int SPEED_BUFFER = 2000;
+    static final float FRICTION = -5;
+    static final float GRAVITY = -5;
+    static final float HIGH_SPEED = 1000;
+    static final float SPEED_BUFFER = 2000;
     boolean isMaintainHighSpeed;
     boolean isOnGround;
     Texture runner;
@@ -32,18 +32,18 @@ public class Runner {
         //slow down runner
         speed.add(FRICTION, 0);
 
-        //make runner come back to the ground
+       //make runner come back to the ground
         speed.add(0, GRAVITY);
 
-        //make runner stop when reaching 0 speed
-        if(speed.x < 0 )
+       // make runner stop when reaching 0 speed
+        if(speed.x < 0 ){
             speed.x = 0;
-
+        }
 
         //maintain high speed
         speed.add(velocity.x, velocity.y);
         if(!isMaintainHighSpeed) {
-            position.add(speed.x * dt, speed.y * dt);
+            position.mulAdd(speed, dt);
         }else{
             if(speed.x > SPEED_BUFFER)
                 speed.x = SPEED_BUFFER;
@@ -62,8 +62,8 @@ public class Runner {
         else
             isMaintainHighSpeed = false;
 
-        System.out.println(speed.y);
-        //reset value of velocity x and y
+        System.out.println(speed.x);
+//        //reset value of velocity x and y
         velocity.x = 0;
         velocity.y = 0;
     }
@@ -84,7 +84,7 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 250;
+        velocity.y = 200;
         isOnGround = false;
     }
 

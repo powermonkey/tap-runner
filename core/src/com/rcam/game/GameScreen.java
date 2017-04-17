@@ -50,8 +50,6 @@ public class GameScreen implements Screen{
         font = new BitmapFont();
         Table table = new Table();
         table.setFillParent(true);
-//        table.setDebug(true);
-
 
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
@@ -59,11 +57,11 @@ public class GameScreen implements Screen{
         button1.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Press a Button");
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                runner.run();
+                if(runner.isOnGround)
+                    runner.run();
                 return true;
             }
         });
@@ -72,7 +70,6 @@ public class GameScreen implements Screen{
         button2.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Press a Button");
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -96,26 +93,21 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
-        //logic first
         cam.position.x = runner.getPosition().x + 80;
         for(Ground ground: grounds){
             if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() )
                 ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
         }
-
         cam.update();
-        handleInput();
-        runner.update(delta);
-
-        //then render
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
+        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
         for(Ground ground: grounds){
             game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
         }
 
-        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
+        runner.update(delta); //render first then logic?
         game.batch.end();
         stage.act();
         stage.draw();
@@ -150,5 +142,9 @@ public class GameScreen implements Screen{
     public void dispose() {
         runner.dispose();
         grnd.dispose();
+        for(Ground ground : grounds)
+            ground.dispose();
+        font.dispose();
+        stage.dispose();
     }
 }
