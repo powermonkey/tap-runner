@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Runner {
     static final float FRICTION = -5;
     static final float GRAVITY = -5;
-    static final float HIGH_SPEED = 1000;
+    static final float HIGH_SPEED = 800;
     static final float SPEED_BUFFER = 2000;
     boolean isMaintainHighSpeed;
     boolean isOnGround;
@@ -62,8 +62,7 @@ public class Runner {
         else
             isMaintainHighSpeed = false;
 
-        System.out.println(speed.x);
-//        //reset value of velocity x and y
+        //reset value of velocity x and y
         velocity.x = 0;
         velocity.y = 0;
     }
@@ -87,6 +86,8 @@ public class Runner {
         velocity.y = 200;
         isOnGround = false;
     }
+
+    public Vector2 getSpeed(){ return speed; }
 
     public void dispose(){
         runner.dispose();

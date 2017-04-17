@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -27,7 +28,7 @@ public class GameScreen implements Screen{
 
     Stage stage;
     TextButton button1, button2;
-    TextButton.TextButtonStyle textButtonStyle;
+    ProgressBar meter;
     BitmapFont font;
 
 
@@ -50,10 +51,12 @@ public class GameScreen implements Screen{
         font = new BitmapFont();
         Table table = new Table();
         table.setFillParent(true);
+//        stage.setDebugAll(true);
 
-        textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = font;
-        TextButton button1 = new TextButton("Run",mySkin,"arcade");
+        meter = new ProgressBar(1, 15, 1, false, mySkin, "default-horizontal");
+        meter.setAnimateDuration(.5f);
+
+        button1 = new TextButton("Run",mySkin,"arcade");
         button1.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -66,7 +69,7 @@ public class GameScreen implements Screen{
             }
         });
 
-        TextButton button2 = new TextButton("Jump",mySkin,"arcade");
+        button2 = new TextButton("Jump",mySkin,"arcade");
         button2.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -79,6 +82,8 @@ public class GameScreen implements Screen{
             }
         });
 
+        table.add(meter).size(100,100);
+        table.row();
         table.add(button1).padLeft(20).width(100).height(100).expandX();
         table.add(button2).padRight(20).width(100).height(100).expandX();
         table.row();
@@ -108,6 +113,40 @@ public class GameScreen implements Screen{
         }
 
         runner.update(delta); //render first then logic?
+
+        //update meter TODO: refactor to have own class Hud.Meter
+        System.out.println(runner.getSpeed().x);
+        if(runner.getSpeed().x < 100)
+            meter.setValue(1);
+        else if(runner.getSpeed().x < 200)
+            meter.setValue(2);
+        else if(runner.getSpeed().x < 300)
+            meter.setValue(3);
+        else if(runner.getSpeed().x < 400)
+            meter.setValue(4);
+        else if(runner.getSpeed().x < 500)
+            meter.setValue(5);
+        else if(runner.getSpeed().x < 600)
+            meter.setValue(6);
+        else if(runner.getSpeed().x < 700)
+            meter.setValue(7);
+        else if(runner.getSpeed().x < 800)
+            meter.setValue(8);
+        else if(runner.getSpeed().x < 900)
+            meter.setValue(9);
+        else if(runner.getSpeed().x < 1000)
+            meter.setValue(10);
+        else if(runner.getSpeed().x < 1200)
+            meter.setValue(11);
+        else if(runner.getSpeed().x < 1400)
+            meter.setValue(12);
+        else if(runner.getSpeed().x < 1600)
+            meter.setValue(13);
+        else if(runner.getSpeed().x < 1800)
+            meter.setValue(14);
+        else if(runner.getSpeed().x < 2000)
+            meter.setValue(15);
+
         game.batch.end();
         stage.act();
         stage.draw();
