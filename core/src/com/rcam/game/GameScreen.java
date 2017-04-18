@@ -4,6 +4,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.rcam.game.sprites.Ground;
+import com.rcam.game.sprites.Runner;
 
 /**
  * Created by Rod on 4/14/2017.
@@ -54,9 +56,8 @@ public class GameScreen implements Screen{
             game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
         }
 
-        runner.update(delta); //render first then logic?
+        runner.update(delta); //render first then logic fixes shaking texture, why?
 
-        //update meter TODO: refactor to have own class Hud.Meter
         hud.meter.update(runner.getSpeed().x);
         game.batch.end();
         hud.render();

@@ -1,4 +1,4 @@
-package com.rcam.game;
+package com.rcam.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -12,8 +12,8 @@ public class Runner {
     static final float GRAVITY = -5;
     static final float HIGH_SPEED = 800;
     static final float SPEED_BUFFER = 2000;
-    boolean isMaintainHighSpeed;
-    boolean isOnGround;
+    public boolean isMaintainHighSpeed;
+    public boolean isOnGround;
     Texture runner;
     Vector2 position, velocity, speed;
     float groundLevel;
