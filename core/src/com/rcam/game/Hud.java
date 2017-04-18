@@ -155,6 +155,7 @@ public class Hud {
     }
 
     public void dispose(){
+        mySkin.dispose();
         stage.dispose();
     }
 

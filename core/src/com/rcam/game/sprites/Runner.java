@@ -16,16 +16,16 @@ public class Runner {
     public boolean isMaintainHighSpeed;
     public boolean isOnGround;
     public boolean isJumping;
-    Texture runner;
+    Texture runnerTexture;
     Vector2 position, velocity, speed;
     float groundLevel;
 
-    public Runner(int x, int y){
+    public Runner(float x, float y){
         position = new Vector2(x, y);
         groundLevel = position.y;
         velocity = new Vector2(0, 0);
         speed = new Vector2(0, 0);
-        runner = new Texture("bird.png");
+        runnerTexture = new Texture("bird.png");
         isMaintainHighSpeed = false;
         isOnGround = true;
     }
@@ -79,7 +79,7 @@ public class Runner {
     }
 
     public Texture getTexture() {
-        return runner;
+        return runnerTexture;
     }
 
     public Vector2 getPosition() {
@@ -102,6 +102,6 @@ public class Runner {
     public Vector2 getSpeed(){ return speed; }
 
     public void dispose(){
-        runner.dispose();
+        runnerTexture.dispose();
     }
 }

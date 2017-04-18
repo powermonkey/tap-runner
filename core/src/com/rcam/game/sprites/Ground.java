@@ -8,11 +8,11 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class Ground {
-    Texture grnd;
+    Texture groundTexture;
     Vector2 posGround;
 
     public Ground(float x){
-        grnd = new Texture("ground.png");
+        groundTexture = new Texture("ground.png");
         posGround = new Vector2(x, 0);
     }
 
@@ -21,7 +21,7 @@ public class Ground {
     }
 
     public Texture getTexture() {
-        return grnd;
+        return groundTexture;
     }
 
     public Vector2 getPosGround() {
@@ -29,6 +29,6 @@ public class Ground {
     }
 
     public void dispose(){
-        grnd.dispose();
+        groundTexture.dispose();
     }
 }
