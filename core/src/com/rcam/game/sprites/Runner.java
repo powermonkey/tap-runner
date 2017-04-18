@@ -12,8 +12,10 @@ public class Runner {
     static final float GRAVITY = -5;
     static final float HIGH_SPEED = 800;
     static final float SPEED_BUFFER = 2000;
+    static final float MAX_JUMP_HEIGHT = 250;
     public boolean isMaintainHighSpeed;
     public boolean isOnGround;
+    public boolean isJumping;
     Texture runner;
     Vector2 position, velocity, speed;
     float groundLevel;
@@ -42,6 +44,13 @@ public class Runner {
 
         //maintain high speed
         speed.add(velocity.x, velocity.y);
+
+        //limit jump height
+        if(speed.y > MAX_JUMP_HEIGHT){
+            speed.y = MAX_JUMP_HEIGHT;
+            isJumping = false;
+        }
+
         if(!isMaintainHighSpeed) {
             position.mulAdd(speed, dt);
         }else{
@@ -54,6 +63,7 @@ public class Runner {
         if(position.y < groundLevel){
             position.y = groundLevel;
             isOnGround = true;
+            isJumping = false;
             speed.y = 0;
         }
 
@@ -61,10 +71,11 @@ public class Runner {
             isMaintainHighSpeed = true;
         else
             isMaintainHighSpeed = false;
-
+//System.out.println(speed.y);
         //reset value of velocity x and y
         velocity.x = 0;
-        velocity.y = 0;
+        if(!isJumping)
+            velocity.y = 0;
     }
 
     public Texture getTexture() {
@@ -83,7 +94,8 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 200;
+        velocity.y = 20;
+        isJumping = true;
         isOnGround = false;
     }
 
