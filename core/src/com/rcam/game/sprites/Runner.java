@@ -1,24 +1,34 @@
 package com.rcam.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.rcam.game.sprites.enemies.Enemy;
+
+import static com.badlogic.gdx.utils.TimeUtils.millis;
+import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 
 /**
  * Created by Rod on 4/14/2017.
  */
 
 public class Runner {
-    static final float FRICTION = -5;
-    static final float GRAVITY = -5;
-    static final float HIGH_SPEED = 800;
-    static final float SPEED_BUFFER = 2000;
-    static final float MAX_JUMP_HEIGHT = 250;
+    static final float FRICTION = -1.5f;
+    static final float GRAVITY = -15;
+    static final float HIGH_SPEED = 200;
+    static final float SPEED_BUFFER = 600;
+    static final float MAX_JUMP_HEIGHT = 350;
+    static final int STARTING_HEALTH = 50;
+    int health;
+    long startingTime;
     public boolean isMaintainHighSpeed;
     public boolean isOnGround;
     public boolean isJumping;
+    public boolean takenDamage;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     float groundLevel;
+    Rectangle bounds;
 
     public Runner(float x, float y){
         position = new Vector2(x, y);
@@ -27,10 +37,21 @@ public class Runner {
         speed = new Vector2(0, 0);
         runnerTexture = new Texture("bird.png");
         isMaintainHighSpeed = false;
+        takenDamage = false;
         isOnGround = true;
+        bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
+        health = STARTING_HEALTH;
+        startingTime = millis();
     }
 
     public void update(float dt){
+        if(timeSinceMillis(startingTime) > 1000){
+            startingTime = millis();
+            health -= 1;
+            if(health <= 0)
+                System.out.println("runner dead");
+        }
+
         //slow down runner
         speed.add(FRICTION, 0);
 
@@ -52,6 +73,9 @@ public class Runner {
         }
 
         if(!isMaintainHighSpeed) {
+            //prevent speed.x from going negative
+            if(speed.x < 0)
+                speed.x = 0;
             position.mulAdd(speed, dt);
         }else{
             if(speed.x > SPEED_BUFFER)
@@ -71,11 +95,12 @@ public class Runner {
             isMaintainHighSpeed = true;
         else
             isMaintainHighSpeed = false;
-//System.out.println(speed.y);
+//System.out.println(speed.x);
         //reset value of velocity x and y
         velocity.x = 0;
         if(!isJumping)
             velocity.y = 0;
+        bounds.setPosition(position.x, position.y);
     }
 
     public Texture getTexture() {
@@ -88,18 +113,39 @@ public class Runner {
 
     public void run(){
         if(isMaintainHighSpeed)
-            velocity.x = 500;
+            velocity.x = 200;
         else
-            velocity.x = 120;
+            velocity.x = 50;
     }
 
     public void jump(){
-        velocity.y = 20;
+        velocity.y = 60;
         isJumping = true;
         isOnGround = false;
     }
 
     public Vector2 getSpeed(){ return speed; }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void checkCollision(Enemy enemy){
+        if(enemy.getBounds().overlaps(getBounds()) ){
+            if(health > 0 && !takenDamage){
+                health -= enemy.getDamage();
+                takenDamage = true;
+                velocity.x = -400;
+            } else if (health <= 0)
+                System.out.println("runner dead");
+        }else{
+            takenDamage = false;
+        }
+    }
 
     public void dispose(){
         runnerTexture.dispose();

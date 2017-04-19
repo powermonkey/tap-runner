@@ -16,9 +16,9 @@ import com.sun.java_cup.internal.runtime.Symbol;
 
 public class GameScreen implements Screen{
     final TapRunner game;
-    final static float STARTING_X = 50;
+    final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
-    final static float SPAWN_OFFSET_X = 150;
+    final static float SPAWN_OFFSET_X = 300;
     final static float SPAWN_DISTANCE = 1000;
     float spawnMarker = 1000;
     Texture bg;
@@ -44,8 +44,6 @@ public class GameScreen implements Screen{
         hud = new Hud(runner);
 
         groundEnemy1 = new GroundEnemy1();
-//        groundEnemy1.setPosition(runner.getPosition());
-
     }
 
     public void handleInput() {
@@ -54,7 +52,7 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
-        cam.position.x = runner.getPosition().x + 80;
+        cam.position.x = runner.getPosition().x + 100;
         for(Ground ground: grounds){
             if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() )
                 ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
@@ -69,6 +67,7 @@ public class GameScreen implements Screen{
             spawnPosition.x = spawnMarker + SPAWN_OFFSET_X;
             spawnPosition.y = STARTING_Y;
             groundEnemy1.setPosition(spawnPosition);
+            groundEnemy1.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
             spawnMarker += SPAWN_DISTANCE;
             groundEnemy1.isSpawned = true;
         }
@@ -77,10 +76,9 @@ public class GameScreen implements Screen{
             if(!(cam.position.x - (cam.viewportWidth / 2) > groundEnemy1.getPosition().x + groundEnemy1.getTexture().getWidth()) ){
                 game.batch.draw(groundEnemy1.getTexture(), groundEnemy1.getPosition().x, groundEnemy1.getPosition().y);
                 groundEnemy1.update(delta);
-                System.out.println("spawned");
+                runner.checkCollision(groundEnemy1);
             }else{
                 groundEnemy1.isSpawned = false; //unrender enemy when off camera
-                System.out.println("unspawned");
             }
         }
 
@@ -90,10 +88,10 @@ public class GameScreen implements Screen{
         }
 
         //render first then logic, fixes shaking texture ??
-
         runner.update(delta);
 
         hud.meter.update(runner.getSpeed().x);
+        hud.health.update();
 
         game.batch.end();
         hud.render();

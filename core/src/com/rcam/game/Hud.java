@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -21,7 +22,8 @@ public class Hud {
     Meter meter;
     RunButton runButton;
     JumpButton jumpButton;
-
+    Health health;
+    Label healthLabel, speedMeterLabel;
 
     public Hud(final Runner runner){
         table = new Table();
@@ -29,12 +31,20 @@ public class Hud {
         mySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
         stage = new Stage();
         meter = new Meter();
+        health = new Health(runner);
         runButton = new RunButton(runner);
         jumpButton = new JumpButton(runner);
+        healthLabel = new Label("HEALTH", mySkin);
+        speedMeterLabel = new Label("SPEED", mySkin);
+//        stage.setDebugAll(true);
 
         Gdx.input.setInputProcessor(stage);
 
-        table.add(meter.getSpeedMeter()).size(100,100);
+        table.add(healthLabel).width(80).padLeft(40);
+        table.add(health.getHealthBar()).padRight(20);
+        table.row();
+        table.add(speedMeterLabel).width(80).padLeft(40);
+        table.add(meter.getSpeedMeter()).padRight(20);
         table.row();
         table.add(runButton.getRunButton()).padLeft(20).width(100).height(100).expandX();
         table.add(jumpButton.getJumpButton()).padRight(20).width(100).height(100).expandX();
@@ -57,36 +67,55 @@ public class Hud {
         }
 
         public void update(float speed){
-            if(speed < 100)
+            if(speed < 25)
                 speedMeter.setValue(1);
-            else if(speed < 200)
+            else if(speed < 50)
                 speedMeter.setValue(2);
-            else if(speed < 300)
+            else if(speed < 75)
                 speedMeter.setValue(3);
-            else if(speed < 400)
+            else if(speed < 100)
                 speedMeter.setValue(4);
-            else if(speed < 500)
+            else if(speed < 125)
                 speedMeter.setValue(5);
-            else if(speed < 600)
+            else if(speed < 150)
                 speedMeter.setValue(6);
-            else if(speed < 700)
+            else if(speed < 175)
                 speedMeter.setValue(7);
-            else if(speed < 800)
+            else if(speed < 200)
                 speedMeter.setValue(8);
-            else if(speed < 900)
+            else if(speed < 257)
                 speedMeter.setValue(9);
-            else if(speed < 1000)
+            else if(speed < 314)
                 speedMeter.setValue(10);
-            else if(speed < 1200)
+            else if(speed < 371)
                 speedMeter.setValue(11);
-            else if(speed < 1400)
+            else if(speed < 428)
                 speedMeter.setValue(12);
-            else if(speed < 1600)
+            else if(speed < 485)
                 speedMeter.setValue(13);
-            else if(speed < 1800)
+            else if(speed < 542)
                 speedMeter.setValue(14);
-            else if(speed < 2000)
+            else if(speed < 600)
                 speedMeter.setValue(15);
+        }
+    }
+
+    public class Health{
+        ProgressBar healthBar;
+        Runner runr;
+
+        public Health(final Runner runner){
+            healthBar = new ProgressBar(1, 50, 1, false, getMySkin(), "default-horizontal");
+            healthBar.setAnimateDuration(.5f);
+            this.runr = runner;
+        }
+
+        public ProgressBar getHealthBar() {
+            return healthBar;
+        }
+
+        public void update(){
+            healthBar.setValue(runr.getHealth());
         }
     }
 
@@ -94,7 +123,7 @@ public class Hud {
         TextButton button;
 
         public RunButton(Runner runner){
-            button = new TextButton("Run",mySkin,"arcade");
+            button = new TextButton("RUN",mySkin,"arcade");
             button1Listener(button, runner);
         }
 
@@ -119,7 +148,7 @@ public class Hud {
         TextButton button;
 
         public JumpButton(Runner runner){
-            button = new TextButton("Jump",mySkin,"arcade");
+            button = new TextButton("JUMP",mySkin,"arcade");
             buttonListener(button, runner);
         }
 
