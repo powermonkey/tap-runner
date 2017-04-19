@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 
 /**
  * Created by Rod on 4/14/2017.
@@ -12,11 +13,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class MainMenuScreen implements Screen {
     final TapRunner game;
     OrthographicCamera cam;
+    Texture bg, playBtn, ground;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, 800, 480);
+        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+        bg = new Texture("bg.png");
+        playBtn = new Texture("playBtn.png");
+        ground = new Texture("ground.png");
     }
 
     @Override
@@ -28,8 +33,9 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(cam.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome to TapRunner!!! ", 100, 150);
-        game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+        game.batch.draw(bg, 0, 0);
+        game.batch.draw(playBtn, (cam.viewportWidth / 2) - (playBtn.getWidth() / 2 ), cam.viewportHeight / 2);
+        game.batch.draw(ground, 0,0);
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
