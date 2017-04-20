@@ -9,6 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Enemy {
     final static float SPEED = -50;
+    public final static float SPAWN_OFFSET_X = 300;
+    public final static float SPAWN_DISTANCE = 1000;
+    public final static int SPAWN_COUNT = 3;
+
     int damage;
     public Vector2 position, velocity, speed;
     Rectangle bounds;

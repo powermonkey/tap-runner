@@ -7,7 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Runner;
+import com.rcam.game.sprites.enemies.Enemy;
 import com.rcam.game.sprites.enemies.GroundEnemy;
+
+import java.util.Random;
 
 /**
  * Created by Rod on 4/14/2017.
@@ -15,10 +18,9 @@ import com.rcam.game.sprites.enemies.GroundEnemy;
 
 public class GameScreen implements Screen{
     final TapRunner game;
+    final static int SPAWN_FLUCTUATION_COUNT = 3; // +1
     final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
-    final static float SPAWN_OFFSET_X = 300;
-    final static float SPAWN_DISTANCE = 1000;
     float spawnMarker = 1000;
     Texture bg;
     OrthographicCamera cam;
@@ -26,7 +28,9 @@ public class GameScreen implements Screen{
     Array<Ground> grounds;
     Ground grnd;
     Hud hud;
-    GroundEnemy groundEnemy1;
+    Array<GroundEnemy> groundEnemies;
+    Random rand;
+    Enemy enemy;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -35,6 +39,9 @@ public class GameScreen implements Screen{
         cam = new OrthographicCamera();
         grnd = new Ground(cam.position.x - (cam.viewportWidth / 2));
         grounds = new Array<Ground>();
+        groundEnemies = new Array<GroundEnemy>();
+        enemy = new Enemy();
+        rand = new Random();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
 
         grounds.add(new Ground(0));
@@ -42,7 +49,9 @@ public class GameScreen implements Screen{
 
         hud = new Hud(runner);
 
-        groundEnemy1 = new GroundEnemy(1);
+        for(int i = 1; i <= 3; i++){
+            groundEnemies.add(new GroundEnemy(1));
+        }
     }
 
     public void handleInput() {
@@ -62,27 +71,39 @@ public class GameScreen implements Screen{
         game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
 
         if(runner.getPosition().x > spawnMarker ){
-            Vector2 spawnPosition = new Vector2();
-            spawnPosition.x = spawnMarker + SPAWN_OFFSET_X;
-            spawnPosition.y = STARTING_Y;
-            groundEnemy1.setPosition(spawnPosition);
-            groundEnemy1.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
-            spawnMarker += SPAWN_DISTANCE;
-            groundEnemy1.isSpawned = true;
-        }
+            int counter = 1;
+            int spawnCount = rand.nextInt(SPAWN_FLUCTUATION_COUNT);
+            spawnCount += 1;
+            System.out.println(spawnCount);
+            for(GroundEnemy groundEnemy : groundEnemies){System.out.println(spawnCount);
+                Vector2 spawnPosition = new Vector2();
+                spawnPosition.x = spawnMarker + groundEnemy.SPAWN_OFFSET_X + (counter * (groundEnemy.getTexture().getWidth() + groundEnemy.GROUND_ENEMY_GAP));
+                System.out.println(spawnPosition.x);
+                spawnPosition.y = STARTING_Y;
+                groundEnemy.setPosition(spawnPosition);
+                groundEnemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
 
-        if(groundEnemy1.isSpawned){
-            if(!(cam.position.x - (cam.viewportWidth / 2) > groundEnemy1.getPosition().x + groundEnemy1.getTexture().getWidth()) ){
-                game.batch.draw(groundEnemy1.getTexture(), groundEnemy1.getPosition().x, groundEnemy1.getPosition().y);
-                groundEnemy1.update(delta);
-                runner.checkCollision(groundEnemy1);
-            }else{
-                groundEnemy1.isSpawned = false; //unrender enemy when off camera
+                groundEnemy.isSpawned = true;
+                if(counter == spawnCount)
+                    break;
+                counter = counter + 1;
+            }
+            spawnMarker += enemy.SPAWN_DISTANCE;
+        }
+        for(GroundEnemy groundEnemy : groundEnemies) {
+            if (groundEnemy.isSpawned) {
+                if (!(cam.position.x - (cam.viewportWidth / 2) > groundEnemy.getPosition().x + groundEnemy.getTexture().getWidth())) {
+                    game.batch.draw(groundEnemy.getTexture(), groundEnemy.getPosition().x, groundEnemy.getPosition().y);
+                    groundEnemy.update(delta);
+                    runner.checkCollision(groundEnemy);
+                } else {
+                    groundEnemy.isSpawned = false; //unrender enemy when off camera
+                }
             }
         }
 
         game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
-        for(Ground ground: grounds){
+        for(Ground ground : grounds){
             game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
         }
 
@@ -128,6 +149,7 @@ public class GameScreen implements Screen{
         for(Ground ground : grounds)
             ground.dispose();
         hud.dispose();
-        groundEnemy1.dispose();
+        for(GroundEnemy groundEnemy : groundEnemies)
+            groundEnemy.dispose();
     }
 }

@@ -10,8 +10,8 @@ import java.lang.String;
  */
 
 public class GroundEnemy extends Enemy{
+    public final static int GROUND_ENEMY_GAP = 32;
     Texture groundEnemyTexture;
-    int type;
     public boolean isSpawned;
 
     public GroundEnemy(int type){
