@@ -7,8 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Runner;
-import com.rcam.game.sprites.enemies.GroundEnemy1;
-import com.sun.java_cup.internal.runtime.Symbol;
+import com.rcam.game.sprites.enemies.GroundEnemy;
 
 /**
  * Created by Rod on 4/14/2017.
@@ -27,7 +26,7 @@ public class GameScreen implements Screen{
     Array<Ground> grounds;
     Ground grnd;
     Hud hud;
-    GroundEnemy1 groundEnemy1;
+    GroundEnemy groundEnemy1;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -43,7 +42,7 @@ public class GameScreen implements Screen{
 
         hud = new Hud(runner);
 
-        groundEnemy1 = new GroundEnemy1();
+        groundEnemy1 = new GroundEnemy(1);
     }
 
     public void handleInput() {
