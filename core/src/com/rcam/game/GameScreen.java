@@ -74,11 +74,9 @@ public class GameScreen implements Screen{
             int counter = 1;
             int spawnCount = rand.nextInt(SPAWN_FLUCTUATION_COUNT);
             spawnCount += 1;
-            System.out.println(spawnCount);
-            for(GroundEnemy groundEnemy : groundEnemies){System.out.println(spawnCount);
+            for(GroundEnemy groundEnemy : groundEnemies){
                 Vector2 spawnPosition = new Vector2();
                 spawnPosition.x = spawnMarker + groundEnemy.SPAWN_OFFSET_X + (counter * (groundEnemy.getTexture().getWidth() + groundEnemy.GROUND_ENEMY_GAP));
-                System.out.println(spawnPosition.x);
                 spawnPosition.y = STARTING_Y;
                 groundEnemy.setPosition(spawnPosition);
                 groundEnemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position

@@ -33,7 +33,7 @@ public class GroundEnemy extends Enemy{
         bounds = new Rectangle(super.getPosition().x, super.getPosition().y, groundEnemyTexture.getWidth(), groundEnemyTexture.getHeight());
     }
 
-    public String selectTexture(int type){
+    private String selectTexture(int type){
         String textureString;
 
         switch(type){

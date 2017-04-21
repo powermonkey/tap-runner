@@ -12,14 +12,16 @@ public class Enemy {
     public final static float SPAWN_OFFSET_X = 300;
     public final static float SPAWN_DISTANCE = 1000;
     public final static int SPAWN_COUNT = 3;
+    public boolean touched;
 
     int damage;
     public Vector2 position, velocity, speed;
-    Rectangle bounds;
+    protected Rectangle bounds;
 
     public Enemy(){
         velocity = new Vector2(SPEED, 0);
         speed = new Vector2(SPEED, 0);
+        touched = false;
     }
 
     public void setPosition(Vector2 position){

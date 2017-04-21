@@ -24,11 +24,11 @@ public class Runner {
     public boolean isMaintainHighSpeed;
     public boolean isOnGround;
     public boolean isJumping;
-    public boolean takenDamage;
+//    public static boolean takenDamage;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     float groundLevel;
-    Rectangle bounds;
+    private Rectangle bounds;
 
     public Runner(float x, float y){
         position = new Vector2(x, y);
@@ -37,7 +37,6 @@ public class Runner {
         speed = new Vector2(0, 0);
         runnerTexture = new Texture("bird.png");
         isMaintainHighSpeed = false;
-        takenDamage = false;
         isOnGround = true;
         bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
         health = STARTING_HEALTH;
@@ -136,14 +135,14 @@ public class Runner {
 
     public void checkCollision(Enemy enemy){
         if(enemy.getBounds().overlaps(getBounds()) ){
-            if(health > 0 && !takenDamage){
+            if(health > 0 && !enemy.touched){
                 health -= enemy.getDamage();
-                takenDamage = true;
+                enemy.touched = true;
                 velocity.x = -400;
-            } else if (health <= 0)
+            }else if (health <= 0)
                 System.out.println("runner dead");
         }else{
-            takenDamage = false;
+            enemy.touched = false;
         }
     }
 
