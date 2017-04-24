@@ -11,7 +11,6 @@ public class Enemy {
     final static float SPEED = -50;
     public final static float SPAWN_OFFSET_X = 300;
     public final static float SPAWN_DISTANCE = 1000;
-    public final static int SPAWN_COUNT = 3;
     public boolean touched;
 
     int damage;
