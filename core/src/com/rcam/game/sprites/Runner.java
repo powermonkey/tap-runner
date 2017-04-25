@@ -17,14 +17,13 @@ public class Runner {
     static final float GRAVITY = -15;
     static final float HIGH_SPEED = 200;
     static final float SPEED_BUFFER = 600;
-    static final float MAX_JUMP_HEIGHT = 350;
+    static final float MAX_JUMP_HEIGHT = 400;
     static final int STARTING_HEALTH = 50;
-    int health;
+    float health;
     long startingTime;
     public boolean isMaintainHighSpeed;
     public boolean isOnGround;
     public boolean isJumping;
-//    public static boolean takenDamage;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     float groundLevel;
@@ -46,7 +45,7 @@ public class Runner {
     public void update(float dt){
         if(timeSinceMillis(startingTime) > 1000){
             startingTime = millis();
-            health -= 1;
+            health -= .5f;
             if(health <= 0)
                 System.out.println("runner dead");
         }
@@ -94,7 +93,7 @@ public class Runner {
             isMaintainHighSpeed = true;
         else
             isMaintainHighSpeed = false;
-//System.out.println(speed.x);
+//System.out.println(position.x);
         //reset value of velocity x and y
         velocity.x = 0;
         if(!isJumping)
@@ -129,7 +128,7 @@ public class Runner {
         return bounds;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
