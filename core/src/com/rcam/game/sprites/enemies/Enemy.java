@@ -17,7 +17,7 @@ public class Enemy {
     public final static float SPAWN_OFFSET_X = 300;
     public final static float SPAWN_DISTANCE = 500;
     public boolean touched;
-    float damage;
+    float damage, spawnPositionX;
     public Vector2 position, velocity, speed;
     protected Rectangle bounds;
     Texture enemyTexture;

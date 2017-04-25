@@ -3,15 +3,12 @@ package com.rcam.game.sprites.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import java.lang.String;
 
 /**
  * Created by Rod on 4/18/2017.
  */
 
 public class GroundEnemy extends Enemy{
-    public final static int ENEMY_GAP = 32;
-
     public GroundEnemy(int type){
         super();
         damage = 2;

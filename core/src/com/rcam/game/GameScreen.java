@@ -82,7 +82,6 @@ public class GameScreen implements Screen{
 
         //set ground enemy position and render ground enemy
         spawnEnemy(delta);
-//      spawnFlyingEnemy(delta);
 
         //render runner
         game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
@@ -105,42 +104,34 @@ public class GameScreen implements Screen{
     private void spawnEnemy(float delta){
         //set ground enemy position
         if(runner.getPosition().x > spawnMarker ){
-            int counter = 1;
-            int spawnCount = rand.nextInt(SPAWN_FLUCTUATION_COUNT);
-            spawnCount += 1;
-            for(GroundEnemy groundEnemy : groundEnemies){
-                Vector2 spawnPosition = new Vector2();
-                spawnPosition.x = spawnMarker + groundEnemy.SPAWN_OFFSET_X + (counter * (groundEnemy.getTexture().getWidth() / 4 + groundEnemy.ENEMY_GAP));
-                spawnPosition.y = STARTING_Y;
-                groundEnemy.setPosition(spawnPosition);
-                groundEnemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
-                groundEnemy.isSpawned = true;
-                if(counter == spawnCount)
-                    break;
-                counter = counter + 1;
-            }
-
-            spawnMarker += enemy.SPAWN_DISTANCE;
-
-            counter = 1;
-            spawnCount = rand.nextInt(SPAWN_FLUCTUATION_COUNT);
-            spawnCount += 1;
-            for(FlyingEnemy flyingEnemy : flyingEnemies){
-                Vector2 spawnPosition = new Vector2();
-                spawnPosition.x = spawnMarker + flyingEnemy.SPAWN_OFFSET_X;
-                spawnPosition.y = (STARTING_Y - flyingEnemy.getTexture().getHeight()) + (counter * (flyingEnemy.getTexture().getWidth() / 4));
-                flyingEnemy.setPosition(spawnPosition);
-                flyingEnemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
-                flyingEnemy.isSpawned = true;
-                if(counter == spawnCount)
-                    break;
-                counter = counter + 1;
-            }
-            spawnMarker += enemy.SPAWN_DISTANCE;
+            positionEnemy(groundEnemies);
+            positionEnemy(flyingEnemies);
         }
 
         renderEnemy(groundEnemies, delta);
         renderEnemy(flyingEnemies, delta);
+    }
+
+    private void positionEnemy(Array<? extends Enemy> enemies){
+        int counter = 1;
+        int spawnCount = rand.nextInt(SPAWN_FLUCTUATION_COUNT);
+        spawnCount += 1;
+        for(Enemy enemy : enemies){
+            Vector2 spawnPosition = new Vector2();
+            if(enemy instanceof GroundEnemy){
+                spawnPosition = groundEnemySpawnPosition(counter, enemy);
+            }else if(enemy instanceof FlyingEnemy){
+                spawnPosition = flyingEnemySpawnPosition(counter, enemy);
+            }
+            enemy.setPosition(spawnPosition);
+            enemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
+            enemy.isSpawned = true;
+            if(counter == spawnCount)
+                break;
+            counter = counter + 1;
+        }
+
+        spawnMarker += enemy.SPAWN_DISTANCE;
     }
 
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
@@ -157,6 +148,22 @@ public class GameScreen implements Screen{
                 }
             }
         }
+    }
+
+    private Vector2 groundEnemySpawnPosition(int counter, Enemy enemy){
+        Vector2 spawnPosition = new Vector2();
+
+        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 + enemy.getTexture().getWidth() / 4));
+        spawnPosition.y = STARTING_Y;
+        return spawnPosition;
+    }
+
+    private Vector2 flyingEnemySpawnPosition(int counter, Enemy enemy){
+        Vector2 spawnPosition = new Vector2();
+
+        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X;
+        spawnPosition.y = (STARTING_Y - enemy.getTexture().getHeight()) + (counter * (enemy.getTexture().getWidth() / 4));
+        return spawnPosition;
     }
 
     @Override
