@@ -13,7 +13,6 @@ import com.rcam.game.sprites.enemies.Enemy;
 import com.rcam.game.sprites.enemies.FlyingEnemy;
 import com.rcam.game.sprites.enemies.GroundEnemy;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -80,6 +79,11 @@ public class GameScreen implements Screen{
                 ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
         }
 
+        //select level and pattern
+        //level 1: intro patterns
+        //level 2: simple patterns
+        //level 3: combo patterns
+
         //set ground enemy position and render ground enemy
         spawnEnemy(delta);
 
@@ -102,12 +106,13 @@ public class GameScreen implements Screen{
     }
 
     private void spawnEnemy(float delta){
-        //set ground enemy position
+        //set enemy position
         if(runner.getPosition().x > spawnMarker ){
             positionEnemy(groundEnemies);
             positionEnemy(flyingEnemies);
         }
 
+        //render enemy
         renderEnemy(groundEnemies, delta);
         renderEnemy(flyingEnemies, delta);
     }
@@ -116,6 +121,7 @@ public class GameScreen implements Screen{
         int counter = 1;
         int spawnCount = rand.nextInt(SPAWN_FLUCTUATION_COUNT);
         spawnCount += 1;
+//        int spawnCount = 3;
         for(Enemy enemy : enemies){
             Vector2 spawnPosition = new Vector2();
             if(enemy instanceof GroundEnemy){
@@ -153,16 +159,47 @@ public class GameScreen implements Screen{
     private Vector2 groundEnemySpawnPosition(int counter, Enemy enemy){
         Vector2 spawnPosition = new Vector2();
 
-        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 + enemy.getTexture().getWidth() / 4));
-        spawnPosition.y = STARTING_Y;
+//        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 + enemy.getTexture().getWidth() / 4)); //not grouped
+        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 )); //grouped
+        spawnPosition.y = STARTING_Y; //default y
         return spawnPosition;
     }
 
     private Vector2 flyingEnemySpawnPosition(int counter, Enemy enemy){
         Vector2 spawnPosition = new Vector2();
 
-        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X;
-        spawnPosition.y = (STARTING_Y - enemy.getTexture().getHeight()) + (counter * (enemy.getTexture().getWidth() / 4));
+//        pattern 1 horizontal + above ground
+//        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
+//        spawnPosition.y = (STARTING_Y - (enemy.getTexture().getHeight() / 4)) + (enemy.getTexture().getWidth() / 4);
+
+//        pattern 2 horizontal + on ground
+//        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
+//        spawnPosition.y = (STARTING_Y);
+
+//        pattern 4 vertical + above ground
+//        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X;
+//        spawnPosition.y = (STARTING_Y - (enemy.getTexture().getHeight() / 4)) + (counter * (enemy.getTexture().getWidth() / 4));
+
+//        pattern 3 vertical + on ground
+//        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X;
+//        spawnPosition.y = (STARTING_Y - enemy.getTexture().getHeight()) + (counter * (enemy.getTexture().getWidth() / 4));
+
+//        pattern 5 diagonal leaning right + above ground
+//        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
+//        spawnPosition.y = (STARTING_Y - (enemy.getTexture().getHeight() / 4)) + (counter * (enemy.getTexture().getWidth() / 4));
+
+//        pattern 5 diagonal leaning right + on ground
+//        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
+//        spawnPosition.y = (STARTING_Y - enemy.getTexture().getHeight()) + (counter * (enemy.getTexture().getWidth() / 4));
+
+//        pattern 5 diagonal leaning left + on ground
+//        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
+//        spawnPosition.y = (STARTING_Y + enemy.getTexture().getHeight() * 3) - (counter * (enemy.getTexture().getWidth() / 4));
+
+        //        pattern 5 diagonal leaning left + above ground
+        spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
+        spawnPosition.y = ((STARTING_Y + (enemy.getTexture().getHeight() / 4)) * 2) - (counter * (enemy.getTexture().getWidth() / 4));
+
         return spawnPosition;
     }
 
