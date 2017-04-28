@@ -31,8 +31,8 @@ public class GameScreen implements Screen{
     Array<Ground> grounds;
     Ground grnd;
     Hud hud;
-    Array<GroundEnemy> groundEnemies;
-    Array<FlyingEnemy> flyingEnemies;
+    Array<GroundEnemy> groundEnemies, newGroundEnemies;
+    Array<FlyingEnemy> flyingEnemies, newFlyingEnemies;
     Random rand;
     Enemy enemy;
     Level level;
@@ -45,7 +45,9 @@ public class GameScreen implements Screen{
         grnd = new Ground(cam.position.x - (cam.viewportWidth / 2));
         grounds = new Array<Ground>();
         groundEnemies = new Array<GroundEnemy>();
+        newGroundEnemies = new Array<GroundEnemy>();
         flyingEnemies = new Array<FlyingEnemy>();
+        newFlyingEnemies = new Array<FlyingEnemy>();
         enemy = new Enemy();
         rand = new Random();
         level = new Level();
@@ -55,11 +57,6 @@ public class GameScreen implements Screen{
         grounds.add(new Ground(grnd.getTexture().getWidth()));
 
         hud = new Hud(runner);
-
-        for(int i = 1; i <= 3; i++){
-            groundEnemies.add(new GroundEnemy(1));
-            flyingEnemies.add(new FlyingEnemy(1));
-        }
 
     }
 
@@ -106,15 +103,39 @@ public class GameScreen implements Screen{
 
     private void spawnEnemy(float delta){
         int[] levelDetails;
+
+
         //set enemy position
         if(runner.getPosition().x > spawnMarker ){
+
+            for(int i = 1; i <= 3; i++){
+                groundEnemies.add(new GroundEnemy(1));
+                flyingEnemies.add(new FlyingEnemy(1));
+            }
+
             levelDetails = level.getLevelPattern(level.getPattern());
-            if(levelDetails[0] == 1)
-                positionEnemy(groundEnemies, levelDetails);
-            else
-                positionEnemy(flyingEnemies, levelDetails);
+            if(levelDetails[0] == 1) {
+                //only set position for new spawned ground enemies
+                for(int i = 1; i <= 3; i++){
+                    newGroundEnemies.add(groundEnemies.pop());
+                }
+                positionEnemy(newGroundEnemies, levelDetails);
+                for(int i = 1; i <= 3; i++){
+                    groundEnemies.add(newGroundEnemies.pop());
+                }
+            }else {
+                //only set position for new spawned ground enemies
+                for(int i = 1; i <= 3; i++){
+                    newFlyingEnemies.add(flyingEnemies.pop());
+                }
+                positionEnemy(newFlyingEnemies, levelDetails);
+                for(int i = 1; i <= 3; i++){
+                    flyingEnemies.add(newFlyingEnemies.pop());
+                }
+            }
 
             level.updatePattern();
+
         }
 
         //render enemy
@@ -123,6 +144,8 @@ public class GameScreen implements Screen{
     }
 
     private void positionEnemy(Array<? extends Enemy> enemies, int[] levelDetails){
+
+
         int counter = 1;
         int spawnCount = levelDetails[1];
         for(Enemy enemy : enemies){
@@ -151,11 +174,9 @@ public class GameScreen implements Screen{
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
                     enemy.update(delta);
-//                    runner.checkCollision(enemy);
-                    System.out.println("render");
+                    runner.checkCollision(enemy);
                 } else {
-                    System.out.println("no render");
-//                    enemy.isSpawned = false; //unrender enemy when off camera
+                    enemy.isSpawned = false; //unrender enemy when off camera
                 }
             }
         }
@@ -215,14 +236,14 @@ public class GameScreen implements Screen{
                 spawnPosition.y = (STARTING_Y - enemy.getTexture().getHeight()) + (counter * (enemy.getTexture().getWidth() / 4));
                 break;
             case 7:
-//                pattern 7 diagonal leaning left + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
-                spawnPosition.y = (STARTING_Y + enemy.getTexture().getHeight() * 3) - (counter * (enemy.getTexture().getWidth() / 4));
-                break;
-            case 8:
-//                pattern 5 diagonal leaning left + above ground
+//                pattern 7 diagonal leaning left + above ground
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
                 spawnPosition.y = ((STARTING_Y + (enemy.getTexture().getHeight() / 4)) * 2) - (counter * (enemy.getTexture().getWidth() / 4));
+                break;
+            case 8:
+//                pattern 8 diagonal leaning left + on ground
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
+                spawnPosition.y = (STARTING_Y + enemy.getTexture().getHeight() * 3) - (counter * (enemy.getTexture().getWidth() / 4));
                 break;
             default:
                 throw new IllegalArgumentException("No such pattern");
