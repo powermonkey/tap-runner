@@ -2,6 +2,7 @@ package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,7 +22,6 @@ import java.util.Random;
 
 public class GameScreen implements Screen{
     final TapRunner game;
-    final static int SPAWN_FLUCTUATION_COUNT = 3; // +1
     final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
     float spawnMarker = 500;
@@ -69,6 +69,8 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.position.x = runner.getPosition().x + 100;
         cam.update();
         game.batch.setProjectionMatrix(cam.combined);
@@ -80,11 +82,6 @@ public class GameScreen implements Screen{
             if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() )
                 ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
         }
-
-        //select level and pattern
-        //level 1: intro patterns
-        //level 2: simple patterns(repeating intro patterns)
-        //level 3: combo patterns
 
         //set ground enemy position and render ground enemy
         spawnEnemy(delta);
@@ -149,14 +146,16 @@ public class GameScreen implements Screen{
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
         for(Enemy enemy : enemies) {
             if (enemy.isSpawned) {
-                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTexture().getWidth())) {
+                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTexture().getWidth() + 500)) {
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
                     enemy.update(delta);
-                    runner.checkCollision(enemy);
+//                    runner.checkCollision(enemy);
+                    System.out.println("render");
                 } else {
-                    enemy.isSpawned = false; //unrender enemy when off camera
+                    System.out.println("no render");
+//                    enemy.isSpawned = false; //unrender enemy when off camera
                 }
             }
         }

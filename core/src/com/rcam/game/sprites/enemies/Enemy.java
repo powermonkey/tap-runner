@@ -15,9 +15,9 @@ public class Enemy {
     protected final static int FRAME_COLS = 4;
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_X = 300;
-    public final static float SPAWN_DISTANCE = 500;
+    public final static float SPAWN_DISTANCE = 200; //less than 300 cuts rendering of longer sprites
     public boolean touched;
-    float damage, spawnPositionX;
+    float damage;
     public Vector2 position, velocity, speed;
     protected Rectangle bounds;
     Texture enemyTexture;

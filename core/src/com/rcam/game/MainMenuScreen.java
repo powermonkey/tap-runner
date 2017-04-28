@@ -34,7 +34,7 @@ public class MainMenuScreen implements Screen {
 
         game.batch.begin();
         game.batch.draw(bg, 0, 0);
-        game.batch.draw(playBtn, (cam.viewportWidth / 2) - (playBtn.getWidth() / 2 ), cam.viewportHeight / 2);
+        game.batch.draw(playBtn, (cam.viewportWidth / 2 ) - (playBtn.getWidth() / 2 ), cam.viewportHeight / 2);
         game.batch.draw(ground, 0,0);
         game.batch.end();
 
