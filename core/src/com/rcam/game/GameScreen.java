@@ -145,16 +145,15 @@ public class GameScreen implements Screen{
     }
 
     private void positionEnemy(Array<? extends Enemy> enemies, int[] levelDetails){
-
-
+        boolean vertical = false;
         int counter = 1;
         int spawnCount = levelDetails[1];
         for(Enemy enemy : enemies){
             Vector2 spawnPosition = new Vector2();
             if(enemy instanceof GroundEnemy){
-                spawnPosition = groundEnemySpawnPosition(counter, enemy, levelDetails[2]);
+                spawnPosition = groundEnemySpawnPosition(counter, enemy, levelDetails);
             }else if(enemy instanceof FlyingEnemy){
-                spawnPosition = flyingEnemySpawnPosition(counter, enemy, levelDetails[2]);
+                spawnPosition = flyingEnemySpawnPosition(counter, enemy, levelDetails);
             }
             enemy.setPosition(spawnPosition);
             enemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
@@ -163,8 +162,9 @@ public class GameScreen implements Screen{
                 break;
             counter = counter + 1;
         }
-
-        spawnMarker += enemy.SPAWN_DISTANCE;
+        if(levelDetails[2] == 3 || levelDetails[2] == 4)
+             vertical = true;
+        spawnMarkerDistance(levelDetails[1], vertical);
     }
 
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
@@ -183,10 +183,10 @@ public class GameScreen implements Screen{
         }
     }
 
-    private Vector2 groundEnemySpawnPosition(int counter, Enemy enemy, int pattern){
+    private Vector2 groundEnemySpawnPosition(int counter, Enemy enemy, int[] levelDetails){
         Vector2 spawnPosition = new Vector2();
 
-        switch(pattern){
+        switch(levelDetails[2]){
             case 1:
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 + enemy.getTexture().getWidth() / 4)); //not grouped
                 spawnPosition.y = STARTING_Y; //default y
@@ -202,10 +202,10 @@ public class GameScreen implements Screen{
         return spawnPosition;
     }
 
-    private Vector2 flyingEnemySpawnPosition(int counter, Enemy enemy, int pattern){
+    private Vector2 flyingEnemySpawnPosition(int counter, Enemy enemy, int[] levelDetails){
         Vector2 spawnPosition = new Vector2();
 
-        switch(pattern){
+        switch(levelDetails[2]){
             case 1:
 //                pattern 1 horizontal + above ground
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
@@ -251,6 +251,18 @@ public class GameScreen implements Screen{
         }
 
         return spawnPosition;
+    }
+
+    private float spawnMarkerDistance(int spawnCount, boolean vertical){
+        if(vertical){
+            spawnMarker += 180;
+        }else if(spawnCount > 1) {
+            spawnMarker += 250;
+        }else {
+            spawnMarker += 160;
+        }
+
+        return spawnMarker;
     }
 
     @Override
