@@ -20,7 +20,7 @@ public class MainMenuScreen implements Screen {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         bg = new Texture("bg.png");
-        playBtn = new Texture("playBtn.png");
+        playBtn = new Texture("playbtn.png");
         ground = new Texture("ground.png");
     }
 

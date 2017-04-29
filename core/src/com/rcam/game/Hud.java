@@ -18,28 +18,33 @@ import com.rcam.game.sprites.Runner;
 public class Hud {
     Stage stage;
     Table table;
-    Skin mySkin;
+    Skin cleanCrispySkin, arcadeSkin;
     Meter meter;
     RunButton runButton;
     JumpButton jumpButton;
+    Distance distance;
     Health health;
-    Label healthLabel, speedMeterLabel;
+    Label healthLabel, speedMeterLabel, distanceLabel;
 
     public Hud(final Runner runner){
         table = new Table();
         table.setFillParent(true);
-        mySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui.json"));
+        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
+        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage();
         meter = new Meter();
+        distance = new Distance(runner);
         health = new Health(runner);
         runButton = new RunButton(runner);
         jumpButton = new JumpButton(runner);
-        healthLabel = new Label("HEALTH", mySkin);
-        speedMeterLabel = new Label("SPEED", mySkin);
+        healthLabel = new Label("HEALTH", cleanCrispySkin);
+        speedMeterLabel = new Label("SPEED", cleanCrispySkin);
 //        stage.setDebugAll(true);
 
         Gdx.input.setInputProcessor(stage);
 
+        table.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
+        table.row();
         table.add(healthLabel).width(80).padLeft(40);
         table.add(health.getHealthBar()).padRight(20);
         table.row();
@@ -50,7 +55,7 @@ public class Hud {
         table.add(jumpButton.getJumpButton()).padRight(20).width(100).height(100).expandX();
         table.row();
         table.center().bottom();
-        table.padBottom(50);
+        table.padBottom(20);
         stage.addActor(table);
     }
 
@@ -58,7 +63,7 @@ public class Hud {
         ProgressBar speedMeter;
 
         public Meter(){
-            speedMeter = new ProgressBar(1, 15, 1, false, getMySkin(), "default-horizontal");
+            speedMeter = new ProgressBar(1, 15, 1, false, getCleanCrispySkin(), "default-horizontal");
             speedMeter.setAnimateDuration(.5f);
         }
 
@@ -105,7 +110,7 @@ public class Hud {
         Runner runr;
 
         public Health(final Runner runner){
-            healthBar = new ProgressBar(1, 50, 1, false, getMySkin(), "default-horizontal");
+            healthBar = new ProgressBar(1, 50, 1, false, getCleanCrispySkin(), "default-horizontal");
             healthBar.setAnimateDuration(.5f);
             this.runr = runner;
         }
@@ -119,11 +124,36 @@ public class Hud {
         }
     }
 
+    public class Distance{
+        Label indicator;
+        Runner runr;
+
+        public Distance(final Runner runner){
+            this.runr = runner;
+            indicator = new Label(indicatePosition(), getArcadeSkin(), "screen");
+            indicator.setFontScale(1.5f);
+        }
+
+        public Label getIndicator(){
+            return indicator;
+        }
+
+        private String indicatePosition(){
+            String s = Integer.toString(Math.round(runr.getPosition().x / 100));
+
+            return s + " m";
+        }
+
+        public void update(){
+            indicator.setText(indicatePosition());
+        }
+    }
+
     public class RunButton{
         TextButton button;
 
         public RunButton(Runner runner){
-            button = new TextButton("RUN",mySkin,"arcade");
+            button = new TextButton("RUN", getCleanCrispySkin(), "arcade");
             button1Listener(button, runner);
         }
 
@@ -148,7 +178,7 @@ public class Hud {
         TextButton button;
 
         public JumpButton(Runner runner){
-            button = new TextButton("JUMP",mySkin,"arcade");
+            button = new TextButton("JUMP", getCleanCrispySkin(), "arcade");
             buttonListener(button, runner);
         }
 
@@ -174,8 +204,12 @@ public class Hud {
 
     }
 
-    public Skin getMySkin(){
-        return mySkin;
+    public Skin getArcadeSkin(){
+        return arcadeSkin;
+    }
+
+    public Skin getCleanCrispySkin(){
+        return cleanCrispySkin;
     }
 
     public void render(){
@@ -184,7 +218,8 @@ public class Hud {
     }
 
     public void dispose(){
-        mySkin.dispose();
+        cleanCrispySkin.dispose();
+        arcadeSkin.dispose();
         stage.dispose();
     }
 

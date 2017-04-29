@@ -39,8 +39,10 @@ public class Level {
                 currentLevel = levelTwo;
                 levelKey = 2;
             }else if(levelKey == 2){
-                currentLevel = levelThree;
-                levelKey = 3;
+//                currentLevel = levelThree;
+                currentLevel = levelOne;
+//                levelKey = 3;
+                levelKey = 1;
             }else{
                 currentLevel = levelOne;
                 levelKey = 1;

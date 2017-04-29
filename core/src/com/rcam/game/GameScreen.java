@@ -96,6 +96,7 @@ public class GameScreen implements Screen{
 
         hud.meter.update(runner.getSpeed().x);
         hud.health.update();
+        hud.distance.update();
 
         game.batch.end();
         hud.render();
