@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.rcam.game.sprites.Ground;
+import com.rcam.game.sprites.PowerUp;
 import com.rcam.game.sprites.Runner;
 import com.rcam.game.sprites.enemies.Enemy;
 import com.rcam.game.sprites.enemies.FlyingEnemy;
@@ -25,6 +26,8 @@ public class GameScreen implements Screen{
     final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
     float spawnMarker = 500;
+    float powerUpMarker = 350;
+    float powerUpMarkerDistance = 350;
     Texture bg;
     OrthographicCamera cam;
     Runner runner;
@@ -36,6 +39,7 @@ public class GameScreen implements Screen{
     Random rand;
     Enemy enemy;
     Level level;
+    Array<PowerUp> powerUps, newPowerUps;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -48,6 +52,8 @@ public class GameScreen implements Screen{
         newGroundEnemies = new Array<GroundEnemy>();
         flyingEnemies = new Array<FlyingEnemy>();
         newFlyingEnemies = new Array<FlyingEnemy>();
+        powerUps = new Array<PowerUp>();
+        newPowerUps = new Array<PowerUp>();
         enemy = new Enemy();
         rand = new Random();
         level = new Level();
@@ -80,8 +86,12 @@ public class GameScreen implements Screen{
                 ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
         }
 
+        spawnPowerUp(delta);
+
         //set ground enemy position and render ground enemy
         spawnEnemy(delta);
+
+
 
         //render runner
         game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
@@ -104,7 +114,6 @@ public class GameScreen implements Screen{
 
     private void spawnEnemy(float delta){
         int[] levelDetails;
-
 
         //set enemy position
         if(runner.getPosition().x > spawnMarker ){
@@ -144,6 +153,60 @@ public class GameScreen implements Screen{
         renderEnemy(flyingEnemies, delta);
     }
 
+    private void spawnPowerUp(float delta){
+
+        if(runner.getPosition().x > powerUpMarker ){
+            int num = rand.nextInt(3) + 1;
+            for(int i = 1; i <= num; i++){
+                powerUps.add(new PowerUp());
+            }
+
+            for(int i = 1; i <= num; i++){
+                newPowerUps.add(powerUps.pop());
+            }
+
+            int yFluc = rand.nextInt(130) + 1;
+            int ctr = 1;
+            for(PowerUp newPowerUp : newPowerUps){
+                Vector2 spawnPowerUpPosition = new Vector2();
+                newPowerUp.randomPowerUp();
+                spawnPowerUpPosition.x = powerUpMarker + newPowerUp.SPAWN_OFFSET_X + (ctr * 25); //not grouped
+                spawnPowerUpPosition.y = STARTING_Y + (yFluc > 32 ? yFluc : 0); //default y
+                newPowerUp.setPosition(spawnPowerUpPosition);
+                newPowerUp.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
+                newPowerUp.isSpawned = true;
+                ctr += 1;
+            }
+
+            for(int i = 1; i <= num; i++){
+                powerUps.add(newPowerUps.pop());
+            }
+
+            if(num == 1){
+                powerUpMarker += 130;
+            }else if(num == 2) {
+                powerUpMarker += 200;
+            }else {
+                powerUpMarker += 350;
+            }
+
+//            powerUpMarker += powerUpMarkerDistance;
+        }
+
+        //render power up
+        int count = 1;
+        for(PowerUp powerUp : powerUps){
+            if(powerUp.isSpawned) {
+                if (!(cam.position.x - (cam.viewportWidth / 2) > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth())) {
+                    game.batch.draw(powerUp.getTextureRegion(), powerUp.getPosition().x, powerUp.getPosition().y);
+                    runner.checkPowerUpCollision(powerUp);
+                } else {
+                    powerUp.isSpawned = false; //unrender powerup when off camera
+                }
+            }
+        }
+    }
+
     private void positionEnemy(Array<? extends Enemy> enemies, int[] levelDetails){
         boolean vertical = false;
         int counter = 1;
@@ -170,7 +233,7 @@ public class GameScreen implements Screen{
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
         for(Enemy enemy : enemies) {
             if (enemy.isSpawned) {
-                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTexture().getWidth() + 500)) {
+                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTexture().getWidth())) {
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
@@ -301,5 +364,17 @@ public class GameScreen implements Screen{
             groundEnemy.dispose();
         for(FlyingEnemy flyingEnemy : flyingEnemies)
             flyingEnemy.dispose();
+        for(PowerUp pUp : powerUps){
+            pUp.dispose();
+        }
+        for(GroundEnemy newGroundEnemy : newGroundEnemies){
+            newGroundEnemy.dispose();
+        }
+        for(FlyingEnemy newFlyingEnemy : newFlyingEnemies){
+            newFlyingEnemy.dispose();
+        }
+        for(PowerUp newPowerUp : newPowerUps){
+            newPowerUp.dispose();
+        }
     }
 }

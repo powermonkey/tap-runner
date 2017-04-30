@@ -137,11 +137,52 @@ public class Runner {
             if(health > 0 && !enemy.touched){
                 health -= enemy.getDamage();
                 enemy.touched = true;
-                velocity.x = -400;
+                if(velocity.x  < 25)
+                    velocity.x = -25;
+                else if(velocity.x  < 50)
+                    velocity.x = -50;
+                else if(velocity.x  < 75)
+                    velocity.x = -75;
+                else if(velocity.x  < 100)
+                    velocity.x = -100;
+                else if(velocity.x  < 125)
+                    velocity.x = -125;
+                else if(velocity.x  < 150)
+                    velocity.x = -150;
+                else if(velocity.x  < 175)
+                    velocity.x = -175;
+                else if(velocity.x  < 200)
+                    velocity.x = -200;
+                else if(velocity.x  < 257)
+                    velocity.x = -257;
+                else if(velocity.x  < 314)
+                    velocity.x = -314;
+                else if(velocity.x  < 371)
+                    velocity.x = -371;
+                else if(velocity.x  < 428)
+                    velocity.x = -400;
+                else if(velocity.x  < 485)
+                    velocity.x = -400;
+                else if(velocity.x  < 542)
+                    velocity.x = -400;
+                else if(velocity.x  < 600)
+                    velocity.x = -400;
             }else if (health <= 0)
                 System.out.println("runner dead");
         }else{
             enemy.touched = false;
+        }
+    }
+
+    public void checkPowerUpCollision(PowerUp powerUp){
+        if(powerUp.getBounds().overlaps(getBounds()) ){
+            if(!(health >= STARTING_HEALTH) && !powerUp.touched){
+                health += powerUp.getHeal();
+                powerUp.touched = true;
+//                velocity.x = 400; //activates speed boost and grants double jump for one use
+            }
+        }else{
+            powerUp.touched = false;
         }
     }
 

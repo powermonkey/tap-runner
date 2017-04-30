@@ -10,7 +10,7 @@ public class Level {
     public int[][] currentLevel; //ground/flying, spawn count, pattern
     public int[][] levelOne; //intro patterns
     public int[][] levelTwo; //combo patterns
-    public int[][] levelThree;
+    public int[][] levelThree; //no formation pattern (spawnMarker was into spawn position)
 
     public Level(){
         pattern = 0; //set first pattern for level
