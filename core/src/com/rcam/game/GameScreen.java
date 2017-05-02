@@ -17,6 +17,9 @@ import com.rcam.game.sprites.enemies.GroundEnemy;
 
 import java.util.Random;
 
+import static com.badlogic.gdx.utils.TimeUtils.millis;
+import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
+
 /**
  * Created by Rod on 4/14/2017.
  */
@@ -40,6 +43,7 @@ public class GameScreen implements Screen{
     Enemy enemy;
     Level level;
     Array<PowerUp> powerUps, newPowerUps;
+    long startingTime;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -77,6 +81,7 @@ public class GameScreen implements Screen{
         cam.position.x = runner.getPosition().x + 100;
         cam.update();
         game.batch.setProjectionMatrix(cam.combined);
+
         game.batch.begin();
         game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
 
@@ -91,24 +96,37 @@ public class GameScreen implements Screen{
         //set ground enemy position and render ground enemy
         spawnEnemy(delta);
 
-
-
-        //render runner
-        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
-
         //render ground
         for(Ground ground : grounds){
             game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
         }
 
+        //render runner
+        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
+
         //render first then logic, fixes shaking texture ??
         runner.update(delta);
 
+        //if runner ran out of health
+        if(runner.isDead) {
+            if(!runner.animatingDeath) {
+                startingTime = millis();
+                runner.death();
+                if(runner.indicatePosition() > runner.getHighScore()){
+                    runner.setHighScore(runner.indicatePosition());
+                }
+            }else {
+                if(timeSinceMillis(startingTime) > 2000) {
+                    game.setScreen(new GameOverScreen(this.game, runner));
+                    dispose();
+                }
+            }
+        }
+
+        game.batch.end();
         hud.meter.update(runner.getSpeed().x);
         hud.health.update();
         hud.distance.update();
-
-        game.batch.end();
         hud.render();
     }
 
@@ -246,6 +264,7 @@ public class GameScreen implements Screen{
         }
     }
 
+    //TODO refactor enemy spawn position
     private Vector2 groundEnemySpawnPosition(int counter, Enemy enemy, int[] levelDetails){
         Vector2 spawnPosition = new Vector2();
 

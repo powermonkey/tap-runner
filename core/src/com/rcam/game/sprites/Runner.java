@@ -1,5 +1,7 @@
 package com.rcam.game.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -18,16 +20,15 @@ public class Runner {
     static final float HIGH_SPEED = 200;
     static final float SPEED_BUFFER = 600;
     static final float MAX_JUMP_HEIGHT = 400;
-    static final int STARTING_HEALTH = 50;
+    static final int STARTING_HEALTH = 2;
     float health;
     long startingTime;
-    public boolean isMaintainHighSpeed;
-    public boolean isOnGround;
-    public boolean isJumping;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     float groundLevel;
     private Rectangle bounds;
+    static Preferences prefs;
 
     public Runner(float x, float y){
         position = new Vector2(x, y);
@@ -40,14 +41,31 @@ public class Runner {
         bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
         health = STARTING_HEALTH;
         startingTime = millis();
+
+        prefs = Gdx.app.getPreferences("TapRunner");
+
+        if (!prefs.contains("BestDistance")) {
+            prefs.putInteger("BestDistance", 0);
+            prefs.flush();
+        }
+    }
+
+    public void setHighScore(int val) {
+        prefs.putInteger("BestDistance", val);
+        prefs.flush();
+    }
+
+    public int getHighScore() {
+        return prefs.getInteger("BestDistance");
     }
 
     public void update(float dt){
         if(timeSinceMillis(startingTime) > 1000){
             startingTime = millis();
-            health -= .5f;
-            if(health <= 0)
-                System.out.println("runner dead");
+            health -= 1f;
+            if(health <= 0){
+                isDead = true;
+            }
         }
 
         //slow down runner
@@ -61,6 +79,10 @@ public class Runner {
             speed.x = 0;
         }
 
+        //if dead set velocity to immediate stop
+        if(isDead){
+            velocity.x = -600;
+        }
         //maintain high speed
         speed.add(velocity.x, velocity.y);
 
@@ -82,11 +104,13 @@ public class Runner {
         }
 
         //make runner land on ground
-        if(position.y < groundLevel){
+        if(position.y < groundLevel && !isDead){
             position.y = groundLevel;
             isOnGround = true;
             isJumping = false;
             speed.y = 0;
+        }else if(isDead){
+            isOnGround = false;
         }
 
         if(speed.x > HIGH_SPEED)
@@ -118,6 +142,14 @@ public class Runner {
 
     public void jump(){
         velocity.y = 60;
+        isJumping = true;
+        isOnGround = false;
+    }
+
+    public void death(){
+        animatingDeath = true;
+        velocity.y = 100;
+        velocity.x = 0;
         isJumping = true;
         isOnGround = false;
     }
@@ -167,8 +199,9 @@ public class Runner {
                     velocity.x = -400;
                 else if(velocity.x  < 600)
                     velocity.x = -400;
-            }else if (health <= 0)
-                System.out.println("runner dead");
+            }else if (health <= 0){
+                isDead = true;
+            }
         }else{
             enemy.touched = false;
         }
@@ -179,11 +212,18 @@ public class Runner {
             if(!(health >= STARTING_HEALTH) && !powerUp.touched){
                 health += powerUp.getHeal();
                 powerUp.touched = true;
+                //TODO optional speed boost and double jump for power up
 //                velocity.x = 400; //activates speed boost and grants double jump for one use
             }
         }else{
             powerUp.touched = false;
         }
+    }
+
+    public int indicatePosition(){
+        int s = Math.round(getPosition().x / 100);
+
+        return s;
     }
 
     public void dispose(){

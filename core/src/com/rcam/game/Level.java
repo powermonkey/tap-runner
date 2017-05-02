@@ -33,6 +33,7 @@ public class Level {
         currentLevel = levelOne;
     }
 
+    //TODO add level three
     public void updatePattern(){
         if(currentLevel.length - 1 == Level.pattern) {
             if(levelKey == 1) {
