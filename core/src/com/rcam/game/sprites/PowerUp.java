@@ -42,7 +42,7 @@ public class PowerUp {
     }
 
     public void createBounds(){
-        bounds = new Rectangle(getPosition().x, getPosition().y, texture.getWidth(), texture.getHeight());
+        bounds = new Rectangle(getPosition().x, getPosition().y, 25, 25);
     }
 
     public Rectangle getBounds() {

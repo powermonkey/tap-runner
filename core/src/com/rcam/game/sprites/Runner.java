@@ -20,7 +20,7 @@ public class Runner {
     static final float HIGH_SPEED = 200;
     static final float SPEED_BUFFER = 600;
     static final float MAX_JUMP_HEIGHT = 400;
-    static final int STARTING_HEALTH = 2;
+    static final int STARTING_HEALTH = 50;
     float health;
     long startingTime;
     public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath;
@@ -212,6 +212,7 @@ public class Runner {
             if(!(health >= STARTING_HEALTH) && !powerUp.touched){
                 health += powerUp.getHeal();
                 powerUp.touched = true;
+                powerUp.isSpawned = false;
                 //TODO optional speed boost and double jump for power up
 //                velocity.x = 400; //activates speed boost and grants double jump for one use
             }

@@ -190,6 +190,7 @@ public class GameScreen implements Screen{
                 newPowerUp.randomPowerUp();
                 spawnPowerUpPosition.x = powerUpMarker + newPowerUp.SPAWN_OFFSET_X + (ctr * 25); //not grouped
                 spawnPowerUpPosition.y = STARTING_Y + (yFluc > 32 ? yFluc : 0); //default y
+//                spawnPowerUpPosition.y = STARTING_Y + 100; //default y
                 newPowerUp.setPosition(spawnPowerUpPosition);
                 newPowerUp.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
                 newPowerUp.isSpawned = true;
