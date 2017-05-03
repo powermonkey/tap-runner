@@ -20,6 +20,7 @@ public class Enemy {
     public Vector2 position, velocity, speed;
     protected Rectangle bounds;
     Texture enemyTexture;
+    public float textureHeight, textureWidth;
 
     public boolean isSpawned;
     public Animation<TextureRegion> animation;
@@ -66,6 +67,14 @@ public class Enemy {
 
     public Texture getTexture() {
         return enemyTexture;
+    }
+
+    public float getTextureHeight() {
+        return textureHeight;
+    }
+
+    public float getTextureWidth() {
+        return textureWidth;
     }
 
     public TextureRegion[] createFrames(Texture groundEnemyTexture){

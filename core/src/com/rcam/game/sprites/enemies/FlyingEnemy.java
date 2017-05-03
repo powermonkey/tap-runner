@@ -15,6 +15,8 @@ public class FlyingEnemy extends Enemy{
         enemyTexture = new Texture(selectTexture(type));
         animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
         stateTime = 0f;
+        textureWidth = enemyTexture.getWidth() / 4;
+        textureHeight = enemyTexture.getHeight();
     }
 
     private String selectTexture(int type){

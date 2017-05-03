@@ -271,11 +271,11 @@ public class GameScreen implements Screen{
 
         switch(levelDetails[2]){
             case 1:
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 + enemy.getTexture().getWidth() / 4)); //not grouped
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth() + enemy.getTextureWidth())); //not grouped
                 spawnPosition.y = STARTING_Y; //default y
                 break;
             case 2:
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 )); //grouped
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth())); //grouped
                 spawnPosition.y = STARTING_Y; //default y
                 break;
             default:
@@ -291,43 +291,43 @@ public class GameScreen implements Screen{
         switch(levelDetails[2]){
             case 1:
 //                pattern 1 horizontal + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
-                spawnPosition.y = (STARTING_Y - (enemy.getTexture().getHeight() / 4)) + (enemy.getTexture().getWidth() / 4);
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.y = STARTING_Y + (enemy.getTextureHeight()) ;
                 break;
             case 2:
 //                pattern 2 horizontal + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
-                spawnPosition.y = (STARTING_Y);
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.y = STARTING_Y;
                 break;
             case 3:
 //                pattern 3 vertical + above ground
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X;
-                spawnPosition.y = (STARTING_Y - (enemy.getTexture().getHeight() / 4)) + (counter * (enemy.getTexture().getWidth() / 4));
+                spawnPosition.y = STARTING_Y + counter * (enemy.getTextureHeight());
                 break;
             case 4:
 //                pattern 4 vertical + on ground
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X;
-                spawnPosition.y = (STARTING_Y - enemy.getTexture().getHeight()) + (counter * (enemy.getTexture().getWidth() / 4));
+                spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight())) - enemy.getTextureWidth();
                 break;
             case 5:
 //                pattern 5 diagonal leaning right + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
-                spawnPosition.y = (STARTING_Y - (enemy.getTexture().getHeight() / 4)) + (counter * (enemy.getTexture().getWidth() / 4));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight()));
                 break;
             case 6:
 //                pattern 6 diagonal leaning right + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
-                spawnPosition.y = (STARTING_Y - enemy.getTexture().getHeight()) + (counter * (enemy.getTexture().getWidth() / 4));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight())) - enemy.getTextureHeight();
                 break;
             case 7:
 //                pattern 7 diagonal leaning left + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
-                spawnPosition.y = ((STARTING_Y + (enemy.getTexture().getHeight() / 4)) * 2) - (counter * (enemy.getTexture().getWidth() / 4));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.y = (STARTING_Y + enemy.getTextureHeight() * 4) - (counter * (enemy.getTextureHeight()));
                 break;
             case 8:
 //                pattern 8 diagonal leaning left + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTexture().getWidth() / 4 ));
-                spawnPosition.y = (STARTING_Y + enemy.getTexture().getHeight() * 3) - (counter * (enemy.getTexture().getWidth() / 4));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.y = (STARTING_Y + enemy.getTextureHeight() * 3) - (counter * (enemy.getTextureHeight()));
                 break;
             default:
                 throw new IllegalArgumentException("No such pattern");
