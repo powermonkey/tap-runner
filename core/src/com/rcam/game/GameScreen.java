@@ -28,7 +28,7 @@ public class GameScreen implements Screen{
     final TapRunner game;
     final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
-    float spawnMarker = 500;
+    float spawnMarker = 100;
     float powerUpMarker = 350;
     float powerUpMarkerDistance = 350;
     Texture bg;
@@ -136,28 +136,28 @@ public class GameScreen implements Screen{
         //set enemy position
         if(runner.getPosition().x > spawnMarker ){
 
-            for(int i = 1; i <= 3; i++){
+            levelDetails = level.getLevelPattern(level.getPattern());
+            for(int i = 1; i <= levelDetails[1]; i++){
                 groundEnemies.add(new GroundEnemy(1));
                 flyingEnemies.add(new FlyingEnemy(1));
             }
 
-            levelDetails = level.getLevelPattern(level.getPattern());
             if(levelDetails[0] == 1) {
                 //only set position for new spawned ground enemies
-                for(int i = 1; i <= 3; i++){
+                for(int i = 1; i <= levelDetails[1]; i++){
                     newGroundEnemies.add(groundEnemies.pop());
                 }
                 positionEnemy(newGroundEnemies, levelDetails);
-                for(int i = 1; i <= 3; i++){
+                for(int i = 1; i <= levelDetails[1]; i++){
                     groundEnemies.add(newGroundEnemies.pop());
                 }
             }else {
                 //only set position for new spawned ground enemies
-                for(int i = 1; i <= 3; i++){
+                for(int i = 1; i <= levelDetails[1]; i++){
                     newFlyingEnemies.add(flyingEnemies.pop());
                 }
                 positionEnemy(newFlyingEnemies, levelDetails);
-                for(int i = 1; i <= 3; i++){
+                for(int i = 1; i <= levelDetails[1]; i++){
                     flyingEnemies.add(newFlyingEnemies.pop());
                 }
             }
@@ -190,7 +190,6 @@ public class GameScreen implements Screen{
                 newPowerUp.randomPowerUp();
                 spawnPowerUpPosition.x = powerUpMarker + newPowerUp.SPAWN_OFFSET_X + (ctr * 25); //not grouped
                 spawnPowerUpPosition.y = STARTING_Y + (yFluc > 32 ? yFluc : 0); //default y
-//                spawnPowerUpPosition.y = STARTING_Y + 100; //default y
                 newPowerUp.setPosition(spawnPowerUpPosition);
                 newPowerUp.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
                 newPowerUp.isSpawned = true;
@@ -257,7 +256,7 @@ public class GameScreen implements Screen{
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
                     enemy.update(delta);
-                    runner.checkCollision(enemy);
+                    enemy.checkCollision(runner);
                 } else {
                     enemy.isSpawned = false; //unrender enemy when off camera
                 }

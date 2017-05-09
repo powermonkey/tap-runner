@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Runner;
 
@@ -38,7 +39,7 @@ public class GameOverScreen implements Screen{
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
         arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
-        stage = new Stage();
+        stage = new Stage(new FitViewport(480, 800));
         table = new Table();
         table.setFillParent(true);
         distanceLabel = new Label("Distance:", arcadeSkin, "default");

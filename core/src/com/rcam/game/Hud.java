@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Runner;
 
 /**
@@ -31,7 +32,7 @@ public class Hud {
         table.setFillParent(true);
         cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
         arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
-        stage = new Stage();
+        stage = new Stage(new FitViewport(480, 800));
         meter = new Meter();
         distance = new Distance(runner);
         health = new Health(runner);
@@ -180,14 +181,17 @@ public class Hud {
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    if(runner.isOnGround)
+                    if(runner.isOnGround) {
                         runner.jump();
+                        runner.tempGround = runner.groundLevel;
+                    }
                     return true;
                 }
 
                 @Override
                 public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                     runner.isJumping = false;
+                    runner.tempGround = runner.groundLevel;
                 }
             });
         }

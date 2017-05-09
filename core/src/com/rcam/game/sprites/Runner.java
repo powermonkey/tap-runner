@@ -5,7 +5,6 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.rcam.game.sprites.enemies.Enemy;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
 import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
@@ -21,26 +20,30 @@ public class Runner {
     static final float SPEED_BUFFER = 600;
     static final float MAX_JUMP_HEIGHT = 400;
     static final int STARTING_HEALTH = 50;
-    float health;
+    static final float CONTACT_BOUNDS_OFFSET = 4;
+    public float health;
     long startingTime;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isOntopEnemy;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
-    float groundLevel;
-    private Rectangle bounds;
+    public float groundLevel, tempGround;
+    private Rectangle bounds, intersectionBounds;
     static Preferences prefs;
 
     public Runner(float x, float y){
         position = new Vector2(x, y);
         groundLevel = position.y;
+        tempGround = groundLevel;
         velocity = new Vector2(0, 0);
         speed = new Vector2(0, 0);
         runnerTexture = new Texture("bird.png");
         isMaintainHighSpeed = false;
         isOnGround = true;
         bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
+        intersectionBounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
         health = STARTING_HEALTH;
         startingTime = millis();
+        isOntopEnemy = false;
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -69,7 +72,7 @@ public class Runner {
         }
 
         //slow down runner
-        speed.add(FRICTION, 0);
+//        speed.add(FRICTION, 0);
 
        //make runner come back to the ground
         speed.add(0, GRAVITY);
@@ -104,11 +107,12 @@ public class Runner {
         }
 
         //make runner land on ground
-        if(position.y < groundLevel && !isDead){
-            position.y = groundLevel;
+        if(position.y < tempGround && !isDead){
+            position.y = tempGround;
             isOnGround = true;
             isJumping = false;
             speed.y = 0;
+//            isOntopEnemy = false;
         }else if(isDead){
             isOnGround = false;
         }
@@ -117,12 +121,13 @@ public class Runner {
             isMaintainHighSpeed = true;
         else
             isMaintainHighSpeed = false;
-//System.out.println(position.x);
+
         //reset value of velocity x and y
         velocity.x = 0;
         if(!isJumping)
             velocity.y = 0;
         bounds.setPosition(position.x, position.y);
+        intersectionBounds.setPosition(position.x, position.y - CONTACT_BOUNDS_OFFSET);
     }
 
     public Texture getTexture() {
@@ -160,52 +165,15 @@ public class Runner {
         return bounds;
     }
 
+    public Rectangle getIntersectionBounds(){
+        return intersectionBounds;
+    }
+
     public float getHealth() {
         return health;
     }
 
-    public void checkCollision(Enemy enemy){
-        if(enemy.getBounds().overlaps(getBounds()) ){
-            if(health > 0 && !enemy.touched){
-                health -= enemy.getDamage();
-                enemy.touched = true;
-                if(velocity.x  < 25)
-                    velocity.x = -25;
-                else if(velocity.x  < 50)
-                    velocity.x = -50;
-                else if(velocity.x  < 75)
-                    velocity.x = -75;
-                else if(velocity.x  < 100)
-                    velocity.x = -100;
-                else if(velocity.x  < 125)
-                    velocity.x = -125;
-                else if(velocity.x  < 150)
-                    velocity.x = -150;
-                else if(velocity.x  < 175)
-                    velocity.x = -175;
-                else if(velocity.x  < 200)
-                    velocity.x = -200;
-                else if(velocity.x  < 257)
-                    velocity.x = -257;
-                else if(velocity.x  < 314)
-                    velocity.x = -314;
-                else if(velocity.x  < 371)
-                    velocity.x = -371;
-                else if(velocity.x  < 428)
-                    velocity.x = -400;
-                else if(velocity.x  < 485)
-                    velocity.x = -400;
-                else if(velocity.x  < 542)
-                    velocity.x = -400;
-                else if(velocity.x  < 600)
-                    velocity.x = -400;
-            }else if (health <= 0){
-                isDead = true;
-            }
-        }else{
-            enemy.touched = false;
-        }
-    }
+
 
     public void checkPowerUpCollision(PowerUp powerUp){
         if(powerUp.getBounds().overlaps(getBounds()) ){

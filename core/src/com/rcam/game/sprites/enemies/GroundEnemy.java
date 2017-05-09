@@ -15,7 +15,7 @@ public class GroundEnemy extends Enemy{
         enemyTexture = new Texture(selectTexture(type));
         animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
         stateTime = 0f;
-        textureWidth = enemyTexture.getWidth() / 4;
+        textureWidth = enemyTexture.getWidth() / super.FRAME_COLS;
         textureHeight = enemyTexture.getHeight();
     }
 
