@@ -63,13 +63,7 @@ public class Runner {
     }
 
     public void update(float dt){
-        if(timeSinceMillis(startingTime) > 1000){
-            startingTime = millis();
-            health -= 1f;
-            if(health <= 0){
-                isDead = true;
-            }
-        }
+//        drainHealth();
 
         //slow down runner
 //        speed.add(FRICTION, 0);
@@ -130,6 +124,16 @@ public class Runner {
         intersectionBounds.setPosition(position.x, position.y - CONTACT_BOUNDS_OFFSET);
     }
 
+    private void drainHealth(){
+        if(timeSinceMillis(startingTime) > 1000){
+            startingTime = millis();
+            health -= 1f;
+            if(health <= 0){
+                isDead = true;
+            }
+        }
+    }
+
     public Texture getTexture() {
         return runnerTexture;
     }
@@ -188,10 +192,10 @@ public class Runner {
             if(!(health >= STARTING_HEALTH) && !powerUp.touched){
                 health += powerUp.getHeal();
                 powerUp.touched = true;
-                powerUp.isSpawned = false;
                 //TODO optional speed boost and double jump for power up
 //                velocity.x = 400; //activates speed boost and grants double jump for one use
             }
+            powerUp.isSpawned = false;
         }else{
             powerUp.touched = false;
         }
