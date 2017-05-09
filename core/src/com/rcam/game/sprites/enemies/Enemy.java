@@ -102,7 +102,17 @@ public class Enemy {
     }
 
     public void checkCollision(Runner runner) {
-        Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
+//        Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
+//////        System.out.println(Intersector.intersectRectangles(enemy.getBounds(), getIntersectionBounds(), interx)+ " " + Intersector.intersectRectangles(enemy.getBounds(), getBounds(), intersection));
+//////        System.out.println("intersection.y:" + intersection.y + " enemy.getBounds().y: " + enemy.getBounds().y + " getBounds().y: " + getBounds().y);
+////
+//        Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), interx);
+////        System.out.println("intersects: " + Intersector.intersectRectangles(enemy.getBounds(), getIntersectionBounds(), interx) + " interx.y: " + interx.y + " enemy.getBounds().y: " + enemy.getBounds().y + " getIntersectionBounds().y: "
+////                + getIntersectionBounds().y + " getBounds().y: " + getBounds().y);
+//        if (runner.isOntopEnemy && Float.compare(interx.y, getBounds().y) < 0) {
+//            runner.isOntopEnemy = false;
+//            runner.tempGround = runner.groundLevel;
+//        }
 
         if (getBounds().overlaps(runner.getBounds()) ) {
             if (Float.compare(intersection.y, getBounds().y) > 0) {
@@ -112,41 +122,41 @@ public class Enemy {
                 runner.isOnGround = true;
                 runner.isJumping = false;
                 speed.y = 0;
-//                isOntopEnemy = true;
+                runner.isOntopEnemy = true;
             } else {
                 if (runner.health > 0 && !touched) {
                     runner.health -= getDamage();
                     touched = true;
-                    if (velocity.x < 25)
-                        velocity.x = -25;
-                    else if (velocity.x < 50)
-                        velocity.x = -50;
-                    else if (velocity.x < 75)
-                        velocity.x = -75;
-                    else if (velocity.x < 100)
-                        velocity.x = -100;
-                    else if (velocity.x < 125)
-                        velocity.x = -125;
-                    else if (velocity.x < 150)
-                        velocity.x = -150;
-                    else if (velocity.x < 175)
-                        velocity.x = -175;
-                    else if (velocity.x < 200)
-                        velocity.x = -200;
-                    else if (velocity.x < 257)
-                        velocity.x = -257;
-                    else if (velocity.x < 314)
-                        velocity.x = -314;
-                    else if (velocity.x < 371)
-                        velocity.x = -371;
-                    else if (velocity.x < 428)
-                        velocity.x = -400;
-                    else if (velocity.x < 485)
-                        velocity.x = -400;
-                    else if (velocity.x < 542)
-                        velocity.x = -400;
-                    else if (velocity.x < 600)
-                        velocity.x = -400;
+                    if (runner.getVelocity().x < 25)
+                        runner.setVelocityX(-25);
+                    else if (runner.getVelocity().x < 50)
+                        runner.setVelocityX(-50);
+                    else if (runner.getVelocity().x < 75)
+                        runner.setVelocityX(-75);
+                    else if (runner.getVelocity().x < 100)
+                        runner.setVelocityX(-100);
+                    else if (runner.getVelocity().x < 125)
+                        runner.setVelocityX(-125);
+                    else if (runner.getVelocity().x < 150)
+                        runner.setVelocityX(-150);
+                    else if (runner.getVelocity().x < 175)
+                        runner.setVelocityX(-175);
+                    else if (runner.getVelocity().x < 200)
+                        runner.setVelocityX(-200);
+                    else if (runner.getVelocity().x < 257)
+                        runner.setVelocityX(-257);
+                    else if (runner.getVelocity().x < 314)
+                        runner.setVelocityX(-314);
+                    else if (runner.getVelocity().x < 371)
+                        runner.setVelocityX(-371);
+                    else if (runner.getVelocity().x < 428)
+                        runner.setVelocityX(-400);
+                    else if (runner.getVelocity().x < 485)
+                        runner.setVelocityX(-400);
+                    else if (runner.getVelocity().x < 542)
+                        runner.setVelocityX(-400);
+                    else if (runner.getVelocity().x < 600)
+                        runner.setVelocityX(-400);
                 } else if (runner.health <= 0) {
                     runner.isDead = true;
                 }

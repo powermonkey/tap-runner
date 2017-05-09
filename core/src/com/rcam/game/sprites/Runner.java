@@ -138,6 +138,14 @@ public class Runner {
         return position;
     }
 
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocityX(float x) {
+        velocity.x = x;
+    }
+
     public void run(){
         if(isMaintainHighSpeed)
             velocity.x = 200;
