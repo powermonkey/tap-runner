@@ -28,7 +28,7 @@ public class GameScreen implements Screen{
     final TapRunner game;
     final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
-    float spawnMarker = 100;
+    float spawnMarker = 50;
     float powerUpMarker = 350;
     float powerUpMarkerDistance = 350;
     Texture bg;

@@ -23,7 +23,7 @@ public class Runner {
     static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
     long startingTime;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isOntopEnemy;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     public float groundLevel, tempGround;
@@ -43,7 +43,6 @@ public class Runner {
         intersectionBounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
         health = STARTING_HEALTH;
         startingTime = millis();
-        isOntopEnemy = false;
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
