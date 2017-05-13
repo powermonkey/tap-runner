@@ -131,8 +131,8 @@ public class Hud {
 
         public Distance(final Runner runner){
             this.runr = runner;
-            indicator = new Label(Integer.toString(runner.indicatePosition()) + " m", getArcadeSkin(), "screen");
-            indicator.setFontScale(1.5f);
+            indicator = new Label(Integer.toString(runner.indicatePosition()) + " m", getArcadeSkin(), "default");
+//            indicator.setFontScale(1.5f);
         }
 
         public Label getIndicator(){

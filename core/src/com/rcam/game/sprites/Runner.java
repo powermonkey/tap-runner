@@ -70,7 +70,7 @@ public class Runner {
 
        //make runner come back to the ground
         speed.add(0, GRAVITY);
-        
+
        // make runner stop when reaching 0 speed
         if(speed.x < 0 ){
             speed.x = 0;
