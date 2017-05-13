@@ -17,7 +17,7 @@ public class Enemy {
     protected final static int FRAME_COLS = 4;
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_X = 300;
-    public final static float ON_TOP_OFFSET = 5;
+    public final static float ON_TOP_OFFSET = 25;
     public boolean touched, runnerOntop, contactFromBottom;
     float damage;
     public Vector2 position, velocity, speed;
@@ -43,7 +43,7 @@ public class Enemy {
     public void update(float dt){
         position.add(SPEED * dt, 0);
         bounds.setPosition(position.x, position.y);
-        onTopBounds.setPosition(position.x, position.y + 30);
+        onTopBounds.setPosition(position.x, position.y + ON_TOP_OFFSET);
     }
 
     public void createBounds(){
@@ -122,15 +122,15 @@ public class Enemy {
             runner.isJumping = true;
         }
 
-        if(Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersectionBounds)){
-            if(Float.compare((intersection.y + intersection.height), getBounds().y + getBounds().height) < 0) { //bottom
-                contactFromBottom = true;
-            }
-        }
+//        if(Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersectionBounds)){
+//            if(Float.compare((intersection.y + intersection.height), getBounds().y + getBounds().height) < 0) { //bottom
+//                contactFromBottom = true;
+//            }
+//        }
 
         if (getBounds().overlaps(runner.getBounds())) {
-            if(!contactFromBottom && runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0) { //top
-                System.out.println(intersectionOnTop.y + " " + intersection.y + " " + getOnTopBounds().y + " " + runner.getBounds().y + " " + runner.getIntersectionBounds().y);
+//            if(!contactFromBottom && runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0) { //top
+            if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0) { //top
                 runner.tempGround = getPosition().y + getTextureHeight();
                 runner.isOnGround = true;
                 runner.isJumping = false;

@@ -66,7 +66,7 @@ public class Runner {
         drainHealth();
 
         //slow down runner
-        speed.add(FRICTION, 0);
+//        speed.add(FRICTION, 0);
 
        //make runner come back to the ground
         speed.add(0, GRAVITY);
@@ -87,7 +87,6 @@ public class Runner {
         if(!isJumping) {
             velocity.y = 0;
         }
-
         if (speed.y < -15) {
             isFalling = true;
         }
@@ -96,7 +95,6 @@ public class Runner {
         if(speed.y > MAX_HEIGHT){
             speed.y = MAX_HEIGHT;
             isJumping = false;
-            isFalling = true;
         }
 
         if(!isMaintainHighSpeed) {
@@ -169,7 +167,7 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 55;
+        velocity.y = 50;
         isJumping = true;
         isOnGround = false;
         isFalling = false;

@@ -17,7 +17,6 @@ public class PowerUp {
     Texture texture;
     float heal;
     public final static float SPAWN_OFFSET_X = 300;
-    public final static int Y_FLUCTUATION = 120;
     public final static int RANDOM_POWERUP = 5;
     public boolean touched;
     public boolean isSpawned;
