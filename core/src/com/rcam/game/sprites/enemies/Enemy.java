@@ -18,7 +18,7 @@ public class Enemy {
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_X = 300;
     public final static float ON_TOP_OFFSET = 25;
-    public boolean touched, runnerOntop, contactFromBottom;
+    public boolean touched, runnerOntop;
     float damage;
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
@@ -37,7 +37,6 @@ public class Enemy {
         intersectionBounds = new Rectangle();
         intersectionOnTop = new Rectangle();
         runnerOntop = false;
-        contactFromBottom = false;
     }
 
     public void update(float dt){
@@ -47,11 +46,11 @@ public class Enemy {
     }
 
     public void createBounds(){
-        bounds = new Rectangle(getPosition().x, getPosition().y, textureWidth, textureHeight);
+        bounds = new Rectangle(position.x, position.y, textureWidth, textureHeight);
     }
 
     public void createOnTopBounds(){
-        onTopBounds = new Rectangle(getPosition().x, getPosition().y + ON_TOP_OFFSET, textureWidth, textureHeight);
+        onTopBounds = new Rectangle(position.x, position.y + ON_TOP_OFFSET, textureWidth, textureHeight);
     }
 
     public void setPosition(Vector2 position){
@@ -122,55 +121,47 @@ public class Enemy {
             runner.isJumping = true;
         }
 
-//        if(Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersectionBounds)){
-//            if(Float.compare((intersection.y + intersection.height), getBounds().y + getBounds().height) < 0) { //bottom
-//                contactFromBottom = true;
-//            }
-//        }
-
         if (getBounds().overlaps(runner.getBounds())) {
-//            if(!contactFromBottom && runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0) { //top
             if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0) { //top
                 runner.tempGround = getPosition().y + getTextureHeight();
                 runner.isOnGround = true;
                 runner.isJumping = false;
                 speed.y = 0;
                 runnerOntop = true;
-//                contactFromBottom = false;
             }else{
-                if (runner.health > 0 && !touched) {
-                    runner.health -= getDamage();
-                    touched = true;
-                    if (runner.getVelocity().x < 25)
-                        runner.setVelocityX(-25);
-                    else if (runner.getVelocity().x < 50)
-                        runner.setVelocityX(-50);
-                    else if (runner.getVelocity().x < 75)
-                        runner.setVelocityX(-75);
-                    else if (runner.getVelocity().x < 100)
-                        runner.setVelocityX(-100);
-                    else if (runner.getVelocity().x < 125)
-                        runner.setVelocityX(-125);
-                    else if (runner.getVelocity().x < 150)
-                        runner.setVelocityX(-150);
-                    else if (runner.getVelocity().x < 175)
-                        runner.setVelocityX(-175);
-                    else if (runner.getVelocity().x < 200)
-                        runner.setVelocityX(-200);
-                    else if (runner.getVelocity().x < 257)
-                        runner.setVelocityX(-257);
-                    else if (runner.getVelocity().x < 314)
-                        runner.setVelocityX(-314);
-                    else if (runner.getVelocity().x < 371)
-                        runner.setVelocityX(-371);
-                    else if (runner.getVelocity().x < 428)
-                        runner.setVelocityX(-400);
-                    else if (runner.getVelocity().x < 485)
-                        runner.setVelocityX(-400);
-                    else if (runner.getVelocity().x < 542)
-                        runner.setVelocityX(-400);
-                    else if (runner.getVelocity().x < 600)
-                        runner.setVelocityX(-400);
+                if (runner.health > 0 && !touched && Float.compare((intersectionOnTop.y + intersectionOnTop.height), runner.getBounds().y + runner.getBounds().height) < 0) {
+                        runner.health -= getDamage();
+                        touched = true;
+                        if (runner.getVelocity().x < 25)
+                            runner.setVelocityX(-25);
+                        else if (runner.getVelocity().x < 50)
+                            runner.setVelocityX(-50);
+                        else if (runner.getVelocity().x < 75)
+                            runner.setVelocityX(-75);
+                        else if (runner.getVelocity().x < 100)
+                            runner.setVelocityX(-100);
+                        else if (runner.getVelocity().x < 125)
+                            runner.setVelocityX(-125);
+                        else if (runner.getVelocity().x < 150)
+                            runner.setVelocityX(-150);
+                        else if (runner.getVelocity().x < 175)
+                            runner.setVelocityX(-175);
+                        else if (runner.getVelocity().x < 200)
+                            runner.setVelocityX(-200);
+                        else if (runner.getVelocity().x < 257)
+                            runner.setVelocityX(-257);
+                        else if (runner.getVelocity().x < 314)
+                            runner.setVelocityX(-314);
+                        else if (runner.getVelocity().x < 371)
+                            runner.setVelocityX(-371);
+                        else if (runner.getVelocity().x < 428)
+                            runner.setVelocityX(-400);
+                        else if (runner.getVelocity().x < 485)
+                            runner.setVelocityX(-400);
+                        else if (runner.getVelocity().x < 542)
+                            runner.setVelocityX(-400);
+                        else if (runner.getVelocity().x < 600)
+                            runner.setVelocityX(-400);
                 } else if (runner.health <= 0) {
                     runner.isDead = true;
                 }

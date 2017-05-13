@@ -37,7 +37,6 @@ public class PowerUp {
     }
 
     public void setPosition(Vector2 position, float delta){
-//        position.mulAdd(position, delta);
         this.position = position;
     }
 

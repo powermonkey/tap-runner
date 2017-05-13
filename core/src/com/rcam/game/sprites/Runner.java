@@ -70,7 +70,7 @@ public class Runner {
 
        //make runner come back to the ground
         speed.add(0, GRAVITY);
-
+        
        // make runner stop when reaching 0 speed
         if(speed.x < 0 ){
             speed.x = 0;
@@ -115,7 +115,6 @@ public class Runner {
             isJumping = false;
             isFalling = false;
             speed.y = 0;
-//            isOntopEnemy = false;
         }else if(isDead){
             isOnGround = false;
         }
@@ -194,8 +193,6 @@ public class Runner {
     public float getHealth() {
         return health;
     }
-
-
 
     public void checkPowerUpCollision(PowerUp powerUp){
         if(powerUp.getBounds().overlaps(getBounds()) ){
