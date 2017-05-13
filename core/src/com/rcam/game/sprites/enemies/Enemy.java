@@ -115,10 +115,14 @@ public class Enemy {
 
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
         if (runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
-            runnerOntop = false;
-            runner.tempGround = runner.groundLevel;
-            runner.isOnGround = false;
-            runner.isJumping = true;
+            if(!runner.isOnTopEnemy){
+                runner.isOnTopEnemy = false;
+            }else{
+                runnerOntop = false;
+                runner.tempGround = runner.groundLevel;
+                runner.isOnGround = false;
+                runner.isJumping = true;
+            }
         }
 
         if (getBounds().overlaps(runner.getBounds())) {
@@ -126,42 +130,43 @@ public class Enemy {
                 runner.tempGround = getPosition().y + getTextureHeight();
                 runner.isOnGround = true;
                 runner.isJumping = false;
+                runner.isOnTopEnemy = true;
                 speed.y = 0;
                 runnerOntop = true;
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionOnTop.y + intersectionOnTop.height), runner.getBounds().y + runner.getBounds().height) < 0) {
                         runner.health -= getDamage();
                         touched = true;
-                        if (runner.getVelocity().x < 25)
-                            runner.setVelocityX(-25);
-                        else if (runner.getVelocity().x < 50)
-                            runner.setVelocityX(-50);
-                        else if (runner.getVelocity().x < 75)
-                            runner.setVelocityX(-75);
-                        else if (runner.getVelocity().x < 100)
-                            runner.setVelocityX(-100);
-                        else if (runner.getVelocity().x < 125)
-                            runner.setVelocityX(-125);
-                        else if (runner.getVelocity().x < 150)
-                            runner.setVelocityX(-150);
-                        else if (runner.getVelocity().x < 175)
-                            runner.setVelocityX(-175);
-                        else if (runner.getVelocity().x < 200)
-                            runner.setVelocityX(-200);
-                        else if (runner.getVelocity().x < 257)
-                            runner.setVelocityX(-257);
-                        else if (runner.getVelocity().x < 314)
-                            runner.setVelocityX(-314);
-                        else if (runner.getVelocity().x < 371)
-                            runner.setVelocityX(-371);
-                        else if (runner.getVelocity().x < 428)
-                            runner.setVelocityX(-400);
-                        else if (runner.getVelocity().x < 485)
-                            runner.setVelocityX(-400);
-                        else if (runner.getVelocity().x < 542)
-                            runner.setVelocityX(-400);
-                        else if (runner.getVelocity().x < 600)
-                            runner.setVelocityX(-400);
+//                        if (runner.getVelocity().x < 25)
+//                            runner.setVelocityX(-25);
+//                        else if (runner.getVelocity().x < 50)
+//                            runner.setVelocityX(-50);
+//                        else if (runner.getVelocity().x < 75)
+//                            runner.setVelocityX(-75);
+//                        else if (runner.getVelocity().x < 100)
+//                            runner.setVelocityX(-100);
+//                        else if (runner.getVelocity().x < 125)
+//                            runner.setVelocityX(-125);
+//                        else if (runner.getVelocity().x < 150)
+//                            runner.setVelocityX(-150);
+//                        else if (runner.getVelocity().x < 175)
+//                            runner.setVelocityX(-175);
+//                        else if (runner.getVelocity().x < 200)
+//                            runner.setVelocityX(-200);
+//                        else if (runner.getVelocity().x < 257)
+//                            runner.setVelocityX(-257);
+//                        else if (runner.getVelocity().x < 314)
+//                            runner.setVelocityX(-314);
+//                        else if (runner.getVelocity().x < 371)
+//                            runner.setVelocityX(-371);
+//                        else if (runner.getVelocity().x < 428)
+//                            runner.setVelocityX(-400);
+//                        else if (runner.getVelocity().x < 485)
+//                            runner.setVelocityX(-400);
+//                        else if (runner.getVelocity().x < 542)
+//                            runner.setVelocityX(-400);
+//                        else if (runner.getVelocity().x < 600)
+//                            runner.setVelocityX(-400);
                 } else if (runner.health <= 0) {
                     runner.isDead = true;
                 }

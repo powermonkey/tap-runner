@@ -23,7 +23,7 @@ public class Runner {
     public static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
     long startingTime;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     public float groundLevel, tempGround;
@@ -40,6 +40,7 @@ public class Runner {
         isMaintainHighSpeed = false;
         isOnGround = true;
         isFalling = false;
+        isOnTopEnemy = false;
         bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
         intersectionBounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
         health = STARTING_HEALTH;
