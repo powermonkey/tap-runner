@@ -37,7 +37,8 @@ public class PowerUp {
         rand = new Random();
     }
 
-    public void setPosition(Vector2 position){
+    public void setPosition(Vector2 position, float delta){
+//        position.mulAdd(position, delta);
         this.position = position;
     }
 

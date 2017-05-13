@@ -18,12 +18,12 @@ public class Runner {
     static final float GRAVITY = -15;
     static final float HIGH_SPEED = 200;
     static final float SPEED_BUFFER = 600;
-    static final float MAX_JUMP_HEIGHT = 400;
+    static final float MAX_HEIGHT = 400;
     static final int STARTING_HEALTH = 50;
-    static final float CONTACT_BOUNDS_OFFSET = 4;
+    public static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
     long startingTime;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     public float groundLevel, tempGround;
@@ -39,6 +39,7 @@ public class Runner {
         runnerTexture = new Texture("bird.png");
         isMaintainHighSpeed = false;
         isOnGround = true;
+        isFalling = false;
         bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
         intersectionBounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
         health = STARTING_HEALTH;
@@ -62,10 +63,10 @@ public class Runner {
     }
 
     public void update(float dt){
-//        drainHealth();
+        drainHealth();
 
         //slow down runner
-//        speed.add(FRICTION, 0);
+        speed.add(FRICTION, 0);
 
        //make runner come back to the ground
         speed.add(0, GRAVITY);
@@ -82,10 +83,20 @@ public class Runner {
         //maintain high speed
         speed.add(velocity.x, velocity.y);
 
+        //determine falling state
+        if(!isJumping) {
+            velocity.y = 0;
+        }
+
+        if (speed.y < -15) {
+            isFalling = true;
+        }
+
         //limit jump height
-        if(speed.y > MAX_JUMP_HEIGHT){
-            speed.y = MAX_JUMP_HEIGHT;
+        if(speed.y > MAX_HEIGHT){
+            speed.y = MAX_HEIGHT;
             isJumping = false;
+            isFalling = true;
         }
 
         if(!isMaintainHighSpeed) {
@@ -104,6 +115,7 @@ public class Runner {
             position.y = tempGround;
             isOnGround = true;
             isJumping = false;
+            isFalling = false;
             speed.y = 0;
 //            isOntopEnemy = false;
         }else if(isDead){
@@ -157,9 +169,10 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 60;
+        velocity.y = 55;
         isJumping = true;
         isOnGround = false;
+        isFalling = false;
     }
 
     public void death(){

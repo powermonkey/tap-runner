@@ -50,6 +50,7 @@ public class GameScreen implements Screen{
         bg = new Texture("bg.png");
         runner = new Runner(STARTING_X, STARTING_Y);
         cam = new OrthographicCamera();
+        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         grnd = new Ground(cam.position.x - (cam.viewportWidth / 2));
         grounds = new Array<Ground>();
         groundEnemies = new Array<GroundEnemy>();
@@ -61,7 +62,7 @@ public class GameScreen implements Screen{
         enemy = new Enemy();
         rand = new Random();
         level = new Level();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+
 
         grounds.add(new Ground(0));
         grounds.add(new Ground(grnd.getTexture().getWidth()));
@@ -85,11 +86,7 @@ public class GameScreen implements Screen{
         game.batch.begin();
         game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
 
-        //set ground position
-        for(Ground ground: grounds){
-            if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() )
-                ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
-        }
+
 
         spawnPowerUp(delta);
 
@@ -99,6 +96,12 @@ public class GameScreen implements Screen{
         //render ground
         for(Ground ground : grounds){
             game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
+        }
+
+        //set ground position
+        for(Ground ground: grounds){
+            if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() )
+                ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
         }
 
         //render runner
@@ -190,7 +193,7 @@ public class GameScreen implements Screen{
                 newPowerUp.randomPowerUp();
                 spawnPowerUpPosition.x = powerUpMarker + newPowerUp.SPAWN_OFFSET_X + (ctr * 25); //not grouped
                 spawnPowerUpPosition.y = STARTING_Y + (yFluc > 32 ? yFluc : 0); //default y
-                newPowerUp.setPosition(spawnPowerUpPosition);
+                newPowerUp.setPosition(spawnPowerUpPosition, delta);
                 newPowerUp.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
                 newPowerUp.isSpawned = true;
                 ctr += 1;
@@ -212,7 +215,6 @@ public class GameScreen implements Screen{
         }
 
         //render power up
-        int count = 1;
         for(PowerUp powerUp : powerUps){
             if(powerUp.isSpawned) {
                 if (!(cam.position.x - (cam.viewportWidth / 2) > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth())) {
@@ -238,6 +240,7 @@ public class GameScreen implements Screen{
             }
             enemy.setPosition(spawnPosition);
             enemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
+            enemy.createOnTopBounds();
             enemy.isSpawned = true;
             if(counter == spawnCount)
                 break;
