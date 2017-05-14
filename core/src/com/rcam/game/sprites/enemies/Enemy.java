@@ -23,7 +23,6 @@ public class Enemy {
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
     Texture enemyTexture;
-    TextureRegion enemyTextureRegion;
     public float textureHeight, textureWidth;
 
     public boolean isSpawned, isBridge;
@@ -85,10 +84,6 @@ public class Enemy {
 
     public Texture getTexture() {
         return enemyTexture;
-    }
-
-    public TextureRegion getTextureRegion() {
-        return enemyTextureRegion;
     }
 
     public float getTextureHeight() {

@@ -26,8 +26,6 @@ public class GroundEnemy extends Enemy{
         enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;
         textureHeight = enemyTexture.getHeight();
-        enemyTextureRegion = new TextureRegion(enemyTexture);
-        enemyTextureRegion.setRegion(0, 0, textureWidth, textureHeight);
         animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
         stateTime = 0f;
     }

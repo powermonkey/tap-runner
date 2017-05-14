@@ -26,7 +26,6 @@ public class FlyingEnemy extends Enemy{
         enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;
         textureHeight = enemyTexture.getHeight();
-        enemyTextureRegion = new TextureRegion(enemyTexture, (int)textureWidth, (int)textureHeight);
         animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
         stateTime = 0f;
     }
