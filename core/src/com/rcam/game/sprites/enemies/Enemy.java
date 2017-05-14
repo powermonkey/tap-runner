@@ -23,9 +23,10 @@ public class Enemy {
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
     Texture enemyTexture;
+    TextureRegion enemyTextureRegion;
     public float textureHeight, textureWidth;
 
-    public boolean isSpawned;
+    public boolean isSpawned, isBridge;
     public Animation<TextureRegion> animation;
     public float stateTime;
 
@@ -37,6 +38,7 @@ public class Enemy {
         intersectionBounds = new Rectangle();
         intersectionOnTop = new Rectangle();
         runnerOntop = false;
+        isBridge = false;
     }
 
     public void update(float dt){
@@ -85,6 +87,10 @@ public class Enemy {
         return enemyTexture;
     }
 
+    public TextureRegion getTextureRegion() {
+        return enemyTextureRegion;
+    }
+
     public float getTextureHeight() {
         return textureHeight;
     }
@@ -93,10 +99,10 @@ public class Enemy {
         return textureWidth;
     }
 
-    public TextureRegion[] createFrames(Texture groundEnemyTexture){
-        TextureRegion[][] tmp = TextureRegion.split(groundEnemyTexture,
-                groundEnemyTexture.getWidth() / FRAME_COLS,
-                groundEnemyTexture.getHeight() / FRAME_ROWS);
+    public TextureRegion[] createFrames(Texture enemy){
+        TextureRegion[][] tmp = TextureRegion.split(enemy,
+                enemy.getWidth() / FRAME_COLS,
+                enemy.getHeight() / FRAME_ROWS);
 
         TextureRegion[] frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
@@ -114,19 +120,21 @@ public class Enemy {
         Intersector.intersectRectangles(getOnTopBounds(), runner.getBounds(), intersectionOnTop);
 
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
-        if (runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
-            if(!runner.isOnTopEnemy){
-                runner.isOnTopEnemy = false;
-            }else{
+        if (runner.isOnTopEnemy && runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
+
+//            if(!runner.isOnTopEnemy){ // so runner take no damage when running on a group of enemies(falls after one enemy then take damage)
+////                runner.isOnTopEnemy = false;
+//            }else{ // so runner falls to ground after running on top of enemy
                 runnerOntop = false;
                 runner.tempGround = runner.groundLevel;
                 runner.isOnGround = false;
                 runner.isJumping = true;
-            }
+                runner.isOnTopEnemy = false;
+//            }
         }
 
         if (getBounds().overlaps(runner.getBounds())) {
-            if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0) { //top
+            if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0) { // runner stays on top of enemies
                 runner.tempGround = getPosition().y + getTextureHeight();
                 runner.isOnGround = true;
                 runner.isJumping = false;

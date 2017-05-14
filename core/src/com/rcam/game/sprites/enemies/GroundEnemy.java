@@ -19,6 +19,19 @@ public class GroundEnemy extends Enemy{
         textureHeight = enemyTexture.getHeight();
     }
 
+    public GroundEnemy(int type, int spawnCount, int pattern){
+        super();
+        damage = 2;
+        enemyTexture = new Texture(selectTexture(type));
+        enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;
+        textureHeight = enemyTexture.getHeight();
+        enemyTextureRegion = new TextureRegion(enemyTexture);
+        enemyTextureRegion.setRegion(0, 0, textureWidth, textureHeight);
+        animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
+        stateTime = 0f;
+    }
+
     private String selectTexture(int type){
         String textureString;
 

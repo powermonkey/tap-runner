@@ -19,12 +19,25 @@ public class FlyingEnemy extends Enemy{
         textureHeight = enemyTexture.getHeight();
     }
 
+    public FlyingEnemy(int type, int spawnCount, int pattern){
+        super();
+        damage = 3;
+        enemyTexture = new Texture(selectTexture(type));
+        enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;
+        textureHeight = enemyTexture.getHeight();
+        enemyTextureRegion = new TextureRegion(enemyTexture, (int)textureWidth, (int)textureHeight);
+        animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
+        stateTime = 0f;
+    }
+
     private String selectTexture(int type){
         String textureString;
 
         switch(type){
             case 1:
                 textureString = "Flyball_32x32_purple_flyV2_L.png";
+//                textureString = "Turtle_32x32_green_stand_L.png";
                 break;
             case 2:
                 textureString = "Flyball_32x32_red_flyV2_L.png";

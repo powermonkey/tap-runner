@@ -135,32 +135,49 @@ public class GameScreen implements Screen{
 
     private void spawnEnemy(float delta){
         int[] levelDetails;
+        int type, spawnCount, pattern;
+        levelDetails = level.getLevelPattern(level.getPattern());
 
         //set enemy position
         if(runner.getPosition().x > spawnMarker ){
 
-            levelDetails = level.getLevelPattern(level.getPattern());
-            for(int i = 1; i <= levelDetails[1]; i++){
-                groundEnemies.add(new GroundEnemy(1));
-                flyingEnemies.add(new FlyingEnemy(1));
+            type = levelDetails[0];
+            spawnCount = levelDetails[1];
+            pattern = levelDetails[2];
+
+            if(spawnCount > 1 && pattern < 3){ // enemy bridge
+                if(type == 1){
+                    groundEnemies.add(new GroundEnemy(1, levelDetails[1], pattern));
+                }else{
+                    flyingEnemies.add(new FlyingEnemy(1, levelDetails[1], pattern));
+                }
+                spawnCount = 1;
+            }else{
+                for(int i = 1; i <= spawnCount; i++){
+                    if(type == 1){
+                        groundEnemies.add(new GroundEnemy(1));
+                    }else{
+                        flyingEnemies.add(new FlyingEnemy(1));
+                    }
+                }
             }
 
-            if(levelDetails[0] == 1) {
+            if(type == 1) {
                 //only set position for new spawned ground enemies
-                for(int i = 1; i <= levelDetails[1]; i++){
+                for(int i = 1; i <= spawnCount; i++){
                     newGroundEnemies.add(groundEnemies.pop());
                 }
                 positionEnemy(newGroundEnemies, levelDetails);
-                for(int i = 1; i <= levelDetails[1]; i++){
+                for(int i = 1; i <= spawnCount; i++){
                     groundEnemies.add(newGroundEnemies.pop());
                 }
             }else {
                 //only set position for new spawned ground enemies
-                for(int i = 1; i <= levelDetails[1]; i++){
+                for(int i = 1; i <= spawnCount; i++){
                     newFlyingEnemies.add(flyingEnemies.pop());
                 }
                 positionEnemy(newFlyingEnemies, levelDetails);
-                for(int i = 1; i <= levelDetails[1]; i++){
+                for(int i = 1; i <= spawnCount; i++){
                     flyingEnemies.add(newFlyingEnemies.pop());
                 }
             }
@@ -238,6 +255,11 @@ public class GameScreen implements Screen{
             }else if(enemy instanceof FlyingEnemy){
                 spawnPosition = flyingEnemySpawnPosition(counter, enemy, levelDetails);
             }
+            if(levelDetails[1] > 1 && levelDetails[2] < 3){
+                enemy.isBridge = true;
+            }else{
+                enemy.isBridge = false;
+            }
             enemy.setPosition(spawnPosition);
             enemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
             enemy.createOnTopBounds();
@@ -252,12 +274,18 @@ public class GameScreen implements Screen{
     }
 
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
-        for(Enemy enemy : enemies) {
+        for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
-                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTexture().getWidth())) {
+                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth())) {
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
-                    game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
+                    if(enemy.isBridge) {
+                        game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
+                        game.batch.draw(currentFrame, enemy.getPosition().x + 32, enemy.getPosition().y);
+                        game.batch.draw(currentFrame, enemy.getPosition().x + 64, enemy.getPosition().y);
+                    }else {
+                        game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
+                    }
                     enemy.update(delta);
                     enemy.checkCollision(runner);
                 } else {
