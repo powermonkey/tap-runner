@@ -16,7 +16,7 @@ public class Enemy {
     final static float SPEED = -50;
     protected final static int FRAME_COLS = 4;
     protected final static int FRAME_ROWS = 1;
-    public final static float SPAWN_OFFSET_X = 300;
+    public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
     public final static float ON_TOP_OFFSET = 25;
     public boolean touched, runnerOntop;
     float damage;

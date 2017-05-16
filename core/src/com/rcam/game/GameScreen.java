@@ -31,6 +31,7 @@ public class GameScreen implements Screen{
     float spawnMarker = 50;
     float powerUpMarker = 350;
     float powerUpMarkerDistance = 350;
+
     Texture bg;
     OrthographicCamera cam;
     Runner runner;
@@ -135,7 +136,7 @@ public class GameScreen implements Screen{
 
     private void spawnEnemy(float delta){
         int[] levelDetails;
-        int type, spawnCount, pattern;
+        int type, spawnCount, pattern, monsterType;
         levelDetails = level.getLevelPattern(level.getPattern());
 
         //set enemy position
@@ -144,20 +145,21 @@ public class GameScreen implements Screen{
             type = levelDetails[0];
             spawnCount = levelDetails[1];
             pattern = levelDetails[2];
+            monsterType = levelDetails[3];
 
             if(spawnCount > 1 && pattern < 3){ // enemy bridge
                 if(type == 1){
-                    groundEnemies.add(new GroundEnemy(1, levelDetails[1], pattern));
+                    groundEnemies.add(new GroundEnemy(monsterType, levelDetails[1], pattern));
                 }else{
-                    flyingEnemies.add(new FlyingEnemy(1, levelDetails[1], pattern));
+                    flyingEnemies.add(new FlyingEnemy(monsterType, levelDetails[1], pattern));
                 }
                 spawnCount = 1;
             }else{
                 for(int i = 1; i <= spawnCount; i++){
                     if(type == 1){
-                        groundEnemies.add(new GroundEnemy(1));
+                        groundEnemies.add(new GroundEnemy(monsterType));
                     }else{
-                        flyingEnemies.add(new FlyingEnemy(1));
+                        flyingEnemies.add(new FlyingEnemy(monsterType));
                     }
                 }
             }
@@ -245,7 +247,7 @@ public class GameScreen implements Screen{
     }
 
     private void positionEnemy(Array<? extends Enemy> enemies, int[] levelDetails){
-        boolean vertical = false;
+        boolean enemyBridge = false;
         int counter = 1;
         int spawnCount = levelDetails[1];
         for(Enemy enemy : enemies){
@@ -257,9 +259,11 @@ public class GameScreen implements Screen{
             }
             if(levelDetails[1] > 1 && levelDetails[2] < 3){
                 enemy.isBridge = true;
+                enemyBridge = true;
             }else{
                 enemy.isBridge = false;
             }
+
             enemy.setPosition(spawnPosition);
             enemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
             enemy.createOnTopBounds();
@@ -268,9 +272,8 @@ public class GameScreen implements Screen{
                 break;
             counter = counter + 1;
         }
-        if(levelDetails[2] == 3 || levelDetails[2] == 4)
-             vertical = true;
-        spawnMarkerDistance(levelDetails[1], vertical);
+
+        spawnMarkerDistance(levelDetails[1], enemyBridge);
     }
 
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
@@ -301,11 +304,11 @@ public class GameScreen implements Screen{
 
         switch(levelDetails[2]){
             case 1:
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth() + enemy.getTextureWidth())); //not grouped
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth() + enemy.getTextureWidth())); //not grouped horizontal
                 spawnPosition.y = STARTING_Y; //default y
                 break;
             case 2:
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth())); //grouped
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth())); //grouped horizontal
                 spawnPosition.y = STARTING_Y; //default y
                 break;
             default:
@@ -321,42 +324,42 @@ public class GameScreen implements Screen{
         switch(levelDetails[2]){
             case 1:
 //                pattern 1 horizontal + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
                 spawnPosition.y = STARTING_Y + (enemy.getTextureHeight()) ;
                 break;
             case 2:
 //                pattern 2 horizontal + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
                 spawnPosition.y = STARTING_Y;
                 break;
             case 3:
 //                pattern 3 vertical + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X;
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (3 * (enemy.getTextureWidth()));
                 spawnPosition.y = STARTING_Y + counter * (enemy.getTextureHeight());
                 break;
             case 4:
 //                pattern 4 vertical + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X;
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (3 * (enemy.getTextureWidth()));
                 spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight())) - enemy.getTextureWidth();
                 break;
             case 5:
 //                pattern 5 diagonal leaning right + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
                 spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight()));
                 break;
             case 6:
 //                pattern 6 diagonal leaning right + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
                 spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight())) - enemy.getTextureHeight();
                 break;
             case 7:
 //                pattern 7 diagonal leaning left + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
                 spawnPosition.y = (STARTING_Y + enemy.getTextureHeight() * 4) - (counter * (enemy.getTextureHeight()));
                 break;
             case 8:
 //                pattern 8 diagonal leaning left + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
                 spawnPosition.y = (STARTING_Y + enemy.getTextureHeight() * 3) - (counter * (enemy.getTextureHeight()));
                 break;
             default:
@@ -366,13 +369,13 @@ public class GameScreen implements Screen{
         return spawnPosition;
     }
 
-    private float spawnMarkerDistance(int spawnCount, boolean vertical){
-        if(vertical){
-            spawnMarker += 180;
+    private float spawnMarkerDistance(int spawnCount, boolean enemyBridge){
+        if(enemyBridge){
+            spawnMarker += (150 + 96);
         }else if(spawnCount > 1) {
-            spawnMarker += 250;
+            spawnMarker += (200);
         }else {
-            spawnMarker += 160;
+            spawnMarker += 120;
         }
 
         return spawnMarker;

@@ -7,7 +7,7 @@ package com.rcam.game;
 public class Level {
     static int pattern;
     static int levelKey;
-    public int[][] currentLevel; //ground/flying, spawn count, pattern
+    public int[][] currentLevel; //ground/flying, spawn count, pattern, monster type
     public int[][] levelOne; //intro patterns
     public int[][] levelTwo; //combo patterns
     public int[][] levelThree; //no formation pattern (spawnMarker was into spawn position)
@@ -16,25 +16,25 @@ public class Level {
         pattern = 0; //set first pattern for level
         levelKey = 1; //set first level
         levelOne = new int[][]{
-                {1,1,2},{1,3,2},{2,1,1},
-                {2,1,2},{2,3,1},{2,3,2},
-                {2,3,3},{2,3,4},
-                {2,3,5},{2,3,6},
-                {2,3,7},{2,3,8}
+                {1,1,2,1, },{1,3,2,1},{2,1,1,1},
+                {2,1,2,1},{2,3,1,1},{2,3,2,1},
+                {2,3,3,1},{2,3,4,1},
+                {2,3,5,1},{2,3,6,1},
+                {2,3,7,1},{2,3,8,1}
         }; //start with level 1 (intro patterns)
         levelTwo = new int[][]{
-                {1,1,2},{2,1,1},{1,1,2},
-                {2,1,1},{1,1,2},{2,1,1},
-                {1,3,2},{2,3,3},{1,3,2},
-                {2,3,3},{1,3,2},{2,3,3},
-                {1,3,2},{2,1,1},{1,3,2},
-                {1,1,2},{2,3,3},{1,1,2},
-                {2,3,3},{2,3,4},{2,3,3},
-                {2,3,4},{2,3,3},{2,3,4},
-                {2,3,5},{2,3,8},{2,3,5},
-                {2,3,8},{2,3,5},{2,3,8},
-                {2,3,6},{2,3,7},{2,3,6},
-                {2,3,7},{2,3,6},{2,3,7}
+                {1,1,2,2},{2,1,1,2},{1,1,2,2},
+                {2,1,1,2},{1,1,2,2},{2,1,1,2},
+                {1,3,2,2},{2,3,3,2},{1,3,2,2},
+                {2,3,3,2},{1,3,2,2},{2,3,3,2},
+                {1,3,2,2},{2,1,1,2},{1,3,2,2},
+                {1,1,2,2},{2,3,3,2},{1,1,2,2},
+                {2,3,3,2},{2,3,4,2},{2,3,3,2},
+                {2,3,4,2},{2,3,3,2},{2,3,4,2},
+                {2,3,5,2},{2,3,8,2},{2,3,5,2},
+                {2,3,8,2},{2,3,5,2},{2,3,8,2},
+                {2,3,6,2},{2,3,7,2},{2,3,6,2},
+                {2,3,7,2},{2,3,6,2},{2,3,7,2}
         };
         currentLevel = levelOne;
     }
@@ -47,8 +47,8 @@ public class Level {
                 levelKey = 2;
             }else if(levelKey == 2){
 //                currentLevel = levelThree;
-                currentLevel = levelOne;
 //                levelKey = 3;
+                currentLevel = levelOne;
                 levelKey = 1;
             }else{
                 currentLevel = levelOne;

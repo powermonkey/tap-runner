@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class GroundEnemy extends Enemy{
     public GroundEnemy(int type){
         super();
-        damage = 2;
+        damage = 6;
         enemyTexture = new Texture(selectTexture(type));
         animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
         stateTime = 0f;
@@ -19,9 +19,9 @@ public class GroundEnemy extends Enemy{
         textureHeight = enemyTexture.getHeight();
     }
 
-    public GroundEnemy(int type, int spawnCount, int pattern){
+    public GroundEnemy(int type, int spawnCount, int pattern){ // enemy bridge
         super();
-        damage = 2;
+        damage = 12;
         enemyTexture = new Texture(selectTexture(type));
         enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;

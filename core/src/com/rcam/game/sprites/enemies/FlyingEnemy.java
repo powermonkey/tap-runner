@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class FlyingEnemy extends Enemy{
     public FlyingEnemy(int type){
         super();
-        damage = 3;
+        damage = 7;
         enemyTexture = new Texture(selectTexture(type));
         animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
         stateTime = 0f;
@@ -19,9 +19,9 @@ public class FlyingEnemy extends Enemy{
         textureHeight = enemyTexture.getHeight();
     }
 
-    public FlyingEnemy(int type, int spawnCount, int pattern){
+    public FlyingEnemy(int type, int spawnCount, int pattern){ // enemy bridge
         super();
-        damage = 3;
+        damage = 14;
         enemyTexture = new Texture(selectTexture(type));
         enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;
@@ -36,7 +36,6 @@ public class FlyingEnemy extends Enemy{
         switch(type){
             case 1:
                 textureString = "Flyball_32x32_purple_flyV2_L.png";
-//                textureString = "Turtle_32x32_green_stand_L.png";
                 break;
             case 2:
                 textureString = "Flyball_32x32_red_flyV2_L.png";
