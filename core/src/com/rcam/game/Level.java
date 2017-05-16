@@ -13,10 +13,10 @@ public class Level {
     public int[][] levelThree; //no formation pattern (spawnMarker was into spawn position)
 
     public Level(){
-        pattern = 0; //set first pattern for level
-        levelKey = 1; //set first level
+        pattern = 0; //set first pattern(e.g. inside curly braces of levelOne) for level
+        levelKey = 3; //set first level
         levelOne = new int[][]{
-                {1,1,2,1, },{1,3,2,1},{2,1,1,1},
+                {1,1,2,1},{1,3,1,1},{2,1,1,1},
                 {2,1,2,1},{2,3,1,1},{2,3,2,1},
                 {2,3,3,1},{2,3,4,1},
                 {2,3,5,1},{2,3,6,1},
@@ -36,7 +36,19 @@ public class Level {
                 {2,3,6,2},{2,3,7,2},{2,3,6,2},
                 {2,3,7,2},{2,3,6,2},{2,3,7,2}
         };
-        currentLevel = levelOne;
+        levelThree = new int[][]{
+                {1,1,2,1},{2,1,1,1},{1,1,2,1},
+                {2,1,1,1},{1,1,2,1},{2,1,1,1},
+                {2,3,9,2},{2,3,12,2},{2,3,9,2},
+                {2,3,12,1},{2,3,9,1},{2,3,12,2},
+                {2,3,10,2},{2,3,11,2},{2,3,10,2},
+                {2,3,11,2},{2,3,10,1},{2,3,11,1},
+                {2,3,11,2},{2,3,10,2},{2,3,11,2},
+                {2,3,10,2},{2,3,11,1},{2,3,10,2},
+                {2,3,9,2},{2,3,12,1},{2,3,9,2},
+
+        };
+        currentLevel = levelThree;
     }
 
     //TODO add level three
@@ -45,9 +57,10 @@ public class Level {
             if(levelKey == 1) {
                 currentLevel = levelTwo;
                 levelKey = 2;
-            }else if(levelKey == 2){
-//                currentLevel = levelThree;
-//                levelKey = 3;
+            }else if(levelKey == 2) {
+                currentLevel = levelThree;
+                levelKey = 3;
+            }else if(levelKey == 3){
                 currentLevel = levelOne;
                 levelKey = 1;
             }else{
@@ -66,5 +79,9 @@ public class Level {
 
     public int[] getLevelPattern(int levelPattern){
         return currentLevel[levelPattern];
+    }
+
+    public int getLevelKey(){
+        return levelKey;
     }
 }

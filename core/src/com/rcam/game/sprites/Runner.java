@@ -197,7 +197,7 @@ public class Runner {
 
     public void checkPowerUpCollision(PowerUp powerUp){
         if(powerUp.getBounds().overlaps(getBounds()) ){
-            if(!(health >= STARTING_HEALTH) && !powerUp.touched){
+            if(!(health >= STARTING_HEALTH) && !powerUp.touched && !isDead){
                 health += powerUp.getHeal();
                 powerUp.touched = true;
                 //TODO optional speed boost and double jump for power up

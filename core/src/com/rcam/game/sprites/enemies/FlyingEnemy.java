@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class FlyingEnemy extends Enemy{
     public FlyingEnemy(int type){
         super();
-        damage = 7;
+        damage = 8;
         enemyTexture = new Texture(selectTexture(type));
         animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
         stateTime = 0f;
@@ -21,7 +21,7 @@ public class FlyingEnemy extends Enemy{
 
     public FlyingEnemy(int type, int spawnCount, int pattern){ // enemy bridge
         super();
-        damage = 14;
+        damage = 16;
         enemyTexture = new Texture(selectTexture(type));
         enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;

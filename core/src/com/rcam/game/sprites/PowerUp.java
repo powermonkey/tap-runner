@@ -62,11 +62,11 @@ public class PowerUp {
             case 0:
             case 1:
             case 2:
-                heal = 1;
+                heal = 2;
                 break;
             case 3:
             case 4:
-                heal = 2;
+                heal = 3;
                 break;
             default:
                 throw new IllegalArgumentException("No such power up type");

@@ -101,7 +101,7 @@ public class Hud {
                 speedMeter.setValue(13);
             else if(speed < 542)
                 speedMeter.setValue(14);
-            else if(speed < 600)
+            else if(speed <= 600)
                 speedMeter.setValue(15);
         }
     }
