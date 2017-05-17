@@ -136,7 +136,6 @@ public class GameScreen implements Screen{
 
     private void spawnEnemy(float delta){
         int[] levelDetails;
-        int currentLevel;
         int type, spawnCount, pattern, monsterType;
         levelDetails = level.getLevelPattern(level.getPattern());
         //set enemy position
@@ -147,10 +146,10 @@ public class GameScreen implements Screen{
             pattern = levelDetails[2];
             monsterType = levelDetails[3];
 
-            if(spawnCount > 1 && pattern < 3){ // enemy bridge
+            if(spawnCount > 1 && pattern == 1){ // enemy bridge
                 if(type == 1){
                     groundEnemies.add(new GroundEnemy(monsterType, spawnCount, pattern));
-                }else{
+                }else if(type == 2){
                     flyingEnemies.add(new FlyingEnemy(monsterType, spawnCount, pattern));
                 }
                 spawnCount = 1;
@@ -158,7 +157,7 @@ public class GameScreen implements Screen{
                 for(int i = 1; i <= spawnCount; i++){
                     if(type == 1){
                         groundEnemies.add(new GroundEnemy(monsterType));
-                    }else{
+                    }else if(type == 2){
                         flyingEnemies.add(new FlyingEnemy(monsterType));
                     }
                 }
@@ -173,8 +172,8 @@ public class GameScreen implements Screen{
                 for(int i = 1; i <= spawnCount; i++){
                     groundEnemies.add(newGroundEnemies.pop());
                 }
-            }else {
-                //only set position for new spawned ground enemies
+            }else if(type == 2){
+                //only set position for new spawned flying enemies
                 for(int i = 1; i <= spawnCount; i++){
                     newFlyingEnemies.add(flyingEnemies.pop());
                 }
@@ -182,6 +181,8 @@ public class GameScreen implements Screen{
                 for(int i = 1; i <= spawnCount; i++){
                     flyingEnemies.add(newFlyingEnemies.pop());
                 }
+            }else if (type == 0){
+                spawnMarker += 200;
             }
 
             level.updatePattern();
@@ -193,8 +194,124 @@ public class GameScreen implements Screen{
         renderEnemy(flyingEnemies, delta);
     }
 
-    private void spawnPowerUp(float delta){
+    private void positionEnemy(Array<? extends Enemy> enemies, int[] levelDetails){
+        boolean enemyBridge = false, isVertical = false;
+        int counter = 0, enemyDistance = 0;
+        int spawnCount = levelDetails[1];
+        Vector2 spawnPosition;
+        if( level.getLevelKey() == 4){ //when level four
+            enemyDistance = 1;
+        }else{
+            enemyDistance = 0;
+        }
 
+        for(Enemy enemy : enemies){
+            spawnPosition = enemySpawnPosition(counter, enemy, levelDetails);
+            if(levelDetails[1] > 1 && levelDetails[2] == 1) {
+                enemy.isBridge = true;
+                enemyBridge = true;
+            }else if(levelDetails[1] > 1 && levelDetails[2] == 2){
+                isVertical = true;
+            }else{
+                enemy.isBridge = false;
+            }
+
+            enemy.setPosition(spawnPosition);
+            enemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
+            enemy.createOnTopBounds();
+            enemy.isSpawned = true;
+            if(counter == spawnCount - 1) {
+                break;
+            }
+            counter = counter + 1;
+        }
+
+        spawnMarkerDistance(levelDetails[1], enemyBridge, isVertical, enemyDistance);
+    }
+
+    private void renderEnemy(Array<? extends Enemy> enemies, float delta){
+        for (Enemy enemy : enemies) {
+            if (enemy.isSpawned) {
+                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth())) {
+                    enemy.stateTime += Gdx.graphics.getDeltaTime();
+                    TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
+                    if(enemy.isBridge) {
+                        game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
+                        game.batch.draw(currentFrame, enemy.getPosition().x + 32, enemy.getPosition().y);
+                        game.batch.draw(currentFrame, enemy.getPosition().x + 64, enemy.getPosition().y);
+                    }else {
+                        game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
+                    }
+                    enemy.update(delta);
+                    enemy.checkCollision(runner);
+                } else {
+                    enemy.isSpawned = false; //unrender enemy when off camera
+                }
+            }
+        }
+    }
+
+    private void spawnMarkerDistance(int spawnCount, boolean enemyBridge, boolean isVertical, int enemyDistance){
+        if(enemyBridge && enemyDistance < 1) {
+            spawnMarker += (180);
+        }else if(isVertical){
+            spawnMarker += 160;
+        }else if(spawnCount > 1 && enemyDistance < 1) {
+            spawnMarker += (190);
+        }else if(spawnCount == 1){
+            if(level.getLevelKey() == 3){
+                spawnMarker += 80;
+            }else{
+                spawnMarker += 100;
+            }
+        }else if(enemyDistance > 0){
+            spawnMarker += 32;
+        }
+    }
+
+    //TODO refactor enemy spawn position
+    private Vector2 enemySpawnPosition(int counter, Enemy enemy, int[] levelDetails){
+        Vector2 spawnPosition = new Vector2();
+        float heightAdjust = levelDetails[4];
+        switch(levelDetails[2]){
+            case 1:
+//                pattern 1 horizontal + on ground
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.y = STARTING_Y  + (heightAdjust * enemy.getTextureHeight());
+                break;
+            case 2:
+//                pattern 2 vertical + on ground
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X;
+                spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
+                break;
+            case 3:
+//                pattern 3 diagonal leaning right + on ground
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth())) ;
+                spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
+                break;
+            case 4:
+//                pattern 4 diagonal leaning left + on ground
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
+                spawnPosition.y = (STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + enemy.getTextureHeight() * 2) - (counter * (enemy.getTextureHeight()));
+                break;
+            case 5:
+//                pattern 5 diagonal leaning right + on ground ungrouped
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth())) ;
+                spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
+                break;
+            case 6:
+//                pattern 6 diagonal leaning left + on ground ungrouped
+                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth()));
+                spawnPosition.y = (STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + enemy.getTextureHeight() * 2) - (counter * (enemy.getTextureHeight()));
+                break;
+            default:
+                throw new IllegalArgumentException("No such pattern");
+        }
+
+        return spawnPosition;
+    }
+
+    private void spawnPowerUp(float delta){
         if(runner.getPosition().x > powerUpMarker ){
             int num = rand.nextInt(3) + 1;
             for(int i = 1; i <= num; i++){
@@ -242,169 +359,6 @@ public class GameScreen implements Screen{
                 }
             }
         }
-    }
-
-    private void positionEnemy(Array<? extends Enemy> enemies, int[] levelDetails){
-        boolean enemyBridge = false, isVertical = false;
-        int counter = 1;
-        int spawnCount = levelDetails[1];
-        for(Enemy enemy : enemies){
-            Vector2 spawnPosition = new Vector2();
-            if(enemy instanceof GroundEnemy){
-                spawnPosition = groundEnemySpawnPosition(counter, enemy, levelDetails);
-            }else if(enemy instanceof FlyingEnemy){
-                spawnPosition = flyingEnemySpawnPosition(counter, enemy, levelDetails);
-            }
-            if(levelDetails[1] > 1 && levelDetails[2] < 3) {
-                enemy.isBridge = true;
-                enemyBridge = true;
-            }else if(levelDetails[1] > 1 && levelDetails[2] == 3 || levelDetails[2] == 4){
-                isVertical = true;
-            }else{
-                enemy.isBridge = false;
-            }
-
-            enemy.setPosition(spawnPosition);
-            enemy.createBounds();//call setPosition() before createBounds(), cannot create bounds without position
-            enemy.createOnTopBounds();
-            enemy.isSpawned = true;
-            if(counter == spawnCount)
-                break;
-            counter = counter + 1;
-        }
-
-        spawnMarkerDistance(levelDetails[1], enemyBridge, isVertical);
-    }
-
-    private void renderEnemy(Array<? extends Enemy> enemies, float delta){
-        for (Enemy enemy : enemies) {
-            if (enemy.isSpawned) {
-                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth())) {
-                    enemy.stateTime += Gdx.graphics.getDeltaTime();
-                    TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
-                    if(enemy.isBridge) {
-                        game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
-                        game.batch.draw(currentFrame, enemy.getPosition().x + 32, enemy.getPosition().y);
-                        game.batch.draw(currentFrame, enemy.getPosition().x + 64, enemy.getPosition().y);
-                    }else {
-                        game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
-                    }
-                    enemy.update(delta);
-                    enemy.checkCollision(runner);
-                } else {
-                    enemy.isSpawned = false; //unrender enemy when off camera
-                }
-            }
-        }
-    }
-
-    //TODO refactor enemy spawn position
-    private Vector2 groundEnemySpawnPosition(int counter, Enemy enemy, int[] levelDetails){
-        Vector2 spawnPosition = new Vector2();
-
-        switch(levelDetails[2]){
-            case 1:
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth())); //not grouped horizontal
-                spawnPosition.y = STARTING_Y; //default y
-                break;
-            case 2:
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth())); //grouped horizontal
-                spawnPosition.y = STARTING_Y; //default y
-                break;
-            default:
-                throw new IllegalArgumentException("No such pattern");
-        }
-
-        return spawnPosition;
-    }
-
-    private Vector2 flyingEnemySpawnPosition(int counter, Enemy enemy, int[] levelDetails){
-        Vector2 spawnPosition = new Vector2();
-
-        switch(levelDetails[2]){
-            case 1:
-//                pattern 1 horizontal + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
-                spawnPosition.y = STARTING_Y + (enemy.getTextureHeight()) ;
-                break;
-            case 2:
-//                pattern 2 horizontal + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
-                spawnPosition.y = STARTING_Y;
-                break;
-            case 3:
-//                pattern 3 vertical + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (2 * (enemy.getTextureWidth()));
-                spawnPosition.y = STARTING_Y + counter * (enemy.getTextureHeight());
-                break;
-            case 4:
-//                pattern 4 vertical + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (2 * (enemy.getTextureWidth()));
-                spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight())) - enemy.getTextureWidth();
-                break;
-            case 5:
-//                pattern 5 diagonal leaning right + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
-                spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight()));
-                break;
-            case 6:
-//                pattern 6 diagonal leaning right + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth())) ;
-                spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight())) - enemy.getTextureHeight();
-                break;
-            case 7:
-//                pattern 7 diagonal leaning left + above ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
-                spawnPosition.y = (STARTING_Y + enemy.getTextureHeight() * 4) - (counter * (enemy.getTextureHeight()));
-                break;
-            case 8:
-//                pattern 8 diagonal leaning left + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
-                spawnPosition.y = (STARTING_Y + enemy.getTextureHeight() * 3) - (counter * (enemy.getTextureHeight()));
-                break;
-            case 9:
-//                pattern 9 diagonal leaning right + above ground ungrouped
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth()));
-                spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight()));
-                break;
-            case 10:
-//                pattern 10 diagonal leaning right + on ground ungrouped
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth())) ;
-                spawnPosition.y = STARTING_Y + (counter * (enemy.getTextureHeight())) - enemy.getTextureHeight();
-                break;
-            case 11:
-//                pattern 11 diagonal leaning left + above ground ungrouped
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth()));
-                spawnPosition.y = (STARTING_Y + enemy.getTextureHeight() * 4) - (counter * (enemy.getTextureHeight()));
-                break;
-            case 12:
-//                pattern 12 diagonal leaning left + on ground ungrouped
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth()));
-                spawnPosition.y = (STARTING_Y + enemy.getTextureHeight() * 3) - (counter * (enemy.getTextureHeight()));
-                break;
-            default:
-                throw new IllegalArgumentException("No such pattern");
-        }
-
-        return spawnPosition;
-    }
-
-    private float spawnMarkerDistance(int spawnCount, boolean enemyBridge, boolean isVertical){
-        if(enemyBridge) {
-            spawnMarker += (150 + 96);
-        }else if(isVertical){
-            spawnMarker += 160;
-        }else if(spawnCount > 1) {
-            spawnMarker += (190);
-        }else if(spawnCount == 1){
-            if(level.getLevelKey() == 3){
-                spawnMarker += 80;
-            }else{
-                spawnMarker += 100;
-            }
-        }
-
-        return spawnMarker;
     }
 
     @Override
