@@ -14,7 +14,7 @@ public class Level {
 
     public Level(){
         pattern = 0; //set first pattern(e.g. inside curly braces of levelOne) for level
-        levelKey = 3; //set first level
+        levelKey = 1; //set first level
         levelOne = new int[][]{
                 {1,1,2,1},{1,3,1,1},{2,1,1,1},
                 {2,1,2,1},{2,3,1,1},{2,3,2,1},
@@ -48,7 +48,7 @@ public class Level {
                 {2,3,9,2},{2,3,12,1},{2,3,9,2},
 
         };
-        currentLevel = levelThree;
+        currentLevel = levelOne;
     }
 
     //TODO add level three
