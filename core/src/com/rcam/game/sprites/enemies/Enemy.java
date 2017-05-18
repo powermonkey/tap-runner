@@ -134,7 +134,7 @@ public class Enemy {
                 speed.y = 0;
                 runnerOntop = true;
             }else{
-                if (runner.health > 0 && !touched && Float.compare((intersectionOnTop.y + intersectionOnTop.height), runner.getBounds().y + runner.getBounds().height) < 0) {
+                if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y + intersectionBounds.height), runner.getBounds().y + runner.getBounds().height) < 0) {
                         runner.health -= getDamage();
                         touched = true;
                         if (runner.getVelocity().x < 25)
