@@ -126,7 +126,7 @@ public class Enemy {
         }
 
         if (getBounds().overlaps(runner.getBounds())) {
-            if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0) { // runner stays on top of enemies
+            if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0 ) { // runner stays on top of enemies
                 runner.tempGround = getPosition().y + getTextureHeight();
                 runner.isOnGround = true;
                 runner.isJumping = false;
@@ -134,7 +134,8 @@ public class Enemy {
                 speed.y = 0;
                 runnerOntop = true;
             }else{
-                if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y + intersectionBounds.height), runner.getBounds().y + runner.getBounds().height) < 0) {
+                if (runner.health > 0 && !touched && Float.compare((intersection.y + intersection.height), runner.getBounds().y + runner.getBounds().height) < 0) {
+                if (runner.health > 0 && !touched) {
                         runner.health -= getDamage();
                         touched = true;
                         if (runner.getVelocity().x < 25)
