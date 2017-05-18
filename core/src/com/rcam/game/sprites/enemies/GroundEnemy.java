@@ -19,9 +19,9 @@ public class GroundEnemy extends Enemy{
         textureHeight = enemyTexture.getHeight();
     }
 
-    public GroundEnemy(int type, int spawnCount, int pattern){ // enemy bridge
+    public GroundEnemy(int type, int spawnCount){ // enemy bridge
         super();
-        damage = 14;
+        damage = 7 * (spawnCount / 2);;
         enemyTexture = new Texture(selectTexture(type));
         enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;

@@ -17,7 +17,7 @@ public class Enemy {
     protected final static int FRAME_COLS = 4;
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
-    public final static float ON_TOP_OFFSET = 23;
+    public final static float ON_TOP_OFFSET = 25;
     public boolean touched, runnerOntop;
     float damage;
     public Vector2 position, velocity, speed;
@@ -26,6 +26,7 @@ public class Enemy {
     public float textureHeight, textureWidth;
 
     public boolean isSpawned, isBridge;
+    public int bridgeCount;
     public Animation<TextureRegion> animation;
     public float stateTime;
 
@@ -60,6 +61,14 @@ public class Enemy {
 
     public float getDamage() {
         return damage;
+    }
+
+    public void setBridgeCount(int count){
+        this.bridgeCount = count;
+    }
+
+    public int getBridgeCount(){
+        return bridgeCount;
     }
 
     public Vector2 getPosition() {
@@ -124,7 +133,7 @@ public class Enemy {
         }
 
         if (getBounds().overlaps(runner.getBounds())) {
-            if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y) > 0 ) { // runner stays on top of enemies
+            if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y ) > 0 ) { // runner stays on top of enemies
                 runner.tempGround = getPosition().y + getTextureHeight();
                 runner.isOnGround = true;
                 runner.isJumping = false;
@@ -132,7 +141,7 @@ public class Enemy {
                 speed.y = 0;
                 runnerOntop = true;
             }else{
-                if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y + intersectionBounds.height), runner.getBounds().y + runner.getBounds().height) < 0) {
+                if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
                         runner.health -= getDamage();
                         touched = true;
                         if (runner.getVelocity().x < 25)

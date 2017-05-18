@@ -158,9 +158,9 @@ public class GameScreen implements Screen{
 
             if(spawnCount > 1 && pattern == 1){ // enemy bridge
                 if(type == 1){
-                    groundEnemies.add(new GroundEnemy(monsterType, spawnCount, pattern));
+                    groundEnemies.add(new GroundEnemy(monsterType, spawnCount));
                 }else if(type == 2){
-                    flyingEnemies.add(new FlyingEnemy(monsterType, spawnCount, pattern));
+                    flyingEnemies.add(new FlyingEnemy(monsterType, spawnCount));
                 }
                 spawnCount = 1;
             }else{
@@ -191,8 +191,6 @@ public class GameScreen implements Screen{
                 for(int i = 1; i <= spawnCount; i++){
                     flyingEnemies.add(newFlyingEnemies.pop());
                 }
-            }else if (type == 0){
-                spawnMarker += 200;
             }
             level.updatePattern();
     }
@@ -208,6 +206,7 @@ public class GameScreen implements Screen{
             if(levelDetails[1] > 1 && levelDetails[2] == 1) {
                 enemy.isBridge = true;
                 enemyBridge = true;
+                enemy.setBridgeCount(levelDetails[1]);
             }else if(levelDetails[1] > 1 && levelDetails[2] == 2){
                 isVertical = true;
             }else{
@@ -233,14 +232,15 @@ public class GameScreen implements Screen{
                 if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth())) {
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
+                    enemy.update(delta);
                     if(enemy.isBridge) {
-                        game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
-                        game.batch.draw(currentFrame, enemy.getPosition().x + 32, enemy.getPosition().y);
-                        game.batch.draw(currentFrame, enemy.getPosition().x + 64, enemy.getPosition().y);
-                    }else {
+                        for(int x = 0; x < enemy.getBridgeCount(); x++){
+                            game.batch.draw(currentFrame, enemy.getPosition().x + (x * 32), enemy.getPosition().y);
+                        }
+                    } else {
                         game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
                     }
-                    enemy.update(delta);
+
                     enemy.checkCollision(runner);
                 } else {
                     enemy.isSpawned = false; //unrender enemy when off camera
@@ -251,20 +251,21 @@ public class GameScreen implements Screen{
 
     private void spawnMarkerDistance(int spawnCount, boolean enemyBridge, boolean isVertical, int enemyDistance){
         if(enemyBridge && enemyDistance < 1) {
-            spawnMarker += (180);
+            spawnMarker += (230);
         }else if(isVertical && enemyDistance < 1){
-            spawnMarker += 160;
+            spawnMarker += 210;
         }else if(spawnCount > 1 && enemyDistance < 1) {
-            spawnMarker += (190);
+            spawnMarker += (240);
         }else if(spawnCount == 1 && enemyDistance < 1){
             if(level.getLevelKey() == 3){
-                spawnMarker += 80;
+                spawnMarker += 130;
             }else{
-                spawnMarker += 100;
+                spawnMarker += 150;
             }
         }else if(enemyDistance > 0){
+            spawnMarker += ((enemyDistance - 1) * 32);
             if(enemyDistance == 2){
-                spawnMarker += 32;
+                spawnMarker += 31;
             }else if(enemyDistance == 1){
                 spawnMarker += 0;
             }

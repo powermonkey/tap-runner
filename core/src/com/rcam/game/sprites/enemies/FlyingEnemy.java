@@ -19,9 +19,9 @@ public class FlyingEnemy extends Enemy{
         textureHeight = enemyTexture.getHeight();
     }
 
-    public FlyingEnemy(int type, int spawnCount, int pattern){ // enemy bridge
+    public FlyingEnemy(int type, int spawnCount){ // enemy bridge
         super();
-        damage = 16;
+        damage = 8 * (spawnCount / 2);
         enemyTexture = new Texture(selectTexture(type));
         enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;

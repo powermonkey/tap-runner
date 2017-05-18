@@ -64,7 +64,7 @@ public class Runner {
     }
 
     public void update(float dt){
-        drainHealth();
+//        drainHealth();
 
         //slow down runner
 //        speed.add(FRICTION, 0);
