@@ -29,8 +29,9 @@ public class GameScreen implements Screen{
     final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
     float spawnMarker = 50;
+    float levelMarker = 0;
     float powerUpMarker = 350;
-    float powerUpMarkerDistance = 350;
+    static int levelCounter = 1;
 
     Texture bg;
     OrthographicCamera cam;
@@ -87,12 +88,21 @@ public class GameScreen implements Screen{
         game.batch.begin();
         game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
 
-
-
+        //spawn power up
         spawnPowerUp(delta);
 
         //set ground enemy position and render ground enemy
-        spawnEnemy(delta);
+        if(runner.getPosition().x > levelMarker) {
+            if(level.getLevelKey() == levelCounter){
+                spawnEnemy(delta);
+            }else if(levelCounter == 4){
+                levelCounter = 1;
+            }else{
+                levelMarker = spawnMarker;
+                levelCounter ++;
+            }
+            System.out.println(levelCounter);
+        }
 
         //render ground
         for(Ground ground : grounds){
@@ -104,6 +114,10 @@ public class GameScreen implements Screen{
             if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() )
                 ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
         }
+
+        //render enemy
+            renderEnemy(groundEnemies, delta);
+            renderEnemy(flyingEnemies, delta);
 
         //render runner
         game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
@@ -138,9 +152,6 @@ public class GameScreen implements Screen{
         int[] levelDetails;
         int type, spawnCount, pattern, monsterType;
         levelDetails = level.getLevelPattern(level.getPattern());
-        //set enemy position
-        if(runner.getPosition().x > spawnMarker ){
-
             type = levelDetails[0];
             spawnCount = levelDetails[1];
             pattern = levelDetails[2];
@@ -184,26 +195,14 @@ public class GameScreen implements Screen{
             }else if (type == 0){
                 spawnMarker += 200;
             }
-
             level.updatePattern();
-
-        }
-
-        //render enemy
-        renderEnemy(groundEnemies, delta);
-        renderEnemy(flyingEnemies, delta);
     }
 
     private void positionEnemy(Array<? extends Enemy> enemies, int[] levelDetails){
         boolean enemyBridge = false, isVertical = false;
-        int counter = 0, enemyDistance = 0;
+        int counter = 0;
         int spawnCount = levelDetails[1];
         Vector2 spawnPosition;
-        if( level.getLevelKey() == 4){ //when level four
-            enemyDistance = 1;
-        }else{
-            enemyDistance = 0;
-        }
 
         for(Enemy enemy : enemies){
             spawnPosition = enemySpawnPosition(counter, enemy, levelDetails);
@@ -226,7 +225,7 @@ public class GameScreen implements Screen{
             counter = counter + 1;
         }
 
-        spawnMarkerDistance(levelDetails[1], enemyBridge, isVertical, enemyDistance);
+        spawnMarkerDistance(levelDetails[1], enemyBridge, isVertical, levelDetails[5]);
     }
 
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
@@ -254,18 +253,22 @@ public class GameScreen implements Screen{
     private void spawnMarkerDistance(int spawnCount, boolean enemyBridge, boolean isVertical, int enemyDistance){
         if(enemyBridge && enemyDistance < 1) {
             spawnMarker += (180);
-        }else if(isVertical){
+        }else if(isVertical && enemyDistance < 1){
             spawnMarker += 160;
         }else if(spawnCount > 1 && enemyDistance < 1) {
             spawnMarker += (190);
-        }else if(spawnCount == 1){
+        }else if(spawnCount == 1 && enemyDistance < 1){
             if(level.getLevelKey() == 3){
                 spawnMarker += 80;
             }else{
                 spawnMarker += 100;
             }
         }else if(enemyDistance > 0){
-            spawnMarker += 32;
+            if(enemyDistance == 2){
+                spawnMarker += 32;
+            }else if(enemyDistance == 1){
+                spawnMarker += 0;
+            }
         }
     }
 
