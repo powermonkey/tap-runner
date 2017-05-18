@@ -101,7 +101,6 @@ public class GameScreen implements Screen{
                 levelMarker = spawnMarker;
                 levelCounter ++;
             }
-            System.out.println(levelCounter);
         }
 
         //render ground

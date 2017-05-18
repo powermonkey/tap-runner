@@ -93,15 +93,6 @@ public class Level {
         }
     }
 
-    public boolean changeLevel(){
-        boolean isChange = false;
-        System.out.println("change level");
-        if(levelHolder.length - 1 == Level.pattern) {
-            isChange = true;
-        }
-        return isChange;
-    }
-
     public int getPattern(){
         return pattern;
     }
