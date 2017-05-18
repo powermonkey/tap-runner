@@ -156,14 +156,14 @@ public class GameScreen implements Screen{
             pattern = levelDetails[2];
             monsterType = levelDetails[3];
 
-            if(spawnCount > 1 && pattern == 1){ // enemy bridge
-                if(type == 1){
-                    groundEnemies.add(new GroundEnemy(monsterType, spawnCount));
-                }else if(type == 2){
-                    flyingEnemies.add(new FlyingEnemy(monsterType, spawnCount));
-                }
-                spawnCount = 1;
-            }else{
+//            if(spawnCount > 1 && pattern == 1){ // enemy bridge
+//                if(type == 1){
+//                    groundEnemies.add(new GroundEnemy(monsterType, spawnCount));
+//                }else if(type == 2){
+//                    flyingEnemies.add(new FlyingEnemy(monsterType, spawnCount));
+//                }
+//                spawnCount = 1;
+//            }else{
                 for(int i = 1; i <= spawnCount; i++){
                     if(type == 1){
                         groundEnemies.add(new GroundEnemy(monsterType));
@@ -171,7 +171,7 @@ public class GameScreen implements Screen{
                         flyingEnemies.add(new FlyingEnemy(monsterType));
                     }
                 }
-            }
+//            }
 
             if(type == 1) {
                 //only set position for new spawned ground enemies
@@ -233,13 +233,13 @@ public class GameScreen implements Screen{
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     enemy.update(delta);
-                    if(enemy.isBridge) {
-                        for(int x = 0; x < enemy.getBridgeCount(); x++){
-                            game.batch.draw(currentFrame, enemy.getPosition().x + (x * 32), enemy.getPosition().y);
-                        }
-                    } else {
+//                    if(enemy.isBridge) {
+//                        for(int x = 0; x < enemy.getBridgeCount(); x++){
+//                            game.batch.draw(currentFrame, enemy.getPosition().x + (x * 32), enemy.getPosition().y);
+//                        }
+//                    } else {
                         game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
-                    }
+//                    }
 
                     enemy.checkCollision(runner);
                 } else {
@@ -264,11 +264,11 @@ public class GameScreen implements Screen{
             }
         }else if(enemyDistance > 0){
             spawnMarker += ((enemyDistance - 1) * 32);
-            if(enemyDistance == 2){
-                spawnMarker += 31;
-            }else if(enemyDistance == 1){
-                spawnMarker += 0;
-            }
+//            if(enemyDistance == 2){
+//                spawnMarker += 31;
+//            }else if(enemyDistance == 1){
+//                spawnMarker += 0;
+//            }
         }
     }
 

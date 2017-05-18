@@ -143,6 +143,7 @@ public class Enemy {
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
                         runner.health -= getDamage();
+                    System.out.println(getDamage());
                         touched = true;
                         if (runner.getVelocity().x < 25)
                             runner.setVelocityX(-25);
