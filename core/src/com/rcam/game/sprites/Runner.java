@@ -151,12 +151,20 @@ public class Runner {
         return position;
     }
 
+    public void setPositionY(float y) {
+        position.y = y;
+    }
+
     public Vector2 getVelocity() {
         return velocity;
     }
 
     public void setVelocityX(float x) {
         velocity.x = x;
+    }
+
+    public void setVelocityY(float y) {
+        velocity.y = y;
     }
 
     public void run(){

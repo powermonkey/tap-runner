@@ -124,26 +124,28 @@ public class Enemy {
         Intersector.intersectRectangles(getOnTopBounds(), runner.getBounds(), intersectionOnTop);
 
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
-        if (runner.isOnTopEnemy && runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
-                runnerOntop = false;
-                runner.tempGround = runner.groundLevel;
-                runner.isOnGround = false;
-                runner.isJumping = true;
-                runner.isOnTopEnemy = false;
+        // make runner fall
+        if(runner.isOnTopEnemy && runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
+            runnerOntop = false;
+            runner.tempGround = runner.groundLevel;
+            runner.isOnGround = false;
+            runner.isJumping = true;
+            runner.isOnTopEnemy = false;
+            runner.isFalling = true;
         }
 
-        if (getBounds().overlaps(runner.getBounds())) {
+        if ( getBounds().overlaps(runner.getBounds()) ) {
             if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y ) > 0 ) { // runner stays on top of enemies
+                runner.setPositionY(getPosition().y + getTextureHeight());
                 runner.tempGround = getPosition().y + getTextureHeight();
                 runner.isOnGround = true;
                 runner.isJumping = false;
                 runner.isOnTopEnemy = true;
-                speed.y = 0;
                 runnerOntop = true;
+                runner.isFalling = false;
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
                         runner.health -= getDamage();
-                    System.out.println(getDamage());
                         touched = true;
                         if (runner.getVelocity().x < 25)
                             runner.setVelocityX(-25);

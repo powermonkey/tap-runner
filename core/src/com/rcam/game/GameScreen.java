@@ -191,6 +191,8 @@ public class GameScreen implements Screen{
                 for(int i = 1; i <= spawnCount; i++){
                     flyingEnemies.add(newFlyingEnemies.pop());
                 }
+            }else if (type == 0){
+                spawnMarker += 200;
             }
             level.updatePattern();
     }
@@ -204,9 +206,11 @@ public class GameScreen implements Screen{
         for(Enemy enemy : enemies){
             spawnPosition = enemySpawnPosition(counter, enemy, levelDetails);
             if(levelDetails[1] > 1 && levelDetails[2] == 1) {
-                enemy.isBridge = true;
-                enemyBridge = true;
-                enemy.setBridgeCount(levelDetails[1]);
+//                if(counter < spawnCount - 1) {
+                    enemy.isBridge = true;
+                    enemyBridge = true;
+                    enemy.setBridgeCount(levelDetails[1]);
+//                }
             }else if(levelDetails[1] > 1 && levelDetails[2] == 2){
                 isVertical = true;
             }else{
@@ -232,7 +236,6 @@ public class GameScreen implements Screen{
                 if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth())) {
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
-                    enemy.update(delta);
 //                    if(enemy.isBridge) {
 //                        for(int x = 0; x < enemy.getBridgeCount(); x++){
 //                            game.batch.draw(currentFrame, enemy.getPosition().x + (x * 32), enemy.getPosition().y);
@@ -240,7 +243,7 @@ public class GameScreen implements Screen{
 //                    } else {
                         game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
 //                    }
-
+                    enemy.update(delta);
                     enemy.checkCollision(runner);
                 } else {
                     enemy.isSpawned = false; //unrender enemy when off camera
@@ -355,8 +358,8 @@ public class GameScreen implements Screen{
         for(PowerUp powerUp : powerUps){
             if(powerUp.isSpawned) {
                 if (!(cam.position.x - (cam.viewportWidth / 2) > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth())) {
-                    game.batch.draw(powerUp.getTextureRegion(), powerUp.getPosition().x, powerUp.getPosition().y);
                     runner.checkPowerUpCollision(powerUp);
+                    game.batch.draw(powerUp.getTextureRegion(), powerUp.getPosition().x, powerUp.getPosition().y);
                 } else {
                     powerUp.isSpawned = false; //unrender powerup when off camera
                 }
