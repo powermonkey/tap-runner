@@ -25,6 +25,10 @@ public class PowerUp {
     Random rand;
 
     public PowerUp(){
+
+    }
+
+    public PowerUp(float x, float y, float delta){
         texture = new Texture("M484GoodFruits.png");
         textureRegions = new TextureRegion[5];
         textureRegions[0] = new TextureRegion(texture, 7, 4, 25, 25); //cherry
@@ -33,15 +37,18 @@ public class PowerUp {
         textureRegions[3] = new TextureRegion(texture, 144, 91, 25, 25); //banana
         textureRegions[4] = new TextureRegion(texture, 92, 60, 25, 25); //apple
         touched = false;
-        rand = new Random();
+        randomPowerUp();
+        position = new Vector2(x, y);
+        createBounds(x, y, 25, 25);
+        isSpawned = true;
     }
 
     public void setPosition(Vector2 position, float delta){
         this.position = position;
     }
 
-    public void createBounds(){
-        bounds = new Rectangle(getPosition().x, getPosition().y, 25, 25);
+    public void createBounds(float x, float y , float width, float height){
+        bounds = new Rectangle(x, y, width, height);
     }
 
     public Rectangle getBounds() {
@@ -53,6 +60,7 @@ public class PowerUp {
     }
 
     public void randomPowerUp(){
+        rand = new Random();
         powerUpType = rand.nextInt(RANDOM_POWERUP);
         selectPowerUp(powerUpType);
     }

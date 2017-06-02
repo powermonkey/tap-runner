@@ -11,6 +11,10 @@ public class Ground {
     Texture groundTexture;
     Vector2 posGround;
 
+    public Ground(){
+        groundTexture = new Texture("ground.png");
+    }
+
     public Ground(float x){
         groundTexture = new Texture("ground.png");
         posGround = new Vector2(x, 0);

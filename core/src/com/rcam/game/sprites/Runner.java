@@ -102,11 +102,15 @@ public class Runner {
             //prevent speed.x from going negative
             if(speed.x < 0)
                 speed.x = 0;
-            position.mulAdd(speed, dt);
+//            position.mulAdd(speed, dt);
+            position.add(speed.x * dt, speed.y * dt);
         }else{
             if(speed.x > SPEED_BUFFER)
                 speed.x = SPEED_BUFFER;
-            position.add(HIGH_SPEED * dt, speed.y * dt);
+//            position.add(HIGH_SPEED * dt, speed.y * dt);
+            speed.x = HIGH_SPEED;
+//            position.mulAdd(speed, dt);
+            position.add(speed.x * dt, speed.y * dt);
         }
 
         //make runner land on ground
@@ -208,6 +212,7 @@ public class Runner {
             if(!(health >= STARTING_HEALTH) && !powerUp.touched && !isDead){
                 health += powerUp.getHeal();
                 powerUp.touched = true;
+                powerUp.isSpawned = false;
                 //TODO optional speed boost and double jump for power up
 //                velocity.x = 400; //activates speed boost and grants double jump for one use
             }
