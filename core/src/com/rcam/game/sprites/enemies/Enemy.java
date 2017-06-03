@@ -26,11 +26,14 @@ public class Enemy {
     public float textureHeight, textureWidth;
 
     public boolean isSpawned, isBridge;
-    public int bridgeCount;
     public Animation<TextureRegion> animation;
     public float stateTime;
 
     public Enemy(){
+
+    }
+
+    public Enemy(Vector2 pos, int[] levelDetails){
         velocity = new Vector2(SPEED, 0);
         speed = new Vector2(SPEED, 0);
         touched = false;
@@ -38,7 +41,13 @@ public class Enemy {
         intersectionBounds = new Rectangle();
         intersectionOnTop = new Rectangle();
         runnerOntop = false;
-        isBridge = false;
+        position = new Vector2(pos.x, pos.y);
+        isSpawned = true;
+        if(levelDetails[1] > 1 && levelDetails[2] == 1) {
+            isBridge = true;
+        }else{
+            isBridge = false;
+        }
     }
 
     public void update(float dt){
@@ -47,12 +56,12 @@ public class Enemy {
         onTopBounds.setPosition(position.x, position.y + ON_TOP_OFFSET);
     }
 
-    public void createBounds(){
-        bounds = new Rectangle(position.x, position.y, textureWidth, textureHeight);
+    public void createBounds(float x, float y, float width, float height){
+        bounds = new Rectangle(x, y, width, height);
     }
 
-    public void createOnTopBounds(){
-        onTopBounds = new Rectangle(position.x, position.y + ON_TOP_OFFSET, textureWidth, textureHeight);
+    public void createOnTopBounds(float x, float y, float width, float height){
+        onTopBounds = new Rectangle(x, y + ON_TOP_OFFSET, width, height);
     }
 
     public void setPosition(Vector2 position){
@@ -63,24 +72,8 @@ public class Enemy {
         return damage;
     }
 
-    public void setBridgeCount(int count){
-        this.bridgeCount = count;
-    }
-
-    public int getBridgeCount(){
-        return bridgeCount;
-    }
-
     public Vector2 getPosition() {
         return position;
-    }
-
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public Vector2 getSpeed() {
-        return speed;
     }
 
     public Rectangle getBounds() {
@@ -89,10 +82,6 @@ public class Enemy {
 
     public Rectangle getOnTopBounds() {
         return onTopBounds;
-    }
-
-    public Texture getTexture() {
-        return enemyTexture;
     }
 
     public float getTextureHeight() {
@@ -147,36 +136,36 @@ public class Enemy {
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
                         runner.health -= getDamage();
                         touched = true;
-                        if (runner.getVelocity().x < 25)
-                            runner.setVelocityX(-25);
-                        else if (runner.getVelocity().x < 50)
-                            runner.setVelocityX(-50);
-                        else if (runner.getVelocity().x < 75)
-                            runner.setVelocityX(-75);
-                        else if (runner.getVelocity().x < 100)
-                            runner.setVelocityX(-100);
-                        else if (runner.getVelocity().x < 125)
-                            runner.setVelocityX(-125);
-                        else if (runner.getVelocity().x < 150)
-                            runner.setVelocityX(-150);
-                        else if (runner.getVelocity().x < 175)
-                            runner.setVelocityX(-175);
-                        else if (runner.getVelocity().x < 200)
-                            runner.setVelocityX(-200);
-                        else if (runner.getVelocity().x < 257)
-                            runner.setVelocityX(-257);
-                        else if (runner.getVelocity().x < 314)
-                            runner.setVelocityX(-314);
-                        else if (runner.getVelocity().x < 371)
-                            runner.setVelocityX(-371);
-                        else if (runner.getVelocity().x < 428)
-                            runner.setVelocityX(-400);
-                        else if (runner.getVelocity().x < 485)
-                            runner.setVelocityX(-400);
-                        else if (runner.getVelocity().x < 542)
-                            runner.setVelocityX(-400);
-                        else if (runner.getVelocity().x < 600)
-                            runner.setVelocityX(-400);
+//                        if (runner.getVelocity().x < 25)
+//                            runner.setVelocityX(-25);
+//                        else if (runner.getVelocity().x < 50)
+//                            runner.setVelocityX(-50);
+//                        else if (runner.getVelocity().x < 75)
+//                            runner.setVelocityX(-75);
+//                        else if (runner.getVelocity().x < 100)
+//                            runner.setVelocityX(-100);
+//                        else if (runner.getVelocity().x < 125)
+//                            runner.setVelocityX(-125);
+//                        else if (runner.getVelocity().x < 150)
+//                            runner.setVelocityX(-150);
+//                        else if (runner.getVelocity().x < 175)
+//                            runner.setVelocityX(-175);
+//                        else if (runner.getVelocity().x < 200)
+//                            runner.setVelocityX(-200);
+//                        else if (runner.getVelocity().x < 257)
+//                            runner.setVelocityX(-257);
+//                        else if (runner.getVelocity().x < 314)
+//                            runner.setVelocityX(-314);
+//                        else if (runner.getVelocity().x < 371)
+//                            runner.setVelocityX(-371);
+//                        else if (runner.getVelocity().x < 428)
+//                            runner.setVelocityX(-400);
+//                        else if (runner.getVelocity().x < 485)
+//                            runner.setVelocityX(-400);
+//                        else if (runner.getVelocity().x < 542)
+//                            runner.setVelocityX(-400);
+//                        else if (runner.getVelocity().x < 600)
+//                            runner.setVelocityX(-400);
                 } else if (runner.health <= 0) {
                     runner.isDead = true;
                 }

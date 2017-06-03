@@ -28,7 +28,7 @@ public class PowerUp {
 
     }
 
-    public PowerUp(float x, float y, float delta){
+    public PowerUp(float x, float y){
         texture = new Texture("M484GoodFruits.png");
         textureRegions = new TextureRegion[5];
         textureRegions[0] = new TextureRegion(texture, 7, 4, 25, 25); //cherry
@@ -41,10 +41,6 @@ public class PowerUp {
         position = new Vector2(x, y);
         createBounds(x, y, 25, 25);
         isSpawned = true;
-    }
-
-    public void setPosition(Vector2 position, float delta){
-        this.position = position;
     }
 
     public void createBounds(float x, float y , float width, float height){
