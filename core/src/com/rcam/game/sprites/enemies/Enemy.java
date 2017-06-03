@@ -17,7 +17,7 @@ public class Enemy {
     protected final static int FRAME_COLS = 4;
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
-    public final static float ON_TOP_OFFSET = 18;
+    public final static float ON_TOP_OFFSET = 19;
     public boolean touched, runnerOntop;
     float damage;
     public Vector2 position, velocity, speed;
@@ -124,7 +124,7 @@ public class Enemy {
         }
 
         if ( getBounds().overlaps(runner.getBounds()) ) {
-            if(runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y ) > 0 ) { // runner stays on top of enemies
+            if(!runner.isDead && runner.isFalling && Float.compare(intersectionOnTop.y, getOnTopBounds().y ) > 0 ) { // runner stays on top of enemies
                 runner.setPositionY(getPosition().y + getTextureHeight());
                 runner.tempGround = getPosition().y + getTextureHeight();
                 runner.isOnGround = true;

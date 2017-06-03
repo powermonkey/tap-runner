@@ -20,7 +20,6 @@ public class KeyboardInput implements InputProcessor{
         if (keycode == Input.Keys.DOWN) {
             if(runner.isOnGround) {
                 runner.jump();
-                System.out.println("jump key pressed");
             }
         }
         if (keycode == Input.Keys.UP) {

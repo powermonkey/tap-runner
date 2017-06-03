@@ -183,7 +183,6 @@ public class Hud {
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                     if(runner.isOnGround) {
                         runner.jump();
-//                        runner.tempGround = runner.groundLevel;
                     }
                     return true;
                 }
@@ -191,7 +190,6 @@ public class Hud {
                 @Override
                 public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                     runner.isJumping = false;
-//                    runner.tempGround = runner.groundLevel;
                 }
             });
         }
