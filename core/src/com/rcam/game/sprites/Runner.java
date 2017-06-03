@@ -42,7 +42,7 @@ public class Runner {
         isFalling = false;
         isOnTopEnemy = false;
         bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
-        intersectionBounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
+        intersectionBounds = new Rectangle(x, y - CONTACT_BOUNDS_OFFSET, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
         health = STARTING_HEALTH;
         startingTime = millis();
 

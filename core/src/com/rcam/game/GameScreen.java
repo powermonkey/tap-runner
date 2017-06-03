@@ -46,6 +46,8 @@ public class GameScreen implements Screen{
     Array<PowerUp> powerUps, newPowerUps;
     PowerUp powUp;
     long startingTime;
+    KeyboardInput keys;
+
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -53,7 +55,6 @@ public class GameScreen implements Screen{
         runner = new Runner(STARTING_X, STARTING_Y);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
-//        cam.setToOrtho(false, TapRunner.WIDTH, TapRunner.HEIGHT);
         cam.update();
 
         grnd = new Ground();
@@ -72,11 +73,12 @@ public class GameScreen implements Screen{
         grounds.add(new Ground(grnd.getTexture().getWidth()));
 
         hud = new Hud(runner);
+        keys = new KeyboardInput(runner);
 
     }
 
     public void handleInput() {
-
+        Gdx.input.setInputProcessor(keys);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class GameScreen implements Screen{
 
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
-        game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 3), 0);
+        game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
 
         //spawn power up
         renderPowerUp();
@@ -151,6 +153,7 @@ public class GameScreen implements Screen{
         hud.health.update();
         hud.distance.update();
         hud.render();
+        handleInput();
     }
 
     private void spawnEnemy(){
@@ -237,22 +240,22 @@ public class GameScreen implements Screen{
                 spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
                 break;
             case 3:
-//                pattern 3 diagonal leaning right + on ground
+//                pattern 3 diagonal leaning right
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth())) ;
                 spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
                 break;
             case 4:
-//                pattern 4 diagonal leaning left + on ground
+//                pattern 4 diagonal leaning left
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
                 spawnPosition.y = (STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + enemy.getTextureHeight() * 2) - (counter * (enemy.getTextureHeight()));
                 break;
             case 5:
-//                pattern 5 diagonal leaning right + on ground ungrouped
+//                pattern 5 diagonal leaning right ungrouped
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth())) ;
                 spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
                 break;
             case 6:
-//                pattern 6 diagonal leaning left + on ground ungrouped
+//                pattern 6 diagonal leaning left ungrouped
                 spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth()));
                 spawnPosition.y = (STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + enemy.getTextureHeight() * 2) - (counter * (enemy.getTextureHeight()));
                 break;

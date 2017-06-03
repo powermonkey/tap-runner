@@ -17,7 +17,7 @@ public class Enemy {
     protected final static int FRAME_COLS = 4;
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
-    public final static float ON_TOP_OFFSET = 25;
+    public final static float ON_TOP_OFFSET = 18;
     public boolean touched, runnerOntop;
     float damage;
     public Vector2 position, velocity, speed;
@@ -61,7 +61,7 @@ public class Enemy {
     }
 
     public void createOnTopBounds(float x, float y, float width, float height){
-        onTopBounds = new Rectangle(x, y + ON_TOP_OFFSET, width, height);
+        onTopBounds = new Rectangle(x, y + ON_TOP_OFFSET, width, height + ON_TOP_OFFSET);
     }
 
     public void setPosition(Vector2 position){
