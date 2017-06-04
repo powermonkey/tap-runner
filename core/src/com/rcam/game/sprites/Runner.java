@@ -16,8 +16,9 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 public class Runner {
     static final float FRICTION = -1.5f;
     static final float GRAVITY = -15;
-    static final float HIGH_SPEED = 200;
-    static final float SPEED_BUFFER = 600;
+//    static final float HIGH_SPEED = 200;
+    static final float MAX_SPEED = 150;
+//    static final float SPEED_BUFFER = 600;
     static final float MAX_HEIGHT = 400;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET = 4;
@@ -98,20 +99,23 @@ public class Runner {
             isJumping = false;
         }
 
-        if(!isMaintainHighSpeed) {
-            //prevent speed.x from going negative
-            if(speed.x < 0)
-                speed.x = 0;
-//            position.mulAdd(speed, dt);
-            position.add(speed.x * dt, speed.y * dt);
-        }else{
-            if(speed.x > SPEED_BUFFER)
-                speed.x = SPEED_BUFFER;
-//            position.add(HIGH_SPEED * dt, speed.y * dt);
-            speed.x = HIGH_SPEED;
-//            position.mulAdd(speed, dt);
-            position.add(speed.x * dt, speed.y * dt);
+//        if(!isMaintainHighSpeed) {
+        //limit speed to max speed
+        if(speed.x >= MAX_SPEED){
+            speed.x = MAX_SPEED;
         }
+
+        //prevent speed.x from going negative
+        if(speed.x < 0) {
+            speed.x = 0;
+        }
+        position.add(speed.x * dt, speed.y * dt);
+//        }else{
+//            if(speed.x > SPEED_BUFFER)
+//                speed.x = SPEED_BUFFER;
+//            speed.x = HIGH_SPEED;
+//            position.add(speed.x * dt, speed.y * dt);
+//        }
 
         //make runner land on ground
         if(position.y < tempGround && !isDead){
@@ -124,10 +128,10 @@ public class Runner {
             isOnGround = false;
         }
 
-        if(speed.x > HIGH_SPEED)
-            isMaintainHighSpeed = true;
-        else
-            isMaintainHighSpeed = false;
+//        if(speed.x > HIGH_SPEED)
+//            isMaintainHighSpeed = true;
+//        else
+//            isMaintainHighSpeed = false;
 
         //reset value of velocity x and y
         velocity.x = 0;
@@ -172,9 +176,9 @@ public class Runner {
     }
 
     public void run(){
-        if(isMaintainHighSpeed)
-            velocity.x = 200;
-        else
+//        if(isMaintainHighSpeed)
+//            velocity.x = 150;
+//        else
             velocity.x = 50;
     }
 

@@ -64,7 +64,7 @@ public class Hud {
         ProgressBar speedMeter;
 
         public Meter(){
-            speedMeter = new ProgressBar(1, 15, 1, false, getCleanCrispySkin(), "default-horizontal");
+            speedMeter = new ProgressBar(1, 4, 1, false, getCleanCrispySkin(), "default-horizontal");
             speedMeter.setAnimateDuration(.5f);
         }
 
@@ -73,36 +73,14 @@ public class Hud {
         }
 
         public void update(float speed){
-            if(speed < 25)
+            if(speed < 50)
                 speedMeter.setValue(1);
-            else if(speed < 50)
-                speedMeter.setValue(2);
-            else if(speed < 75)
-                speedMeter.setValue(3);
             else if(speed < 100)
-                speedMeter.setValue(4);
-            else if(speed < 125)
-                speedMeter.setValue(5);
+                speedMeter.setValue(2);
             else if(speed < 150)
-                speedMeter.setValue(6);
-            else if(speed < 175)
-                speedMeter.setValue(7);
-            else if(speed < 200)
-                speedMeter.setValue(8);
-            else if(speed < 257)
-                speedMeter.setValue(9);
-            else if(speed < 314)
-                speedMeter.setValue(10);
-            else if(speed < 371)
-                speedMeter.setValue(11);
-            else if(speed < 428)
-                speedMeter.setValue(12);
-            else if(speed < 485)
-                speedMeter.setValue(13);
-            else if(speed < 542)
-                speedMeter.setValue(14);
-            else if(speed <= 600)
-                speedMeter.setValue(15);
+                speedMeter.setValue(3);
+            else if(speed == 150)
+                speedMeter.setValue(4);
         }
     }
 

@@ -104,6 +104,9 @@ public class GameScreen implements Screen{
             if(level.getLevelKey() == levelCounter){
                 spawnEnemy();
             }else if(levelCounter == 4){
+                //shuffle level patterns
+                //drain life
+                //increase enemy damage
                 levelCounter = 1;
             }else{
                 levelMarker = spawnMarker;
@@ -158,13 +161,14 @@ public class GameScreen implements Screen{
 
     private void spawnEnemy(){
         int[] levelDetails;
-        int type, spawnCount, pattern, monsterType;
+        int type, spawnCount, pattern, monsterType, distance;
         boolean enemyBridge = false, isVertical = false;
         levelDetails = level.getLevelPattern(level.getPattern());
         type = levelDetails[0];
         spawnCount = levelDetails[1];
         pattern = levelDetails[2];
         monsterType = levelDetails[3];
+        distance = levelDetails[5];
 
         for(int i = 0; i <= spawnCount - 1; i++){
             Vector2 spawnPosition;
@@ -179,14 +183,14 @@ public class GameScreen implements Screen{
             }
         }
 
-        if(levelDetails[1] > 1 && levelDetails[2] == 1) {
+        if(spawnCount > 1 && pattern == 1) {
             enemyBridge = true;
-        }else if(levelDetails[1] > 1 && levelDetails[2] == 2){
+        }else if(spawnCount > 1 && pattern == 2){
             isVertical = true;
         }
 
         level.updatePattern();
-        spawnMarkerDistance(levelDetails[1], enemyBridge, isVertical, levelDetails[5]);
+        spawnMarkerDistance(spawnCount, enemyBridge, isVertical, distance);
     }
 
 
@@ -201,6 +205,7 @@ public class GameScreen implements Screen{
                     enemy.checkCollision(runner);
                 } else {
                     enemy.isSpawned = false; //unrender enemy when off camera
+                    enemy.dispose();
                 }
             }
         }
@@ -295,6 +300,7 @@ public class GameScreen implements Screen{
                     game.batch.draw(powerUp.getTextureRegion(), powerUp.getPosition().x, powerUp.getPosition().y);
                 } else {
                     powerUp.isSpawned = false; //unrender powerup when off camera
+                    powerUp.dispose();
                 }
             }
         }
