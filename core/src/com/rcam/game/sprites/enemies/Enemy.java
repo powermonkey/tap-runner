@@ -136,14 +136,7 @@ public class Enemy {
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
                         runner.health -= getDamage();
                         touched = true;
-                        if (runner.getVelocity().x < 50)
-                            runner.setVelocityX(-50);
-                        else if (runner.getVelocity().x < 100)
-                            runner.setVelocityX(-100);
-                        else if (runner.getVelocity().x < 150)
-                            runner.setVelocityX(-150);
-//                        else if (runner.getVelocity().x < 75)
-//                            runner.setVelocityX(-75);
+                        runner.setVelocityX(runner.getVelocity().x - 50);
                 } else if (runner.health <= 0) {
                     runner.isDead = true;
                 }

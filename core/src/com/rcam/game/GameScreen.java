@@ -156,7 +156,7 @@ public class GameScreen implements Screen{
         hud.health.update();
         hud.distance.update();
         hud.render();
-        handleInput();
+//        handleInput();
     }
 
     private void spawnEnemy(){

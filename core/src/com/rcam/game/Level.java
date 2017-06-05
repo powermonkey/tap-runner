@@ -15,7 +15,7 @@ public class Level {
 
     public Level(){
         pattern = 0; //set first pattern(e.g. inside curly braces of levelOne) for level
-        levelKey = 4; //set first level
+        levelKey = 1; //set first level
 
         // 0 ground/flying
         // 1 spawn count
@@ -63,7 +63,7 @@ public class Level {
         levelFour = new int[][]{
                 {1,1,1,1,0,2},{2,1,1,1,3,2},{1,1,1,1,0,2},{2,1,1,1,3,2},{1,1,1,1,0,5},
                 {2,1,1,1,2,2},{2,1,1,1,3,2},{2,1,1,1,4,1},{1,1,1,1,0,2},{2,1,1,1,3,2},{2,1,1,1,2,5},
-                {1,1,1,1,0,2},{2,1,1,1,3,2},{1,1,1,1,0,5},
+                {1,1,1,1,0,3},{2,1,1,1,3,3},{1,1,1,1,0,5},
                 {2,3,4,1,2,5},{1,1,1,1,0,5},
                 {2,1,1,1,4,2},{2,1,1,1,3,1},{1,1,1,1,0,2},{2,1,1,1,4,5},
                 {1,2,1,1,0,4},{2,2,1,1,2,4},{2,2,1,1,4,5},
@@ -75,7 +75,7 @@ public class Level {
                 {2,2,2,1,0,1},{2,1,2,1,4,5},
 
         };
-        levelHolder = levelFour;
+        levelHolder = levelOne;
     }
 
     //TODO add level three

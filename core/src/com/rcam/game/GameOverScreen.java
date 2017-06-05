@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Runner;
@@ -25,12 +27,12 @@ public class GameOverScreen implements Screen{
     OrthographicCamera cam;
     Skin cleanCrispySkin,arcadeSkin;
     Stage stage;
-    Table table;
+    Table rootTable, table;
     Texture bg;
     Ground ground;
     TextButton newGameButton, exitButton;
     Runner runner;
-    Label distance, bestDistance, distanceLabel, bestDistanceLabel;
+    Label current, bestDistance, currentLabel, bestDistanceLabel;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -40,10 +42,14 @@ public class GameOverScreen implements Screen{
         cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
         arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
+        rootTable = new Table();
+        rootTable.setFillParent(true);
         table = new Table();
-        table.setFillParent(true);
-        distanceLabel = new Label("Distance:", arcadeSkin, "default");
-        distance = new Label(Integer.toString(runner.indicatePosition()) + " m", arcadeSkin, "default");
+
+        NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
+
+        currentLabel = new Label("Current:", arcadeSkin, "default");
+        current = new Label(Integer.toString(runner.indicatePosition()) + " m", arcadeSkin, "default");
         bestDistanceLabel = new Label("Best:", arcadeSkin, "default");
         bestDistance = new Label(Integer.toString(runner.getHighScore()) + " m", arcadeSkin, "default");
         newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
@@ -56,18 +62,24 @@ public class GameOverScreen implements Screen{
 
 //        stage.setDebugAll(true);
 
-        table.add(distanceLabel).expandX().center().right().uniform().padLeft(30);
-        table.add(distance).expandX().center().left().padLeft(10).uniform();
-        table.row();
         table.add(bestDistanceLabel).expandX().center().right().uniform().padLeft(30);
         table.add(bestDistance).expandX().center().left().padLeft(10).uniform();
         table.row();
-        table.add(newGameButton).colspan(2).width(150).height(50).expandX().padTop(40);
+        table.add(currentLabel).expandX().center().right().uniform().padLeft(30);
+        table.add(current).expandX().center().left().padLeft(10).uniform();
+        table.row();
+        table.add(newGameButton).colspan(2).width(150).height(50).expandX().padTop(20);
         table.row();
         table.add(exitButton).colspan(2).width(150).height(50).expandX();
         table.row();
-        table.center().center();
-        stage.addActor(table);
+        table.center().center().pad(20);
+        table.setBackground(new NinePatchDrawable(patch));
+
+        rootTable.add(table);
+        rootTable.row();
+        rootTable.center().center();
+
+        stage.addActor(rootTable);
 
     }
 
@@ -140,5 +152,7 @@ public class GameOverScreen implements Screen{
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();
         stage.dispose();
+        bg.dispose();
+        ground.dispose();
     }
 }

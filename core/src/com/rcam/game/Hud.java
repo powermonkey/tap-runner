@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -110,7 +111,6 @@ public class Hud {
         public Distance(final Runner runner){
             this.runr = runner;
             indicator = new Label(Integer.toString(runner.indicatePosition()) + " m", getArcadeSkin(), "default");
-//            indicator.setFontScale(1.5f);
         }
 
         public Label getIndicator(){
