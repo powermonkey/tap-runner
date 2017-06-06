@@ -30,7 +30,7 @@ public class GameOverScreen implements Screen{
     Table rootTable, table;
     Texture bg;
     Ground ground;
-    TextButton newGameButton, exitButton;
+    TextButton newGameButton, exitButton, settingsButton;
     Runner runner;
     Label current, bestDistance, currentLabel, bestDistanceLabel;
 
@@ -54,6 +54,8 @@ public class GameOverScreen implements Screen{
         bestDistance = new Label(Integer.toString(runner.getHighScore()) + " m", arcadeSkin, "default");
         newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
         newGameButtonListener(newGameButton, runner);
+        settingsButton = new TextButton("Settings", cleanCrispySkin, "default");
+        settingsButtonListener(settingsButton, runner);
         exitButton = new TextButton("Exit", cleanCrispySkin, "default");
         exitButtonListener(exitButton);
         bg = new Texture("bg.png");
@@ -69,6 +71,8 @@ public class GameOverScreen implements Screen{
         table.add(current).expandX().center().left().padLeft(10).uniform();
         table.row();
         table.add(newGameButton).colspan(2).width(150).height(50).expandX().padTop(20);
+        table.row();
+        table.add(settingsButton).colspan(2).width(150).height(50).expandX();
         table.row();
         table.add(exitButton).colspan(2).width(150).height(50).expandX();
         table.row();
@@ -88,6 +92,16 @@ public class GameOverScreen implements Screen{
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new GameScreen(game));
+                return true;
+            }
+        });
+    }
+
+    public void settingsButtonListener(TextButton button, final Runner runner){
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new SettingsScreen(game));
                 return true;
             }
         });

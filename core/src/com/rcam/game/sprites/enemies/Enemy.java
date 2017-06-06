@@ -1,5 +1,7 @@
 package com.rcam.game.sprites.enemies;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,7 +20,7 @@ public class Enemy {
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
     public final static float ON_TOP_OFFSET = 25;
-    public boolean touched, runnerOntop;
+    public boolean touched, runnerOntop, enemyTouchSlows, alwaysMaxSpeed;
     float damage;
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
@@ -28,6 +30,7 @@ public class Enemy {
     public boolean isSpawned, isBridge;
     public Animation<TextureRegion> animation;
     public float stateTime;
+    static Preferences prefs;
 
     public Enemy(){
 
@@ -48,6 +51,15 @@ public class Enemy {
         }else{
             isBridge = false;
         }
+
+        prefs = Gdx.app.getPreferences("TapRunner");
+
+        if (!prefs.contains("EnemyTouchSlows")) {
+            prefs.putBoolean("EnemyTouchSlows", false);
+            prefs.flush();
+        }
+        enemyTouchSlows = prefs.getBoolean("EnemyTouchSlows", false);
+        alwaysMaxSpeed = prefs.getBoolean("AlwaysMaxSpeed", false);
     }
 
     public void update(float dt){
@@ -136,7 +148,10 @@ public class Enemy {
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
                         runner.health -= getDamage();
                         touched = true;
-                        runner.setVelocityX(runner.getVelocity().x - 50);
+                        if(enemyTouchSlows) {
+                            runner.isTouched = true;
+                            runner.setVelocityX(runner.getVelocity().x - 50);
+                        }
                 } else if (runner.health <= 0) {
                     runner.isDead = true;
                 }

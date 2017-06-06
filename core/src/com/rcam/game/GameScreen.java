@@ -86,7 +86,8 @@ public class GameScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        cam.position.set(runner.getPosition().x + 100, 200, 0);
+//        cam.position.set(runner.getPosition().x + 100, 0, 0);
+        cam.position.x = runner.getPosition().x + 100;
         cam.update();
 
         game.batch.setProjectionMatrix(cam.combined);

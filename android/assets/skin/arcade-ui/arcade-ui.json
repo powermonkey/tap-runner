@@ -29,6 +29,9 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0
 		a: 1
 	}
+	gray: {
+		hex: "#5b5b5b"
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	button-red: {
@@ -163,6 +166,18 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 		name: joystick-ur
 		color: yellow
 	}
+	joystick-gray: {
+		name: joystick
+		color: gray
+	}
+	joystick-l-gray: {
+		name: joystick-l
+		color: gray
+	}
+	joystick-r-gray: {
+		name: joystick-r
+		color: gray
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
@@ -211,6 +226,9 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 	}
 	yellow: {
 		background: joystick-yellow
+	}
+	gray:{
+		background: joystick-gray
 	}
 }
 }

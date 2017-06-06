@@ -47,6 +47,7 @@ public class SettingsScreen implements Screen {
         cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
         arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
+        prefs = Gdx.app.getPreferences("TapRunner");
 
         gameModetable = new Table();
         buttonsTable = new Table();
@@ -65,6 +66,14 @@ public class SettingsScreen implements Screen {
         enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         okay = new TextButton("Okay", cleanCrispySkin, "default");
         okayButtonListener(okay);
+
+        if (prefs.contains("AlwaysMaxSpeed")) {
+            alwaysMaxSpeed.setChecked(prefs.getBoolean("AlwaysMaxSpeed"));
+        }
+
+        if (prefs.contains("EnemyTouchSlows")) {
+            enemyTouchSlows.setChecked(prefs.getBoolean("EnemyTouchSlows"));
+        }
 
         gameModeGroup = new ButtonGroup(normalMode, groundLavaMode);
         gameModeGroup.setChecked("Normal");
@@ -122,7 +131,7 @@ public class SettingsScreen implements Screen {
 
         stage.addActor(rootTable);
 
-        prefs = Gdx.app.getPreferences("TapRunner");
+
 
         //set default game mode to normal
         if (!prefs.contains("GameMode")) {
@@ -187,6 +196,10 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        cleanCrispySkin.dispose();
+        arcadeSkin.dispose();
+        stage.dispose();
+        bg.dispose();
+        ground.dispose();
     }
 }

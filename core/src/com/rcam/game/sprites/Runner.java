@@ -16,15 +16,13 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 public class Runner {
     static final float FRICTION = -1.5f;
     static final float GRAVITY = -15;
-//    static final float HIGH_SPEED = 200;
     static final float MAX_SPEED = 150;
-//    static final float SPEED_BUFFER = 600;
     static final float MAX_HEIGHT = 400;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
     long startingTime;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, alwaysMaxSpeed, isTouched;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     public float groundLevel, tempGround;
@@ -41,6 +39,7 @@ public class Runner {
         isMaintainHighSpeed = false;
         isOnGround = true;
         isFalling = false;
+        isTouched = false;
         isOnTopEnemy = false;
         bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
         intersectionBounds = new Rectangle(x, y - CONTACT_BOUNDS_OFFSET, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
@@ -52,6 +51,18 @@ public class Runner {
         if (!prefs.contains("BestDistance")) {
             prefs.putInteger("BestDistance", 0);
             prefs.flush();
+        }
+
+        if (!prefs.contains("AlwaysMaxSpeed")) {
+            prefs.putBoolean("AlwaysMaxSpeed", false);
+            prefs.flush();
+        }
+
+        alwaysMaxSpeed = prefs.getBoolean("AlwaysMaxSpeed");
+
+        //if always max speed
+        if(alwaysMaxSpeed ){
+            velocity.x = MAX_SPEED;
         }
     }
 
@@ -82,6 +93,7 @@ public class Runner {
         if(isDead){
             velocity.x = -600;
         }
+
         //maintain high speed
         speed.add(velocity.x, velocity.y);
 
@@ -180,6 +192,13 @@ public class Runner {
 //            velocity.x = 150;
 //        else
             velocity.x = 50;
+    }
+
+    public void slowDown(){
+//        if(isMaintainHighSpeed)
+//            velocity.x = 150;
+//        else
+        velocity.x = -50;
     }
 
     public void jump(){
