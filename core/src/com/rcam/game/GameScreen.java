@@ -30,7 +30,7 @@ public class GameScreen implements Screen{
     final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
     float spawnMarker = 50;
-    float levelMarker = 0;
+    float levelMarker = 50;
     float powerUpMarker = 350;
     float lastLavaPos = 0;
     float lastGroundPos = 0;
@@ -142,9 +142,15 @@ public class GameScreen implements Screen{
             for(Ground ground : grounds){
                 game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
             }
+
+            //render lava
+            for (Ground lava : lavas) {
+                game.batch.draw(lava.getLavaTexture(), lava.getPosLava().x, lava.getPosLava().y);
+            }
+
             //levelMarker changes when runner not moving in beginning
             //System.out.println(runner.getPosition().x +" "+ levelMarker + 30);
-            if(runner.getPosition().x > levelMarker + 30) {
+            if(runner.getPosition().x > levelMarker) {
                 noLava = true;
                 //set ground position
 
@@ -154,36 +160,28 @@ public class GameScreen implements Screen{
                     if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() ) {
                         ground.repositionGround(lastLavaPos + (groundCount * ground.getTexture().getWidth()) - ground.getTexture().getWidth() );
                         lastGroundPos = lastLavaPos + (groundCount * ground.getTexture().getWidth() - ground.getTexture().getWidth());
-//                        lastGroundPos = (lastLavaPos - ground.getTexture().getWidth() * 2) + (ground.getTexture().getWidth() * 2);
-//                        lastGroundPos = (lastLavaPos - ground.getTexture().getWidth() * 2);
                         groundCount = groundCount + 1;
-                        System.out.println(lastGroundPos+ " " +lastLavaPos + " " +ground.getPosGround().x);
+                System.out.println("ground lastGroundPos: " +lastGroundPos+ " lastLavaPos: " +lastLavaPos + " ground.getPosGround().x: " +ground.getPosGround().x+" levelMarker: "+levelMarker);
                     }
                 }
-                noLava = false;
-            }
+            }else{
+                int lavaCount = 0;
+                if(noLava){
+                    noLava = false;
+                    for (Ground lava : lavas) {
+                        lava.positionGroundX(lastGroundPos + lava.getLavaTexture().getWidth() + (lavaCount * lava.getLavaTexture().getWidth()));
+                        lavaCount = lavaCount + 1;
+                    }
+                }
 
-            for (Ground lava : lavas) {
-                game.batch.draw(lava.getLavaTexture(), lava.getPosLava().x, lava.getPosLava().y);
-            }
-
-            //set ground position
-            if(!noLava) {
                 for (Ground lava : lavas) {
                     if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getLavaTexture().getWidth()) {
-                        if(lastGroundPos > 0) {
-                            lava.repositionLava(lastLavaPos + (lava.getLavaTexture().getWidth() * 2 - lava.getLavaTexture().getWidth()));
-                            lastLavaPos = lastLavaPos + (lava.getLavaTexture().getWidth() * 2 - lava.getLavaTexture().getWidth()) ;
-                            System.out.println("> 0: "+ runner.getPosition().x+" "+lastGroundPos+ " " +lastLavaPos+ " "+(lava.getPosLava().x + (lava.getLavaTexture().getWidth() * 2)));
-                        }else if(lastGroundPos == 0){
-                            lava.repositionLava(lava.getPosLava().x + (lava.getLavaTexture().getWidth() * 2));
-                            lastLavaPos = lava.getPosLava().x + (lava.getLavaTexture().getWidth() * 2) ;
-                            System.out.println("= 0: "+lastGroundPos + " " + lastLavaPos+" "+levelMarker);
-                        }
+                        lava.repositionLava(lava.getPosLava().x + (lava.getLavaTexture().getWidth() * 2));
+                        lastLavaPos = lava.getPosLava().x + (lava.getLavaTexture().getWidth() * 2) ;
+                System.out.println("lava lastGroundPos: "+lastGroundPos + " lastLavaPos: " + lastLavaPos+" lava.getPosLava().x: "+lava.getPosLava().x+" levelMarker: "+levelMarker);
                     }
                 }
             }
-
         }else{
             //render ground
             for(Ground ground : grounds){
@@ -219,7 +217,8 @@ public class GameScreen implements Screen{
                 }
             }else {
                 if(timeSinceMillis(startingTime) > 2000) {
-                    game.setScreen(new GameOverScreen(this.game, runner));
+//                    game.setScreen(new GameOverScreen(this.game, runner));
+                    game.setScreen(new GameScreen(this.game));
                     dispose();
                 }
             }
@@ -230,7 +229,7 @@ public class GameScreen implements Screen{
         hud.health.update();
         hud.distance.update();
         hud.render();
-//        handleInput();
+        handleInput();
     }
 
     private void spawnEnemy(){

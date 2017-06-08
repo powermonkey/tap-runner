@@ -59,7 +59,7 @@ public class Hud {
 
         patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
 
-        Gdx.input.setInputProcessor(stage);
+//        Gdx.input.setInputProcessor(stage);
 
         distancetable.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
         distancetable.row();
