@@ -7,6 +7,7 @@ package com.rcam.game;
 public class Level {
     static int pattern; //the enemy pattern inside a level
     static int levelKey;
+    public boolean isEndOfLevel;
     public int[][] levelHolder; // holds current level
     public int[][] levelOne; //intro patterns
     public int[][] levelTwo; //combo patterns
@@ -25,12 +26,12 @@ public class Level {
         // 5 distance between enemies(0-false,1-same position, 2-one enemy distance...) needs to be multiplied by spawn count if spawn count greater than 1
 
         levelOne = new int[][]{
-                {1,1,1,1,0,0},{1,3,1,1,0,0},
-                {2,1,1,1,1,0},{2,1,1,1,0,0},
-                {2,3,1,1,1,0},{2,3,1,1,0,0},
-                {2,3,2,1,1,0},{2,3,2,1,0,0},
-                {2,3,3,1,1,0},{2,3,3,1,0,0},
-                {2,3,4,1,1,0},{2,3,4,1,0,0}
+                {1,1,1,1,0,5},{1,3,1,1,0,8},
+                {2,1,1,1,1,5},{2,1,1,1,0,5},
+                {2,3,1,1,1,8},{2,3,1,1,0,8},
+                {2,3,2,1,1,8},{2,3,2,1,0,8},
+                {2,3,3,1,1,8},{2,3,3,1,0,8},
+                {2,3,4,1,1,8},{2,3,4,1,0,8}
         };
         levelTwo = new int[][]{
                 {1,1,1,2,0,0},{2,1,1,2,1,0},{1,1,1,2,0,0},
@@ -95,8 +96,10 @@ public class Level {
                 levelKey = 1;
             }
             Level.pattern = 0;
+            isEndOfLevel = true;
         }else{
             Level.pattern += 1;
+            isEndOfLevel = false;
         }
     }
 

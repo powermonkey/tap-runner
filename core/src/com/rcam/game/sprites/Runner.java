@@ -22,7 +22,7 @@ public class Runner {
     public static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
     long startingTime;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, alwaysMaxSpeed, isTouched;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     public float groundLevel, tempGround;
@@ -51,18 +51,6 @@ public class Runner {
         if (!prefs.contains("BestDistance")) {
             prefs.putInteger("BestDistance", 0);
             prefs.flush();
-        }
-
-        if (!prefs.contains("AlwaysMaxSpeed")) {
-            prefs.putBoolean("AlwaysMaxSpeed", false);
-            prefs.flush();
-        }
-
-        alwaysMaxSpeed = prefs.getBoolean("AlwaysMaxSpeed");
-
-        //if always max speed
-        if(alwaysMaxSpeed ){
-            velocity.x = MAX_SPEED;
         }
     }
 

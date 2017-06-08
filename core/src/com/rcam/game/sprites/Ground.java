@@ -8,31 +8,56 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class Ground {
-    Texture groundTexture;
-    Vector2 posGround;
+    Texture groundTexture, lavaTexture;
+    Vector2 posGround, posLava;
+    Boolean isLava;
 
     public Ground(){
-        groundTexture = new Texture("ground.png");
+        groundTexture = new Texture("ground2.png");
     }
 
     public Ground(float x){
-        groundTexture = new Texture("ground.png");
+        groundTexture = new Texture("ground2.png");
         posGround = new Vector2(x, 0);
     }
 
-    public void reposition(float x){
+    public Ground(float x, boolean isLava){
+        if(isLava){
+            this.isLava = isLava;
+            lavaTexture = new Texture("lava2.png");
+            posLava = new Vector2(x, 0);
+        }
+    }
+
+    public void repositionGround(float x){
         posGround.set(x, 0);
+    }
+
+    public void repositionLava(float x){
+        posLava.set(x, 0);
     }
 
     public Texture getTexture() {
         return groundTexture;
     }
 
+    public Texture getLavaTexture() {
+        return lavaTexture;
+    }
+
     public Vector2 getPosGround() {
         return posGround;
     }
 
+    public Vector2 getPosLava() {
+        return posLava;
+    }
+
     public void dispose(){
         groundTexture.dispose();
+        //fix dispose error
+//        if(this.isLava) {
+//            lavaTexture.dispose();
+//        }
     }
 }

@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Ground;
-import com.rcam.game.sprites.Runner;
 
 /**
  * Created by Rod on 6/5/2017.
@@ -36,7 +34,7 @@ public class SettingsScreen implements Screen {
     Ground ground;
     Label gameModeLabel, otherOptionsLabel, settingsLabel;
     ButtonGroup gameModeGroup;
-    CheckBox normalMode, groundLavaMode, alwaysMaxSpeed, enemyTouchSlows;
+    CheckBox normalMode, groundLavaMode, enemyTouchSlows;
     TextButton okay;
     static Preferences prefs;
 
@@ -57,26 +55,21 @@ public class SettingsScreen implements Screen {
         rootTable.setFillParent(true);
 
         gameModeLabel = new Label("Game Mode", arcadeSkin, "default");
-        otherOptionsLabel = new Label("Options", arcadeSkin, "default");
-        settingsLabel = new Label("Settings", arcadeSkin, "default");
+        otherOptionsLabel = new Label("Extras", arcadeSkin, "default");
+        settingsLabel = new Label("Options", arcadeSkin, "default");
 
         normalMode = new CheckBox("Normal", cleanCrispySkin, "radio");
         groundLavaMode = new CheckBox("The Ground Is Lava", cleanCrispySkin, "radio");
-        alwaysMaxSpeed = new CheckBox("Always Max Speed", cleanCrispySkin, "default");
         enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         okay = new TextButton("Okay", cleanCrispySkin, "default");
         okayButtonListener(okay);
-
-        if (prefs.contains("AlwaysMaxSpeed")) {
-            alwaysMaxSpeed.setChecked(prefs.getBoolean("AlwaysMaxSpeed"));
-        }
 
         if (prefs.contains("EnemyTouchSlows")) {
             enemyTouchSlows.setChecked(prefs.getBoolean("EnemyTouchSlows"));
         }
 
         gameModeGroup = new ButtonGroup(normalMode, groundLavaMode);
-        gameModeGroup.setChecked("Normal");
+        gameModeGroup.setChecked(prefs.getString("GameMode"));
         gameModeGroup.setMaxCheckCount(1);
         gameModeGroup.setMinCheckCount(0);
         gameModeGroup.setUncheckLast(true);
@@ -107,8 +100,6 @@ public class SettingsScreen implements Screen {
 
         optionsTable.add(otherOptionsLabel).colspan(2).expandX().center().uniform();
         optionsTable.row();
-        optionsTable.add(alwaysMaxSpeed).colspan(2).expandX().center().uniform();
-        optionsTable.row();
         optionsTable.add(enemyTouchSlows).colspan(2).expandX().center().uniform();
         optionsTable.row();
         optionsTable.center().center().pad(20);
@@ -131,13 +122,6 @@ public class SettingsScreen implements Screen {
 
         stage.addActor(rootTable);
 
-
-
-        //set default game mode to normal
-        if (!prefs.contains("GameMode")) {
-            prefs.putString("GameMode", "Normal");
-            prefs.flush();
-        }
     }
 
     @Override
@@ -150,7 +134,6 @@ public class SettingsScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 prefs.putString("GameMode", gameModeGroup.getChecked().getChildren().get(1).toString().replace("Label: ", ""));
-                prefs.putBoolean("AlwaysMaxSpeed", alwaysMaxSpeed.isChecked());
                 prefs.putBoolean("EnemyTouchSlows", enemyTouchSlows.isChecked());
                 prefs.flush();
                 game.setScreen(new MainMenuScreen(game));

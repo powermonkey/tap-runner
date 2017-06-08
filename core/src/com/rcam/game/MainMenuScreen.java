@@ -1,6 +1,7 @@
 package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,6 +29,7 @@ public class MainMenuScreen implements Screen {
     Skin cleanCrispySkin;
     TextButton exit, newGame, settings;
     Stage stage;
+    static Preferences prefs;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
@@ -43,7 +45,7 @@ public class MainMenuScreen implements Screen {
         table = new Table();
 
         newGame = new TextButton("New Game", cleanCrispySkin, "default");
-        settings = new TextButton("Settings", cleanCrispySkin, "default");
+        settings = new TextButton("Options", cleanCrispySkin, "default");
         exit = new TextButton("Exit", cleanCrispySkin, "default");
 
         newGameButtonListener(newGame);
@@ -69,6 +71,12 @@ public class MainMenuScreen implements Screen {
 
         stage.addActor(rootTable);
 
+        prefs = Gdx.app.getPreferences("TapRunner");
+        //set default game mode to normal
+        if (!prefs.contains("GameMode")) {
+            prefs.putString("GameMode", "Normal");
+            prefs.flush();
+        }
 
     }
 

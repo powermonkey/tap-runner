@@ -1,6 +1,7 @@
 package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -31,13 +32,16 @@ public class GameScreen implements Screen{
     float spawnMarker = 50;
     float levelMarker = 0;
     float powerUpMarker = 350;
+    float lastLavaPos = 0;
+    float lastGroundPos = 0;
     static int levelCounter = 1;
+    static Preferences prefs;
+    boolean noLava = false;
 
     Texture bg;
     OrthographicCamera cam;
     Runner runner;
-    Array<Ground> grounds;
-    Ground grnd;
+    Array<Ground> grounds, lavas;
     Hud hud;
     Array<GroundEnemy> groundEnemies, newGroundEnemies;
     Array<FlyingEnemy> flyingEnemies, newFlyingEnemies;
@@ -47,6 +51,7 @@ public class GameScreen implements Screen{
     PowerUp powUp;
     long startingTime;
     KeyboardInput keys;
+    String gameMode;
 
 
     public GameScreen(final TapRunner gam){
@@ -54,11 +59,12 @@ public class GameScreen implements Screen{
         bg = new Texture("bg.png");
         runner = new Runner(STARTING_X, STARTING_Y);
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+//        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+        cam.setToOrtho(false, TapRunner.WIDTH, TapRunner.HEIGHT);
         cam.update();
 
-        grnd = new Ground();
         grounds = new Array<Ground>();
+        lavas = new Array<Ground>();
         groundEnemies = new Array<GroundEnemy>();
         newGroundEnemies = new Array<GroundEnemy>();
         flyingEnemies = new Array<FlyingEnemy>();
@@ -69,8 +75,22 @@ public class GameScreen implements Screen{
         rand = new Random();
         level = new Level();
 
+        prefs = Gdx.app.getPreferences("TapRunner");
+
+        if (!prefs.contains("GameMode")) {
+            prefs.putString("GameMode", "Normal");
+            prefs.flush();
+        }
+
+        gameMode = prefs.getString("GameMode");
+
+        if(gameMode.equals("The Ground Is Lava")){
+            lavas.add(new Ground(new Ground().getTexture().getWidth() * 2, gameMode.equals("The Ground Is Lava")));
+            lavas.add(new Ground(new Ground().getTexture().getWidth() * 3, gameMode.equals("The Ground Is Lava")));
+        }
+
         grounds.add(new Ground(0));
-        grounds.add(new Ground(grnd.getTexture().getWidth()));
+        grounds.add(new Ground(new Ground().getTexture().getWidth()));
 
         hud = new Hud(runner);
         keys = new KeyboardInput(runner);
@@ -86,7 +106,7 @@ public class GameScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        cam.position.set(runner.getPosition().x + 100, 0, 0);
+//        cam.position.set(runner.getPosition().x + 100, 200, 0);
         cam.position.x = runner.getPosition().x + 100;
         cam.update();
 
@@ -115,15 +135,68 @@ public class GameScreen implements Screen{
             }
         }
 
-        //render ground
-        for(Ground ground : grounds){
-            game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
-        }
 
-        //set ground position
-        for(Ground ground: grounds){
-            if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() )
-                ground.reposition(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
+        //render lava
+        if(gameMode.equals("The Ground Is Lava")){
+            //render ground
+            for(Ground ground : grounds){
+                game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
+            }
+            //levelMarker changes when runner not moving in beginning
+            //System.out.println(runner.getPosition().x +" "+ levelMarker + 30);
+            if(runner.getPosition().x > levelMarker + 30) {
+                noLava = true;
+                //set ground position
+
+                //ground.getPosGround().x is the same for each ground because of lastLavaPos, fix: remove cam.position condition?
+                int groundCount = 0;
+                for(Ground ground: grounds){
+                    if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() ) {
+                        ground.repositionGround(lastLavaPos + (groundCount * ground.getTexture().getWidth()) - ground.getTexture().getWidth() );
+                        lastGroundPos = lastLavaPos + (groundCount * ground.getTexture().getWidth() - ground.getTexture().getWidth());
+//                        lastGroundPos = (lastLavaPos - ground.getTexture().getWidth() * 2) + (ground.getTexture().getWidth() * 2);
+//                        lastGroundPos = (lastLavaPos - ground.getTexture().getWidth() * 2);
+                        groundCount = groundCount + 1;
+                        System.out.println(lastGroundPos+ " " +lastLavaPos + " " +ground.getPosGround().x);
+                    }
+                }
+                noLava = false;
+            }
+
+            for (Ground lava : lavas) {
+                game.batch.draw(lava.getLavaTexture(), lava.getPosLava().x, lava.getPosLava().y);
+            }
+
+            //set ground position
+            if(!noLava) {
+                for (Ground lava : lavas) {
+                    if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getLavaTexture().getWidth()) {
+                        if(lastGroundPos > 0) {
+                            lava.repositionLava(lastLavaPos + (lava.getLavaTexture().getWidth() * 2 - lava.getLavaTexture().getWidth()));
+                            lastLavaPos = lastLavaPos + (lava.getLavaTexture().getWidth() * 2 - lava.getLavaTexture().getWidth()) ;
+                            System.out.println("> 0: "+ runner.getPosition().x+" "+lastGroundPos+ " " +lastLavaPos+ " "+(lava.getPosLava().x + (lava.getLavaTexture().getWidth() * 2)));
+                        }else if(lastGroundPos == 0){
+                            lava.repositionLava(lava.getPosLava().x + (lava.getLavaTexture().getWidth() * 2));
+                            lastLavaPos = lava.getPosLava().x + (lava.getLavaTexture().getWidth() * 2) ;
+                            System.out.println("= 0: "+lastGroundPos + " " + lastLavaPos+" "+levelMarker);
+                        }
+                    }
+                }
+            }
+
+        }else{
+            //render ground
+            for(Ground ground : grounds){
+                game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
+            }
+
+            //set ground position
+            for(Ground ground: grounds){
+                if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() ) {
+                    ground.repositionGround(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
+                    System.out.println(ground.getPosGround().x);
+                }
+            }
         }
 
         //render enemy
@@ -335,7 +408,6 @@ public class GameScreen implements Screen{
     @Override
     public void dispose() {
         runner.dispose();
-        grnd.dispose();
         for(Ground ground : grounds)
             ground.dispose();
         hud.dispose();

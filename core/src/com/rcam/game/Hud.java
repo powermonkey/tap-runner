@@ -12,9 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -35,8 +33,9 @@ public class Hud {
     JumpButton jumpButton;
     Distance distance;
     Health health;
-    Label healthLabel, speedMeterLabel, distanceLabel;
+    Label healthLabel, speedMeterLabel;
     Drawable joystickGray, joystickLeft, joystickRight;
+    NinePatch patch;
 
     public Hud(final Runner runner){
         rootTable = new Table();
@@ -56,9 +55,9 @@ public class Hud {
         healthLabel = new Label("HEALTH", cleanCrispySkin);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
 
-        stage.setDebugAll(true);
+//        stage.setDebugAll(true);
 
-        NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
+        patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -69,15 +68,15 @@ public class Hud {
         indicatorstable.add(health.getHealthBar()).padRight(20);
         indicatorstable.row();
         indicatorstable.add(speedMeterLabel).width(80).padLeft(40);
-        indicatorstable.add(meter.getSpeedMeter()).padRight(20);
+        indicatorstable.add(meter.getSpeedMeter()).padBottom(10).padRight(20);
         indicatorstable.row();
-        indicatorstable.setBackground(new NinePatchDrawable(patch));
+//        indicatorstable.setBackground(new NinePatchDrawable(patch));
 
 //        table.add(runButton.getRunButton()).padLeft(20).expandX();
         controlsTable.add(joystick.getJoystick()).left().height(120).padTop(10).padLeft(30).expandX();
-        controlsTable.add(jumpButton.getJumpButton()).left().padLeft(30).width(50).expandX();
+        controlsTable.add(jumpButton.getJumpButton()).left().padLeft(10).expandX();
         controlsTable.row();
-        controlsTable.setBackground(new NinePatchDrawable(patch));
+//        controlsTable.setBackground(new NinePatchDrawable(patch));
 
         rootTable.add(distancetable).width(TapRunner.WIDTH).center().expand();
         rootTable.row();
@@ -173,7 +172,7 @@ public class Hud {
             joystick.addListener(new ClickListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if(runner.isOnGround) {
+//                    if(runner.isOnGround) {
                         if(joystick.getKnobPercentX() > 0){
                             joystickStyle.background = joystickRight;
                             joystick.setStyle(joystickStyle);
@@ -183,7 +182,7 @@ public class Hud {
                             joystick.setStyle(joystickStyle);
                             runner.slowDown();
                         }
-                    }
+//                    }
                     return true;
                 }
 

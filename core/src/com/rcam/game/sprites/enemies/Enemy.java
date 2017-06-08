@@ -19,8 +19,8 @@ public class Enemy {
     protected final static int FRAME_COLS = 4;
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
-    public final static float ON_TOP_OFFSET = 25;
-    public boolean touched, runnerOntop, enemyTouchSlows, alwaysMaxSpeed;
+    public final static float ON_TOP_OFFSET = 23;
+    public boolean touched, runnerOntop, enemyTouchSlows;
     float damage;
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
@@ -59,7 +59,6 @@ public class Enemy {
             prefs.flush();
         }
         enemyTouchSlows = prefs.getBoolean("EnemyTouchSlows", false);
-        alwaysMaxSpeed = prefs.getBoolean("AlwaysMaxSpeed", false);
     }
 
     public void update(float dt){
