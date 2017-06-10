@@ -19,7 +19,7 @@ public class Enemy {
     protected final static int FRAME_COLS = 4;
     protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
-    public final static float ON_TOP_OFFSET = 23;
+    public final static float ON_TOP_OFFSET = 25;
     public boolean touched, runnerOntop, enemyTouchSlows;
     float damage;
     public Vector2 position, velocity, speed;
@@ -27,7 +27,7 @@ public class Enemy {
     Texture enemyTexture;
     public float textureHeight, textureWidth;
 
-    public boolean isSpawned, isBridge;
+    public boolean isSpawned, isBridge, isLast;
     public Animation<TextureRegion> animation;
     public float stateTime;
     static Preferences prefs;
@@ -36,7 +36,7 @@ public class Enemy {
 
     }
 
-    public Enemy(Vector2 pos, int[] levelDetails){
+    public Enemy(Vector2 pos, int[] levelDetails, boolean last){
         velocity = new Vector2(SPEED, 0);
         speed = new Vector2(SPEED, 0);
         touched = false;
@@ -51,6 +51,8 @@ public class Enemy {
         }else{
             isBridge = false;
         }
+
+        isLast = last;
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -119,19 +121,21 @@ public class Enemy {
         return frames;
     }
 
-    public void checkCollision(Runner runner) {
+    public void checkCollision(Runner runner, boolean isLast) {
         Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
         Intersector.intersectRectangles(getOnTopBounds(), runner.getBounds(), intersectionOnTop);
 
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
         // make runner fall
         if(runner.isOnTopEnemy && runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
-            runnerOntop = false;
-            runner.tempGround = runner.groundLevel;
-            runner.isOnGround = false;
-            runner.isJumping = true;
-            runner.isOnTopEnemy = false;
-            runner.isFalling = true;
+//            if(isLast){
+                runnerOntop = false;
+                runner.tempGround = runner.groundLevel;
+//                runner.isOnGround = false;
+//            runner.isJumping = true;
+                runner.isOnTopEnemy = false;
+                runner.isFalling = true;
+//            }
         }
 
         if ( getBounds().overlaps(runner.getBounds()) ) {
@@ -143,6 +147,7 @@ public class Enemy {
                 runner.isOnTopEnemy = true;
                 runnerOntop = true;
                 runner.isFalling = false;
+//                System.out.println("on top");
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
                         runner.health -= getDamage();
