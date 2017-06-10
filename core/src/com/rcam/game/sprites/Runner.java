@@ -70,7 +70,7 @@ public class Runner {
 //        speed.add(FRICTION, 0);
 
        //make runner come back to the ground
-        speed.add(0, GRAVITY);
+            speed.add(0, GRAVITY);
 
        // make runner stop when reaching 0 speed
         if(speed.x < 0 ){
@@ -84,13 +84,17 @@ public class Runner {
 
         //maintain high speed
         speed.add(velocity.x, velocity.y);
-
+        System.out.println(speed.y);
         //determine falling state
         if(!isJumping) {
             velocity.y = 0;
         }
         if (speed.y < -15) {
             isFalling = true;
+        }
+        //minimum fall height before isOnGround is set; allows jumping when on top enemy bridge
+        if (speed.y <= -30) {
+            isOnGround = false;
         }
 
         //limit jump height
