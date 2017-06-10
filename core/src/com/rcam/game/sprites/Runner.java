@@ -84,7 +84,7 @@ public class Runner {
 
         //maintain high speed
         speed.add(velocity.x, velocity.y);
-        System.out.println(speed.y);
+        
         //determine falling state
         if(!isJumping) {
             velocity.y = 0;
