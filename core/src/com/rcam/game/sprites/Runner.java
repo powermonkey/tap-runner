@@ -84,7 +84,7 @@ public class Runner {
 
         //maintain high speed
         speed.add(velocity.x, velocity.y);
-        
+
         //determine falling state
         if(!isJumping) {
             velocity.y = 0;
@@ -222,20 +222,20 @@ public class Runner {
         return health;
     }
 
-    public void checkPowerUpCollision(PowerUp powerUp){
-        if(powerUp.getBounds().overlaps(getBounds()) ){
-            if(!(health >= STARTING_HEALTH) && !powerUp.touched && !isDead){
-                health += powerUp.getHeal();
-                powerUp.touched = true;
-                powerUp.isSpawned = false;
-                //TODO optional speed boost and double jump for power up
-//                velocity.x = 400; //activates speed boost and grants double jump for one use
-            }
-            powerUp.isSpawned = false;
-        }else{
-            powerUp.touched = false;
-        }
-    }
+//    public void checkPowerUpCollision(PowerUp powerUp){
+//        if(powerUp.getBounds().overlaps(getBounds()) ){
+//            if(!(health >= STARTING_HEALTH) && !powerUp.touched && !isDead){
+//                health += powerUp.getHeal();
+//                powerUp.touched = true;
+//                powerUp.isSpawned = false;
+//                //TODO optional speed boost and double jump for power up
+////                velocity.x = 400; //activates speed boost and grants double jump for one use
+//            }
+//            powerUp.isSpawned = false;
+//        }else{
+//            powerUp.touched = false;
+//        }
+//    }
 
     public int indicatePosition(){
         int s = Math.round(getPosition().x / 100);

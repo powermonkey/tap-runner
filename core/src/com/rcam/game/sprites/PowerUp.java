@@ -77,6 +77,21 @@ public class PowerUp {
         }
     }
 
+    public void checkPowerUpCollision(Runner runner){
+        if(getBounds().overlaps(runner.getBounds()) ){
+            if(!(runner.health >= runner.STARTING_HEALTH) && !touched && !runner.isDead){
+                runner.health += getHeal();
+                touched = true;
+                isSpawned = false;
+                //TODO optional speed boost and double jump for power up
+//                velocity.x = 400; //activates speed boost and grants double jump for one use
+            }
+            isSpawned = false;
+        }else{
+            touched = false;
+        }
+    }
+
     public TextureRegion getTextureRegion(){
         return textureRegions[powerUpType];
     }
