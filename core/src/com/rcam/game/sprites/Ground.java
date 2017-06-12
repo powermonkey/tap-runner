@@ -13,18 +13,18 @@ public class Ground {
     Boolean isLava;
 
     public Ground(){
-        groundTexture = new Texture("ground2.png");
+        groundTexture = new Texture("ground.png");
     }
 
     public Ground(float x){
-        groundTexture = new Texture("ground2.png");
+        groundTexture = new Texture("ground.png");
         posGround = new Vector2(x, 0);
     }
 
     public Ground(float x, boolean isLava){
         if(isLava){
             this.isLava = isLava;
-            lavaTexture = new Texture("lava2.png");
+            lavaTexture = new Texture("lava.png");
             posLava = new Vector2(x, 0);
         }
     }
