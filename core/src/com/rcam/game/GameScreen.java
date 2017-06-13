@@ -143,9 +143,6 @@ public class GameScreen implements Screen{
                 levelCounter ++;
             }
         }
-
-
-        //render lava
         if(gameMode.equals("The Ground Is Lava")){
             //render ground
             for(Ground ground : grounds){
@@ -155,6 +152,10 @@ public class GameScreen implements Screen{
             //render lava
             for (Lava lava : lavas) {
                 game.batch.draw(lava.getTexture(), lava.getPosLava().x, lava.getPosLava().y);
+                //update lava bounds
+                lava.update();
+                //check runner landing on lava
+                lava.checkLavaCollision(runner);
             }
 
             if(runner.getPosition().x >= (lavaMarker - (level.getLavaMarkerOffset() * lavaMarkerMutliplier))) {

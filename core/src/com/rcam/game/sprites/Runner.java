@@ -21,8 +21,8 @@ public class Runner {
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
-    long startingTime;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched;
+    private long startingTime, lavaDamageTimeStart;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     public float groundLevel, tempGround;
@@ -40,6 +40,7 @@ public class Runner {
         isOnGround = true;
         isFalling = false;
         isTouched = false;
+        invulnerable = false;
         isOnTopEnemy = false;
         bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
         intersectionBounds = new Rectangle(x, y - CONTACT_BOUNDS_OFFSET, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
@@ -72,6 +73,14 @@ public class Runner {
        //make runner come back to the ground
             speed.add(0, GRAVITY);
 
+        //remove invulnerability
+        if(invulnerable){
+            if(timeSinceMillis(lavaDamageTimeStart) > 1000){
+                lavaDamageTimeStart = millis();
+                invulnerable = false;
+            }
+        }
+
        // make runner stop when reaching 0 speed
         if(speed.x < 0 ){
             speed.x = 0;
@@ -96,7 +105,6 @@ public class Runner {
         if (speed.y <= -30) {
             isOnGround = false;
         }
-
         //limit jump height
         if(speed.y > MAX_HEIGHT){
             speed.y = MAX_HEIGHT;
@@ -179,17 +187,15 @@ public class Runner {
         velocity.y = y;
     }
 
+    public void setLavaDamageTimeStart(long time) {
+        lavaDamageTimeStart = time;
+    }
+
     public void run(){
-//        if(isMaintainHighSpeed)
-//            velocity.x = 150;
-//        else
             velocity.x = 50;
     }
 
     public void slowDown(){
-//        if(isMaintainHighSpeed)
-//            velocity.x = 150;
-//        else
         velocity.x = -50;
     }
 
@@ -200,9 +206,16 @@ public class Runner {
         isFalling = false;
     }
 
+    public void lavaBounce(){
+        velocity.y = 50;
+        isJumping = true;
+        isOnGround = false;
+        isFalling = false;
+    }
+
     public void death(){
         animatingDeath = true;
-        velocity.y = 100;
+        velocity.y = 40;
         velocity.x = 0;
         isJumping = true;
         isOnGround = false;
@@ -221,21 +234,6 @@ public class Runner {
     public float getHealth() {
         return health;
     }
-
-//    public void checkPowerUpCollision(PowerUp powerUp){
-//        if(powerUp.getBounds().overlaps(getBounds()) ){
-//            if(!(health >= STARTING_HEALTH) && !powerUp.touched && !isDead){
-//                health += powerUp.getHeal();
-//                powerUp.touched = true;
-//                powerUp.isSpawned = false;
-//                //TODO optional speed boost and double jump for power up
-////                velocity.x = 400; //activates speed boost and grants double jump for one use
-//            }
-//            powerUp.isSpawned = false;
-//        }else{
-//            powerUp.touched = false;
-//        }
-//    }
 
     public int indicatePosition(){
         int s = Math.round(getPosition().x / 100);
