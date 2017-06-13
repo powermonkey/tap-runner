@@ -23,14 +23,14 @@ public class KeyboardInput implements InputProcessor{
             }
         }
         if (keycode == Input.Keys.RIGHT) {
-            if (runner.isOnGround) {
+//            if (runner.isOnGround) {
                 runner.run();
-            }
+//            }
         }
         if (keycode == Input.Keys.LEFT) {
-            if (runner.isOnGround) {
+//            if (runner.isOnGround) {
                 runner.slowDown();
-            }
+//            }
         }
         return true;
     }
