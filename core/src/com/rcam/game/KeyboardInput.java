@@ -17,14 +17,19 @@ public class KeyboardInput implements InputProcessor{
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.DOWN) {
+        if (keycode == Input.Keys.UP) {
             if(runner.isOnGround) {
                 runner.jump();
             }
         }
-        if (keycode == Input.Keys.UP) {
+        if (keycode == Input.Keys.RIGHT) {
             if (runner.isOnGround) {
                 runner.run();
+            }
+        }
+        if (keycode == Input.Keys.LEFT) {
+            if (runner.isOnGround) {
+                runner.slowDown();
             }
         }
         return true;
