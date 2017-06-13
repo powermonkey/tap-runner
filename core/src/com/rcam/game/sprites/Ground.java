@@ -29,10 +29,6 @@ public class Ground {
         }
     }
 
-    public void positionGroundX(float x){
-        posLava.set(x, 0);
-    }
-
     public void repositionGround(float x){
         posGround.set(x, 0);
     }
