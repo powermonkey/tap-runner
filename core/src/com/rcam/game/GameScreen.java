@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.rcam.game.sprites.Ground;
+import com.rcam.game.sprites.Lava;
 import com.rcam.game.sprites.PowerUp;
 import com.rcam.game.sprites.Runner;
 import com.rcam.game.sprites.enemies.Enemy;
@@ -31,17 +32,19 @@ public class GameScreen implements Screen{
     final static float STARTING_Y = 112;
     float spawnMarker = 50;
     float levelMarker = 30;
+    float lavaMarker = 0;
+    float lavaMarkerMutliplier = 1;
     float powerUpMarker = 350;
     float lastLavaPos = 0;
     float lastGroundPos = 0;
     static int levelCounter = 1;
     static Preferences prefs;
-    boolean noLava = false;
 
     Texture bg;
     OrthographicCamera cam;
     Runner runner;
-    Array<Ground> grounds, lavas;
+    Array<Ground> grounds;
+    Array<Lava> lavas;
     Hud hud;
     Array<GroundEnemy> groundEnemies, newGroundEnemies;
     Array<FlyingEnemy> flyingEnemies, newFlyingEnemies;
@@ -53,7 +56,6 @@ public class GameScreen implements Screen{
     KeyboardInput keys;
     String gameMode;
 
-
     public GameScreen(final TapRunner gam){
         this.game = gam;
         bg = new Texture("bg.png");
@@ -64,7 +66,7 @@ public class GameScreen implements Screen{
         cam.update();
 
         grounds = new Array<Ground>();
-        lavas = new Array<Ground>();
+        lavas = new Array<Lava>();
         groundEnemies = new Array<GroundEnemy>();
         newGroundEnemies = new Array<GroundEnemy>();
         flyingEnemies = new Array<FlyingEnemy>();
@@ -85,10 +87,11 @@ public class GameScreen implements Screen{
         gameMode = prefs.getString("GameMode");
 
         if(gameMode.equals("The Ground Is Lava")){
-            lavas.add(new Ground(new Ground().getTexture().getWidth() * 2, gameMode.equals("The Ground Is Lava")));
-            lavas.add(new Ground(new Ground().getTexture().getWidth() * 3, gameMode.equals("The Ground Is Lava")));
+            lavas.add(new Lava(new Lava().getTexture().getWidth() * 2));
+            lavas.add(new Lava(new Lava().getTexture().getWidth() * 3));
         }
-        lastLavaPos = new Ground().getTexture().getWidth() * 4;
+
+        lastLavaPos = new Lava().getTexture().getWidth() * 4;
         grounds.add(new Ground(0));
         grounds.add(new Ground(new Ground().getTexture().getWidth()));
         lastGroundPos = new Ground().getTexture().getWidth();
@@ -130,8 +133,13 @@ public class GameScreen implements Screen{
                 //drain life
                 //increase enemy damage
                 levelCounter = 1;
+                levelMarker = spawnMarker;
+                lavaMarker = levelMarker;
+                lavaMarkerMutliplier = levelCounter;
             }else{
                 levelMarker = spawnMarker;
+                lavaMarker = levelMarker;
+                lavaMarkerMutliplier = levelCounter;
                 levelCounter ++;
             }
         }
@@ -145,11 +153,11 @@ public class GameScreen implements Screen{
             }
 
             //render lava
-            for (Ground lava : lavas) {
-                game.batch.draw(lava.getLavaTexture(), lava.getPosLava().x, lava.getPosLava().y);
+            for (Lava lava : lavas) {
+                game.batch.draw(lava.getTexture(), lava.getPosLava().x, lava.getPosLava().y);
             }
 
-            if(runner.getPosition().x >= levelMarker) {
+            if(runner.getPosition().x >= (lavaMarker - (level.getLavaMarkerOffset() * lavaMarkerMutliplier))) {
                 //set ground position
                 for(Ground ground: grounds){
                     if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth()) {
@@ -159,10 +167,10 @@ public class GameScreen implements Screen{
                     }
                 }
             }else{
-                for (Ground lava : lavas) {
-                    if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getLavaTexture().getWidth()) {
+                for (Lava lava : lavas) {
+                    if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTexture().getWidth()) {
                         lava.repositionLava(lastLavaPos);
-                        lastLavaPos = lava.getPosLava().x + (lava.getLavaTexture().getWidth()) ;
+                        lastLavaPos = lava.getPosLava().x + (lava.getTexture().getWidth()) ;
                     }
                 }
             }

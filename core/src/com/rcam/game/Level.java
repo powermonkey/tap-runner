@@ -7,6 +7,7 @@ package com.rcam.game;
 public class Level {
     static int pattern; //the enemy pattern inside a level
     static int levelKey;
+    private static float lavaMarkerOffset;
     public boolean isEndOfLevel;
     public int[][] levelHolder; // holds current level
     public int[][] levelOne; //intro patterns
@@ -45,7 +46,7 @@ public class Level {
                 {2,3,3,2,1,0},{2,3,4,2,0,0},{2,3,3,2,1,0},
                 {2,3,4,2,0,0},{2,3,3,2,1,0},{2,3,4,2,0,0},
                 {2,3,3,2,1,0},{2,3,4,2,0,0},{2,3,3,2,1,0},
-                {2,3,4,2,0,0},{2,3,3,2,1,0},{2,3,4,2,0,0}
+                {2,3,4,2,0,0},{2,3,3,2,1,0},{2,3,4,2,0,8}
         };
         levelThree = new int[][]{
                 {2,1,2,1,1,0},{1,1,1,2,0,0},{2,1,2,1,1,0},
@@ -62,6 +63,7 @@ public class Level {
 
         // /\/\, house, /\, \o , vo, _=, o/, -_, !,i,!,i
         levelFour = new int[][]{
+                {1,1,1,1,0,5},{2,1,1,1,1,5},{1,3,1,1,0,8},{2,3,1,1,1,8},
                 {1,1,1,1,0,2},{2,1,1,1,3,2},{1,1,1,1,0,2},{2,1,1,1,3,2},{1,1,1,1,0,5},
                 {2,1,1,1,2,2},{2,1,1,1,3,2},{2,1,1,1,4,1},{1,1,1,1,0,2},{2,1,1,1,3,2},{2,1,1,1,2,5},
                 {1,1,1,1,0,3},{2,1,1,1,3,3},{1,1,1,1,0,5},
@@ -79,18 +81,23 @@ public class Level {
         levelHolder = levelOne;
     }
 
+    //lavaMarkerOffset > move to the left
     public void updatePattern(){
         if(levelHolder.length - 1 == Level.pattern) {
             if(levelKey == 1) {
                 levelHolder = levelTwo;
+                lavaMarkerOffset = 900;
                 levelKey = 2;
             }else if(levelKey == 2) {
+                lavaMarkerOffset = 1050;
                 levelHolder = levelThree;
                 levelKey = 3;
             }else if(levelKey == 3){
+                lavaMarkerOffset = 600;
                 levelHolder = levelFour;
                 levelKey = 4;
             }else{
+                lavaMarkerOffset = 1000;
                 levelHolder = levelOne;
                 levelKey = 1;
             }
@@ -104,6 +111,10 @@ public class Level {
 
     public int getPattern(){
         return pattern;
+    }
+
+    public float getLavaMarkerOffset(){
+        return lavaMarkerOffset;
     }
 
     public int[] getLevelPattern(int pattern){
