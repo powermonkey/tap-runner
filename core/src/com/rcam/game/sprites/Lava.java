@@ -25,7 +25,7 @@ public class Lava {
     public Lava(float x){
         lavaTexture = new Texture("lava.png");
         posLava = new Vector2(x, 0);
-        damage = 5;
+        damage = 10;
         touched = false;
         bounds = new Rectangle(0, 0, lavaTexture.getWidth(), lavaTexture.getHeight() + BOUNDS_TOP_OFFSET);
     }
@@ -57,7 +57,7 @@ public class Lava {
                 touched = true;
                 runner.invulnerable = true;
                 runner.setLavaDamageTimeStart(millis());
-                runner.lavaBounce();
+//                runner.lavaBounce();
             } else if (runner.health <= 0) {
                 runner.isDead = true;
             }
