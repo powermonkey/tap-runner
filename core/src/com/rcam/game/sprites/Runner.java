@@ -15,9 +15,11 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 
 public class Runner {
     static final float FRICTION = -1.5f;
-    static final float GRAVITY = -15;
+//    static final float GRAVITY = -15;
+    static final float GRAVITY = -20;
     static final float MAX_SPEED = 150;
-    static final float MAX_HEIGHT = 400;
+//    static final float MAX_HEIGHT = 400;
+    static final float MAX_HEIGHT = 430;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
@@ -93,7 +95,6 @@ public class Runner {
 
         //maintain high speed
         speed.add(velocity.x, velocity.y);
-
         //determine falling state
         if(!isJumping) {
             velocity.y = 0;
@@ -102,7 +103,7 @@ public class Runner {
             isFalling = true;
         }
         //minimum fall height before isOnGround is set; allows jumping when on top enemy bridge
-        if (speed.y <= -30) {
+        if (speed.y <= -40) {
             isOnGround = false;
         }
         //limit jump height
@@ -200,7 +201,7 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 45;
+        velocity.y = 50;
         isJumping = true;
         isOnGround = false;
         isFalling = false;
