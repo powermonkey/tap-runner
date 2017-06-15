@@ -95,15 +95,16 @@ public class Runner {
 
         //maintain high speed
         speed.add(velocity.x, velocity.y);
+
         //determine falling state
         if(!isJumping) {
             velocity.y = 0;
         }
-        if (speed.y < -15) {
+        if (speed.y < -20) {
             isFalling = true;
         }
         //minimum fall height before isOnGround is set; allows jumping when on top enemy bridge
-        if (speed.y <= -40) {
+        if (speed.y <= -40) {;
             isOnGround = false;
         }
         //limit jump height
@@ -216,7 +217,7 @@ public class Runner {
 
     public void death(){
         animatingDeath = true;
-        velocity.y = 40;
+        velocity.y = 60;
         velocity.x = 0;
         isJumping = true;
         isOnGround = false;

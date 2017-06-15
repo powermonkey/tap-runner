@@ -55,9 +55,5 @@ public class Ground {
 
     public void dispose(){
         groundTexture.dispose();
-        //fix dispose error
-//        if(this.isLava) {
-//            lavaTexture.dispose();
-//        }
     }
 }

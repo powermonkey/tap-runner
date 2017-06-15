@@ -15,7 +15,7 @@ import com.rcam.game.sprites.Runner;
  */
 
 public class Enemy {
-    final static float SPEED = -50;
+    final static float SPEED = -30;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
     public final static float ON_TOP_OFFSET = 50;
     public boolean touched, runnerOntop, enemyTouchSlows;
@@ -118,18 +118,18 @@ public class Enemy {
     }
 
     public void checkCollision(Runner runner) {
-        Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
+//        Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
         Intersector.intersectRectangles(getOnTopBounds(), runner.getBounds(), intersectionOnTop);
-
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
+
         // make runner fall
         if(runner.isOnTopEnemy && runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
             runnerOntop = false;
             runner.tempGround = runner.groundLevel;
-//            runner.isOnGround = false;
-//            runner.isJumping = true;
             runner.isOnTopEnemy = false;
-            runner.isFalling = true;
+//            runner.isOnGround = false;
+//            runner.isJumping = false;
+//            runner.isFalling = true;
         }
 
         if ( getBounds().overlaps(runner.getBounds()) ) {
