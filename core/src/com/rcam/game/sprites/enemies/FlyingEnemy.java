@@ -10,9 +10,11 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class FlyingEnemy extends Enemy{
+    protected final static int FRAME_COLS = 8;
+    protected final static int FRAME_ROWS = 1;
     public FlyingEnemy(int monsterType){
         enemyTexture = new Texture(selectTexture(monsterType));
-        textureWidth = enemyTexture.getWidth() / super.FRAME_COLS;
+        textureWidth = enemyTexture.getWidth() / FRAME_COLS;
         textureHeight = enemyTexture.getHeight();
     }
 
@@ -20,9 +22,9 @@ public class FlyingEnemy extends Enemy{
         super(pos, levelDetails);
         damage = 8;
         enemyTexture = new Texture(selectTexture(monsterType));
-        animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
+        animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture, FRAME_ROWS, FRAME_COLS));
         stateTime = 0f;
-        textureWidth = enemyTexture.getWidth() / super.FRAME_COLS;
+        textureWidth = enemyTexture.getWidth() / FRAME_COLS;
         textureHeight = enemyTexture.getHeight();
         createBounds(pos.x, pos.y, textureWidth, textureHeight);
         createOnTopBounds(pos.x, pos.y, textureWidth, textureHeight);
@@ -44,10 +46,10 @@ public class FlyingEnemy extends Enemy{
 
         switch(monsterType){
             case 1:
-                textureString = "Flyball_32x32_purple_flyV2_L.png";
+                textureString = "Bird_32x32_blue_fly_L2.png";
                 break;
             case 2:
-                textureString = "Flyball_32x32_red_flyV2_L.png";
+                textureString = "Bird_32x32_red_fly_L2.png";
                 break;
             default:
                 throw new IllegalArgumentException("No such texture");

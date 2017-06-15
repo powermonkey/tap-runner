@@ -72,9 +72,9 @@ public class GameOverScreen implements Screen{
         table.row();
         table.add(newGameButton).colspan(2).width(150).height(50).expandX().padTop(20);
         table.row();
-        table.add(settingsButton).colspan(2).width(150).height(50).expandX();
+        table.add(settingsButton).colspan(2).width(150).height(50).expandX().padTop(30);
         table.row();
-        table.add(exitButton).colspan(2).width(150).height(50).expandX();
+        table.add(exitButton).colspan(2).width(150).height(50).expandX().padTop(30).padBottom(30);
         table.row();
         table.center().center().pad(20);
         table.setBackground(new NinePatchDrawable(patch));

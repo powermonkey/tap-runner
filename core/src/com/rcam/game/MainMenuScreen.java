@@ -56,11 +56,11 @@ public class MainMenuScreen implements Screen {
 
         NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
 
-        table.add(newGame).center().uniform().width(150).height(50).expandX().padTop(10).padBottom(10);
+        table.add(newGame).center().uniform().width(150).height(50).expandX().padTop(30);
         table.row();
-        table.add(settings).center().uniform().width(150).height(50).expandX().padTop(10).padBottom(10);
+        table.add(settings).center().uniform().width(150).height(50).expandX().padTop(30);
         table.row();
-        table.add(exit).center().uniform().width(150).height(50).expandX().padTop(10).padBottom(10);
+        table.add(exit).center().uniform().width(150).height(50).expandX().padTop(30).padBottom(30);
         table.row();
         table.center().center().pad(20);
         table.setBackground(new NinePatchDrawable(patch));

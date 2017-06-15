@@ -11,9 +11,11 @@ import com.rcam.game.sprites.Ground;
  */
 
 public class GroundEnemy extends Enemy{
+    protected final static int FRAME_COLS = 4;
+    protected final static int FRAME_ROWS = 1;
     public GroundEnemy(int type){
         enemyTexture = new Texture(selectTexture(type));
-        textureWidth = enemyTexture.getWidth() / super.FRAME_COLS;
+        textureWidth = enemyTexture.getWidth() / FRAME_COLS;
         textureHeight = enemyTexture.getHeight();
     }
 
@@ -21,9 +23,9 @@ public class GroundEnemy extends Enemy{
         super(pos, levelDetails);
         damage = 7;
         enemyTexture = new Texture(selectTexture(monsterType));
-        animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
+        animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture, FRAME_ROWS, FRAME_COLS));
         stateTime = 0f;
-        textureWidth = enemyTexture.getWidth() / super.FRAME_COLS;
+        textureWidth = enemyTexture.getWidth() / FRAME_COLS;
         textureHeight = enemyTexture.getHeight();
         createBounds(pos.x, pos.y, textureWidth, textureHeight);
         createOnTopBounds(pos.x, pos.y, textureWidth, textureHeight);
@@ -45,10 +47,10 @@ public class GroundEnemy extends Enemy{
 
         switch(monsterType){
             case 1:
-                textureString = "Jellymonster_32x32_green_move_L.png";
+                textureString = "Jellymonster_32x32_green_move_L2.png";
                 break;
             case 2:
-                textureString = "Jellymonster_32x32_yellow_move_L.png";
+                textureString = "Jellymonster_32x32_yellow_move_L2.png";
                 break;
             default:
                 throw new IllegalArgumentException("No such texture");

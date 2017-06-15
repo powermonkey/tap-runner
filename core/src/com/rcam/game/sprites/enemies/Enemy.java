@@ -16,8 +16,6 @@ import com.rcam.game.sprites.Runner;
 
 public class Enemy {
     final static float SPEED = -50;
-    protected final static int FRAME_COLS = 4;
-    protected final static int FRAME_ROWS = 1;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
     public final static float ON_TOP_OFFSET = 50;
     public boolean touched, runnerOntop, enemyTouchSlows;
@@ -103,15 +101,15 @@ public class Enemy {
         return textureWidth;
     }
 
-    public TextureRegion[] createFrames(Texture enemy){
+    public TextureRegion[] createFrames(Texture enemy, int rows, int cols){
         TextureRegion[][] tmp = TextureRegion.split(enemy,
-                enemy.getWidth() / FRAME_COLS,
-                enemy.getHeight() / FRAME_ROWS);
+                enemy.getWidth() / cols,
+                enemy.getHeight() / rows);
 
-        TextureRegion[] frames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        TextureRegion[] frames = new TextureRegion[cols * rows];
         int index = 0;
-        for (int i = 0; i < FRAME_ROWS; i++) {
-            for (int j = 0; j < FRAME_COLS; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 frames[index++] = tmp[i][j];
             }
         }
