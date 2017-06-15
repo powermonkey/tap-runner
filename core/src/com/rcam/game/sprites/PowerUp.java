@@ -29,7 +29,7 @@ public class PowerUp {
     }
 
     public PowerUp(float x, float y){
-        texture = new Texture("M484GoodFruits.png");
+        texture = new Texture("M484GoodFruits3.png");
         textureRegions = new TextureRegion[5];
         textureRegions[0] = new TextureRegion(texture, 7, 4, 25, 25); //cherry
         textureRegions[1] = new TextureRegion(texture, 63, 4, 25, 25); //grapes
