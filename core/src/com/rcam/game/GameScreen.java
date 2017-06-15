@@ -209,8 +209,8 @@ public class GameScreen implements Screen{
                 }
             }else {
                 if(timeSinceMillis(startingTime) > 2000) {
-//                    game.setScreen(new GameOverScreen(this.game, runner));
-                    game.setScreen(new GameScreen(this.game));
+                    game.setScreen(new GameOverScreen(this.game, runner));
+//                    game.setScreen(new GameScreen(this.game));
                     dispose();
                 }
             }
@@ -221,7 +221,7 @@ public class GameScreen implements Screen{
         hud.health.update();
         hud.distance.update();
         hud.render();
-        handleInput();
+//        handleInput();
     }
 
     private void spawnEnemy(){

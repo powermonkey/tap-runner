@@ -71,7 +71,7 @@ public class SettingsScreen implements Screen {
         gameModeGroup = new ButtonGroup(normalMode, groundLavaMode);
         gameModeGroup.setChecked(prefs.getString("GameMode"));
         gameModeGroup.setMaxCheckCount(1);
-        gameModeGroup.setMinCheckCount(0);
+        gameModeGroup.setMinCheckCount(1);
         gameModeGroup.setUncheckLast(true);
 
         bg = new Texture("bg.png");
@@ -91,16 +91,16 @@ public class SettingsScreen implements Screen {
         gameModetable.setBackground(new NinePatchDrawable(patch));
         gameModetable.add(gameModeLabel).colspan(2).expandX().center().uniform();
         gameModetable.row();
-        gameModetable.add(normalMode).colspan(2).expandX().center().uniform();
+        gameModetable.add(normalMode).colspan(2).padTop(20).expandX().center().uniform();
         gameModetable.row();
-        gameModetable.add(groundLavaMode).colspan(2).expandX().center().uniform();
+        gameModetable.add(groundLavaMode).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
         gameModetable.row();
         gameModetable.center().center().pad(20);
         gameModetable.setBackground(new NinePatchDrawable(patch));
 
         optionsTable.add(otherOptionsLabel).colspan(2).expandX().center().uniform();
         optionsTable.row();
-        optionsTable.add(enemyTouchSlows).colspan(2).expandX().center().uniform();
+        optionsTable.add(enemyTouchSlows).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
         optionsTable.row();
         optionsTable.center().center().pad(20);
         optionsTable.setBackground(new NinePatchDrawable(patch));

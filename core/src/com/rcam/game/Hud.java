@@ -3,19 +3,23 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Runner;
 
@@ -28,8 +32,9 @@ public class Hud {
     Table rootTable, indicatorstable, distancetable, controlsTable;
     Skin cleanCrispySkin, arcadeSkin;
     Meter meter;
-//    RunButton runButton;
-    Joystick joystick;
+    RunButton runButton;
+    SlowDownButton slowDownButton;
+//    Joystick joystick;
     JumpButton jumpButton;
     Distance distance;
     Health health;
@@ -49,8 +54,9 @@ public class Hud {
         meter = new Meter();
         distance = new Distance(runner);
         health = new Health(runner);
-//        runButton = new RunButton(runner);
-        joystick = new Joystick(runner);
+        runButton = new RunButton(runner);
+        slowDownButton = new SlowDownButton(runner);
+//        joystick = new Joystick(runner);
         jumpButton = new JumpButton(runner);
         healthLabel = new Label("HEALTH", cleanCrispySkin);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
@@ -59,7 +65,7 @@ public class Hud {
 
         patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
 
-//        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(stage);
 
         distancetable.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
         distancetable.row();
@@ -72,19 +78,22 @@ public class Hud {
         indicatorstable.row();
 //        indicatorstable.setBackground(new NinePatchDrawable(patch));
 
-//        table.add(runButton.getRunButton()).padLeft(20).expandX();
-        controlsTable.add(joystick.getJoystick()).left().height(120).padTop(10).padLeft(30).expandX();
-        controlsTable.add(jumpButton.getJumpButton()).left().padLeft(10).expandX();
+//        controlsTable.add(arrowLeft).padRight(-30).padTop(10);
+//        controlsTable.add(arrowRight).padLeft(90).padTop(10);
+//        controlsTable.add(joystick.getJoystick()).padLeft(-141).left().height(120).padTop(10);
+
+        controlsTable.add(slowDownButton.getSlowDownButton()).padLeft(20).padRight(20).left();
+        controlsTable.add(runButton.getRunButton()).left();
+        controlsTable.add(jumpButton.getJumpButton()).right().padRight(20).expandX();
         controlsTable.row();
-//        controlsTable.setBackground(new NinePatchDrawable(patch));
+        controlsTable.setBackground(new NinePatchDrawable(patch));
 
         rootTable.add(distancetable).width(TapRunner.WIDTH).center().expand();
         rootTable.row();
-        rootTable.add(indicatorstable).width(TapRunner.WIDTH - 120).bottom().expandX();
+        rootTable.add(indicatorstable).width(TapRunner.WIDTH).bottom().expandX();
         rootTable.row();
-        rootTable.add(controlsTable).width(TapRunner.WIDTH - 120).bottom().expandX();
+        rootTable.add(controlsTable).width(TapRunner.WIDTH).bottom().height(130).expandX();
         rootTable.row();
-//        rootTable.center().center();
         stage.addActor(rootTable);
     }
 
@@ -149,87 +158,134 @@ public class Hud {
         }
     }
 
-    public class Joystick{
-        Touchpad joystick;
-        Touchpad.TouchpadStyle joystickStyle;
-
-        public Joystick(Runner runner){
-            joystickGray = getArcadeSkin().getDrawable("joystick-gray");
-            joystickLeft = getArcadeSkin().getDrawable("joystick-l-gray");
-            joystickRight = getArcadeSkin().getDrawable("joystick-r-gray");
-
-            joystickStyle = new Touchpad.TouchpadStyle();
-
-            joystick = new Touchpad(10, getArcadeSkin());
-//            joystick.setBounds(15, 15, 200, 200);
-            joystick.setResetOnTouchUp(true);
-            joystickStyle.background = joystickGray;
-            joystick.setStyle(joystickStyle);
-            joystickListener(joystick, runner);
-        }
-
-        public void joystickListener(final Touchpad joystick, final Runner runner){
-            joystick.addListener(new ClickListener(){
-                @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                    if(runner.isOnGround) {
-                        if(joystick.getKnobPercentX() > 0){
-                            joystickStyle.background = joystickRight;
-                            joystick.setStyle(joystickStyle);
-                            runner.run();
-                        }else if((joystick.getKnobPercentX() < 0)){
-                            joystickStyle.background = joystickLeft;
-                            joystick.setStyle(joystickStyle);
-                            runner.slowDown();
-                        }
-//                    }
-                    return true;
-                }
-
-                @Override
-                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                    joystickStyle.background = joystickGray;
-                    joystick.setStyle(joystickStyle);
-                }
-            });
-        }
-
-        public Touchpad getJoystick(){
-            return joystick;
-        }
-
-    }
-
-//    public class RunButton{
-//        Button button;
+//    public class Joystick{
+//        Touchpad joystick;
+//        Touchpad.TouchpadStyle joystickStyle;
 //
-//        public RunButton(Runner runner){
-//            button = new Button(getArcadeSkin(), "yellow");
-//            button1Listener(button, runner);
+//        public Joystick(Runner runner){
+//            joystickGray = getArcadeSkin().getDrawable("joystick-gray");
+//            joystickGray.setMinWidth(132);
+//            joystickGray.setMinHeight(138);
+//            joystickLeft = getArcadeSkin().getDrawable("joystick-l-gray");
+//            joystickLeft.setMinWidth(132);
+//            joystickLeft.setMinHeight(138);
+//            joystickRight = getArcadeSkin().getDrawable("joystick-r-gray");
+//            joystickRight.setMinWidth(132);
+//            joystickRight.setMinHeight(138);
+//            joystickStyle = new Touchpad.TouchpadStyle();
+//
+//            joystick = new Touchpad(50, getArcadeSkin());
+//            joystick.setBounds(0, 0, 132, 138);
+//            System.out.println(joystick.getPrefWidth());
+//            System.out.println(joystick.getPrefHeight());
+//            joystick.setResetOnTouchUp(true);
+//            joystickStyle.background = joystickGray;
+//            joystick.setStyle(joystickStyle);
+//            joystickListener(joystick, runner);
 //        }
 //
-//        public void button1Listener(final Button button, final Runner runner){
-//            button.addListener(new InputListener(){
+//        public void joystickListener(final Touchpad joystick, final Runner runner){
+//            joystick.addListener(new ClickListener(){
 //                @Override
-//                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-//                    if(runner.isOnGround)
-//                        runner.run();
+//                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+////                    if(runner.isOnGround) {
+//                        if(joystick.getKnobPercentX() > 0){
+//                            joystickStyle.background = joystickRight;
+//                            joystick.setStyle(joystickStyle);
+//                            runner.run();
+//                        }else if((joystick.getKnobPercentX() < 0)){
+//                            joystickStyle.background = joystickLeft;
+//                            joystick.setStyle(joystickStyle);
+//                            runner.slowDown();
+//                        }
+////                    }
 //                    return true;
+//                }
+//
+//                @Override
+//                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+//                    joystickStyle.background = joystickGray;
+//                    joystick.setStyle(joystickStyle);
 //                }
 //            });
 //        }
 //
-//        public Button getRunButton(){
-//            return button;
+//        public Touchpad getJoystick(){
+//            return joystick;
 //        }
 //
 //    }
 
+    public class SlowDownButton{
+        ImageButton sbutton;
+        ImageButton.ImageButtonStyle sbuttonStyle;
+
+        public SlowDownButton(Runner runner){
+            sbutton = new ImageButton(getCleanCrispySkin(), "default");
+            sbuttonStyle = new ImageButton.ImageButtonStyle();
+            sbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
+            sbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
+            sbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
+            sbuttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("arrowLeft.png")));
+            sbuttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("arrowLeft.png")));
+            sbutton.setStyle(sbuttonStyle);
+            button1Listener(sbutton, runner);
+        }
+
+        public void button1Listener(final ImageButton button, final Runner runner){
+            button.addListener(new InputListener(){
+                @Override
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    runner.slowDown();
+                    return true;
+                }
+            });
+        }
+
+        public ImageButton getSlowDownButton(){
+            return sbutton;
+        }
+
+    }
+
+    public class RunButton{
+        ImageButton rbutton;
+        ImageButton.ImageButtonStyle rbuttonStyle;
+
+        public RunButton(Runner runner){
+            rbutton = new ImageButton(getCleanCrispySkin(), "default");
+            rbuttonStyle = new ImageButton.ImageButtonStyle();
+            rbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
+            rbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
+            rbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
+            rbuttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("arrowRight.png")));
+            rbuttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("arrowRight.png")));
+            rbutton.setStyle(rbuttonStyle);
+
+            button1Listener(rbutton, runner);
+        }
+
+        public void button1Listener(final ImageButton button, final Runner runner){
+            button.addListener(new InputListener(){
+                @Override
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    runner.run();
+                    return true;
+                }
+            });
+        }
+
+        public ImageButton getRunButton(){
+            return rbutton;
+        }
+
+    }
+
     public class JumpButton{
-        Button button;
+        TextButton button;
 
         public JumpButton(Runner runner){
-            button = new Button(getArcadeSkin(), "yellow");
+            button = new TextButton("JUMP", getCleanCrispySkin(), "arcade");
             buttonListener(button, runner);
         }
 
@@ -250,7 +306,7 @@ public class Hud {
             });
         }
 
-        public Button getJumpButton(){
+        public TextButton getJumpButton(){
             return button;
         }
 
