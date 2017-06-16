@@ -46,8 +46,8 @@ public class GameScreen implements Screen{
     Array<Ground> grounds;
     Array<Lava> lavas;
     Hud hud;
-    Array<GroundEnemy> groundEnemies, newGroundEnemies;
-    Array<FlyingEnemy> flyingEnemies, newFlyingEnemies;
+    Array<GroundEnemy> groundEnemies;
+    Array<FlyingEnemy> flyingEnemies;
     Random rand;
     Level level;
     Array<PowerUp> powerUps, newPowerUps;
@@ -68,9 +68,7 @@ public class GameScreen implements Screen{
         grounds = new Array<Ground>();
         lavas = new Array<Lava>();
         groundEnemies = new Array<GroundEnemy>();
-        newGroundEnemies = new Array<GroundEnemy>();
         flyingEnemies = new Array<FlyingEnemy>();
-        newFlyingEnemies = new Array<FlyingEnemy>();
         powerUps = new Array<PowerUp>();
         newPowerUps = new Array<PowerUp>();
         powUp = new PowerUp();
@@ -410,12 +408,6 @@ public class GameScreen implements Screen{
             flyingEnemy.dispose();
         for(PowerUp pUp : powerUps){
             pUp.dispose();
-        }
-        for(GroundEnemy newGroundEnemy : newGroundEnemies){
-            newGroundEnemy.dispose();
-        }
-        for(FlyingEnemy newFlyingEnemy : newFlyingEnemies){
-            newFlyingEnemy.dispose();
         }
         for(PowerUp newPowerUp : newPowerUps){
             newPowerUp.dispose();

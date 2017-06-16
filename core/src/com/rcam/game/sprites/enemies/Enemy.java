@@ -25,7 +25,7 @@ public class Enemy {
     Texture enemyTexture;
     public float textureHeight, textureWidth;
 
-    public boolean isSpawned, isBridge;
+    public boolean isSpawned;
     public Animation<TextureRegion> animation;
     public float stateTime;
     static Preferences prefs;
@@ -44,11 +44,6 @@ public class Enemy {
         runnerOntop = false;
         position = new Vector2(pos.x, pos.y);
         isSpawned = true;
-        if(levelDetails[1] > 1 && levelDetails[2] == 1) {
-            isBridge = true;
-        }else{
-            isBridge = false;
-        }
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -144,7 +139,7 @@ public class Enemy {
                 runner.isFalling = false;
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0 && !runner.invulnerable) {
-                        runner.health -= getDamage();
+//                        runner.health -= getDamage();
                         touched = true;
                         if(enemyTouchSlows) {
                             runner.isTouched = true;

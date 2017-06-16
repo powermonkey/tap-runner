@@ -32,17 +32,6 @@ public class GroundEnemy extends Enemy{
         createOnTopBounds(pos.x, pos.y, textureWidth, textureHeight);
     }
 
-//    public GroundEnemy(int type, int spawnCount){ // enemy bridge
-//        super();
-//        damage = 7 * (spawnCount / 2);
-//        enemyTexture = new Texture(selectTexture(type));
-//        enemyTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-//        textureWidth = (enemyTexture.getWidth() / super.FRAME_COLS) * spawnCount;
-//        textureHeight = enemyTexture.getHeight();
-//        animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture));
-//        stateTime = 0f;
-//    }
-
     private String selectTexture(int monsterType){
         String textureString;
 
