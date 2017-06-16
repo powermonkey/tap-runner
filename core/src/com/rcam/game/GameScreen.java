@@ -101,7 +101,7 @@ public class GameScreen implements Screen{
 
     }
 
-    public void handleInput() {
+    public void handleKeyboardInput() {
         Gdx.input.setInputProcessor(keys);
     }
 
@@ -221,7 +221,7 @@ public class GameScreen implements Screen{
         hud.health.update();
         hud.distance.update();
         hud.render();
-//        handleInput();
+//        handleKeyboardInput();
     }
 
     private void spawnEnemy(){

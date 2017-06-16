@@ -15,7 +15,7 @@ import com.rcam.game.sprites.Runner;
  */
 
 public class Enemy {
-    final static float SPEED = -30;
+    final static float SPEED = -20;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
     public final static float ON_TOP_OFFSET = 50;
     public boolean touched, runnerOntop, enemyTouchSlows;
@@ -70,7 +70,7 @@ public class Enemy {
     }
 
     public void createOnTopBounds(float x, float y, float width, float height){
-        onTopBounds = new Rectangle(x, y + ON_TOP_OFFSET, width, height + ON_TOP_OFFSET);
+        onTopBounds = new Rectangle(x, y + ON_TOP_OFFSET , width, height + ON_TOP_OFFSET );
     }
 
     public void setPosition(Vector2 position){
@@ -129,7 +129,7 @@ public class Enemy {
             runner.isOnTopEnemy = false;
 //            runner.isOnGround = false;
 //            runner.isJumping = false;
-//            runner.isFalling = true;
+            runner.isFalling = true;
         }
 
         if ( getBounds().overlaps(runner.getBounds()) ) {

@@ -86,18 +86,18 @@ public class Level {
         if(levelHolder.length - 1 == Level.pattern) {
             if(levelKey == 1) {
                 levelHolder = levelTwo;
-                lavaMarkerOffset = 900;
+                lavaMarkerOffset = 700;
                 levelKey = 2;
             }else if(levelKey == 2) {
-                lavaMarkerOffset = 1050;
+                lavaMarkerOffset = 580;
                 levelHolder = levelThree;
                 levelKey = 3;
             }else if(levelKey == 3){
-                lavaMarkerOffset = 600;
+                lavaMarkerOffset = 350;
                 levelHolder = levelFour;
                 levelKey = 4;
             }else{
-                lavaMarkerOffset = 1000;
+                lavaMarkerOffset = 680;
                 levelHolder = levelOne;
                 levelKey = 1;
             }

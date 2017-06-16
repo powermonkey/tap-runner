@@ -12,10 +12,11 @@ import com.badlogic.gdx.math.Vector2;
 public class FlyingEnemy extends Enemy{
     protected final static int FRAME_COLS = 8;
     protected final static int FRAME_ROWS = 1;
+    public final static float ON_TOP_CONTACT_OFFSET = 5;
     public FlyingEnemy(int monsterType){
         enemyTexture = new Texture(selectTexture(monsterType));
         textureWidth = enemyTexture.getWidth() / FRAME_COLS;
-        textureHeight = enemyTexture.getHeight();
+        textureHeight = enemyTexture.getHeight() - ON_TOP_CONTACT_OFFSET;
     }
 
     public FlyingEnemy(int monsterType, Vector2 pos, int[] levelDetails){
@@ -25,7 +26,7 @@ public class FlyingEnemy extends Enemy{
         animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture, FRAME_ROWS, FRAME_COLS));
         stateTime = 0f;
         textureWidth = enemyTexture.getWidth() / FRAME_COLS;
-        textureHeight = enemyTexture.getHeight();
+        textureHeight = enemyTexture.getHeight() - ON_TOP_CONTACT_OFFSET;
         createBounds(pos.x, pos.y, textureWidth, textureHeight);
         createOnTopBounds(pos.x, pos.y, textureWidth, textureHeight);
     }
