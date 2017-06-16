@@ -13,6 +13,7 @@ public class FlyingEnemy extends Enemy{
     protected final static int FRAME_COLS = 8;
     protected final static int FRAME_ROWS = 1;
     public final static float ON_TOP_CONTACT_OFFSET = 5;
+
     public FlyingEnemy(int monsterType){
         enemyTexture = new Texture(selectTexture(monsterType));
         textureWidth = enemyTexture.getWidth() / FRAME_COLS;

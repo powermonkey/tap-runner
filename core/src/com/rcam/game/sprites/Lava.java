@@ -53,7 +53,7 @@ public class Lava {
     public void checkLavaCollision(Runner runner){
         if(getBounds().overlaps(runner.getBounds())){
             if(runner.health > 0 && !touched && !runner.isDead && runner.isOnGround){
-//                runner.health -= getDamage();
+                runner.health -= getDamage();
                 touched = true;
                 runner.invulnerable = true;
                 runner.setLavaDamageTimeStart(millis());

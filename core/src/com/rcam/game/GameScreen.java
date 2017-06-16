@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Lava;
 import com.rcam.game.sprites.PowerUp;
@@ -50,7 +51,8 @@ public class GameScreen implements Screen{
     Array<FlyingEnemy> flyingEnemies;
     Random rand;
     Level level;
-    Array<PowerUp> powerUps, newPowerUps;
+    final Array<PowerUp> powerUps;
+    final Pool<PowerUp> powerUpPool;
     PowerUp powUp;
     long startingTime;
     KeyboardInput keys;
@@ -62,15 +64,21 @@ public class GameScreen implements Screen{
         runner = new Runner(STARTING_X, STARTING_Y);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
-//        cam.setToOrtho(false, TapRunner.WIDTH, TapRunner.HEIGHT);
         cam.update();
 
         grounds = new Array<Ground>();
         lavas = new Array<Lava>();
         groundEnemies = new Array<GroundEnemy>();
         flyingEnemies = new Array<FlyingEnemy>();
+
         powerUps = new Array<PowerUp>();
-        newPowerUps = new Array<PowerUp>();
+        powerUpPool = new Pool<PowerUp>() {
+            @Override
+            protected PowerUp newObject() {
+                return new PowerUp();
+            }
+        };
+
         powUp = new PowerUp();
         rand = new Random();
         level = new Level();
@@ -108,7 +116,6 @@ public class GameScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        cam.position.set(runner.getPosition().x + 100, 200, 0);
         cam.position.x = runner.getPosition().x + 100;
         cam.update();
 
@@ -340,10 +347,11 @@ public class GameScreen implements Screen{
         int yFluc = rand.nextInt(130) + 1;
         int ctr = 1;
         for(int i = 1; i <= num; i++){
-            Vector2 spawnPowerUpPosition = new Vector2();
-            spawnPowerUpPosition.x = (powerUpMarker + powUp.SPAWN_OFFSET_X + (ctr * 25)); //not grouped
-            spawnPowerUpPosition.y = (STARTING_Y + (yFluc > 32 ? yFluc : 0)); //default y
-            powerUps.add(new PowerUp(spawnPowerUpPosition.x, spawnPowerUpPosition.y));
+            float x = (powerUpMarker + powUp.SPAWN_OFFSET_X + (ctr * 25));
+            float y = (STARTING_Y + (yFluc > 32 ? yFluc : 0));
+            PowerUp powerUpItem = powerUpPool.obtain();
+            powerUpItem.init(x,y);
+            powerUps.add(powerUpItem);
             ctr += 1;
         }
 
@@ -360,13 +368,21 @@ public class GameScreen implements Screen{
         for(PowerUp powerUp : powerUps){
             if(powerUp.isSpawned) {
                 if (!(cam.position.x - (cam.viewportWidth / 2) > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth())) {
-//                    runner.checkPowerUpCollision(powerUp);
                     powerUp.checkPowerUpCollision(runner);
                     game.batch.draw(powerUp.getTextureRegion(), powerUp.getPosition().x, powerUp.getPosition().y);
                 } else {
                     powerUp.isSpawned = false; //unrender powerup when off camera
-                    powerUp.dispose();
                 }
+            }
+        }
+
+        PowerUp powerUpItem;
+        int len = powerUps.size;
+        for(int i = len; --i >= 0;){
+            powerUpItem = powerUps.get(i);
+            if(powerUpItem.isSpawned == false){
+                powerUps.removeIndex(i);
+                powerUpPool.free(powerUpItem);
             }
         }
     }
@@ -408,9 +424,6 @@ public class GameScreen implements Screen{
             flyingEnemy.dispose();
         for(PowerUp pUp : powerUps){
             pUp.dispose();
-        }
-        for(PowerUp newPowerUp : newPowerUps){
-            newPowerUp.dispose();
         }
     }
 }

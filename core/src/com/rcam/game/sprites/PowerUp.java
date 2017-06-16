@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool;
 
 import java.util.Random;
 
@@ -11,7 +12,7 @@ import java.util.Random;
  * Created by Rod on 4/30/2017.
  */
 
-public class PowerUp {
+public class PowerUp implements Pool.Poolable{
     protected Rectangle bounds;
     public Vector2 position;
     Texture texture;
@@ -24,23 +25,29 @@ public class PowerUp {
     int powerUpType;
     Random rand;
 
-    public PowerUp(){
+//    public PowerUp(){
+//
+//    }
 
+    public PowerUp(){
+        this.texture = new Texture("M484GoodFruits3.png");
+        this.textureRegions = new TextureRegion[5];
+        this.textureRegions[0] = new TextureRegion(texture, 7, 4, 25, 25); //cherry
+        this.textureRegions[1] = new TextureRegion(texture, 63, 4, 25, 25); //grapes
+        this.textureRegions[2] = new TextureRegion(texture, 34, 91, 25, 25); //orange
+        this.textureRegions[3] = new TextureRegion(texture, 144, 91, 25, 25); //banana
+        this.textureRegions[4] = new TextureRegion(texture, 92, 60, 25, 25); //apple
+        this.position = new Vector2();
+        this.touched = false;
+        this.isSpawned = true;
     }
 
-    public PowerUp(float x, float y){
-        texture = new Texture("M484GoodFruits3.png");
-        textureRegions = new TextureRegion[5];
-        textureRegions[0] = new TextureRegion(texture, 7, 4, 25, 25); //cherry
-        textureRegions[1] = new TextureRegion(texture, 63, 4, 25, 25); //grapes
-        textureRegions[2] = new TextureRegion(texture, 34, 91, 25, 25); //orange
-        textureRegions[3] = new TextureRegion(texture, 144, 91, 25, 25); //banana
-        textureRegions[4] = new TextureRegion(texture, 92, 60, 25, 25); //apple
+    public void init(float x, float y){
         touched = false;
-        randomPowerUp();
-        position = new Vector2(x, y);
-        createBounds(x, y, 25, 25);
         isSpawned = true;
+        randomPowerUp();
+        position.set(x, y);
+        createBounds(x, y, 25, 25);
     }
 
     public void createBounds(float x, float y , float width, float height){
@@ -102,5 +109,14 @@ public class PowerUp {
 
     public void dispose(){
         texture.dispose();
+    }
+
+    @Override
+    public void reset() {
+        isSpawned = false;
+        touched = false;
+        position.set(0,0);
+        bounds.set(0,0,0,0);
+        powerUpType = 0;
     }
 }
