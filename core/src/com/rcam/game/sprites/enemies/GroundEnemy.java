@@ -50,5 +50,10 @@ public class GroundEnemy extends Enemy implements Pool.Poolable{
         super.runnerOntop = false;
         super.position = new Vector2(0, 0);
         super.isSpawned = false;
+        super.bounds.set(0,0,0,0);
+        super.onTopBounds.set(0,0,0,0);
+        super.intersection.set(0,0,0,0);
+        super.intersectionBounds.set(0,0,0,0);
+        super.intersectionOnTop.set(0,0,0,0);
     }
 }

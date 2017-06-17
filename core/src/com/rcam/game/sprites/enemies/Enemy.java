@@ -130,7 +130,7 @@ public class Enemy {
             runner.tempGround = runner.groundLevel;
             runner.isOnTopEnemy = false;
 //            runner.isOnGround = false;
-//            runner.isJumping = false;
+//            runner.isJumping = true;
             runner.isFalling = true;
         }
 
@@ -146,7 +146,7 @@ public class Enemy {
                 runner.isFalling = false;
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0 && !runner.invulnerable) {
-                        runner.health -= getDamage();
+//                        runner.health -= getDamage();
                         touched = true;
                         if(enemyTouchSlows) {
                             runner.isTouched = true;
