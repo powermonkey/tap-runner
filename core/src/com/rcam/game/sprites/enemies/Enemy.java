@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.rcam.game.sprites.Runner;
 
+import java.util.Vector;
+
 /**
  * Created by Rod on 4/18/2017.
  */
@@ -22,28 +24,24 @@ public class Enemy {
     float damage;
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
-    Texture enemyTexture;
+    public Texture[] enemyTexture;
     public float textureHeight, textureWidth;
-
     public boolean isSpawned;
     public Animation<TextureRegion> animation;
     public float stateTime;
     static Preferences prefs;
 
     public Enemy(){
-
-    }
-
-    public Enemy(Vector2 pos, int[] levelDetails){
-        velocity = new Vector2(SPEED, 0);
-        speed = new Vector2(SPEED, 0);
-        touched = false;
-        intersection = new Rectangle();
-        intersectionBounds = new Rectangle();
-        intersectionOnTop = new Rectangle();
-        runnerOntop = false;
-        position = new Vector2(pos.x, pos.y);
-        isSpawned = true;
+        this.enemyTexture = new Texture[2];
+        this.velocity = new Vector2();
+        this.speed = new Vector2();
+        this.touched = false;
+        this.intersection = new Rectangle();
+        this.intersectionBounds = new Rectangle();
+        this.intersectionOnTop = new Rectangle();
+        this.runnerOntop = false;
+        this.position = new Vector2();
+        this.isSpawned = true;
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -52,6 +50,15 @@ public class Enemy {
             prefs.flush();
         }
         enemyTouchSlows = prefs.getBoolean("EnemyTouchSlows", false);
+    }
+
+    public void init(int type, Vector2 pos){
+        velocity.set(SPEED, 0);
+        speed.set(SPEED, 0);
+        touched = false;
+        runnerOntop = false;
+        position = new Vector2(pos.x, pos.y);
+        isSpawned = true;
     }
 
     public void update(float dt){
@@ -155,6 +162,7 @@ public class Enemy {
     }
 
     public void dispose(){
-        enemyTexture.dispose();
+        enemyTexture[0].dispose();
+        enemyTexture[1].dispose();
     }
 }

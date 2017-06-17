@@ -19,7 +19,7 @@ public class Runner {
     static final float GRAVITY = -20;
     static final float MAX_SPEED = 150;
 //    static final float MAX_HEIGHT = 400;
-    static final float MAX_HEIGHT = 430;
+    static final float MAX_HEIGHT = 465;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
@@ -202,7 +202,7 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 50;
+        velocity.y = 60;
         isJumping = true;
         isOnGround = false;
         isFalling = false;

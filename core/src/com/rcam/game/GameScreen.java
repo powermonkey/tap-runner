@@ -47,8 +47,10 @@ public class GameScreen implements Screen{
     Array<Ground> grounds;
     Array<Lava> lavas;
     Hud hud;
-    Array<GroundEnemy> groundEnemies;
-    Array<FlyingEnemy> flyingEnemies;
+    final Array<GroundEnemy> activeGroundEnemies;
+    final Array<FlyingEnemy> activeFlyingEnemies;
+    final Pool<GroundEnemy> groundEnemyPool;
+    final Pool<FlyingEnemy> flyingEnemyPool;
     Random rand;
     Level level;
     final Array<PowerUp> powerUps;
@@ -57,6 +59,9 @@ public class GameScreen implements Screen{
     long startingTime;
     KeyboardInput keys;
     String gameMode;
+    GroundEnemy groundEnemyOject;
+    FlyingEnemy flyingEnemyOject;
+    Enemy enemyObject;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -68,8 +73,27 @@ public class GameScreen implements Screen{
 
         grounds = new Array<Ground>();
         lavas = new Array<Lava>();
-        groundEnemies = new Array<GroundEnemy>();
-        flyingEnemies = new Array<FlyingEnemy>();
+
+        enemyObject = new Enemy();
+        groundEnemyOject = new GroundEnemy();
+        flyingEnemyOject = new FlyingEnemy();
+
+        activeGroundEnemies = new Array<GroundEnemy>();
+        activeFlyingEnemies = new Array<FlyingEnemy>();
+
+        groundEnemyPool = new Pool<GroundEnemy>() {
+            @Override
+            protected GroundEnemy newObject() {
+                return new GroundEnemy();
+            }
+        };
+
+        flyingEnemyPool = new Pool<FlyingEnemy>() {
+            @Override
+            protected FlyingEnemy newObject() {
+                return new FlyingEnemy();
+            }
+        };
 
         powerUps = new Array<PowerUp>();
         powerUpPool = new Pool<PowerUp>() {
@@ -195,8 +219,8 @@ public class GameScreen implements Screen{
         }
 
         //render enemy
-        renderEnemy(groundEnemies, delta);
-        renderEnemy(flyingEnemies, delta);
+        renderEnemy(activeGroundEnemies, delta);
+        renderEnemy(activeFlyingEnemies, delta);
 
         //render runner
         game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
@@ -242,13 +266,16 @@ public class GameScreen implements Screen{
 
         for(int i = 0; i <= spawnCount - 1; i++){
             Vector2 spawnPosition;
-
             if(type == 1){
-                spawnPosition = enemySpawnPosition(i, new GroundEnemy(monsterType), levelDetails);
-                groundEnemies.add(new GroundEnemy(monsterType, spawnPosition, levelDetails));
+                spawnPosition = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, groundEnemyOject.textureWidth, groundEnemyOject.textureHeight, levelDetails);
+                GroundEnemy item = groundEnemyPool.obtain();
+                item.init(monsterType, spawnPosition);
+                activeGroundEnemies.add(item);
             }else if(type == 2){
-                spawnPosition = enemySpawnPosition(i, new FlyingEnemy(monsterType), levelDetails);
-                flyingEnemies.add(new FlyingEnemy(monsterType, spawnPosition, levelDetails));
+                spawnPosition = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, flyingEnemyOject.getTextureWidth(), flyingEnemyOject.getTextureHeight(), levelDetails);
+                FlyingEnemy item = flyingEnemyPool.obtain();
+                item.init(monsterType, spawnPosition);
+                activeFlyingEnemies.add(item);
             }else if (type == 0){
                 spawnMarker += 200;
             }
@@ -276,8 +303,28 @@ public class GameScreen implements Screen{
                     enemy.checkCollision(runner);
                 } else {
                     enemy.isSpawned = false; //unrender enemy when off camera
-                    enemy.dispose();
                 }
+            }
+        }
+
+        //TODO: refactor, put in a function;
+        GroundEnemy groundEnemyItem;
+        int groundEnemylen = activeGroundEnemies.size;
+        for(int i = groundEnemylen; --i >= 0;){
+            groundEnemyItem = activeGroundEnemies.get(i);
+            if(groundEnemyItem.isSpawned == false){
+                activeGroundEnemies.removeIndex(i);
+                groundEnemyPool.free(groundEnemyItem);
+            }
+        }
+
+        FlyingEnemy flyingEnemyItem;
+        int flyingEnemylen = activeFlyingEnemies.size;
+        for(int i = flyingEnemylen; --i >= 0;){
+            flyingEnemyItem = activeFlyingEnemies.get(i);
+            if(flyingEnemyItem.isSpawned == false){
+                activeFlyingEnemies.removeIndex(i);
+                flyingEnemyPool.free(flyingEnemyItem);
             }
         }
     }
@@ -301,39 +348,40 @@ public class GameScreen implements Screen{
     }
 
     //TODO refactor enemy spawn position
-    private Vector2 enemySpawnPosition(int counter, Enemy enemy, int[] levelDetails){
+    private Vector2 enemySpawnPosition(int counter, float offset, float width, float height, int[] levelDetails){
         Vector2 spawnPosition = new Vector2();
         float heightAdjust = levelDetails[4];
+
         switch(levelDetails[2]){
             case 1:
 //                pattern 1 horizontal + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
-                spawnPosition.y = STARTING_Y  + (heightAdjust * enemy.getTextureHeight());
+                spawnPosition.x = spawnMarker + offset + (counter * (width));
+                spawnPosition.y = STARTING_Y  + (heightAdjust * height);
                 break;
             case 2:
 //                pattern 2 vertical + on ground
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X;
-                spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
+                spawnPosition.x = spawnMarker + offset;
+                spawnPosition.y = STARTING_Y + (heightAdjust * width) + (counter * (height));
                 break;
             case 3:
 //                pattern 3 diagonal leaning right
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth())) ;
-                spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
+                spawnPosition.x = spawnMarker + offset + (counter * (width)) ;
+                spawnPosition.y = STARTING_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 4:
 //                pattern 4 diagonal leaning left
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + (counter * (enemy.getTextureWidth()));
-                spawnPosition.y = (STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + enemy.getTextureHeight() * 2) - (counter * (enemy.getTextureHeight()));
+                spawnPosition.x = spawnMarker + offset + (counter * (width));
+                spawnPosition.y = (STARTING_Y + (heightAdjust * height) + height * 2) - (counter * (height));
                 break;
             case 5:
 //                pattern 5 diagonal leaning right ungrouped
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth())) ;
-                spawnPosition.y = STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + (counter * (enemy.getTextureHeight()));
+                spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width)) ;
+                spawnPosition.y = STARTING_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 6:
 //                pattern 6 diagonal leaning left ungrouped
-                spawnPosition.x = spawnMarker + enemy.SPAWN_OFFSET_FROM_CAM_X + ((3 * counter) * (enemy.getTextureWidth()));
-                spawnPosition.y = (STARTING_Y + (heightAdjust * enemy.getTextureHeight()) + enemy.getTextureHeight() * 2) - (counter * (enemy.getTextureHeight()));
+                spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width));
+                spawnPosition.y = (STARTING_Y + (heightAdjust * height) + height * 2) - (counter * (height));
                 break;
             default:
                 throw new IllegalArgumentException("No such pattern");
@@ -418,10 +466,10 @@ public class GameScreen implements Screen{
         for(Ground ground : grounds)
             ground.dispose();
         hud.dispose();
-        for(GroundEnemy groundEnemy : groundEnemies)
-            groundEnemy.dispose();
-        for(FlyingEnemy flyingEnemy : flyingEnemies)
-            flyingEnemy.dispose();
+        for(Enemy activeGroundEnemy : activeGroundEnemies)
+            activeGroundEnemy.dispose();
+        for(Enemy activeFlyingEnemy : activeFlyingEnemies)
+            activeFlyingEnemy.dispose();
         for(PowerUp pUp : powerUps){
             pUp.dispose();
         }
