@@ -127,15 +127,15 @@ public class Enemy {
         // make runner fall
         if(runner.isOnTopEnemy && runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
             runnerOntop = false;
-            runner.tempGround = runner.groundLevel;
-            runner.isOnTopEnemy = false;
 //            runner.isOnGround = false;
 //            runner.isJumping = true;
             runner.isFalling = true;
+            runner.tempGround = runner.groundLevel;
+            runner.isOnTopEnemy = false;
         }
 
         if ( getBounds().overlaps(runner.getBounds()) ) {
-            if(!runner.isDead && runner.isFalling && (Float.compare(intersectionOnTop.y, getOnTopBounds().y ) > 0
+            if(!runner.isDead && !runner.isJumping && runner.isFalling && (Float.compare(intersectionOnTop.y, getOnTopBounds().y ) > 0
                     || Float.compare((intersectionOnTop.y), getOnTopBounds().y) == 0) ) { // runner stays on top of enemies
                 runner.setPositionY(getPosition().y + getTextureHeight());
                 runner.tempGround = getPosition().y + getTextureHeight();

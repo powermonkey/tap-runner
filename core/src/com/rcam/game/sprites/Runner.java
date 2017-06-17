@@ -100,11 +100,11 @@ public class Runner {
         if(!isJumping) {
             velocity.y = 0;
         }
-        if (speed.y < -20) {
+        if (speed.y < -40) {
             isFalling = true;
         }
         //minimum fall height before isOnGround is set; allows jumping when on top enemy bridge
-        if (speed.y <= -40) {;
+        if (speed.y <= -40) {
             isOnGround = false;
         }
         //limit jump height
