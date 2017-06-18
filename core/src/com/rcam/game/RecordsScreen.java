@@ -52,7 +52,7 @@ public class RecordsScreen implements Screen{
 
         NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
 
-        recordsLabel = new Label("Record", arcadeSkin, "default");
+        recordsLabel = new Label("Records", arcadeSkin, "default");
         bestLabel = new Label("Best Distance", arcadeSkin, "default");
         bestNormalLabel = new Label("Normal Mode: ", cleanCrispySkin, "default");
         bestNormalDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceNormalMode")) + " m", arcadeSkin, "default");
