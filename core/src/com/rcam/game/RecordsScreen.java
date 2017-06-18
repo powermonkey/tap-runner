@@ -20,26 +20,24 @@ import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Runner;
 
 /**
- * Created by Rod on 5/2/2017.
+ * Created by Rod on 6/18/2017.
  */
 
-public class GameOverScreen implements Screen{
+public class RecordsScreen implements Screen{
     final TapRunner game;
     OrthographicCamera cam;
     Skin cleanCrispySkin,arcadeSkin;
     Stage stage;
-    Table rootTable, table;
+    Table rootTable, table, labelTable, goBackButtonTable;
     Texture bg;
     Ground ground;
-    TextButton newGameButton, exitButton, settingsButton;
+    TextButton goBackButton;
     Runner runner;
-    Label current, bestDistance, currentLabel, bestDistanceLabel;
+    Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
     static Preferences prefs;
-    String gameMode;
 
-    public GameOverScreen(final TapRunner gam, final Runner runner){
+    public RecordsScreen(final TapRunner gam){
         this.game = gam;
-        this.runner = runner;
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
@@ -48,48 +46,53 @@ public class GameOverScreen implements Screen{
         rootTable = new Table();
         rootTable.setFillParent(true);
         table = new Table();
+        goBackButtonTable = new Table();
+        labelTable = new Table();
         prefs = Gdx.app.getPreferences("TapRunner");
-
-        gameMode = prefs.getString("GameMode");
 
         NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
 
-        currentLabel = new Label("Current:", arcadeSkin, "default");
-        current = new Label(Integer.toString(runner.indicatePosition()) + " m", arcadeSkin, "default");
-        bestDistanceLabel = new Label("Best:", arcadeSkin, "default");
-        if(gameMode.equals("The Ground Is Lava")){
-            bestDistance = new Label(Integer.toString(runner.getHighScoreLavaMode()) + " m", arcadeSkin, "default");
-        }else{
-            bestDistance = new Label(Integer.toString(runner.getHighScoreNormalMode()) + " m", arcadeSkin, "default");
-        }
-        newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
-        newGameButtonListener(newGameButton, runner);
-        settingsButton = new TextButton("Settings", cleanCrispySkin, "default");
-        settingsButtonListener(settingsButton, runner);
-        exitButton = new TextButton("Exit", cleanCrispySkin, "default");
-        exitButtonListener(exitButton);
+        recordsLabel = new Label("Record", arcadeSkin, "default");
+        bestLabel = new Label("Best Distance", arcadeSkin, "default");
+        bestNormalLabel = new Label("Normal Mode: ", cleanCrispySkin, "default");
+        bestNormalDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceNormalMode")) + " m", arcadeSkin, "default");
+        bestLavaLabel = new Label("The Ground is Lava: ", cleanCrispySkin, "default");
+        bestLavaDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceLavaMode")) + " m", arcadeSkin, "default");
+        goBackButton = new TextButton("Main Menu", cleanCrispySkin, "default");
+        goBackButtonListener(goBackButton);
         bg = new Texture("bg.png");
         ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
         Gdx.input.setInputProcessor(stage);
 
 //        stage.setDebugAll(true);
 
-        table.add(bestDistanceLabel).expandX().center().right().uniform().padLeft(30);
-        table.add(bestDistance).expandX().center().left().padLeft(10).uniform();
+
+        labelTable.add(recordsLabel).colspan(2).expandX().center().uniform().pad(5);
+        labelTable.row();
+        labelTable.setBackground(new NinePatchDrawable(patch));
+
+        table.add(bestLabel).colspan(2).expandX().center().center().uniform().padBottom(15);
         table.row();
-        table.add(currentLabel).expandX().center().right().uniform().padLeft(30);
-        table.add(current).expandX().center().left().padLeft(10).uniform();
+        table.add(bestNormalLabel).expandX().center().right().uniform().padLeft(10);
+        table.add(bestNormalDistance).expandX().center().left().padLeft(10).uniform();
         table.row();
-        table.add(newGameButton).colspan(2).width(150).height(50).expandX().padTop(20);
+        table.add(bestLavaLabel).expandX().center().right().uniform().padLeft(10);
+        table.add(bestLavaDistance).expandX().center().left().padLeft(10).uniform();
         table.row();
-        table.add(settingsButton).colspan(2).width(150).height(50).expandX().padTop(30);
-        table.row();
-        table.add(exitButton).colspan(2).width(150).height(50).expandX().padTop(30).padBottom(30);
-        table.row();
-        table.center().center().pad(20);
+        table.pad(20, 20, 30, 20);
         table.setBackground(new NinePatchDrawable(patch));
 
+        goBackButtonTable.add(goBackButton).colspan(2).width(150).height(50).expandX().pad(15);
+        goBackButtonTable.row();
+        goBackButtonTable.center().center();
+        goBackButtonTable.setBackground(new NinePatchDrawable(patch));
+
+
+        rootTable.add(labelTable).fillX();
+        rootTable.row();
         rootTable.add(table);
+        rootTable.row();
+        rootTable.add(goBackButtonTable).fillX();
         rootTable.row();
         rootTable.center().center();
 
@@ -97,31 +100,11 @@ public class GameOverScreen implements Screen{
 
     }
 
-    public void newGameButtonListener(TextButton button, final Runner runner){
+    public void goBackButtonListener(TextButton button){
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
-                return true;
-            }
-        });
-    }
-
-    public void settingsButtonListener(TextButton button, final Runner runner){
-        button.addListener(new InputListener(){
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new SettingsScreen(game));
-                return true;
-            }
-        });
-    }
-
-    public void exitButtonListener(TextButton button){
-        button.addListener(new InputListener(){
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
+                game.setScreen(new MainMenuScreen(game));
                 return true;
             }
         });

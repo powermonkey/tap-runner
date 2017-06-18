@@ -24,10 +24,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class MainMenuScreen implements Screen {
     final TapRunner game;
     OrthographicCamera cam;
-    Texture bg, playBtn, ground;
+    Texture bg, ground;
     Table rootTable, table;
     Skin cleanCrispySkin;
-    TextButton exit, newGame, settings;
+    TextButton exit, newGame, options, records;
     Stage stage;
     static Preferences prefs;
 
@@ -45,11 +45,13 @@ public class MainMenuScreen implements Screen {
         table = new Table();
 
         newGame = new TextButton("New Game", cleanCrispySkin, "default");
-        settings = new TextButton("Options", cleanCrispySkin, "default");
+        options = new TextButton("Options", cleanCrispySkin, "default");
+        records = new TextButton("Records", cleanCrispySkin, "default");
         exit = new TextButton("Exit", cleanCrispySkin, "default");
 
         newGameButtonListener(newGame);
-        settingsButtonListener(settings);
+        settingsButtonListener(options);
+        recordsButtonListener(records);
         exitButtonListener(exit);
 
 //        stage.setDebugAll(true);
@@ -58,7 +60,9 @@ public class MainMenuScreen implements Screen {
 
         table.add(newGame).center().uniform().width(150).height(50).expandX().padTop(30);
         table.row();
-        table.add(settings).center().uniform().width(150).height(50).expandX().padTop(30);
+        table.add(options).center().uniform().width(150).height(50).expandX().padTop(30);
+        table.row();
+        table.add(records).center().uniform().width(150).height(50).expandX().padTop(30);
         table.row();
         table.add(exit).center().uniform().width(150).height(50).expandX().padTop(30).padBottom(30);
         table.row();
@@ -95,6 +99,16 @@ public class MainMenuScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new SettingsScreen(game));
+                return true;
+            }
+        });
+    }
+
+    public void recordsButtonListener(TextButton button){
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new RecordsScreen(game));
                 return true;
             }
         });
