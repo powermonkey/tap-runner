@@ -1,6 +1,7 @@
 package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,6 +34,8 @@ public class GameOverScreen implements Screen{
     TextButton newGameButton, exitButton, settingsButton;
     Runner runner;
     Label current, bestDistance, currentLabel, bestDistanceLabel;
+    static Preferences prefs;
+    String gameMode;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -45,13 +48,20 @@ public class GameOverScreen implements Screen{
         rootTable = new Table();
         rootTable.setFillParent(true);
         table = new Table();
+        prefs = Gdx.app.getPreferences("TapRunner");
+
+        gameMode = prefs.getString("GameMode");
 
         NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
 
         currentLabel = new Label("Current:", arcadeSkin, "default");
         current = new Label(Integer.toString(runner.indicatePosition()) + " m", arcadeSkin, "default");
         bestDistanceLabel = new Label("Best:", arcadeSkin, "default");
-        bestDistance = new Label(Integer.toString(runner.getHighScore()) + " m", arcadeSkin, "default");
+        if(gameMode.equals("The Ground Is Lava")){
+            bestDistance = new Label(Integer.toString(runner.getHighScoreLavaMode()) + " m", arcadeSkin, "default");
+        }else{
+            bestDistance = new Label(Integer.toString(runner.getHighScoreNormalMode()) + " m", arcadeSkin, "default");
+        }
         newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
         newGameButtonListener(newGameButton, runner);
         settingsButton = new TextButton("Settings", cleanCrispySkin, "default");

@@ -51,19 +51,33 @@ public class Runner {
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
-        if (!prefs.contains("BestDistance")) {
-            prefs.putInteger("BestDistance", 0);
+        if (!prefs.contains("BestDistanceNormalMode")) {
+            prefs.putInteger("BestDistanceNormalMode", 0);
+            prefs.flush();
+        }
+
+        if (!prefs.contains("BestDistanceLavaMode")) {
+            prefs.putInteger("BestDistanceLavaMode", 0);
             prefs.flush();
         }
     }
 
-    public void setHighScore(int val) {
-        prefs.putInteger("BestDistance", val);
+    public void setHighScoreNormalMode(int val) {
+        prefs.putInteger("BestDistanceNormalMode", val);
         prefs.flush();
     }
 
-    public int getHighScore() {
-        return prefs.getInteger("BestDistance");
+    public void setHighScoreLavaMode(int val) {
+        prefs.putInteger("BestDistanceLavaMode", val);
+        prefs.flush();
+    }
+
+    public int getHighScoreNormalMode() {
+        return prefs.getInteger("BestDistanceNormalMode");
+    }
+
+    public int getHighScoreLavaMode() {
+        return prefs.getInteger("BestDistanceLavaMode");
     }
 
     public void update(float dt){

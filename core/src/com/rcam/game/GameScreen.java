@@ -233,8 +233,14 @@ public class GameScreen implements Screen{
             if(!runner.animatingDeath) {
                 startingTime = millis();
                 runner.death();
-                if(runner.indicatePosition() > runner.getHighScore()){
-                    runner.setHighScore(runner.indicatePosition());
+                if(gameMode.equals("The Ground Is Lava")){
+                    if(runner.indicatePosition() > runner.getHighScoreLavaMode()){
+                        runner.setHighScoreLavaMode(runner.indicatePosition());
+                    }
+                }else{
+                    if(runner.indicatePosition() > runner.getHighScoreNormalMode()){
+                        runner.setHighScoreNormalMode(runner.indicatePosition());
+                    }
                 }
             }else {
                 if(timeSinceMillis(startingTime) > 2000) {
