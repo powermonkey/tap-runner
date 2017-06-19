@@ -62,6 +62,7 @@ public class GameScreen implements Screen{
     GroundEnemy groundEnemyOject;
     FlyingEnemy flyingEnemyOject;
     Enemy enemyObject;
+    boolean isPause;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -70,6 +71,8 @@ public class GameScreen implements Screen{
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         cam.update();
+
+        isPause = false;
 
         grounds = new Array<Ground>();
         lavas = new Array<Lava>();
@@ -126,7 +129,7 @@ public class GameScreen implements Screen{
         grounds.add(new Ground(new Ground().getTexture().getWidth()));
         lastGroundPos = new Ground().getTexture().getWidth();
 
-        hud = new Hud(runner);
+        hud = new Hud(gam, runner, this);
         keys = new KeyboardInput(runner);
 
     }
@@ -149,32 +152,15 @@ public class GameScreen implements Screen{
 
         //spawn power up
         renderPowerUp();
-        if(runner.getPosition().x > powerUpMarker ) {
-            spawnPowerUp(delta);
-        }
+        //render enemy
+        renderEnemy(activeGroundEnemies, delta);
+        renderEnemy(activeFlyingEnemies, delta);
+        //render runner
+        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
 
-        //set ground enemy position and render ground enemy
-        if(runner.getPosition().x > levelMarker) {
-            if(level.getLevelKey() == levelCounter){
-                spawnEnemy();
-            }else if(levelCounter == 4){
-                //shuffle level patterns
-                //drain life
-                //increase enemy damage
-                levelCounter = 1;
-                levelMarker = spawnMarker;
-                lavaMarker = levelMarker;
-                lavaMarkerMutliplier = levelCounter;
-            }else{
-                levelMarker = spawnMarker;
-                lavaMarker = levelMarker;
-                lavaMarkerMutliplier = levelCounter;
-                levelCounter ++;
-            }
-        }
-        if(gameMode.equals("The Ground Is Lava")){
+        if (gameMode.equals("The Ground Is Lava")) {
             //render ground
-            for(Ground ground : grounds){
+            for (Ground ground : grounds) {
                 game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
             }
 
@@ -187,74 +173,97 @@ public class GameScreen implements Screen{
                 lava.checkLavaCollision(runner);
             }
 
-            if(runner.getPosition().x >= (lavaMarker - (level.getLavaMarkerOffset() * lavaMarkerMutliplier))) {
+            if (runner.getPosition().x >= (lavaMarker - (level.getLavaMarkerOffset() * lavaMarkerMutliplier))) {
                 //set ground position
-                for(Ground ground: grounds){
-                    if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth()) {
+                for (Ground ground : grounds) {
+                    if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth()) {
                         ground.repositionGround(lastLavaPos);
                         lastGroundPos = lastLavaPos + (ground.getTexture().getWidth());
                         lastLavaPos = lastGroundPos;
                     }
                 }
-            }else{
+            } else {
                 for (Lava lava : lavas) {
                     if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTexture().getWidth()) {
                         lava.repositionLava(lastLavaPos);
-                        lastLavaPos = lava.getPosLava().x + (lava.getTexture().getWidth()) ;
+                        lastLavaPos = lava.getPosLava().x + (lava.getTexture().getWidth());
                     }
                 }
             }
-        }else{
+        } else {
             //render ground
-            for(Ground ground : grounds){
+            for (Ground ground : grounds) {
                 game.batch.draw(ground.getTexture(), ground.getPosGround().x, ground.getPosGround().y);
             }
 
             //set ground position
-            for(Ground ground: grounds){
-                if(cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth() ) {
+            for (Ground ground : grounds) {
+                if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth()) {
                     ground.repositionGround(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
                 }
             }
         }
 
-        //render enemy
-        renderEnemy(activeGroundEnemies, delta);
-        renderEnemy(activeFlyingEnemies, delta);
+        if(!isPause) {
+            if (runner.getPosition().x > powerUpMarker) {
+                spawnPowerUp(delta);
+            }
 
-        //render runner
-        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
-
-        //render first then logic, fixes shaking texture ??
-        runner.update(delta);
-
-        //if runner ran out of health
-        if(runner.isDead) {
-            if(!runner.animatingDeath) {
-                startingTime = millis();
-                runner.death();
-                if(gameMode.equals("The Ground Is Lava")){
-                    if(runner.indicatePosition() > runner.getHighScoreLavaMode()){
-                        runner.setHighScoreLavaMode(runner.indicatePosition());
-                    }
-                }else{
-                    if(runner.indicatePosition() > runner.getHighScoreNormalMode()){
-                        runner.setHighScoreNormalMode(runner.indicatePosition());
-                    }
-                }
-            }else {
-                if(timeSinceMillis(startingTime) > 2000) {
-                    game.setScreen(new GameOverScreen(this.game, runner));
-//                    game.setScreen(new GameScreen(this.game));
-                    dispose();
+            //set ground enemy position and render ground enemy
+            if (runner.getPosition().x > levelMarker) {
+                if (level.getLevelKey() == levelCounter) {
+                    spawnEnemy();
+                } else if (levelCounter == 4) {
+                    //reverse order patterns for each level
+                    //shuffle order patterns
+                    //drain life
+                    //increase enemy damage
+                    levelCounter = 1;
+                    levelMarker = spawnMarker;
+                    lavaMarker = levelMarker;
+                    lavaMarkerMutliplier = levelCounter;
+                } else {
+                    levelMarker = spawnMarker;
+                    lavaMarker = levelMarker;
+                    lavaMarkerMutliplier = levelCounter;
+                    levelCounter++;
                 }
             }
-        }
 
+            //update enemies
+            updateEnemies(activeGroundEnemies, delta);
+            updateEnemies(activeFlyingEnemies, delta);
+
+            //render first then logic, fixes shaking texture ??
+            runner.update(delta);
+
+            //if runner ran out of health
+            if (runner.isDead) {
+                if (!runner.animatingDeath) {
+                    startingTime = millis();
+                    runner.death();
+                    if (gameMode.equals("The Ground Is Lava")) {
+                        if (runner.indicatePosition() > runner.getHighScoreLavaMode()) {
+                            runner.setHighScoreLavaMode(runner.indicatePosition());
+                        }
+                    } else {
+                        if (runner.indicatePosition() > runner.getHighScoreNormalMode()) {
+                            runner.setHighScoreNormalMode(runner.indicatePosition());
+                        }
+                    }
+                } else {
+                    if (timeSinceMillis(startingTime) > 2000) {
+                        game.setScreen(new GameOverScreen(this.game, runner));
+                        dispose();
+                    }
+                }
+            }
+            hud.meter.update(runner.getSpeed().x);
+            hud.health.update();
+            hud.distance.update();
+
+        }
         game.batch.end();
-        hud.meter.update(runner.getSpeed().x);
-        hud.health.update();
-        hud.distance.update();
         hud.render();
 //        handleKeyboardInput();
     }
@@ -297,6 +306,14 @@ public class GameScreen implements Screen{
         spawnMarkerDistance(spawnCount, enemyBridge, isVertical, distance);
     }
 
+    private void updateEnemies(Array<? extends Enemy> enemies, float delta){
+        for (Enemy enemy : enemies) {
+            if (enemy.isSpawned) {
+                enemy.update(delta);
+            }
+        }
+    }
+
 
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
         for (Enemy enemy : enemies) {
@@ -305,7 +322,7 @@ public class GameScreen implements Screen{
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
-                    enemy.update(delta);
+//                    enemy.update(delta);
                     enemy.checkCollision(runner);
                 } else {
                     enemy.isSpawned = false; //unrender enemy when off camera

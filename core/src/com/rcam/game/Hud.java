@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,6 +24,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Runner;
 
+import javax.swing.GroupLayout;
+
 /**
  * Created by Rod on 4/18/2017.
  */
@@ -35,14 +38,17 @@ public class Hud {
     RunButton runButton;
     SlowDownButton slowDownButton;
 //    Joystick joystick;
+    PauseButton pauseButton;
     JumpButton jumpButton;
     Distance distance;
     Health health;
     Label healthLabel, speedMeterLabel;
-    Drawable joystickGray, joystickLeft, joystickRight;
+//    Drawable joystickGray, joystickLeft, joystickRight;
     NinePatch patch;
+    GameScreen gameScreen;
 
-    public Hud(final Runner runner){
+    public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
+        this.gameScreen = gameScreen;
         rootTable = new Table();
         indicatorstable = new Table();
         distancetable = new Table();
@@ -56,6 +62,7 @@ public class Hud {
         health = new Health(runner);
         runButton = new RunButton(runner);
         slowDownButton = new SlowDownButton(runner);
+        pauseButton = new PauseButton(tapRunner, gameScreen);
 //        joystick = new Joystick(runner);
         jumpButton = new JumpButton(runner);
         healthLabel = new Label("HEALTH", cleanCrispySkin);
@@ -84,6 +91,7 @@ public class Hud {
 
         controlsTable.add(slowDownButton.getSlowDownButton()).padLeft(20).padRight(20).left();
         controlsTable.add(runButton.getRunButton()).left();
+        controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).expandX().right();
         controlsTable.add(jumpButton.getJumpButton()).right().padRight(20).expandX();
         controlsTable.row();
         controlsTable.setBackground(new NinePatchDrawable(patch));
@@ -236,8 +244,10 @@ public class Hud {
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                if(!gameScreen.isPause) {
                     runner.slowDown();
-                    return true;
+                }
+                return true;
                 }
             });
         }
@@ -269,8 +279,10 @@ public class Hud {
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                if(!gameScreen.isPause) {
                     runner.run();
-                    return true;
+                }
+                return true;
                 }
             });
         }
@@ -279,6 +291,142 @@ public class Hud {
             return rbutton;
         }
 
+    }
+
+    public class PauseButton{
+        ImageButton button;
+        ImageButton.ImageButtonStyle buttonStyle;
+        TapRunner game;
+        Group pauseGroup;
+        Table rtable;
+
+        public PauseButton(TapRunner game, GameScreen gameScreen){
+            this.game = game;
+            button = new ImageButton(getCleanCrispySkin(), "default");
+            buttonStyle = new ImageButton.ImageButtonStyle();
+            buttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
+            buttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
+            buttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
+            buttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("pause.png")));
+            buttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("pause.png")));
+            button.setStyle(buttonStyle);
+            pauseButtonListener(button, gameScreen);
+        }
+
+        public void pauseButtonListener(final Button button, final GameScreen gameScreen){
+            button.addListener(new InputListener(){
+                @Override
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    if(!gameScreen.isPause) {
+                        gameScreen.isPause = true;
+                        pauseGame();
+                    }
+                    return true;
+                }
+
+                @Override
+                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                }
+            });
+        }
+
+        public void pauseGame(){
+            Table pauseTable;
+            TextButton continueButton, newGameButton, mainMenuButton, exitButton;
+            rtable = new Table();
+            rtable.setFillParent(true);
+            pauseTable = new Table();
+            pauseGroup = new Group();
+
+            continueButton = new TextButton("Continue", cleanCrispySkin, "default");
+            continueButtonListener(continueButton);
+
+            newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
+            newGameButtonListener(newGameButton);
+
+            mainMenuButton = new TextButton("Main Menu", cleanCrispySkin, "default");
+            mainMenuButtonListener(mainMenuButton);
+
+            exitButton = new TextButton("Exit", cleanCrispySkin, "default");
+            exitGameButtonListener(exitButton);
+
+            pauseTable.add(continueButton).center().uniform().width(150).height(50).expandX().padTop(30);
+            pauseTable.row();
+            pauseTable.add(newGameButton).center().uniform().width(150).height(50).expandX().padTop(30);
+            pauseTable.row();
+            pauseTable.add(mainMenuButton).center().uniform().width(150).height(50).expandX().padTop(30);
+            pauseTable.row();
+            pauseTable.add(exitButton).center().uniform().width(150).height(50).expandX().padTop(30).padBottom(30);
+            pauseTable.row();
+            pauseTable.setBackground(new NinePatchDrawable(patch));
+
+            rtable.add(pauseTable).width(TapRunner.WIDTH / 2).center().center().expandX();
+            rtable.row();
+            rtable.row();
+            pauseGroup.addActor(rtable);
+            stage.addActor(rtable);
+        }
+
+        public void continueButtonListener(final Button button){
+            button.addListener(new InputListener(){
+                @Override
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    gameScreen.isPause = false;
+                    rtable.remove();
+                    return true;
+                }
+
+                @Override
+                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                }
+            });
+        }
+
+        public void newGameButtonListener(final Button button){
+            button.addListener(new InputListener(){
+                @Override
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    game.setScreen(new GameScreen(game));
+                    return true;
+                }
+
+                @Override
+                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                }
+            });
+        }
+
+        public void exitGameButtonListener(final Button button){
+            button.addListener(new InputListener(){
+                @Override
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    Gdx.app.exit();
+                    return true;
+                }
+
+                @Override
+                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                }
+            });
+        }
+
+        public void mainMenuButtonListener(final Button button){
+            button.addListener(new InputListener(){
+                @Override
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    game.setScreen(new MainMenuScreen(game));
+                    return true;
+                }
+
+                @Override
+                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                }
+            });
+        }
+
+        public ImageButton getPauseButton(){
+            return button;
+        }
     }
 
     public class JumpButton{
@@ -293,8 +441,10 @@ public class Hud {
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    if(runner.isOnGround) {
-                        runner.jump();
+                    if(!gameScreen.isPause) {
+                        if (runner.isOnGround) {
+                            runner.jump();
+                        }
                     }
                     return true;
                 }
