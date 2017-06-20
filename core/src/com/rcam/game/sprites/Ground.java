@@ -13,11 +13,11 @@ public class Ground {
     Boolean isLava;
 
     public Ground(){
-        groundTexture = new Texture("ground.png");
+        groundTexture = new Texture("newground.png");
     }
 
     public Ground(float x){
-        groundTexture = new Texture("ground.png");
+        groundTexture = new Texture("newground.png");
         posGround = new Vector2(x, 0);
     }
 

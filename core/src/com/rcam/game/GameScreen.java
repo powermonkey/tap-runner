@@ -155,8 +155,6 @@ public class GameScreen implements Screen{
         //render enemy
         renderEnemy(activeGroundEnemies, delta);
         renderEnemy(activeFlyingEnemies, delta);
-        //render runner
-        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
 
         if (gameMode.equals("The Ground Is Lava")) {
             //render ground
@@ -203,6 +201,9 @@ public class GameScreen implements Screen{
                 }
             }
         }
+
+        //render runner
+        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
 
         if(!isPause) {
             if (runner.getPosition().x > powerUpMarker) {

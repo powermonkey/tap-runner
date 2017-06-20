@@ -19,11 +19,11 @@ public class Lava {
     boolean touched;
 
     public Lava(){
-        lavaTexture = new Texture("lava.png");
+        lavaTexture = new Texture("newlava.png");
     }
 
     public Lava(float x){
-        lavaTexture = new Texture("lava.png");
+        lavaTexture = new Texture("newlava.png");
         posLava = new Vector2(x, 0);
         damage = 10;
         touched = false;

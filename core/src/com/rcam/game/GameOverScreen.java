@@ -64,7 +64,7 @@ public class GameOverScreen implements Screen{
         }
         newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
         newGameButtonListener(newGameButton, runner);
-        settingsButton = new TextButton("Settings", cleanCrispySkin, "default");
+        settingsButton = new TextButton("Options", cleanCrispySkin, "default");
         settingsButtonListener(settingsButton, runner);
         exitButton = new TextButton("Exit", cleanCrispySkin, "default");
         exitButtonListener(exitButton);
