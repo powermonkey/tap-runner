@@ -31,7 +31,7 @@ public class GameOverScreen implements Screen{
     Table rootTable, table;
     Texture bg;
     Ground ground;
-    TextButton newGameButton, exitButton, settingsButton;
+    TextButton newGameButton, exitButton, settingsButton, mainMenuButton;
     Runner runner;
     Label current, bestDistance, currentLabel, bestDistanceLabel;
     static Preferences prefs;
@@ -62,6 +62,9 @@ public class GameOverScreen implements Screen{
         }else{
             bestDistance = new Label(Integer.toString(runner.getHighScoreNormalMode()) + " m", arcadeSkin, "default");
         }
+
+        mainMenuButton = new TextButton("Main Menu", cleanCrispySkin, "default");
+        mainMenuButtonListener(mainMenuButton, runner);
         newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
         newGameButtonListener(newGameButton, runner);
         settingsButton = new TextButton("Options", cleanCrispySkin, "default");
@@ -82,7 +85,9 @@ public class GameOverScreen implements Screen{
         table.row();
         table.add(newGameButton).colspan(2).width(150).height(50).expandX().padTop(20);
         table.row();
-        table.add(settingsButton).colspan(2).width(150).height(50).expandX().padTop(30);
+        table.add(settingsButton).colspan(2).width(150).height(50).expandX().padTop(20);
+        table.row();
+        table.add(mainMenuButton).colspan(2).width(150).height(50).expandX().padTop(30);
         table.row();
         table.add(exitButton).colspan(2).width(150).height(50).expandX().padTop(30).padBottom(30);
         table.row();
@@ -95,6 +100,16 @@ public class GameOverScreen implements Screen{
 
         stage.addActor(rootTable);
 
+    }
+
+    public void mainMenuButtonListener(TextButton button, final Runner runner){
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new MainMenuScreen(game));
+                return true;
+            }
+        });
     }
 
     public void newGameButtonListener(TextButton button, final Runner runner){
