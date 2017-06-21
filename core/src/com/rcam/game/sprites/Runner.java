@@ -3,8 +3,12 @@ package com.rcam.game.sprites;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
 import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
@@ -24,12 +28,18 @@ public class Runner {
     public static final float CONTACT_BOUNDS_OFFSET = 4;
     public float health;
     private long startingTime, lavaDamageTimeStart;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable, isIdle;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
+    TextureAtlas atlas;
+    TextureAtlas.AtlasRegion regionStand, regionJump, regionDeath;
+//    TextureRegion regionStand, regionJump, regionDeath, regionRun;
+    Array<TextureAtlas.AtlasRegion> regionRun;
     public float groundLevel, tempGround;
     private Rectangle bounds, intersectionBounds;
     static Preferences prefs;
+    public Animation<TextureRegion> animation;
+    public float stateTime;
 
     public Runner(float x, float y){
         position = new Vector2(x, y);
@@ -37,15 +47,24 @@ public class Runner {
         tempGround = groundLevel;
         velocity = new Vector2(0, 0);
         speed = new Vector2(0, 0);
-        runnerTexture = new Texture("bird.png");
         isMaintainHighSpeed = false;
         isOnGround = true;
         isFalling = false;
         isTouched = false;
         invulnerable = false;
         isOnTopEnemy = false;
-        bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
-        intersectionBounds = new Rectangle(x, y - CONTACT_BOUNDS_OFFSET, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
+        isIdle = false;
+
+        atlas = new TextureAtlas("packedimages/runner32.atlas");
+        regionStand = atlas.findRegion("stand");
+        regionRun = atlas.findRegions("run");
+        regionJump = atlas.findRegion("jump");
+        regionDeath = atlas.findRegion("death");
+        bounds = new Rectangle(x, y, regionStand.getRegionWidth(), regionStand.getRegionHeight());
+        intersectionBounds = new Rectangle(x, y - CONTACT_BOUNDS_OFFSET, regionStand.getRegionWidth(), regionStand.getRegionHeight() - CONTACT_BOUNDS_OFFSET); //intersection bounds
+
+        animation = new Animation<TextureRegion>(0.07f, regionRun);
+
         health = STARTING_HEALTH;
         startingTime = millis();
 
@@ -97,6 +116,12 @@ public class Runner {
             }
         }
 
+        if(speed.x > 0) {
+            isIdle = false;
+        }else if(speed.x <= 0 && speed.y ==  -20){
+            isIdle = true;
+        }
+
        // make runner stop when reaching 0 speed
         if(speed.x < 0 ){
             speed.x = 0;
@@ -138,12 +163,6 @@ public class Runner {
             speed.x = 0;
         }
         position.add(speed.x * dt, speed.y * dt);
-//        }else{
-//            if(speed.x > SPEED_BUFFER)
-//                speed.x = SPEED_BUFFER;
-//            speed.x = HIGH_SPEED;
-//            position.add(speed.x * dt, speed.y * dt);
-//        }
 
         //make runner land on ground
         if(position.y < tempGround && !isDead){
@@ -155,11 +174,6 @@ public class Runner {
         }else if(isDead){
             isOnGround = false;
         }
-
-//        if(speed.x > HIGH_SPEED)
-//            isMaintainHighSpeed = true;
-//        else
-//            isMaintainHighSpeed = false;
 
         //reset value of velocity x and y
         velocity.x = 0;
@@ -181,6 +195,18 @@ public class Runner {
 
     public Texture getTexture() {
         return runnerTexture;
+    }
+
+    public TextureAtlas.AtlasRegion getRegionStand() {
+        return regionStand;
+    }
+
+    public TextureAtlas.AtlasRegion getRegionDeath() {
+        return regionDeath;
+    }
+
+    public TextureAtlas.AtlasRegion getRegionJump() {
+        return regionJump;
     }
 
     public Vector2 getPosition() {
@@ -237,6 +263,22 @@ public class Runner {
         isOnGround = false;
     }
 
+    public TextureRegion[] createFrames(Texture runner, int rows, int cols){
+        TextureRegion[][] tmp = TextureRegion.split(runner,
+                runner.getWidth() / cols,
+                runner.getHeight() / rows);
+
+        TextureRegion[] frames = new TextureRegion[cols * rows];
+        int index = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                frames[index++] = tmp[i][j];
+            }
+        }
+
+        return frames;
+    }
+
     public Vector2 getSpeed(){ return speed; }
 
     public Rectangle getBounds() {
@@ -258,6 +300,7 @@ public class Runner {
     }
 
     public void dispose(){
-        runnerTexture.dispose();
+
+//        runnerTexture.dispose();
     }
 }

@@ -65,7 +65,7 @@ public class Hud {
         pauseButton = new PauseButton(tapRunner, gameScreen);
 //        joystick = new Joystick(runner);
         jumpButton = new JumpButton(runner);
-        healthLabel = new Label("HEALTH", cleanCrispySkin);
+        healthLabel = new Label("ENERGY", cleanCrispySkin);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
 
 //        stage.setDebugAll(true);

@@ -31,6 +31,7 @@ public class GameScreen implements Screen{
     final TapRunner game;
     final static float STARTING_X = 30;
     final static float STARTING_Y = 112;
+    final static float ENEMY_OFFSET_Y = 5;
     float spawnMarker = 50;
     float levelMarker = 30;
     float lavaMarker = 0;
@@ -203,7 +204,19 @@ public class GameScreen implements Screen{
         }
 
         //render runner
-        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
+        runner.stateTime += Gdx.graphics.getDeltaTime();
+//        System.out.println(runner.isJumping+ " " + runner.isFalling);
+//        System.out.println(runner.isIdle+ " " + runner.getSpeed().y + " " + runner.getSpeed().x);
+        TextureRegion currentRunnerFrame = runner.animation.getKeyFrame(runner.stateTime, true);
+        if(runner.isDead){
+            game.batch.draw(runner.getRegionDeath(), runner.getPosition().x, runner.getPosition().y);
+        }else if(runner.isIdle && !runner.isJumping){
+            game.batch.draw(runner.getRegionStand(), runner.getPosition().x, runner.getPosition().y);
+        }else if(runner.isJumping){
+            game.batch.draw(runner.getRegionJump(), runner.getPosition().x, runner.getPosition().y);
+        }else if(!runner.isIdle) {
+            game.batch.draw(currentRunnerFrame, runner.getPosition().x, runner.getPosition().y);
+        }
 
         if(!isPause) {
             if (runner.getPosition().x > powerUpMarker) {
@@ -378,14 +391,14 @@ public class GameScreen implements Screen{
 
         switch(levelDetails[2]){
             case 1:
-//                pattern 1 horizontal + on ground
+//                pattern 1 horizontal (used for ground enemies mostly)
                 spawnPosition.x = spawnMarker + offset + (counter * (width));
-                spawnPosition.y = STARTING_Y  + (heightAdjust * height);
+                spawnPosition.y = STARTING_Y + (heightAdjust * (height + ENEMY_OFFSET_Y));
                 break;
             case 2:
-//                pattern 2 vertical + on ground
+//                pattern 2 vertical
                 spawnPosition.x = spawnMarker + offset;
-                spawnPosition.y = STARTING_Y + (heightAdjust * width) + (counter * (height));
+                spawnPosition.y = STARTING_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 3:
 //                pattern 3 diagonal leaning right
@@ -405,7 +418,7 @@ public class GameScreen implements Screen{
             case 6:
 //                pattern 6 diagonal leaning left ungrouped
                 spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width));
-                spawnPosition.y = (STARTING_Y + (heightAdjust * height) + height * 2) - (counter * (height));
+                spawnPosition.y = (STARTING_Y  + (heightAdjust * height) + height * 2) - (counter * (height));
                 break;
             default:
                 throw new IllegalArgumentException("No such pattern");

@@ -1,0 +1,90 @@
+
+runner32.png
+size: 512,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+death
+  rotate: false
+  xy: 2, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: -1
+jump
+  rotate: false
+  xy: 212, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: -1
+run
+  rotate: false
+  xy: 44, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: 0
+run
+  rotate: false
+  xy: 86, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 86, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 128, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: 2
+smoke
+  rotate: false
+  xy: 254, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+smoke
+  rotate: false
+  xy: 288, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+smoke
+  rotate: false
+  xy: 322, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+smoke
+  rotate: false
+  xy: 356, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+smoke
+  rotate: false
+  xy: 390, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+stand
+  rotate: false
+  xy: 170, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: -1

@@ -36,7 +36,7 @@ public class MainMenuScreen implements Screen {
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         bg = new Texture("bg.png");
-        ground = new Texture("newground.png");
+        ground = new Texture("ground.png");
         cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         Gdx.input.setInputProcessor(stage);
