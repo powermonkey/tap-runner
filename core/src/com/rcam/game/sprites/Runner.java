@@ -25,7 +25,8 @@ public class Runner {
 //    static final float MAX_HEIGHT = 400;
     static final float MAX_HEIGHT = 450;
     static final int STARTING_HEALTH = 50;
-    public static final float CONTACT_BOUNDS_OFFSET = 4;
+    public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
+    public static final float CONTACT_BOUNDS_OFFSET_X = 2;
     public float health;
     private long startingTime, lavaDamageTimeStart;
     public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable, isIdle;
@@ -38,7 +39,7 @@ public class Runner {
     public float groundLevel, tempGround;
     private Rectangle bounds, intersectionBounds;
     static Preferences prefs;
-    public Animation<TextureRegion> animation;
+    public Animation<TextureRegion> animationSlow, animationNormal, animationFast;
     public float stateTime;
 
     public Runner(float x, float y){
@@ -60,10 +61,16 @@ public class Runner {
         regionRun = atlas.findRegions("run");
         regionJump = atlas.findRegion("jump");
         regionDeath = atlas.findRegion("death");
-        bounds = new Rectangle(x, y, regionStand.getRegionWidth(), regionStand.getRegionHeight());
-        intersectionBounds = new Rectangle(x, y - CONTACT_BOUNDS_OFFSET, regionStand.getRegionWidth(), regionStand.getRegionHeight() - CONTACT_BOUNDS_OFFSET); //intersection bounds
+        bounds = new Rectangle(x - CONTACT_BOUNDS_OFFSET_X, y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight());
+        intersectionBounds = new Rectangle(x - CONTACT_BOUNDS_OFFSET_X, y - CONTACT_BOUNDS_OFFSET_Y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight() - CONTACT_BOUNDS_OFFSET_Y); //intersection bounds
 
-        animation = new Animation<TextureRegion>(0.07f, regionRun);
+        animationSlow = new Animation<TextureRegion>(0.1f, regionRun);
+        animationNormal = new Animation<TextureRegion>(0.08f, regionRun);
+        animationFast = new Animation<TextureRegion>(0.04f, regionRun);
+
+//        runnerTexture = new Texture("bird.png");
+//        bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
+//        intersectionBounds = new Rectangle(x, y - CONTACT_BOUNDS_OFFSET, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
 
         health = STARTING_HEALTH;
         startingTime = millis();
@@ -140,10 +147,12 @@ public class Runner {
             velocity.y = 0;
         }
         if (speed.y < -40) {
+            isJumping = false;
             isFalling = true;
         }
         //minimum fall height before isOnGround is set; allows jumping when on top enemy bridge
         if (speed.y <= -40) {
+            isJumping = false;
             isOnGround = false;
         }
         //limit jump height
@@ -179,8 +188,8 @@ public class Runner {
         velocity.x = 0;
         if(!isJumping)
             velocity.y = 0;
-        bounds.setPosition(position.x, position.y);
-        intersectionBounds.setPosition(position.x, position.y - CONTACT_BOUNDS_OFFSET);
+        bounds.setPosition(position.x  - CONTACT_BOUNDS_OFFSET_X, position.y);
+        intersectionBounds.setPosition(position.x  - CONTACT_BOUNDS_OFFSET_X, position.y - CONTACT_BOUNDS_OFFSET_Y);
     }
 
     private void drainHealth(){
@@ -300,7 +309,6 @@ public class Runner {
     }
 
     public void dispose(){
-
-//        runnerTexture.dispose();
+        atlas.dispose();
     }
 }

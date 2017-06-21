@@ -204,17 +204,25 @@ public class GameScreen implements Screen{
         }
 
         //render runner
+//        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
+
         runner.stateTime += Gdx.graphics.getDeltaTime();
-//        System.out.println(runner.isJumping+ " " + runner.isFalling);
-//        System.out.println(runner.isIdle+ " " + runner.getSpeed().y + " " + runner.getSpeed().x);
-        TextureRegion currentRunnerFrame = runner.animation.getKeyFrame(runner.stateTime, true);
+        TextureRegion currentRunnerFrame;
+        if(runner.getSpeed().x > 150){
+            currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
+        }else if(runner.getSpeed().x < 100){
+            currentRunnerFrame = runner.animationSlow.getKeyFrame(runner.stateTime, true);
+        }else{
+            currentRunnerFrame = runner.animationNormal.getKeyFrame(runner.stateTime, true);
+        }
+
         if(runner.isDead){
             game.batch.draw(runner.getRegionDeath(), runner.getPosition().x, runner.getPosition().y);
         }else if(runner.isIdle && !runner.isJumping){
             game.batch.draw(runner.getRegionStand(), runner.getPosition().x, runner.getPosition().y);
-        }else if(runner.isJumping){
+        }else if(!runner.isOnGround) {
             game.batch.draw(runner.getRegionJump(), runner.getPosition().x, runner.getPosition().y);
-        }else if(!runner.isIdle) {
+        }else if(!runner.isIdle && runner.isOnGround) {
             game.batch.draw(currentRunnerFrame, runner.getPosition().x, runner.getPosition().y);
         }
 

@@ -19,7 +19,7 @@ import java.util.Vector;
 public class Enemy {
     final static float SPEED = -20;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
-    public final static float ON_TOP_OFFSET = 50;
+    public final static float ON_TOP_OFFSET = 60;
     public boolean touched, runnerOntop, enemyTouchSlows;
     float damage;
     public Vector2 position, velocity, speed;
