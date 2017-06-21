@@ -26,7 +26,7 @@ public class Runner {
     static final float MAX_HEIGHT = 450;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
-    public static final float CONTACT_BOUNDS_OFFSET_X = 2;
+    public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public float health;
     private long startingTime, lavaDamageTimeStart;
     public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable, isIdle;

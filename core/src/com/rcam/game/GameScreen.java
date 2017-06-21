@@ -406,27 +406,27 @@ public class GameScreen implements Screen{
             case 2:
 //                pattern 2 vertical
                 spawnPosition.x = spawnMarker + offset;
-                spawnPosition.y = STARTING_Y + (heightAdjust * height) + (counter * (height));
+                spawnPosition.y = STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 3:
 //                pattern 3 diagonal leaning right
                 spawnPosition.x = spawnMarker + offset + (counter * (width)) ;
-                spawnPosition.y = STARTING_Y + (heightAdjust * height) + (counter * (height));
+                spawnPosition.y = STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 4:
 //                pattern 4 diagonal leaning left
                 spawnPosition.x = spawnMarker + offset + (counter * (width));
-                spawnPosition.y = (STARTING_Y + (heightAdjust * height) + height * 2) - (counter * (height));
+                spawnPosition.y = (STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + height * 2) - (counter * (height));
                 break;
             case 5:
 //                pattern 5 diagonal leaning right ungrouped
                 spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width)) ;
-                spawnPosition.y = STARTING_Y + (heightAdjust * height) + (counter * (height));
+                spawnPosition.y = STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 6:
 //                pattern 6 diagonal leaning left ungrouped
                 spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width));
-                spawnPosition.y = (STARTING_Y  + (heightAdjust * height) + height * 2) - (counter * (height));
+                spawnPosition.y = (STARTING_Y  + ENEMY_OFFSET_Y + (heightAdjust * height) + height * 2) - (counter * (height));
                 break;
             default:
                 throw new IllegalArgumentException("No such pattern");
