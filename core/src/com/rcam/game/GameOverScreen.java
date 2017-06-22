@@ -149,7 +149,7 @@ public class GameOverScreen implements Screen{
         cam.update();
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
-        game.batch.draw(bg, 0, 112, TapRunner.WIDTH / 2, TapRunner.HEIGHT - 509);
+        game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 509);
         game.batch.draw(ground.getTexture(), 0, 0);
         game.batch.end();
         stage.act();
