@@ -150,7 +150,6 @@ public class GameScreen implements Screen{
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 112, TapRunner.WIDTH / 2, TapRunner.HEIGHT - 509);
-//        game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
 
         //spawn power up
         renderPowerUp();

@@ -133,7 +133,7 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(cam.combined);
 
         game.batch.begin();
-        game.batch.draw(bg, 0, 112, TapRunner.WIDTH / 2, TapRunner.HEIGHT - 509);
+        game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 509);
 //        game.batch.draw(playBtn, (cam.viewportWidth / 2 ) - (playBtn.getWidth() / 2 ), cam.viewportHeight / 2);
         game.batch.draw(ground, 0,0);
         game.batch.end();
