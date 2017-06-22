@@ -67,7 +67,7 @@ public class GameScreen implements Screen{
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
-        bg = new Texture("bg.png");
+        bg = new Texture("background.png");
         runner = new Runner(STARTING_X, STARTING_Y);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
@@ -149,7 +149,8 @@ public class GameScreen implements Screen{
 
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
-        game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
+        game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 112, TapRunner.WIDTH / 2, TapRunner.HEIGHT - 509);
+//        game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
 
         //spawn power up
         renderPowerUp();

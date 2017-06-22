@@ -71,7 +71,7 @@ public class GameOverScreen implements Screen{
         settingsButtonListener(settingsButton, runner);
         exitButton = new TextButton("Exit", cleanCrispySkin, "default");
         exitButtonListener(exitButton);
-        bg = new Texture("bg.png");
+        bg = new Texture("background.png");
         ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
         Gdx.input.setInputProcessor(stage);
 
@@ -149,7 +149,7 @@ public class GameOverScreen implements Screen{
         cam.update();
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
-        game.batch.draw(bg, 0, 0);
+        game.batch.draw(bg, 0, 112, TapRunner.WIDTH / 2, TapRunner.HEIGHT - 509);
         game.batch.draw(ground.getTexture(), 0, 0);
         game.batch.end();
         stage.act();
