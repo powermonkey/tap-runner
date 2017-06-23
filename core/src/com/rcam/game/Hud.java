@@ -1,7 +1,9 @@
 package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -81,7 +83,7 @@ public class Hud {
         indicatorstable.add(health.getHealthBar()).padRight(20);
         indicatorstable.row();
         indicatorstable.add(speedMeterLabel).width(80).padLeft(40);
-        indicatorstable.add(meter.getSpeedMeter()).padBottom(10).padRight(20);
+        indicatorstable.add(meter.getSpeedMeter()).left().padLeft(2);
         indicatorstable.row();
 //        indicatorstable.setBackground(new NinePatchDrawable(patch));
 
@@ -106,26 +108,30 @@ public class Hud {
     }
 
     public class Meter{
-        ProgressBar speedMeter;
-
+        Label currentIndicator;
+        Label.LabelStyle style;
+        BitmapFont labelFont;
         public Meter(){
-            speedMeter = new ProgressBar(1, 4, 1, false, getCleanCrispySkin(), "default-horizontal");
-            speedMeter.setAnimateDuration(.5f);
+            labelFont = getArcadeSkin().getFont("screen");
+            labelFont.getData().markupEnabled = true;
+            style = new Label.LabelStyle(labelFont, null);
+            currentIndicator = new Label("[#ffffff]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]3[]", style);
         }
 
-        public ProgressBar getSpeedMeter() {
-            return speedMeter;
+        public Label getSpeedMeter() {
+            return currentIndicator;
         }
 
         public void update(float speed){
-            if(speed < 50)
-                speedMeter.setValue(1);
-            else if(speed < 100)
-                speedMeter.setValue(2);
-            else if(speed < 150)
-                speedMeter.setValue(3);
-            else if(speed == 150)
-                speedMeter.setValue(4);
+            if(speed < 50) {
+                currentIndicator.setText("[#ffffff]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]3[]");
+            }else if(speed < 100) {
+                currentIndicator.setText("[#2a2a2a]0[] [#ffffff]1[] [#2a2a2a]2[] [#2a2a2a]3[]");
+            }else if(speed < 150) {
+                currentIndicator.setText("[#2a2a2a]0[] [#2a2a2a]1[] [#ffffff]2[] [#2a2a2a]3[]");
+            }else if(speed == 150) {
+                currentIndicator.setText("[#2a2a2a]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#ffffff]3[]");
+            }
         }
     }
 
@@ -234,8 +240,8 @@ public class Hud {
             sbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
             sbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
             sbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-            sbuttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("arrowLeft.png")));
-            sbuttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("arrowLeft.png")));
+            sbuttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("backward.png")));
+            sbuttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("backward.png")));
             sbutton.setStyle(sbuttonStyle);
             button1Listener(sbutton, runner);
         }
@@ -268,8 +274,8 @@ public class Hud {
             rbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
             rbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
             rbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-            rbuttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("arrowRight.png")));
-            rbuttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("arrowRight.png")));
+            rbuttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("forward.png")));
+            rbuttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("forward.png")));
             rbutton.setStyle(rbuttonStyle);
 
             button1Listener(rbutton, runner);
