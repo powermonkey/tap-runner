@@ -232,6 +232,9 @@ public class GameScreen implements Screen{
             }
 
             //set ground enemy position and render ground enemy
+//            if (runner.getPosition().x > spawnMarker) {
+//                spawnEnemy();
+//            }
             if (runner.getPosition().x > levelMarker) {
                 if (level.getLevelKey() == levelCounter) {
                     spawnEnemy();
@@ -340,14 +343,14 @@ public class GameScreen implements Screen{
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
         for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
-                if (!(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth())) {
+                if (cam.position.x + cam.viewportWidth > enemy.getPosition().x + enemy.getTextureWidth()
+                        && enemy.getPosition().x + enemy.getTextureWidth() > cam.position.x - cam.viewportWidth / 2 ) {
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, enemy.getPosition().x, enemy.getPosition().y);
-//                    enemy.update(delta);
                     enemy.checkCollision(runner);
-                } else {
-                    enemy.isSpawned = false; //unrender enemy when off camera
+                } else if(cam.position.x - cam.viewportWidth / 2 > enemy.getPosition().x + enemy.getTextureWidth()){
+                    enemy.isSpawned = false; //unspawn enemy when off camera
                 }
             }
         }
@@ -460,10 +463,11 @@ public class GameScreen implements Screen{
     public void renderPowerUp(){
         for(PowerUp powerUp : powerUps){
             if(powerUp.isSpawned) {
-                if (!(cam.position.x - (cam.viewportWidth / 2) > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth())) {
+                if (cam.position.x + cam.viewportWidth > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth()
+                        && powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth() > cam.position.x - cam.viewportWidth / 2 ) {
                     powerUp.checkPowerUpCollision(runner);
                     game.batch.draw(powerUp.getTextureRegion(), powerUp.getPosition().x, powerUp.getPosition().y);
-                } else {
+                } else if(cam.position.x - cam.viewportWidth > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth()){
                     powerUp.isSpawned = false; //unrender powerup when off camera
                 }
             }

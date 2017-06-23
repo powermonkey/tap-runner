@@ -24,13 +24,19 @@ public class FlyingEnemy extends Enemy implements Pool.Poolable{
         // fixed value since textures are currently the same size; refactor in future
         this.textureWidth = enemyTexture[0].getWidth() / FRAME_COLS;
         this.textureHeight = enemyTexture[0].getHeight() - ON_TOP_CONTACT_OFFSET;
+        animationMonster1 = new Animation<TextureRegion>(0.1f, createFrames(this.enemyTexture[0], FRAME_ROWS, FRAME_COLS));
+        animationMonster2 = new Animation<TextureRegion>(0.1f, createFrames(this.enemyTexture[1], FRAME_ROWS, FRAME_COLS));
     }
 
     public void init(int monsterType, Vector2 pos){
         monsterType = monsterType - 1;
-        super.init(monsterType, pos);
+        super.init(pos);
         damage = 7;
-        animation = new Animation<TextureRegion>(0.1f, createFrames(enemyTexture[monsterType], FRAME_ROWS, FRAME_COLS));
+        if(monsterType == 0){
+            animation = animationMonster1;
+        }else{
+            animation = animationMonster2;
+        }
         stateTime = 0f;
         textureWidth = enemyTexture[monsterType].getWidth() / FRAME_COLS;
         textureHeight = enemyTexture[monsterType].getHeight() - ON_TOP_CONTACT_OFFSET;

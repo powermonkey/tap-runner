@@ -27,7 +27,7 @@ public class Enemy {
     public Texture[] enemyTexture;
     public float textureHeight, textureWidth;
     public boolean isSpawned;
-    public Animation<TextureRegion> animation;
+    public Animation<TextureRegion> animation, animationMonster1, animationMonster2;
     public float stateTime;
     static Preferences prefs;
 
@@ -52,7 +52,7 @@ public class Enemy {
         enemyTouchSlows = prefs.getBoolean("EnemyTouchSlows", false);
     }
 
-    public void init(int type, Vector2 pos){
+    public void init(Vector2 pos){
         velocity.set(SPEED, 0);
         speed.set(SPEED, 0);
         touched = false;
