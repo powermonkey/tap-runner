@@ -115,7 +115,7 @@ public class Hud {
             labelFont = getArcadeSkin().getFont("screen");
             labelFont.getData().markupEnabled = true;
             style = new Label.LabelStyle(labelFont, null);
-            currentIndicator = new Label("[#ffffff]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]3[]", style);
+            currentIndicator = new Label("[#ffffff]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]", style);
         }
 
         public Label getSpeedMeter() {
@@ -124,13 +124,13 @@ public class Hud {
 
         public void update(float speed){
             if(speed < 50) {
-                currentIndicator.setText("[#ffffff]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]3[]");
+                currentIndicator.setText("[#ffffff]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]");
             }else if(speed < 100) {
-                currentIndicator.setText("[#2a2a2a]0[] [#ffffff]1[] [#2a2a2a]2[] [#2a2a2a]3[]");
+                currentIndicator.setText("[#2a2a2a]0[] [#ffffff]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]");
             }else if(speed < 150) {
-                currentIndicator.setText("[#2a2a2a]0[] [#2a2a2a]1[] [#ffffff]2[] [#2a2a2a]3[]");
+                currentIndicator.setText("[#2a2a2a]0[] [#2a2a2a]1[] [#ffffff]2[] [#2a2a2a]MAX![]");
             }else if(speed == 150) {
-                currentIndicator.setText("[#2a2a2a]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#ffffff]3[]");
+                currentIndicator.setText("[#2a2a2a]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#ffffff]MAX![]");
             }
         }
     }
