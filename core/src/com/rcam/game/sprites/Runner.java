@@ -66,7 +66,7 @@ public class Runner {
 
         animationSlow = new Animation<TextureRegion>(0.1f, regionRun);
         animationNormal = new Animation<TextureRegion>(0.08f, regionRun);
-        animationFast = new Animation<TextureRegion>(0.03f, regionRun);
+        animationFast = new Animation<TextureRegion>(0.02f, regionRun);
 
 //        runnerTexture = new Texture("bird.png");
 //        bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
