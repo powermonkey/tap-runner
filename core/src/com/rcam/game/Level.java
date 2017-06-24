@@ -58,7 +58,7 @@ public class Level {
                 {2,3,6,2,1,0},{2,3,5,1,0,0},{2,3,6,2,1,0},
                 {2,3,5,1,0,0},{2,3,6,2,1,0},{2,3,5,1,0,0},
                 {2,3,5,2,0,0},{2,3,6,1,1,0},{2,3,5,2,0,0},
-                {2,3,6,2,1,0},{2,3,5,1,0,0},{2,3,6,2,1,1}
+                {2,3,6,2,1,0},{2,3,5,1,0,0},{2,3,6,2,1,8}
         };
 
         // /\/\, house, /\, \o , vo, _=, o/, -_, !,i,!,i
@@ -86,14 +86,14 @@ public class Level {
         if(levelHolder.length - 1 == Level.pattern) {
             if(levelKey == 1) {
                 levelHolder = levelTwo;
-                lavaMarkerOffset = 700;
+                lavaMarkerOffset = 650;
                 levelKey = 2;
             }else if(levelKey == 2) {
-                lavaMarkerOffset = 580;
+                lavaMarkerOffset = 500;
                 levelHolder = levelThree;
                 levelKey = 3;
             }else if(levelKey == 3){
-                lavaMarkerOffset = 350;
+                lavaMarkerOffset = 310;
                 levelHolder = levelFour;
                 levelKey = 4;
             }else{
