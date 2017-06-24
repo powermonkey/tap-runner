@@ -17,7 +17,11 @@ public class TapRunner extends Game{
 	private AdsController adsController;
 
 	public TapRunner(AdsController adsController){
-		this.adsController = adsController;
+		if (adsController != null) {
+			this.adsController = adsController;
+		} else {
+			this.adsController = new DummyController();
+		}
 	}
 
 	@Override

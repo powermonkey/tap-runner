@@ -10,6 +10,6 @@ public class DesktopLauncher {
 		config.width = TapRunner.WIDTH;
 		config.height = TapRunner.HEIGHT;
 		config.title = TapRunner.TITLE;
-		new LwjglApplication(new TapRunner(), config);
+		new LwjglApplication(new TapRunner(null), config);
 	}
 }
