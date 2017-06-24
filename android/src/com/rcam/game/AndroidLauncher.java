@@ -1,5 +1,8 @@
 package com.rcam.game;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +33,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
-		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		layout.addView(bannerAd, params);
 
 		setContentView(layout);
@@ -42,6 +45,15 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		bannerAd.setBackgroundColor(0xff000000); // black
 		bannerAd.setAdUnitId(BANNER_AD_UNIT_ID);
 		bannerAd.setAdSize(AdSize.SMART_BANNER);
+	}
+
+	@Override
+	public boolean isWifiConnected() {
+		ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		 boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
+		return isConnected;
 	}
 
 	@Override

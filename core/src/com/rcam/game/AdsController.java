@@ -5,6 +5,7 @@ package com.rcam.game;
  */
 
 public interface AdsController {
+    boolean isWifiConnected();
     void showBannerAd();
     void hideBannerAd();
 }
