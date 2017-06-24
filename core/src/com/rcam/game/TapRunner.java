@@ -14,12 +14,18 @@ public class TapRunner extends Game{
 	SpriteBatch batch;
 	BitmapFont font;
 
+	private AdsController adsController;
+
+	public TapRunner(AdsController adsController){
+		this.adsController = adsController;
+	}
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		this.setScreen(new MainMenuScreen(this));
-//		this.setScreen(new GameScreen(this));
+		adsController.showBannerAd();
 	}
 
 	@Override
