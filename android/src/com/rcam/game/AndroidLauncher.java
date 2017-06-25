@@ -93,8 +93,39 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		});
 	}
 
+//	@Override
+//	public void showInterstitialAd(final Runnable then) {
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				if (then != null) {
+//					interstitialAd.setAdListener(new AdListener() {
+//						@Override
+//						public void onAdClosed() {
+//							Gdx.app.postRunnable(then);
+//							AdRequest.Builder builder = new AdRequest.Builder();
+//							AdRequest ad = builder.build();
+//							interstitialAd.loadAd(ad);
+//						}
+//					});
+//				}
+//				interstitialAd.show();
+//			}
+//		});
+//	}
+
 	@Override
 	public void showInterstitialAd(final Runnable then) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				interstitialAd.show();
+			}
+		});
+	}
+
+	@Override
+	public void loadInterstitialAd(final Runnable then) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -109,7 +140,6 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 						}
 					});
 				}
-				interstitialAd.show();
 			}
 		});
 	}

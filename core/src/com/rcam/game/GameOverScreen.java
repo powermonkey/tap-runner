@@ -116,10 +116,45 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+//                if (game.adsController.isWifiConnected()) {
+//                    game.adsController.showInterstitialAd(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            System.out.println("Interstitial app closed");
+//                            Gdx.app.exit();
+//                        }
+//                    });
+//                } else {
+//                    System.out.println("Interstitial ad not (yet) loaded");
+//                }
+                showInterstitialAd();
+                loadInterstitialAd();
                 game.setScreen(new GameScreen(game));
                 return true;
             }
         });
+    }
+
+    public void loadInterstitialAd(){
+        if (game.adsController.isWifiConnected()) {
+            game.adsController.loadInterstitialAd(new Runnable() {
+                @Override
+                public void run() {
+                    //load new interstitial ad after closing ad
+                }
+            });
+        }
+    }
+
+    public void showInterstitialAd(){
+        if (game.adsController.isWifiConnected()) {
+            game.adsController.showInterstitialAd(new Runnable() {
+                @Override
+                public void run() {
+                    //show interstitial ad
+                }
+            });
+        }
     }
 
     public void settingsButtonListener(TextButton button, final Runner runner){
@@ -146,25 +181,15 @@ public class GameOverScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 40);
         cam.update();
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
-        game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 509);
+        game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 469);
         game.batch.draw(ground.getTexture(), 0, 0);
         game.batch.end();
         stage.act();
         stage.draw();
-
-        if (game.adsController.isWifiConnected()) {
-            game.adsController.showInterstitialAd(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("Interstitial app closed");
-                }
-            });
-        } else {
-            System.out.println("Interstitial ad not (yet) loaded");
-        }
     }
 
     @Override
