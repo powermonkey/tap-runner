@@ -70,7 +70,7 @@ public class GameScreen implements Screen{
         bg = new Texture("background.png");
         runner = new Runner(STARTING_X, STARTING_Y);
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 40);
         cam.update();
 
         isPause = false;
@@ -133,6 +133,8 @@ public class GameScreen implements Screen{
         hud = new Hud(gam, runner, this);
         keys = new KeyboardInput(runner);
 
+
+
     }
 
     public void handleKeyboardInput() {
@@ -149,7 +151,7 @@ public class GameScreen implements Screen{
 
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
-        game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 509);
+        game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 469);
 
         //spawn power up
         renderPowerUp();
