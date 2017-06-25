@@ -154,6 +154,17 @@ public class GameOverScreen implements Screen{
         game.batch.end();
         stage.act();
         stage.draw();
+
+        if (game.adsController.isWifiConnected()) {
+            game.adsController.showInterstitialAd(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Interstitial app closed");
+                }
+            });
+        } else {
+            System.out.println("Interstitial ad not (yet) loaded");
+        }
     }
 
     @Override

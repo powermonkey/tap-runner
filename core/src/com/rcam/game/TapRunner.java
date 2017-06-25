@@ -14,7 +14,7 @@ public class TapRunner extends Game{
 	SpriteBatch batch;
 	BitmapFont font;
 
-	private AdsController adsController;
+	public AdsController adsController;
 
 	public TapRunner(AdsController adsController){
 		if (adsController != null) {

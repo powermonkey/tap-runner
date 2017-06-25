@@ -19,4 +19,9 @@ class DummyController implements AdsController {
     public void hideBannerAd() {
 
     }
+
+    @Override
+    public void showInterstitialAd(Runnable then) {
+
+    }
 }

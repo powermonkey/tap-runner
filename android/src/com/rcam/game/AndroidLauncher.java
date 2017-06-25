@@ -8,15 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class AndroidLauncher extends AndroidApplication implements AdsController{
 	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
+	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
+
 	AdView bannerAd;
+	InterstitialAd interstitialAd;
 	View gameView;
 	RelativeLayout layout;
 
@@ -45,6 +51,13 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		bannerAd.setBackgroundColor(0xff000000); // black
 		bannerAd.setAdUnitId(BANNER_AD_UNIT_ID);
 		bannerAd.setAdSize(AdSize.SMART_BANNER);
+
+		interstitialAd = new InterstitialAd(this);
+		interstitialAd.setAdUnitId(INTERSTITIAL_AD_UNIT_ID);
+
+		AdRequest.Builder builder = new AdRequest.Builder();
+		AdRequest ad = builder.build();
+		interstitialAd.loadAd(ad);
 	}
 
 	@Override
@@ -52,7 +65,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-		 boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
+		boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
 		return isConnected;
 	}
 
@@ -75,6 +88,27 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 			@Override
 			public void run() {
 				bannerAd.setVisibility(View.INVISIBLE);
+			}
+		});
+	}
+
+	@Override
+	public void showInterstitialAd(final Runnable then) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (then != null) {
+					interstitialAd.setAdListener(new AdListener() {
+						@Override
+						public void onAdClosed() {
+							Gdx.app.postRunnable(then);
+							AdRequest.Builder builder = new AdRequest.Builder();
+							AdRequest ad = builder.build();
+							interstitialAd.loadAd(ad);
+						}
+					});
+				}
+				interstitialAd.show();
 			}
 		});
 	}
