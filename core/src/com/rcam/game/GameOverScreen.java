@@ -106,6 +106,8 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                showInterstitialAd();
+                loadInterstitialAd();
                 game.setScreen(new MainMenuScreen(game));
                 return true;
             }
@@ -116,20 +118,31 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-//                if (game.adsController.isWifiConnected()) {
-//                    game.adsController.showInterstitialAd(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            System.out.println("Interstitial app closed");
-//                            Gdx.app.exit();
-//                        }
-//                    });
-//                } else {
-//                    System.out.println("Interstitial ad not (yet) loaded");
-//                }
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new GameScreen(game));
+                return true;
+            }
+        });
+    }
+
+    public void settingsButtonListener(TextButton button, final Runner runner){
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                showInterstitialAd();
+                loadInterstitialAd();
+                game.setScreen(new SettingsScreen(game));
+                return true;
+            }
+        });
+    }
+
+    public void exitButtonListener(TextButton button){
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.exit();
                 return true;
             }
         });
@@ -155,26 +168,6 @@ public class GameOverScreen implements Screen{
                 }
             });
         }
-    }
-
-    public void settingsButtonListener(TextButton button, final Runner runner){
-        button.addListener(new InputListener(){
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new SettingsScreen(game));
-                return true;
-            }
-        });
-    }
-
-    public void exitButtonListener(TextButton button){
-        button.addListener(new InputListener(){
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
-                return true;
-            }
-        });
     }
 
     @Override

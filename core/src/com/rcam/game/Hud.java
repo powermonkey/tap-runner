@@ -373,6 +373,28 @@ public class Hud {
             stage.addActor(rtable);
         }
 
+        public void loadInterstitialAd(){
+            if (game.adsController.isWifiConnected()) {
+                game.adsController.loadInterstitialAd(new Runnable() {
+                    @Override
+                    public void run() {
+                        //load new interstitial ad after closing ad
+                    }
+                });
+            }
+        }
+
+        public void showInterstitialAd(){
+            if (game.adsController.isWifiConnected()) {
+                game.adsController.showInterstitialAd(new Runnable() {
+                    @Override
+                    public void run() {
+                        //show interstitial ad
+                    }
+                });
+            }
+        }
+
         public void continueButtonListener(final Button button){
             button.addListener(new InputListener(){
                 @Override
@@ -392,6 +414,8 @@ public class Hud {
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    showInterstitialAd();
+                    loadInterstitialAd();
                     game.setScreen(new GameScreen(game));
                     return true;
                 }
@@ -420,6 +444,8 @@ public class Hud {
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    showInterstitialAd();
+                    loadInterstitialAd();
                     game.setScreen(new MainMenuScreen(game));
                     return true;
                 }
