@@ -1,6 +1,7 @@
 package com.rcam.game;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -48,7 +49,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 	public void setupAds() {
 		bannerAd = new AdView(this);
 		bannerAd.setVisibility(View.INVISIBLE);
-		bannerAd.setBackgroundColor(0xff000000); // black
+		bannerAd.setBackgroundColor(Color.TRANSPARENT);
 		bannerAd.setAdUnitId(BANNER_AD_UNIT_ID);
 		bannerAd.setAdSize(AdSize.SMART_BANNER);
 
