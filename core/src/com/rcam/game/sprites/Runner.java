@@ -23,13 +23,15 @@ public class Runner {
     static final float GRAVITY = -20;
     static final float MAX_SPEED = 150;
 //    static final float MAX_HEIGHT = 400;
+    public final static float STARTING_X = 30;
+    public final static float STARTING_Y = 112;
     static final float MAX_HEIGHT = 450;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public float health;
     private long startingTime, lavaDamageTimeStart;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable, isIdle;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable, isIdle, isResetPosition;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     TextureAtlas atlas;
@@ -42,8 +44,8 @@ public class Runner {
     public Animation<TextureRegion> animationSlow, animationNormal, animationFast;
     public float stateTime;
 
-    public Runner(float x, float y){
-        position = new Vector2(x, y);
+    public Runner(){
+        position = new Vector2(STARTING_X, STARTING_Y);
         groundLevel = position.y;
         tempGround = groundLevel;
         velocity = new Vector2(0, 0);
@@ -55,18 +57,19 @@ public class Runner {
         invulnerable = false;
         isOnTopEnemy = false;
         isIdle = false;
+        isResetPosition = false;
 
         atlas = new TextureAtlas("packedimages/runner32.atlas");
         regionStand = atlas.findRegion("stand");
         regionRun = atlas.findRegions("run");
         regionJump = atlas.findRegion("jump");
         regionDeath = atlas.findRegion("death");
-        bounds = new Rectangle(x - CONTACT_BOUNDS_OFFSET_X, y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight());
-        intersectionBounds = new Rectangle(x - CONTACT_BOUNDS_OFFSET_X, y - CONTACT_BOUNDS_OFFSET_Y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight() - CONTACT_BOUNDS_OFFSET_Y); //intersection bounds
+        bounds = new Rectangle(STARTING_X - CONTACT_BOUNDS_OFFSET_X, STARTING_Y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight());
+        intersectionBounds = new Rectangle(STARTING_X - CONTACT_BOUNDS_OFFSET_X, STARTING_Y - CONTACT_BOUNDS_OFFSET_Y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight() - CONTACT_BOUNDS_OFFSET_Y); //intersection bounds
 
         animationSlow = new Animation<TextureRegion>(0.1f, regionRun);
         animationNormal = new Animation<TextureRegion>(0.08f, regionRun);
-        animationFast = new Animation<TextureRegion>(0.02f, regionRun);
+        animationFast = new Animation<TextureRegion>(0.01f, regionRun);
 
 //        runnerTexture = new Texture("bird.png");
 //        bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
@@ -113,7 +116,12 @@ public class Runner {
 //        speed.add(FRICTION, 0);
 
        //make runner come back to the ground
-            speed.add(0, GRAVITY);
+        speed.add(0, GRAVITY);
+
+        if(isResetPosition){
+            position.x = STARTING_X;
+            isResetPosition = false;
+        }
 
         //remove invulnerability
         if(invulnerable){
@@ -172,7 +180,6 @@ public class Runner {
             speed.x = 0;
         }
         position.add(speed.x * dt, speed.y * dt);
-
         //make runner land on ground
         if(position.y < tempGround && !isDead){
             position.y = tempGround;
@@ -224,6 +231,10 @@ public class Runner {
 
     public void setPositionY(float y) {
         position.y = y;
+    }
+
+    public void setPositionX(float x) {
+        position.x = x;
     }
 
     public Vector2 getVelocity() {

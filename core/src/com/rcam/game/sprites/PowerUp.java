@@ -38,6 +38,7 @@ public class PowerUp implements Pool.Poolable{
         this.textureRegions[3] = new TextureRegion(texture, 144, 91, 25, 25); //banana
         this.textureRegions[4] = new TextureRegion(texture, 92, 60, 25, 25); //apple
         this.position = new Vector2();
+        this.rand = new Random();
         this.touched = false;
         this.isSpawned = true;
     }
@@ -63,7 +64,6 @@ public class PowerUp implements Pool.Poolable{
     }
 
     public void randomPowerUp(){
-        rand = new Random();
         powerUpType = rand.nextInt(RANDOM_POWERUP);
         selectPowerUp(powerUpType);
     }

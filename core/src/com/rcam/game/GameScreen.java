@@ -29,8 +29,6 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 
 public class GameScreen implements Screen{
     final TapRunner game;
-    final static float STARTING_X = 30;
-    final static float STARTING_Y = 112;
     final static float ENEMY_OFFSET_Y = 5;
     float spawnMarker = 50;
     float levelMarker = 30;
@@ -60,15 +58,15 @@ public class GameScreen implements Screen{
     long startingTime;
     KeyboardInput keys;
     String gameMode;
-    GroundEnemy groundEnemyOject;
-    FlyingEnemy flyingEnemyOject;
+    private GroundEnemy groundEnemyOject;
+    private FlyingEnemy flyingEnemyOject;
     Enemy enemyObject;
     boolean isPause;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
         bg = new Texture("background.png");
-        runner = new Runner(STARTING_X, STARTING_Y);
+        runner = new Runner();
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 40);
         cam.update();
@@ -143,7 +141,7 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         cam.position.x = runner.getPosition().x + 100;
@@ -151,7 +149,9 @@ public class GameScreen implements Screen{
 
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
+        game.batch.disableBlending();
         game.batch.draw(bg, cam.position.x - (cam.viewportWidth / 2), 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 469);
+        game.batch.enableBlending();
 
         //spawn power up
         renderPowerUp();
@@ -206,8 +206,6 @@ public class GameScreen implements Screen{
         }
 
         //render runner
-//        game.batch.draw(runner.getTexture(), runner.getPosition().x, runner.getPosition().y);
-
         runner.stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentRunnerFrame;
         if(runner.getSpeed().x > 150){
@@ -229,16 +227,19 @@ public class GameScreen implements Screen{
         }
 
         if(!isPause) {
+            //set power up position and render power up
             if (runner.getPosition().x > powerUpMarker) {
                 spawnPowerUp(delta);
             }
 
-            //set ground enemy position and render ground enemy
-//            if (runner.getPosition().x > spawnMarker) {
-//                spawnEnemy();
-//            }
+            //set enemy position and render enemy
             if (runner.getPosition().x > levelMarker) {
                 if (level.getLevelKey() == levelCounter) {
+                    if(level.isBeginningOfLevel) {
+                        runner.isResetPosition = true;
+                        levelMarker = spawnMarker;
+                    }
+                    System.out.println(levelMarker);
                     spawnEnemy();
                 } else if (levelCounter == 4) {
                     //reverse order patterns for each level
@@ -247,13 +248,16 @@ public class GameScreen implements Screen{
                     //increase enemy damage
                     levelCounter = 1;
                     levelMarker = spawnMarker;
+
                     lavaMarker = levelMarker;
                     lavaMarkerMutliplier = levelCounter;
-                } else {
+                }else{
                     levelMarker = spawnMarker;
+                    levelCounter++;
+                    spawnMarker = 50;
+
                     lavaMarker = levelMarker;
                     lavaMarkerMutliplier = levelCounter;
-                    levelCounter++;
                 }
             }
 
@@ -341,7 +345,6 @@ public class GameScreen implements Screen{
         }
     }
 
-
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
         for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
@@ -406,32 +409,32 @@ public class GameScreen implements Screen{
             case 1:
 //                pattern 1 horizontal (used for ground enemies mostly)
                 spawnPosition.x = spawnMarker + offset + (counter * (width));
-                spawnPosition.y = STARTING_Y + (heightAdjust * (height + ENEMY_OFFSET_Y));
+                spawnPosition.y = runner.STARTING_Y + (heightAdjust * (height + ENEMY_OFFSET_Y));
                 break;
             case 2:
 //                pattern 2 vertical
                 spawnPosition.x = spawnMarker + offset;
-                spawnPosition.y = STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
+                spawnPosition.y = runner.STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 3:
 //                pattern 3 diagonal leaning right
                 spawnPosition.x = spawnMarker + offset + (counter * (width)) ;
-                spawnPosition.y = STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
+                spawnPosition.y = runner.STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 4:
 //                pattern 4 diagonal leaning left
                 spawnPosition.x = spawnMarker + offset + (counter * (width));
-                spawnPosition.y = (STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + height * 2) - (counter * (height));
+                spawnPosition.y = (runner.STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + height * 2) - (counter * (height));
                 break;
             case 5:
 //                pattern 5 diagonal leaning right ungrouped
                 spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width)) ;
-                spawnPosition.y = STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
+                spawnPosition.y = runner.STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 6:
 //                pattern 6 diagonal leaning left ungrouped
                 spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width));
-                spawnPosition.y = (STARTING_Y  + ENEMY_OFFSET_Y + (heightAdjust * height) + height * 2) - (counter * (height));
+                spawnPosition.y = (runner.STARTING_Y  + ENEMY_OFFSET_Y + (heightAdjust * height) + height * 2) - (counter * (height));
                 break;
             default:
                 throw new IllegalArgumentException("No such pattern");
@@ -446,7 +449,7 @@ public class GameScreen implements Screen{
         int ctr = 1;
         for(int i = 1; i <= num; i++){
             float x = (powerUpMarker + powUp.SPAWN_OFFSET_X + (ctr * 25));
-            float y = (STARTING_Y + (yFluc > 32 ? yFluc : 0));
+            float y = (runner.STARTING_Y + (yFluc > 32 ? yFluc : 0));
             PowerUp powerUpItem = powerUpPool.obtain();
             powerUpItem.init(x,y);
             powerUps.add(powerUpItem);

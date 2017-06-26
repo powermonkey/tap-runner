@@ -8,7 +8,7 @@ public class Level {
     static int pattern; //the enemy pattern inside a level
     static int levelKey;
     private static float lavaMarkerOffset;
-    public boolean isEndOfLevel;
+    public boolean isEndOfLevel, isBeginningOfLevel;
     public int[][] levelHolder; // holds current level
     public int[][] levelOne; //intro patterns
     public int[][] levelTwo; //combo patterns
@@ -29,7 +29,8 @@ public class Level {
         levelOne = new int[][]{
                 {1,1,1,1,0,5},{1,3,1,1,0,8},
                 {2,1,1,1,1,5},{2,1,1,1,0,5},
-                {2,3,1,1,1,8},{2,3,1,1,0,8},
+                {2,3,1,1,1,8},
+ {2,3,1,1,0,8},
                 {2,3,2,1,1,8},{2,3,2,1,0,5},
                 {2,3,3,1,1,8},{2,3,3,1,0,8},
                 {2,3,4,1,1,8},{2,3,4,1,0,8}
@@ -102,10 +103,10 @@ public class Level {
                 levelKey = 1;
             }
             Level.pattern = 0;
-            isEndOfLevel = true;
+            isBeginningOfLevel = true;
         }else{
             Level.pattern += 1;
-            isEndOfLevel = false;
+            isBeginningOfLevel = false;
         }
     }
 
