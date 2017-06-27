@@ -255,7 +255,6 @@ public class GameScreen implements Screen{
                     if(gameMode.equals("Normal") && level.isBeginningOfLevel){
                         runner.increaseSpeed(50);
                         runner.run();
-                        System.out.println(level.isBeginningOfLevel);
                     }
 
                     levelCounter = 1;

@@ -19,15 +19,14 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 
 public class Runner {
     static final float FRICTION = -1.5f;
-//    static final float GRAVITY = -15;
-    static final float GRAVITY = -20;
+    static final float GRAVITY = -23;
     public static float MAX_SPEED = 150;
     public static float MIN_SPEED = 50;
     static float RUN_SPEED = 50;
 //    static final float MAX_HEIGHT = 400;
     public final static float STARTING_X = 30;
     public final static float STARTING_Y = 112;
-    static final float MAX_HEIGHT = 450;
+    static final float MAX_HEIGHT = 500;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
@@ -133,7 +132,7 @@ public class Runner {
 
         if(speed.x > 0) {
             isIdle = false;
-        }else if(speed.x <= 0 && speed.y ==  -20 && (!isJumping || !isFalling)){
+        }else if(speed.x <= 0 && speed.y == -23 && (!isJumping || !isFalling)){
             isIdle = true;
         }
 
@@ -150,7 +149,6 @@ public class Runner {
         //if dead set velocity to immediate stop
         if(isDead){
             velocity.x = -600;
-            velocity.y = 0;
         }
 
         //maintain high speed
@@ -160,12 +158,12 @@ public class Runner {
         if(!isJumping) {
             velocity.y = 0;
         }
-        if (speed.y < -40) {
+        if (speed.y < -46) {
             isJumping = false;
             isFalling = true;
         }
         //minimum fall height before isOnGround is set; allows jumping when on top enemy bridge
-        if (speed.y <= -40) {
+        if (speed.y <= -46) {
             isJumping = false;
             isOnGround = false;
         }
@@ -264,7 +262,7 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 55;
+        velocity.y = 60;
         isJumping = true;
         isOnGround = false;
         isFalling = false;
