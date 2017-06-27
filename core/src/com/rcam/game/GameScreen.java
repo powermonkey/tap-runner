@@ -262,10 +262,9 @@ public class GameScreen implements Screen{
                     lavaMarkerMutliplier = levelCounter;
                 }else{
                     levelMarker = spawnMarker;
-                    levelCounter++;
-
                     lavaMarker = levelMarker;
                     lavaMarkerMutliplier = levelCounter;
+                    levelCounter++;
                 }
             }
 
