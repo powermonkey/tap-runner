@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.rcam.game.sprites.Ground;
@@ -63,7 +62,6 @@ public class GameScreen implements Screen{
     private FlyingEnemy flyingEnemyOject;
     Enemy enemyObject;
     boolean isPause;
-    Vector3 bgPos;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -152,7 +150,6 @@ public class GameScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-//        bgCam.position.x = (int)runner.getPosition().x + 100;
         bgCam.update();
 
         cam.position.x = (int)runner.getPosition().x + 100;
@@ -222,7 +219,7 @@ public class GameScreen implements Screen{
         //render runner
         runner.stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentRunnerFrame;
-        if(runner.getSpeed().x > 150){
+        if(runner.getSpeed().x >= 150){
             currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
         }else if(runner.getSpeed().x < 100){
             currentRunnerFrame = runner.animationSlow.getKeyFrame(runner.stateTime, true);
@@ -249,15 +246,19 @@ public class GameScreen implements Screen{
             //set enemy position and render enemy
             if (runner.getPosition().x > levelMarker) {
                 if (level.getLevelKey() == levelCounter) {
-                    spawnEnemy();
+                        spawnEnemy();
                 } else if (levelCounter == 4) {
                     //reverse order patterns for each level
                     //shuffle order patterns
                     //drain life
                     //increase enemy damage
-                    levelCounter = 1;
-                    levelMarker = spawnMarker;
+                    if(gameMode.equals("Normal") && level.isBeginningOfLevel){
+                        runner.increaseSpeed(50);
+                        runner.run();
+                        System.out.println(level.isBeginningOfLevel);
+                    }
 
+                    levelCounter = 1;
                     lavaMarker = levelMarker;
                     lavaMarkerMutliplier = levelCounter;
                 }else{
@@ -372,7 +373,7 @@ public class GameScreen implements Screen{
         int groundEnemylen = activeGroundEnemies.size;
         for(int i = groundEnemylen; --i >= 0;){
             groundEnemyItem = activeGroundEnemies.get(i);
-            if(groundEnemyItem.isSpawned == false){
+            if(!groundEnemyItem.isSpawned){
                 activeGroundEnemies.removeIndex(i);
                 groundEnemyPool.free(groundEnemyItem);
             }
@@ -382,7 +383,7 @@ public class GameScreen implements Screen{
         int flyingEnemylen = activeFlyingEnemies.size;
         for(int i = flyingEnemylen; --i >= 0;){
             flyingEnemyItem = activeFlyingEnemies.get(i);
-            if(flyingEnemyItem.isSpawned == false){
+            if(!flyingEnemyItem.isSpawned){
                 activeFlyingEnemies.removeIndex(i);
                 flyingEnemyPool.free(flyingEnemyItem);
             }
@@ -425,7 +426,7 @@ public class GameScreen implements Screen{
                 break;
             case 3:
 //                pattern 3 diagonal leaning right
-                spawnPosition.x = spawnMarker + offset + (counter * (width)) ;
+                spawnPosition.x = spawnMarker + offset + (counter * (width));
                 spawnPosition.y = runner.STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 4:
@@ -489,7 +490,7 @@ public class GameScreen implements Screen{
         int len = powerUps.size;
         for(int i = len; --i >= 0;){
             powerUpItem = powerUps.get(i);
-            if(powerUpItem.isSpawned == false){
+            if(!powerUpItem.isSpawned){
                 powerUps.removeIndex(i);
                 powerUpPool.free(powerUpItem);
             }

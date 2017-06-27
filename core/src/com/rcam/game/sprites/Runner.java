@@ -21,7 +21,9 @@ public class Runner {
     static final float FRICTION = -1.5f;
 //    static final float GRAVITY = -15;
     static final float GRAVITY = -20;
-    static final float MAX_SPEED = 150;
+    public static float MAX_SPEED = 150;
+    public static float MIN_SPEED = 50;
+    static float RUN_SPEED = 50;
 //    static final float MAX_HEIGHT = 400;
     public final static float STARTING_X = 30;
     public final static float STARTING_Y = 112;
@@ -68,7 +70,7 @@ public class Runner {
 
         animationSlow = new Animation<TextureRegion>(0.1f, regionRun);
         animationNormal = new Animation<TextureRegion>(0.08f, regionRun);
-        animationFast = new Animation<TextureRegion>(0.01f, regionRun);
+        animationFast = new Animation<TextureRegion>(0.07f, regionRun);
 
 //        runnerTexture = new Texture("bird.png");
 //        bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
@@ -108,6 +110,10 @@ public class Runner {
         return prefs.getInteger("BestDistanceLavaMode");
     }
 
+    public void increaseSpeed(int speed){
+        MAX_SPEED += speed;
+    }
+
     public void update(float dt){
 //        drainHealth();
 
@@ -127,7 +133,7 @@ public class Runner {
 
         if(speed.x > 0) {
             isIdle = false;
-        }else if(speed.x <= 0 && speed.y ==  -20){
+        }else if(speed.x <= 0 && speed.y ==  -20 && (!isJumping || !isFalling)){
             isIdle = true;
         }
 
@@ -136,9 +142,15 @@ public class Runner {
             speed.x = 0;
         }
 
+        // runner cannot stop; min speed
+        if(speed.x <= 50 ){
+            speed.x = 50;
+        }
+
         //if dead set velocity to immediate stop
         if(isDead){
             velocity.x = -600;
+            velocity.y = 0;
         }
 
         //maintain high speed
@@ -244,11 +256,11 @@ public class Runner {
     }
 
     public void run(){
-            velocity.x = 50;
+            velocity.x = RUN_SPEED;
     }
 
     public void slowDown(){
-        velocity.x = -50;
+        velocity.x = -RUN_SPEED;
     }
 
     public void jump(){

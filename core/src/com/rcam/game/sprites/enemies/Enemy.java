@@ -17,7 +17,7 @@ import java.util.Vector;
  */
 
 public class Enemy {
-    final static float SPEED = -20;
+    float SPEED = -20;
     public final static float SPAWN_OFFSET_FROM_CAM_X = 300;
     public final static float ON_TOP_OFFSET = 60;
     public boolean touched, runnerOntop, enemyTouchSlows;

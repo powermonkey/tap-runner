@@ -59,7 +59,7 @@ public class Hud {
         cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
         arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
-        meter = new Meter();
+        meter = new Meter(runner);
         distance = new Distance(runner);
         health = new Health(runner);
         runButton = new RunButton(runner);
@@ -96,7 +96,7 @@ public class Hud {
         controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).expandX().right();
         controlsTable.add(jumpButton.getJumpButton()).right().padRight(20).expandX();
         controlsTable.row();
-//        controlsTable.setBackground(new NinePatchDrawable(patch));
+        controlsTable.setBackground(new NinePatchDrawable(patch));
 
         rootTable.add(distancetable).width(TapRunner.WIDTH).center().expand();
         rootTable.row();
@@ -111,11 +111,13 @@ public class Hud {
         Label currentIndicator;
         Label.LabelStyle style;
         BitmapFont labelFont;
-        public Meter(){
+        Runner runner;
+        public Meter(final Runner runner){
+            this.runner = runner;
             labelFont = getArcadeSkin().getFont("screen");
             labelFont.getData().markupEnabled = true;
             style = new Label.LabelStyle(labelFont, null);
-            currentIndicator = new Label("[#ffffff]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]", style);
+            currentIndicator = new Label("[#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]", style);
         }
 
         public Label getSpeedMeter() {
@@ -123,14 +125,12 @@ public class Hud {
         }
 
         public void update(float speed){
-            if(speed < 50) {
-                currentIndicator.setText("[#ffffff]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]");
-            }else if(speed < 100) {
-                currentIndicator.setText("[#2a2a2a]0[] [#ffffff]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]");
-            }else if(speed < 150) {
-                currentIndicator.setText("[#2a2a2a]0[] [#2a2a2a]1[] [#ffffff]2[] [#2a2a2a]MAX![]");
-            }else if(speed == 150) {
-                currentIndicator.setText("[#2a2a2a]0[] [#2a2a2a]1[] [#2a2a2a]2[] [#ffffff]MAX![]");
+            if(speed <= runner.MAX_SPEED - 100) {
+                currentIndicator.setText("[#ffffff]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]");
+            }else if(speed <= runner.MAX_SPEED - 50) {
+                currentIndicator.setText("[#2a2a2a]1[] [#ffffff]2[] [#2a2a2a]MAX![]");
+            }else if(speed == runner.MAX_SPEED) {
+                currentIndicator.setText("[#2a2a2a]1[] [#2a2a2a]2[] [#ffffff]MAX![]");
             }
         }
     }

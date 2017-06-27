@@ -62,5 +62,6 @@ public class FlyingEnemy extends Enemy implements Pool.Poolable{
         super.intersection.set(0,0,0,0);
         super.intersectionBounds.set(0,0,0,0);
         super.intersectionOnTop.set(0,0,0,0);
+        super.SPEED = -20;
     }
 }
