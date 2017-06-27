@@ -96,7 +96,7 @@ public class Hud {
         controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).expandX().right();
         controlsTable.add(jumpButton.getJumpButton()).right().padRight(20).expandX();
         controlsTable.row();
-        controlsTable.setBackground(new NinePatchDrawable(patch));
+//        controlsTable.setBackground(new NinePatchDrawable(patch));
 
         rootTable.add(distancetable).width(TapRunner.WIDTH).center().expand();
         rootTable.row();

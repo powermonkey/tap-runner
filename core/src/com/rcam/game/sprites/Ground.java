@@ -49,6 +49,10 @@ public class Ground {
         return posGround;
     }
 
+    public void setPosGround(Vector2 pos) {
+        posGround = pos;
+    }
+
     public Vector2 getPosLava() {
         return posLava;
     }

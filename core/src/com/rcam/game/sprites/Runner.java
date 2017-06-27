@@ -31,7 +31,7 @@ public class Runner {
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public float health;
     private long startingTime, lavaDamageTimeStart;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable, isIdle, isResetPosition;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable, isIdle;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     TextureAtlas atlas;
@@ -57,7 +57,6 @@ public class Runner {
         invulnerable = false;
         isOnTopEnemy = false;
         isIdle = false;
-        isResetPosition = false;
 
         atlas = new TextureAtlas("packedimages/runner32.atlas");
         regionStand = atlas.findRegion("stand");
@@ -117,11 +116,6 @@ public class Runner {
 
        //make runner come back to the ground
         speed.add(0, GRAVITY);
-
-        if(isResetPosition){
-            position.x = STARTING_X;
-            isResetPosition = false;
-        }
 
         //remove invulnerability
         if(invulnerable){
@@ -231,10 +225,6 @@ public class Runner {
 
     public void setPositionY(float y) {
         position.y = y;
-    }
-
-    public void setPositionX(float x) {
-        position.x = x;
     }
 
     public Vector2 getVelocity() {
