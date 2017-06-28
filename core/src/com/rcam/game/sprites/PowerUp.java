@@ -41,6 +41,7 @@ public class PowerUp implements Pool.Poolable{
         this.rand = new Random();
         this.touched = false;
         this.isSpawned = true;
+        this.bounds = new Rectangle();
     }
 
     public void init(float x, float y){
@@ -48,11 +49,11 @@ public class PowerUp implements Pool.Poolable{
         isSpawned = true;
         randomPowerUp();
         position.set(x, y);
-        createBounds(x, y, 25, 25);
+        setBounds(x, y, 25, 25);
     }
 
-    public void createBounds(float x, float y , float width, float height){
-        bounds = new Rectangle(x, y, width, height);
+    public void setBounds(float x, float y , float width, float height){
+        bounds.set(x, y, width, height);
     }
 
     public Rectangle getBounds() {

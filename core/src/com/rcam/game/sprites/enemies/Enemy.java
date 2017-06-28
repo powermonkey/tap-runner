@@ -42,6 +42,9 @@ public class Enemy {
         this.runnerOntop = false;
         this.position = new Vector2();
         this.isSpawned = true;
+        this.bounds = new Rectangle();
+        this.onTopBounds = new Rectangle();
+
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -57,7 +60,7 @@ public class Enemy {
         speed.set(SPEED, 0);
         touched = false;
         runnerOntop = false;
-        position = new Vector2(pos.x, pos.y);
+        position.set(pos.x, pos.y);
         isSpawned = true;
     }
 
@@ -67,12 +70,13 @@ public class Enemy {
         onTopBounds.setPosition(position.x, position.y + ON_TOP_OFFSET);
     }
 
-    public void createBounds(float x, float y, float width, float height){
-        bounds = new Rectangle(x, y, width, height);
+
+    public void setBounds(float x, float y, float width, float height){
+        bounds.set(x, y, width, height);
     }
 
-    public void createOnTopBounds(float x, float y, float width, float height){
-        onTopBounds = new Rectangle(x, y + ON_TOP_OFFSET , width, height + ON_TOP_OFFSET );
+    public void setOnTopBounds(float x, float y, float width, float height){
+        onTopBounds.set(x, y + ON_TOP_OFFSET , width, height + ON_TOP_OFFSET );
     }
 
     public void setPosition(Vector2 position){

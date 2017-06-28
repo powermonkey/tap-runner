@@ -40,8 +40,8 @@ public class GroundEnemy extends Enemy implements Pool.Poolable{
         stateTime = 0f;
         textureWidth = enemyTexture[monsterType].getWidth() / FRAME_COLS;
         textureHeight = enemyTexture[monsterType].getHeight() - ON_TOP_CONTACT_OFFSET;
-        createBounds(pos.x - CONTACT_BOUNDS_OFFSET_X, pos.y, textureWidth - CONTACT_BOUNDS_OFFSET_X, textureHeight);
-        createOnTopBounds(pos.x - CONTACT_BOUNDS_OFFSET_X, pos.y, textureWidth - CONTACT_BOUNDS_OFFSET_X, textureHeight);
+        setBounds(pos.x - CONTACT_BOUNDS_OFFSET_X, pos.y, textureWidth - CONTACT_BOUNDS_OFFSET_X, textureHeight);
+        setOnTopBounds(pos.x - CONTACT_BOUNDS_OFFSET_X, pos.y, textureWidth - CONTACT_BOUNDS_OFFSET_X, textureHeight);
     }
 
     public void dispose() {
@@ -55,7 +55,7 @@ public class GroundEnemy extends Enemy implements Pool.Poolable{
         super.speed.set(0, 0);
         super.touched = false;
         super.runnerOntop = false;
-        super.position = new Vector2(0, 0);
+        super.position.set(0, 0);
         super.isSpawned = false;
         super.bounds.set(0,0,0,0);
         super.onTopBounds.set(0,0,0,0);

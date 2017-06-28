@@ -62,6 +62,7 @@ public class GameScreen implements Screen{
     private FlyingEnemy flyingEnemyOject;
     Enemy enemyObject;
     boolean isPause;
+    Vector2 spawnPosition;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -75,8 +76,6 @@ public class GameScreen implements Screen{
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 40);
         cam.update();
-
-
 
         isPause = false;
 
@@ -137,8 +136,7 @@ public class GameScreen implements Screen{
         hud = new Hud(gam, runner, this);
         keys = new KeyboardInput(runner);
 
-
-
+        spawnPosition = new Vector2();
     }
 
     public void handleKeyboardInput() {
@@ -169,6 +167,7 @@ public class GameScreen implements Screen{
         //render enemy
         renderEnemy(activeGroundEnemies, delta);
         renderEnemy(activeFlyingEnemies, delta);
+//        renderEnemy(delta);
 
         if (gameMode.equals("The Ground Is Lava")) {
             //render ground
@@ -318,20 +317,21 @@ public class GameScreen implements Screen{
         distance = levelDetails[5];
 
         for(int i = 0; i <= spawnCount - 1; i++){
-            Vector2 spawnPosition;
+            Vector2 sPawnPos;
             if(type == 1){
-                spawnPosition = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, groundEnemyOject.textureWidth, groundEnemyOject.textureHeight, levelDetails);
+                sPawnPos = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, groundEnemyOject.textureWidth, groundEnemyOject.textureHeight, levelDetails);
                 GroundEnemy item = groundEnemyPool.obtain();
-                item.init(monsterType, spawnPosition);
+                item.init(monsterType, sPawnPos);
                 activeGroundEnemies.add(item);
             }else if(type == 2){
-                spawnPosition = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, flyingEnemyOject.getTextureWidth(), flyingEnemyOject.getTextureHeight(), levelDetails);
+                sPawnPos = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, flyingEnemyOject.getTextureWidth(), flyingEnemyOject.getTextureHeight(), levelDetails);
                 FlyingEnemy item = flyingEnemyPool.obtain();
-                item.init(monsterType, spawnPosition);
+                item.init(monsterType, sPawnPos);
                 activeFlyingEnemies.add(item);
             }else if (type == 0){
                 spawnMarker += 200;
             }
+            spawnPosition.set(0,0);
         }
 
         if(spawnCount > 1 && pattern == 1) {
@@ -345,6 +345,24 @@ public class GameScreen implements Screen{
     }
 
     private void updateEnemies(Array<? extends Enemy> enemies, float delta){
+//        int enemiesGroundLen = activeGroundEnemies.size;
+//        Enemy enemyGroundItem;
+//        for(int i = 0; i < enemiesGroundLen; i++){
+//            enemyGroundItem = activeGroundEnemies.get(i);
+//            if(enemyGroundItem.isSpawned){
+//                enemyGroundItem.update(delta);
+//            }
+//        }
+//
+//        int enemiesFlyingLen = activeFlyingEnemies.size;
+//        Enemy enemyFlyingItem;
+//        for(int i = 0; i < enemiesFlyingLen; i++){
+//            enemyFlyingItem = activeFlyingEnemies.get(i);
+//            if(enemyFlyingItem.isSpawned){
+//                enemyFlyingItem.update(delta);
+//            }
+//        }
+
         for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
                 enemy.update(delta);
@@ -353,6 +371,41 @@ public class GameScreen implements Screen{
     }
 
     private void renderEnemy(Array<? extends Enemy> enemies, float delta){
+//    private void renderEnemy(float delta){
+//        int enemiesGroundLen = activeGroundEnemies.size;
+//        Enemy enemyGroundItem;
+//        for(int i = 0; i < enemiesGroundLen; i++){
+//            enemyGroundItem = activeGroundEnemies.get(i);
+//            if(enemyGroundItem.isSpawned){
+//                if (cam.position.x + cam.viewportWidth > enemyGroundItem.getPosition().x + enemyGroundItem.getTextureWidth()
+//                        && enemyGroundItem.getPosition().x + enemyGroundItem.getTextureWidth() > cam.position.x - cam.viewportWidth / 2 ) {
+//                    enemyGroundItem.stateTime += Gdx.graphics.getDeltaTime();
+//                    TextureRegion currentFrame = enemyGroundItem.animation.getKeyFrame(enemyGroundItem.stateTime, true);
+//                    game.batch.draw(currentFrame, (int)enemyGroundItem.getPosition().x, (int)enemyGroundItem.getPosition().y);
+//                    enemyGroundItem.checkCollision(runner);
+//                } else if(cam.position.x - 100> enemyGroundItem.getPosition().x + enemyGroundItem.getTextureWidth()){
+//                    enemyGroundItem.isSpawned = false; //unspawn enemy when off camera
+//                }
+//            }
+//        }
+//
+//        int enemiesFlyingLen = activeFlyingEnemies.size;
+//        Enemy enemyFlyingItem;
+//        for(int i = 0; i < enemiesFlyingLen; i++){
+//            enemyFlyingItem = activeFlyingEnemies.get(i);
+//            if(enemyFlyingItem.isSpawned){
+//                if (cam.position.x + cam.viewportWidth > enemyFlyingItem.getPosition().x + enemyFlyingItem.getTextureWidth()
+//                        && enemyFlyingItem.getPosition().x + enemyFlyingItem.getTextureWidth() > cam.position.x - cam.viewportWidth / 2 ) {
+//                    enemyFlyingItem.stateTime += Gdx.graphics.getDeltaTime();
+//                    TextureRegion currentFrame = enemyFlyingItem.animation.getKeyFrame(enemyFlyingItem.stateTime, true);
+//                    game.batch.draw(currentFrame, (int)enemyFlyingItem.getPosition().x, (int)enemyFlyingItem.getPosition().y);
+//                    enemyFlyingItem.checkCollision(runner);
+//                } else if(cam.position.x - 100> enemyFlyingItem.getPosition().x + enemyFlyingItem.getTextureWidth()){
+//                    enemyFlyingItem.isSpawned = false; //unspawn enemy when off camera
+//                }
+//            }
+//        }
+
         for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
                 if (cam.position.x + cam.viewportWidth > enemy.getPosition().x + enemy.getTextureWidth()
@@ -409,7 +462,6 @@ public class GameScreen implements Screen{
 
     //TODO refactor enemy spawn position
     private Vector2 enemySpawnPosition(int counter, float offset, float width, float height, int[] levelDetails){
-        Vector2 spawnPosition = new Vector2();
         float heightAdjust = levelDetails[4];
 
         switch(levelDetails[2]){
@@ -473,6 +525,22 @@ public class GameScreen implements Screen{
     }
 
     public void renderPowerUp(){
+//        int powerUpsLen = powerUps.size;
+        PowerUp powerUpItem;
+//
+//        for(int i = 0; i < powerUpsLen; i++){
+//            powerUpItem = powerUps.get(i);
+//            if(powerUpItem.isSpawned){
+//                if (cam.position.x + cam.viewportWidth > powerUpItem.getPosition().x + powerUpItem.getTextureRegion().getRegionWidth()
+//                        && powerUpItem.getPosition().x + powerUpItem.getTextureRegion().getRegionWidth() > cam.position.x - cam.viewportWidth / 2 ) {
+//                    powerUpItem.checkPowerUpCollision(runner);
+//                    game.batch.draw(powerUpItem.getTextureRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
+//                } else if(cam.position.x - cam.viewportWidth > powerUpItem.getPosition().x + powerUpItem.getTextureRegion().getRegionWidth()){
+//                    powerUpItem.isSpawned = false; //unrender powerup when off camera
+//                }
+//            }
+//        }
+
         for(PowerUp powerUp : powerUps){
             if(powerUp.isSpawned) {
                 if (cam.position.x + cam.viewportWidth > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth()
@@ -485,7 +553,6 @@ public class GameScreen implements Screen{
             }
         }
 
-        PowerUp powerUpItem;
         int len = powerUps.size;
         for(int i = len; --i >= 0;){
             powerUpItem = powerUps.get(i);

@@ -21,29 +21,15 @@ public class Ground {
         posGround = new Vector2(x, 0);
     }
 
-    public Ground(float x, boolean isLava){
-        if(isLava){
-            this.isLava = isLava;
-            lavaTexture = new Texture("lava.png");
-            posLava = new Vector2(x, 0);
-        }
-    }
-
     public void repositionGround(float x){
         posGround.set(x, 0);
     }
 
-    public void repositionLava(float x){
-        posLava.set(x, 0);
-    }
 
     public Texture getTexture() {
         return groundTexture;
     }
 
-    public Texture getLavaTexture() {
-        return lavaTexture;
-    }
 
     public Vector2 getPosGround() {
         return posGround;
@@ -51,10 +37,6 @@ public class Ground {
 
     public void setPosGround(Vector2 pos) {
         posGround = pos;
-    }
-
-    public Vector2 getPosLava() {
-        return posLava;
     }
 
     public void dispose(){
