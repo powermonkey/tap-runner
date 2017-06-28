@@ -143,7 +143,7 @@ public class Enemy {
                     || Float.compare((intersectionOnTop.y), getOnTopBounds().y) == 0) ) { // runner stays on top of enemies
                 runner.setPositionY(getPosition().y + getTextureHeight());
                 runner.tempGround = getPosition().y + getTextureHeight();
-                runner.isOnGround = true;
+//                runner.isOnGround = true;
                 runner.isJumping = false;
                 runner.isOnTopEnemy = true;
                 runnerOntop = true;

@@ -232,7 +232,7 @@ public class GameScreen implements Screen{
             game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isOnGround) {
             game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
-        }else if(!runner.isIdle && runner.isOnGround) {
+        }else if(!runner.isIdle) {
             game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
         }
 
