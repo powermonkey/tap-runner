@@ -435,12 +435,12 @@ public class GameScreen implements Screen{
                 break;
             case 5:
 //                pattern 5 diagonal leaning right ungrouped
-                spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width)) ;
+                spawnPosition.x = spawnMarker + offset + ((2 * counter) * (width)) ;
                 spawnPosition.y = runner.STARTING_Y + ENEMY_OFFSET_Y + (heightAdjust * height) + (counter * (height));
                 break;
             case 6:
 //                pattern 6 diagonal leaning left ungrouped
-                spawnPosition.x = spawnMarker + offset + ((3 * counter) * (width));
+                spawnPosition.x = spawnMarker + offset + ((2 * counter) * (width));
                 spawnPosition.y = (runner.STARTING_Y  + ENEMY_OFFSET_Y + (heightAdjust * height) + height * 2) - (counter * (height));
                 break;
             default:
