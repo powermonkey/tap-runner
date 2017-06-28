@@ -282,22 +282,6 @@ public class Runner {
         isOnGround = false;
     }
 
-    public TextureRegion[] createFrames(Texture runner, int rows, int cols){
-        TextureRegion[][] tmp = TextureRegion.split(runner,
-                runner.getWidth() / cols,
-                runner.getHeight() / rows);
-
-        TextureRegion[] frames = new TextureRegion[cols * rows];
-        int index = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                frames[index++] = tmp[i][j];
-            }
-        }
-
-        return frames;
-    }
-
     public Vector2 getSpeed(){ return speed; }
 
     public Rectangle getBounds() {

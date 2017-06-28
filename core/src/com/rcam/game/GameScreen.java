@@ -70,11 +70,11 @@ public class GameScreen implements Screen{
         runner = new Runner();
 
         bgCam = new OrthographicCamera();
-        bgCam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 40);
+        bgCam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
         bgCam.update();
 
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 40);
+        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
         cam.update();
 
         isPause = false;
@@ -156,7 +156,7 @@ public class GameScreen implements Screen{
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
         game.batch.begin();
-        game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 469);
+        game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
@@ -184,23 +184,23 @@ public class GameScreen implements Screen{
                 lava.checkLavaCollision(runner);
             }
 
-            if (runner.getPosition().x >= (lavaMarker - (level.getLavaMarkerOffset() * lavaMarkerMutliplier))) {
-                //set ground position
-                for (Ground ground : grounds) {
-                    if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth()) {
-                        ground.repositionGround(lastLavaPos);
-                        lastGroundPos = lastLavaPos + (ground.getTexture().getWidth());
-                        lastLavaPos = lastGroundPos;
-                    }
-                }
-            } else {
+//            if (runner.getPosition().x >= (lavaMarker - (level.getLavaMarkerOffset() * lavaMarkerMutliplier))) {
+//                //set ground position
+//                for (Ground ground : grounds) {
+//                    if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth()) {
+//                        ground.repositionGround(lastLavaPos);
+//                        lastGroundPos = lastLavaPos + (ground.getTexture().getWidth());
+//                        lastLavaPos = lastGroundPos;
+//                    }
+//                }
+//            } else {
                 for (Lava lava : lavas) {
                     if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTexture().getWidth()) {
                         lava.repositionLava(lastLavaPos);
                         lastLavaPos = lava.getPosLava().x + (lava.getTexture().getWidth());
                     }
                 }
-            }
+//            }
         } else {
             //render ground
             for (Ground ground : grounds) {
@@ -243,28 +243,38 @@ public class GameScreen implements Screen{
             }
 
             //set enemy position and render enemy
-            if (runner.getPosition().x > levelMarker) {
-                if (level.getLevelKey() == levelCounter) {
-                        spawnEnemy();
-                } else if (levelCounter == 4) {
-                    //reverse order patterns for each level
-                    //shuffle order patterns
-                    //drain life
-                    //increase enemy damage
-                    if(gameMode.equals("Normal") && level.isBeginningOfLevel){
-                        runner.increaseSpeed(50);
-                        runner.run();
-                    }
-
-                    levelCounter = 1;
-                    lavaMarker = levelMarker;
-                    lavaMarkerMutliplier = levelCounter;
-                }else{
-                    levelMarker = spawnMarker;
-                    lavaMarker = levelMarker;
-                    lavaMarkerMutliplier = levelCounter;
-                    levelCounter++;
+//            if (runner.getPosition().x > levelMarker) {
+            if (runner.getPosition().x > spawnMarker) {
+                if(level.getLevelKey() == 1 && level.isEndOfLevel){
+                    runner.increaseSpeed(50);
+                    runner.run();
                 }
+                spawnEnemy();
+//            } else if (level.getLevelKey() == 4) {System.out.println("begin");
+//                runner.increaseSpeed(50);
+//                runner.run();
+
+//                if (level.getLevelKey() == levelCounter) {
+//                        spawnEnemy();
+//                } else if (levelCounter == 4) {
+//                    //reverse order patterns for each level
+//                    //shuffle order patterns
+//                    //drain life
+//                    //increase enemy damage
+//                    if(gameMode.equals("Normal") && level.isBeginningOfLevel){
+//                        runner.increaseSpeed(50);
+//                        runner.run();
+//                    }
+//
+//                    levelCounter = 1;
+//                    lavaMarker = levelMarker;
+//                    lavaMarkerMutliplier = levelCounter;
+//                }else{
+//                    levelMarker = spawnMarker;
+//                    lavaMarker = levelMarker;
+//                    lavaMarkerMutliplier = levelCounter;
+//                    levelCounter++;
+//                }
             }
 
             //update enemies
@@ -443,21 +453,21 @@ public class GameScreen implements Screen{
     }
 
     private void spawnMarkerDistance(int spawnCount, boolean enemyBridge, boolean isVertical, int enemyDistance){
-        if(enemyBridge && enemyDistance < 1) {
-            spawnMarker += (230);
-        }else if(isVertical && enemyDistance < 1){
-            spawnMarker += 210;
-        }else if(spawnCount > 1 && enemyDistance < 1) {
-            spawnMarker += (240);
-        }else if(spawnCount == 1 && enemyDistance < 1){
-            if(level.getLevelKey() == 3){
-                spawnMarker += 130;
-            }else{
-                spawnMarker += 150;
-            }
-        }else if(enemyDistance > 0){
+//        if(enemyBridge && enemyDistance < 1) {
+//            spawnMarker += (230);
+//        }else if(isVertical && enemyDistance < 1){
+//            spawnMarker += 210;
+//        }else if(spawnCount > 1 && enemyDistance < 1) {
+//            spawnMarker += (240);
+//        }else if(spawnCount == 1 && enemyDistance < 1){
+//            if(level.getLevelKey() == 3){
+//                spawnMarker += 130;
+//            }else{
+//                spawnMarker += 150;
+//            }
+//        }else if(enemyDistance > 0){
             spawnMarker += ((enemyDistance - 1) * 32);
-        }
+//        }
     }
 
     //TODO refactor enemy spawn position
