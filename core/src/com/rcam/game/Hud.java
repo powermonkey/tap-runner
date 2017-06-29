@@ -32,7 +32,7 @@ import javax.swing.GroupLayout;
  * Created by Rod on 4/18/2017.
  */
 
-public class Hud {
+public class Hud{
     Stage stage;
     Table rootTable, indicatorstable, distancetable, controlsTable;
     Skin cleanCrispySkin, arcadeSkin;
@@ -50,6 +50,8 @@ public class Hud {
     GameScreen gameScreen;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
+//        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
+//        setClip(true);
         this.gameScreen = gameScreen;
         rootTable = new Table();
         indicatorstable = new Table();
@@ -160,15 +162,19 @@ public class Hud {
 
         public Distance(final Runner runner){
             this.runr = runner;
-            indicator = new Label(Integer.toString(runner.indicatePosition()) + " m", getArcadeSkin(), "default");
+            indicator = new Label(getText(), getArcadeSkin(), "default");
         }
 
         public Label getIndicator(){
             return indicator;
         }
 
+        public String getText(){
+            return Integer.toString(runr.indicatePosition()) + " m";
+        }
+
         public void update(){
-            indicator.setText(Integer.toString(runr.indicatePosition()) + " m");
+            indicator.setText(getText());
         }
     }
 

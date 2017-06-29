@@ -20,12 +20,13 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 public class Runner {
     static final float FRICTION = -1.5f;
     static final float GRAVITY = -23;
-    public static float MAX_SPEED = 150;
+    public float MAX_SPEED = 150;
+    public float MIN_SPEED = 50;
     static float RUN_SPEED = 50;
 //    static final float MAX_HEIGHT = 400;
     public final static float STARTING_X = 30;
     public final static float STARTING_Y = 112;
-    static final float MAX_HEIGHT = 505;
+    static final float JUMP_HEIGHT = 520;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
@@ -110,6 +111,7 @@ public class Runner {
 
     public void increaseSpeed(int speed){
         MAX_SPEED += speed;
+        MIN_SPEED += speed;
     }
 
     public void update(float dt){
@@ -141,8 +143,8 @@ public class Runner {
         }
 
         // runner cannot stop; min speed
-        if(speed.x <= 50 ){
-            speed.x = 50;
+        if(speed.x <= MIN_SPEED ){
+            speed.x = MIN_SPEED;
         }
 
         //if dead set velocity to immediate stop
@@ -167,8 +169,8 @@ public class Runner {
             isOnGround = false;
         }
         //limit jump height
-        if(speed.y > MAX_HEIGHT){
-            speed.y = MAX_HEIGHT;
+        if(speed.y > JUMP_HEIGHT){
+            speed.y = JUMP_HEIGHT;
             isJumping = false;
         }
 
@@ -261,7 +263,7 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 65;
+        velocity.y = 70;
         isJumping = true;
         isOnGround = false;
         isFalling = false;
