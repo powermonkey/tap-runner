@@ -37,7 +37,6 @@ public class Runner {
     Vector2 position, velocity, speed;
     TextureAtlas atlas;
     TextureAtlas.AtlasRegion regionStand, regionJump, regionDeath;
-//    TextureRegion regionStand, regionJump, regionDeath, regionRun;
     Array<TextureAtlas.AtlasRegion> regionRun;
     public float groundLevel, tempGround;
     private Rectangle bounds, intersectionBounds;
@@ -59,7 +58,7 @@ public class Runner {
         isOnTopEnemy = false;
         isIdle = false;
 
-        atlas = new TextureAtlas("packedimages/runner32.atlas");
+        atlas = new TextureAtlas("packedimages/runner.atlas");
         regionStand = atlas.findRegion("stand");
         regionRun = atlas.findRegions("run");
         regionJump = atlas.findRegion("jump");
@@ -70,10 +69,6 @@ public class Runner {
         animationSlow = new Animation<TextureRegion>(0.1f, regionRun);
         animationNormal = new Animation<TextureRegion>(0.08f, regionRun);
         animationFast = new Animation<TextureRegion>(0.07f, regionRun);
-
-//        runnerTexture = new Texture("bird.png");
-//        bounds = new Rectangle(x, y, runnerTexture.getWidth(), runnerTexture.getHeight());
-//        intersectionBounds = new Rectangle(x, y - CONTACT_BOUNDS_OFFSET, runnerTexture.getWidth(), runnerTexture.getHeight()); //intersection bounds
 
         health = STARTING_HEALTH;
         startingTime = millis();

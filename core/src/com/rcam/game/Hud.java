@@ -170,7 +170,7 @@ public class Hud{
         }
 
         public String getText(){
-            return Integer.toString(runr.indicatePosition()) + " m";
+            return Integer.toString(runr.indicatePosition()).concat(" m");
         }
 
         public void update(){

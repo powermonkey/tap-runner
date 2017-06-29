@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.rcam.game.sprites.Runner;
 
 import java.util.Vector;
@@ -24,15 +26,20 @@ public class Enemy {
     float damage;
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
-    public Texture[] enemyTexture;
+//    public Texture[] enemyTexture;
     public float textureHeight, textureWidth;
     public boolean isSpawned;
     public Animation<TextureRegion> animation, animationMonster1, animationMonster2;
     public float stateTime;
     static Preferences prefs;
+    TextureAtlas atlas;
+    protected Array<TextureAtlas.AtlasRegion> enemyAtlasRegions;
+    private int monsterType;
 
     public Enemy(){
-        this.enemyTexture = new Texture[2];
+//        this.enemyTexture = new Texture[2];
+        atlas = new TextureAtlas("packedimages/runner.atlas");
+        enemyAtlasRegions = new Array<TextureAtlas.AtlasRegion>();
         this.velocity = new Vector2();
         this.speed = new Vector2();
         this.touched = false;
@@ -44,7 +51,6 @@ public class Enemy {
         this.isSpawned = true;
         this.bounds = new Rectangle();
         this.onTopBounds = new Rectangle();
-
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -107,21 +113,21 @@ public class Enemy {
         return textureWidth;
     }
 
-    public TextureRegion[] createFrames(Texture enemy, int rows, int cols){
-        TextureRegion[][] tmp = TextureRegion.split(enemy,
-                enemy.getWidth() / cols,
-                enemy.getHeight() / rows);
-
-        TextureRegion[] frames = new TextureRegion[cols * rows];
-        int index = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                frames[index++] = tmp[i][j];
-            }
-        }
-
-        return frames;
-    }
+//    public TextureRegion[] createFrames(Texture enemy, int rows, int cols){
+//        TextureRegion[][] tmp = TextureRegion.split(enemy,
+//                enemy.getWidth() / cols,
+//                enemy.getHeight() / rows);
+//
+//        TextureRegion[] frames = new TextureRegion[cols * rows];
+//        int index = 0;
+//        for (int i = 0; i < rows; i++) {
+//            for (int j = 0; j < cols; j++) {
+//                frames[index++] = tmp[i][j];
+//            }
+//        }
+//
+//        return frames;
+//    }
 
     public void checkCollision(Runner runner) {
 //        Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
@@ -166,7 +172,8 @@ public class Enemy {
     }
 
     public void dispose(){
-        enemyTexture[0].dispose();
-        enemyTexture[1].dispose();
+        atlas.dispose();
+//        enemyTexture[0].dispose();
+//        enemyTexture[1].dispose();
     }
 }

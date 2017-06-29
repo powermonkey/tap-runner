@@ -1,6 +1,7 @@
 package com.rcam.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -15,28 +16,46 @@ import java.util.Random;
 public class PowerUp implements Pool.Poolable{
     protected Rectangle bounds;
     public Vector2 position;
-    Texture texture;
-    float heal;
+//    private Texture texture;
+    private float heal;
     public final static float SPAWN_OFFSET_X = 300;
-    public final static int RANDOM_POWERUP = 5;
-    public boolean touched;
+    private final static int RANDOM_POWER_UP = 6;
+    private boolean touched;
     public boolean isSpawned;
-    TextureRegion[] textureRegions;
-    int powerUpType;
-    Random rand;
+//    TextureRegion[] textureRegions;
+    private int powerUpType;
+    private Random rand;
+    private TextureAtlas atlas;
+    private TextureAtlas.AtlasRegion[] powerUpAtlasRegions;
 
 //    public PowerUp(){
 //
 //    }
 
     public PowerUp(){
-        this.texture = new Texture("M484GoodFruits3.png");
-        this.textureRegions = new TextureRegion[5];
-        this.textureRegions[0] = new TextureRegion(texture, 7, 4, 25, 25); //cherry
-        this.textureRegions[1] = new TextureRegion(texture, 63, 4, 25, 25); //grapes
-        this.textureRegions[2] = new TextureRegion(texture, 34, 91, 25, 25); //orange
-        this.textureRegions[3] = new TextureRegion(texture, 144, 91, 25, 25); //banana
-        this.textureRegions[4] = new TextureRegion(texture, 92, 60, 25, 25); //apple
+        atlas = new TextureAtlas("packedimages/runner.atlas");
+        TextureAtlas.AtlasRegion apple = atlas.findRegion("powerup_apple");
+        TextureAtlas.AtlasRegion cherry = atlas.findRegion("powerup_cherry");
+        TextureAtlas.AtlasRegion banana = atlas.findRegion("powerup_banana");
+        TextureAtlas.AtlasRegion grapes = atlas.findRegion("powerup_grapes");
+        TextureAtlas.AtlasRegion strawberry = atlas.findRegion("powerup_strawberry");
+        TextureAtlas.AtlasRegion orange = atlas.findRegion("powerup_orange");
+
+        powerUpAtlasRegions = new TextureAtlas.AtlasRegion[6];
+        powerUpAtlasRegions[0] = apple;
+        powerUpAtlasRegions[1] = cherry;
+        powerUpAtlasRegions[2] = banana;
+        powerUpAtlasRegions[3] = grapes;
+        powerUpAtlasRegions[4] = strawberry;
+        powerUpAtlasRegions[5] = orange;
+
+//        this.texture = new Texture("M484GoodFruits3.png");
+//        this.textureRegions = new TextureRegion[5];
+//        this.textureRegions[0] = new TextureRegion(texture, 7, 4, 25, 25); //cherry
+//        this.textureRegions[1] = new TextureRegion(texture, 63, 4, 25, 25); //grapes
+//        this.textureRegions[2] = new TextureRegion(texture, 34, 91, 25, 25); //orange
+//        this.textureRegions[3] = new TextureRegion(texture, 144, 91, 25, 25); //banana
+//        this.textureRegions[4] = new TextureRegion(texture, 92, 60, 25, 25); //apple
         this.position = new Vector2();
         this.rand = new Random();
         this.touched = false;
@@ -49,7 +68,8 @@ public class PowerUp implements Pool.Poolable{
         isSpawned = true;
         randomPowerUp();
         position.set(x, y);
-        setBounds(x, y, 25, 25);
+        //width, height is 24
+        setBounds(x, y, 24, 24);
     }
 
     public void setBounds(float x, float y , float width, float height){
@@ -65,7 +85,7 @@ public class PowerUp implements Pool.Poolable{
     }
 
     public void randomPowerUp(){
-        powerUpType = rand.nextInt(RANDOM_POWERUP);
+        powerUpType = rand.nextInt(RANDOM_POWER_UP);
         selectPowerUp(powerUpType);
     }
 
@@ -78,6 +98,7 @@ public class PowerUp implements Pool.Poolable{
                 break;
             case 3:
             case 4:
+            case 5:
                 heal = 3;
                 break;
             default:
@@ -100,8 +121,8 @@ public class PowerUp implements Pool.Poolable{
         }
     }
 
-    public TextureRegion getTextureRegion(){
-        return textureRegions[powerUpType];
+    public TextureAtlas.AtlasRegion getAtlasRegion(){
+        return powerUpAtlasRegions[powerUpType];
     }
 
     public float getHeal() {
@@ -109,7 +130,7 @@ public class PowerUp implements Pool.Poolable{
     }
 
     public void dispose(){
-        texture.dispose();
+        atlas.dispose();
     }
 
     @Override

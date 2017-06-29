@@ -322,7 +322,10 @@ public class GameScreen implements Screen{
     private void updateEnemies(Array<? extends Enemy> enemies, float delta){
         for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
-                enemy.update(delta);
+                if (cam.position.x + cam.viewportWidth - 100 > enemy.getPosition().x + enemy.getTextureWidth()
+                        && enemy.getPosition().x + enemy.getTextureWidth() > cam.position.x - cam.viewportWidth + 100 ) {
+                    enemy.update(delta);
+                }
             }
         }
     }
@@ -342,14 +345,13 @@ public class GameScreen implements Screen{
             }
         }
 
-
-        Iterator<? extends Enemy> iterEnemy = enemies.iterator();
-        while(iterEnemy.hasNext()){
-            Enemy enemy = iterEnemy.next();
-            if (!enemy.isSpawned) {
-                iterEnemy.remove();
-            }
-        }
+//        Iterator<? extends Enemy> iterEnemy = enemies.iterator();
+//        while(iterEnemy.hasNext()){
+//            Enemy enemy = iterEnemy.next();
+//            if (!enemy.isSpawned) {
+//                iterEnemy.remove();
+//            }
+//        }
 
         //TODO: refactor, put in a function;
         GroundEnemy groundEnemyItem;
@@ -446,23 +448,23 @@ public class GameScreen implements Screen{
 
         for(PowerUp powerUp : powerUps){
             if(powerUp.isSpawned) {
-                if (cam.position.x + cam.viewportWidth - 100 > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth()
-                        && powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth() > cam.position.x - cam.viewportWidth + 100 ) {
+                if (cam.position.x + cam.viewportWidth - 100 > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()
+                        && powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth() > cam.position.x - cam.viewportWidth + 100 ) {
                     powerUp.checkPowerUpCollision(runner);
-                    game.batch.draw(powerUp.getTextureRegion(), (int)powerUp.getPosition().x, (int)powerUp.getPosition().y);
-                } else if(cam.position.x - cam.viewportWidth > powerUp.getPosition().x + powerUp.getTextureRegion().getRegionWidth()){
+                    game.batch.draw(powerUp.getAtlasRegion(), (int)powerUp.getPosition().x, (int)powerUp.getPosition().y);
+                } else if(cam.position.x - cam.viewportWidth > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()){
                     powerUp.isSpawned = false; //unrender powerup when off camera
                 }
             }
         }
 
-        Iterator<PowerUp> iterPowerUp = powerUps.iterator();
-        while(iterPowerUp.hasNext()){
-            PowerUp powUp = iterPowerUp.next();
-            if (!powUp.isSpawned) {
-                iterPowerUp.remove();
-            }
-        }
+//        Iterator<PowerUp> iterPowerUp = powerUps.iterator();
+//        while(iterPowerUp.hasNext()){
+//            PowerUp powUp = iterPowerUp.next();
+//            if (!powUp.isSpawned) {
+//                iterPowerUp.remove();
+//            }
+//        }
 
         int len = powerUps.size;
         for(int i = len; --i >= 0;){
