@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,20 +25,27 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class MainMenuScreen implements Screen {
     final TapRunner game;
     OrthographicCamera cam;
-    Texture bg, ground;
     Table rootTable, table;
     Skin cleanCrispySkin;
     TextButton exit, newGame, options, records;
     Stage stage;
     static Preferences prefs;
+    TextureAtlas atlas;
+    TextureAtlas.AtlasRegion ground, bg, blockYellow;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
-        bg = new Texture("background.png");
-        ground = new Texture("ground.png");
-        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
+        bg = GameAssetLoader.atlas.findRegion("background");
+        ground = GameAssetLoader.atlas.findRegion("ground");
+        cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
+        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
+//        ground = atlas.findRegion("ground");
+//        bg = atlas.findRegion("background");
+//        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         Gdx.input.setInputProcessor(stage);
         rootTable = new Table();
@@ -56,7 +64,7 @@ public class MainMenuScreen implements Screen {
 
 //        stage.setDebugAll(true);
 
-        NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
+        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
 
         table.add(newGame).center().uniform().width(150).height(50).expandX().padTop(30);
         table.row();
@@ -173,7 +181,6 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
         cleanCrispySkin.dispose();
         stage.dispose();
-        bg.dispose();
-        ground.dispose();
+        atlas.dispose();
     }
 }

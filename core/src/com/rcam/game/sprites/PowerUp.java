@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
+import com.rcam.game.GameAssetLoader;
 
 import java.util.Random;
 
@@ -18,8 +19,8 @@ public class PowerUp implements Pool.Poolable{
     public Vector2 position;
 //    private Texture texture;
     private float heal;
-    public final static float SPAWN_OFFSET_X = 300;
-    private final static int RANDOM_POWER_UP = 6;
+    public final float SPAWN_OFFSET_X = 300;
+    private final int RANDOM_POWER_UP = 6;
     private boolean touched;
     public boolean isSpawned;
 //    TextureRegion[] textureRegions;
@@ -33,13 +34,19 @@ public class PowerUp implements Pool.Poolable{
 //    }
 
     public PowerUp(){
-        atlas = new TextureAtlas("packedimages/runner.atlas");
-        TextureAtlas.AtlasRegion apple = atlas.findRegion("powerup_apple");
-        TextureAtlas.AtlasRegion cherry = atlas.findRegion("powerup_cherry");
-        TextureAtlas.AtlasRegion banana = atlas.findRegion("powerup_banana");
-        TextureAtlas.AtlasRegion grapes = atlas.findRegion("powerup_grapes");
-        TextureAtlas.AtlasRegion strawberry = atlas.findRegion("powerup_strawberry");
-        TextureAtlas.AtlasRegion orange = atlas.findRegion("powerup_orange");
+        TextureAtlas.AtlasRegion apple = GameAssetLoader.atlas.findRegion("powerup_apple");
+        TextureAtlas.AtlasRegion cherry = GameAssetLoader.atlas.findRegion("powerup_cherry");
+        TextureAtlas.AtlasRegion banana = GameAssetLoader.atlas.findRegion("powerup_banana");
+        TextureAtlas.AtlasRegion grapes = GameAssetLoader.atlas.findRegion("powerup_grapes");
+        TextureAtlas.AtlasRegion strawberry = GameAssetLoader.atlas.findRegion("powerup_strawberry");
+        TextureAtlas.AtlasRegion orange = GameAssetLoader.atlas.findRegion("powerup_orange");
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
+//        TextureAtlas.AtlasRegion apple = atlas.findRegion("powerup_apple");
+//        TextureAtlas.AtlasRegion cherry = atlas.findRegion("powerup_cherry");
+//        TextureAtlas.AtlasRegion banana = atlas.findRegion("powerup_banana");
+//        TextureAtlas.AtlasRegion grapes = atlas.findRegion("powerup_grapes");
+//        TextureAtlas.AtlasRegion strawberry = atlas.findRegion("powerup_strawberry");
+//        TextureAtlas.AtlasRegion orange = atlas.findRegion("powerup_orange");
 
         powerUpAtlasRegions = new TextureAtlas.AtlasRegion[6];
         powerUpAtlasRegions[0] = apple;

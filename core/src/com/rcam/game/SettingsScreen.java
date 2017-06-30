@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,20 +31,23 @@ public class SettingsScreen implements Screen {
     Skin cleanCrispySkin,arcadeSkin;
     Stage stage;
     Table gameModetable, optionsTable, rootTable, settingsLabelTable, buttonsTable;
-    Texture bg;
     Ground ground;
     Label gameModeLabel, otherOptionsLabel, settingsLabel;
     ButtonGroup gameModeGroup;
     CheckBox normalMode, groundLavaMode, enemyTouchSlows;
     TextButton okay;
     static Preferences prefs;
+    TextureAtlas atlas;
+    TextureAtlas.AtlasRegion bg, blockYellow;
 
     public SettingsScreen(final TapRunner gam){
         this.game = gam;
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
-        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
-        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
+        cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
+        arcadeSkin = GameAssetLoader.arcadeSkin;
+//        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
+//        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -74,13 +78,17 @@ public class SettingsScreen implements Screen {
         gameModeGroup.setMinCheckCount(1);
         gameModeGroup.setUncheckLast(true);
 
-        bg = new Texture("background.png");
+        bg = GameAssetLoader.atlas.findRegion("background");
+        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
+//        bg = atlas.findRegion("background");
+
         ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
         Gdx.input.setInputProcessor(stage);
 
 //        stage.setDebugAll(true);
 
-        NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
+        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
 
         settingsLabelTable.add(settingsLabel).expandX().center().uniform();
         settingsLabelTable.row();
@@ -152,7 +160,7 @@ public class SettingsScreen implements Screen {
 
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        game.batch.draw(ground.getTexture(), 0, 0);
+        game.batch.draw(ground.getTextureGround(), 0, 0);
         game.batch.end();
         stage.act();
         stage.draw();
@@ -183,7 +191,7 @@ public class SettingsScreen implements Screen {
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();
         stage.dispose();
-        bg.dispose();
+        atlas.dispose();
         ground.dispose();
     }
 }

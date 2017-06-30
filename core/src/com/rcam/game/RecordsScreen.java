@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,19 +30,22 @@ public class RecordsScreen implements Screen{
     Skin cleanCrispySkin,arcadeSkin;
     Stage stage;
     Table rootTable, table, labelTable, goBackButtonTable;
-    Texture bg;
     Ground ground;
     TextButton goBackButton;
     Runner runner;
     Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
     static Preferences prefs;
+    TextureAtlas atlas;
+    TextureAtlas.AtlasRegion bg, blockYellow;
 
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
-        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
-        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
+        cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
+        arcadeSkin = GameAssetLoader.arcadeSkin;
+//        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
+//        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         rootTable = new Table();
         rootTable.setFillParent(true);
@@ -49,8 +53,11 @@ public class RecordsScreen implements Screen{
         goBackButtonTable = new Table();
         labelTable = new Table();
         prefs = Gdx.app.getPreferences("TapRunner");
+        bg = GameAssetLoader.atlas.findRegion("background");
+        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
 
-        NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
+        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
 
         recordsLabel = new Label("Records", arcadeSkin, "default");
         bestLabel = new Label("Best Distance", arcadeSkin, "default");
@@ -60,7 +67,8 @@ public class RecordsScreen implements Screen{
         bestLavaDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceLavaMode")) + " m", arcadeSkin, "default");
         goBackButton = new TextButton("Main Menu", cleanCrispySkin, "default");
         goBackButtonListener(goBackButton);
-        bg = new Texture("background.png");
+
+//        bg = atlas.findRegion("background");
         ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
         Gdx.input.setInputProcessor(stage);
 
@@ -119,7 +127,7 @@ public class RecordsScreen implements Screen{
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        game.batch.draw(ground.getTexture(), 0, 0);
+        game.batch.draw(ground.getTextureGround(), 0, 0);
         game.batch.end();
         stage.act();
         stage.draw();
@@ -155,7 +163,7 @@ public class RecordsScreen implements Screen{
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();
         stage.dispose();
-        bg.dispose();
+        atlas.dispose();
         ground.dispose();
     }
 }

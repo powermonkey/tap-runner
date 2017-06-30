@@ -1,8 +1,10 @@
 package com.rcam.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.rcam.game.GameAssetLoader;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
 
@@ -17,17 +19,22 @@ public class Lava {
     float damage;
     Rectangle bounds;
     boolean touched;
+    TextureAtlas atlas;
+    TextureAtlas.AtlasRegion lava;
 
     public Lava(){
-        lavaTexture = new Texture("lava.png");
+        lava = GameAssetLoader.atlas.findRegion("lava");
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
+//        lava = atlas.findRegion("lava");
     }
 
     public Lava(float x){
-        lavaTexture = new Texture("lava.png");
+        atlas = new TextureAtlas("packedimages/runner.atlas");
+        lava = atlas.findRegion("lava");
         posLava = new Vector2(x, 0);
         damage = 10;
         touched = false;
-        bounds = new Rectangle(0, 0, lavaTexture.getWidth(), lavaTexture.getHeight() + BOUNDS_TOP_OFFSET);
+        bounds = new Rectangle(0, 0, lava.getRegionWidth(), lava.getRegionHeight() + BOUNDS_TOP_OFFSET);
     }
 
     public void update(){
@@ -38,8 +45,8 @@ public class Lava {
         posLava.set(x, 0);
     }
 
-    public Texture getTexture() {
-        return lavaTexture;
+    public TextureAtlas.AtlasRegion getTextureLava() {
+        return lava;
     }
 
     public float getDamage() {

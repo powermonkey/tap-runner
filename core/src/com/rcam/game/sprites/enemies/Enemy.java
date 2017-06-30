@@ -38,7 +38,7 @@ public class Enemy {
 
     public Enemy(){
 //        this.enemyTexture = new Texture[2];
-        atlas = new TextureAtlas("packedimages/runner.atlas");
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
         enemyAtlasRegions = new Array<TextureAtlas.AtlasRegion>();
         this.velocity = new Vector2();
         this.speed = new Vector2();

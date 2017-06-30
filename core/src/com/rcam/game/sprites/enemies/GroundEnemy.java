@@ -7,21 +7,24 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.rcam.game.GameAssetLoader;
 
 /**
  * Created by Rod on 4/18/2017.
  */
 
 public class GroundEnemy extends Enemy implements Pool.Poolable{
-    protected final static int FRAME_COLS = 4;
-    protected final static int FRAME_ROWS = 1;
-    public final static float ON_TOP_CONTACT_OFFSET = 5;
-    public static final float CONTACT_BOUNDS_OFFSET_X = 10;
+    protected final int FRAME_COLS = 4;
+    protected final int FRAME_ROWS = 1;
+    public final float ON_TOP_CONTACT_OFFSET = 5;
+    public final float CONTACT_BOUNDS_OFFSET_X = 10;
 
     public GroundEnemy(){
         super();
-        Array<TextureAtlas.AtlasRegion> jellyGreen = atlas.findRegions("jelly_green");
-        Array<TextureAtlas.AtlasRegion> jellyYellow = atlas.findRegions("jelly_yellow");
+        Array<TextureAtlas.AtlasRegion> jellyGreen = GameAssetLoader.atlas.findRegions("jelly_green");
+        Array<TextureAtlas.AtlasRegion> jellyYellow = GameAssetLoader.atlas.findRegions("jelly_yellow");
+//        Array<TextureAtlas.AtlasRegion> jellyGreen = atlas.findRegions("jelly_green");
+//        Array<TextureAtlas.AtlasRegion> jellyYellow = atlas.findRegions("jelly_yellow");
         // fixed value since textures are currently the same size; refactor in future
         this.textureWidth = jellyGreen.get(0).getRegionWidth();
         this.textureHeight = jellyGreen.get(0).getRegionWidth() - ON_TOP_CONTACT_OFFSET;

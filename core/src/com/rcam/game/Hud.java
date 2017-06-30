@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -48,18 +49,24 @@ public class Hud{
 //    Drawable joystickGray, joystickLeft, joystickRight;
     NinePatch patch;
     GameScreen gameScreen;
+    TextureAtlas.AtlasRegion blockYellow, forward, backward, pause;
+    NinePatchDrawable patchDrawable;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
 //        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
 //        setClip(true);
         this.gameScreen = gameScreen;
+        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
+        arcadeSkin = GameAssetLoader.arcadeSkin;
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
         rootTable = new Table();
         indicatorstable = new Table();
         distancetable = new Table();
         controlsTable = new Table();
         rootTable.setFillParent(true);
-        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
-        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
+//        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
+//        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         meter = new Meter(runner);
         distance = new Distance(runner);
@@ -72,10 +79,16 @@ public class Hud{
         healthLabel = new Label("ENERGY", cleanCrispySkin);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
 
+
 //        stage.setDebugAll(true);
 
-        patch = new NinePatch(new Texture(Gdx.files.internal("Block_Type2_Yellow.png")), 4, 4, 4, 4);
 
+//        blockYellow = atlas.findRegion("Block_Type2_Yellow");
+//        backward = atlas.findRegion("backward");
+//        forward = atlas.findRegion("forward");
+//        pause = atlas.findRegion("pause");
+        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
+        patchDrawable = new NinePatchDrawable(patch);
         Gdx.input.setInputProcessor(stage);
 
         distancetable.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
@@ -98,7 +111,7 @@ public class Hud{
         controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).expandX().right();
         controlsTable.add(jumpButton.getJumpButton()).right().padRight(20).expandX();
         controlsTable.row();
-        controlsTable.setBackground(new NinePatchDrawable(patch));
+        controlsTable.setBackground(patchDrawable);
 
         rootTable.add(distancetable).width(TapRunner.WIDTH).center().expand();
         rootTable.row();
@@ -243,11 +256,12 @@ public class Hud{
         public SlowDownButton(Runner runner){
             sbutton = new ImageButton(getCleanCrispySkin(), "default");
             sbuttonStyle = new ImageButton.ImageButtonStyle();
+            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
             sbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
             sbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
             sbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-            sbuttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("backward.png")));
-            sbuttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("backward.png")));
+            sbuttonStyle.imageUp = buttonSkin.getDrawable("backward");;
+            sbuttonStyle.imageDown = buttonSkin.getDrawable("backward");
             sbutton.setStyle(sbuttonStyle);
             button1Listener(sbutton, runner);
         }
@@ -277,11 +291,13 @@ public class Hud{
         public RunButton(Runner runner){
             rbutton = new ImageButton(getCleanCrispySkin(), "default");
             rbuttonStyle = new ImageButton.ImageButtonStyle();
+            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
             rbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
             rbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
             rbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-            rbuttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("forward.png")));
-            rbuttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("forward.png")));
+            rbuttonStyle.imageUp = buttonSkin.getDrawable("forward");
+            rbuttonStyle.imageDown = buttonSkin.getDrawable("forward");
+
             rbutton.setStyle(rbuttonStyle);
 
             button1Listener(rbutton, runner);
@@ -316,11 +332,12 @@ public class Hud{
             this.game = game;
             button = new ImageButton(getCleanCrispySkin(), "default");
             buttonStyle = new ImageButton.ImageButtonStyle();
+            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
             buttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
             buttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
             buttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-            buttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(new Texture("pause.png")));
-            buttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(new Texture("pause.png")));
+            buttonStyle.imageUp = buttonSkin.getDrawable("pause");
+            buttonStyle.imageDown = buttonSkin.getDrawable("pause");
             button.setStyle(buttonStyle);
             pauseButtonListener(button, gameScreen);
         }
@@ -370,7 +387,7 @@ public class Hud{
             pauseTable.row();
             pauseTable.add(exitButton).center().uniform().width(150).height(50).expandX().padTop(30).padBottom(30);
             pauseTable.row();
-            pauseTable.setBackground(new NinePatchDrawable(patch));
+            pauseTable.setBackground(patchDrawable);
 
             rtable.add(pauseTable).width(TapRunner.WIDTH / 2).center().center().expandX();
             rtable.row();
@@ -517,6 +534,7 @@ public class Hud{
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();
         stage.dispose();
+        GameAssetLoader.atlas.dispose();
     }
 
 }

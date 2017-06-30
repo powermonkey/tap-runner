@@ -7,26 +7,29 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.rcam.game.GameAssetLoader;
 
 /**
  * Created by Rod on 4/21/2017.
  */
 
 public class FlyingEnemy extends Enemy implements Pool.Poolable{
-    protected final static int FRAME_COLS = 8;
-    protected final static int FRAME_ROWS = 1;
+    protected final int FRAME_COLS = 8;
+    protected final int FRAME_ROWS = 1;
     public final static float ON_TOP_CONTACT_OFFSET = 5;
     public static final float CONTACT_BOUNDS_OFFSET_X = 10;
 
     public FlyingEnemy(){
         super();
-        Array<TextureAtlas.AtlasRegion> birdBlue = atlas.findRegions("bird_blue");
-        Array<TextureAtlas.AtlasRegion> bird_red = atlas.findRegions("bird_red");
+        Array<TextureAtlas.AtlasRegion> birdBlue = GameAssetLoader.atlas.findRegions("bird_blue");
+        Array<TextureAtlas.AtlasRegion> birdRed = GameAssetLoader.atlas.findRegions("bird_red");
+//        Array<TextureAtlas.AtlasRegion> birdBlue = atlas.findRegions("bird_blue");
+//        Array<TextureAtlas.AtlasRegion> bird_red = atlas.findRegions("bird_red");
         // fixed value since textures are currently the same size; refactor in future
         this.textureWidth = birdBlue.get(0).getRegionWidth();
         this.textureHeight = birdBlue.get(0).getRegionHeight() - ON_TOP_CONTACT_OFFSET;
         animationMonster1 = new Animation<TextureRegion>(0.1f, birdBlue);
-        animationMonster2 = new Animation<TextureRegion>(0.1f, bird_red);
+        animationMonster2 = new Animation<TextureRegion>(0.1f, birdRed);
 //        this.enemyTexture[0] = new Texture("Bird_32x32_blue_fly_L2.png");
 //        this.enemyTexture[1] = new Texture("Bird_32x32_red_fly_L2.png");
 //

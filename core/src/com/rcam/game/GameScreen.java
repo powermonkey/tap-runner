@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -30,7 +31,7 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 
 public class GameScreen implements Screen{
     final TapRunner game;
-    final static float ENEMY_OFFSET_Y = 5;
+    final float ENEMY_OFFSET_Y = 5;
     float spawnMarker = 50;
     float levelMarker = 30;
     float lavaMarker = 0;
@@ -38,10 +39,9 @@ public class GameScreen implements Screen{
     float powerUpMarker = 350;
     float lastLavaPos = 0;
     float lastGroundPos = 0;
-    static int levelCounter = 1;
+    int levelCounter = 1;
     static Preferences prefs;
 
-    Texture bg;
     OrthographicCamera cam, bgCam;
     Runner runner;
     Array<Ground> grounds;
@@ -64,10 +64,17 @@ public class GameScreen implements Screen{
     Enemy enemyObject;
     boolean isPause;
     Vector2 spawnPosition;
+    TextureAtlas atlas;
+    TextureAtlas.AtlasRegion bg;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
-        bg = new Texture("background.png");
+
+        bg = GameAssetLoader.atlas.findRegion("background");
+
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
+//        bg = atlas.findRegion("background");
+
         runner = new Runner();
 
         bgCam = new OrthographicCamera();
@@ -126,14 +133,14 @@ public class GameScreen implements Screen{
         gameMode = prefs.getString("GameMode");
 
         if(gameMode.equals("The Ground Is Lava")){
-            lavas.add(new Lava(new Lava().getTexture().getWidth() * 2));
-            lavas.add(new Lava(new Lava().getTexture().getWidth() * 3));
+            lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
+            lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 3));
         }
 
-        lastLavaPos = new Lava().getTexture().getWidth() * 4;
+        lastLavaPos = new Lava().getTextureLava().getRegionWidth() * 4;
         grounds.add(new Ground(0));
-        grounds.add(new Ground(new Ground().getTexture().getWidth()));
-        lastGroundPos = new Ground().getTexture().getWidth();
+        grounds.add(new Ground(new Ground().getTextureGround().getRegionWidth()));
+        lastGroundPos = new Ground().getTextureGround().getRegionWidth();
         hud = new Hud(gam, runner, this);
         keys = new KeyboardInput(runner);
 
@@ -173,12 +180,12 @@ public class GameScreen implements Screen{
         if (gameMode.equals("The Ground Is Lava")) {
             //render ground
             for (Ground ground : grounds) {
-                game.batch.draw(ground.getTexture(), (int)ground.getPosGround().x, (int)ground.getPosGround().y);
+                game.batch.draw(ground.getTextureGround(), (int)ground.getPosGround().x, (int)ground.getPosGround().y);
             }
 
             //render lava
             for (Lava lava : lavas) {
-                game.batch.draw(lava.getTexture(), (int)lava.getPosLava().x, (int)lava.getPosLava().y);
+                game.batch.draw(lava.getTextureLava(), (int)lava.getPosLava().x, (int)lava.getPosLava().y);
                 //update lava bounds
                 lava.update();
                 //check runner landing on lava
@@ -186,21 +193,21 @@ public class GameScreen implements Screen{
             }
 
             for (Lava lava : lavas) {
-                if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTexture().getWidth()) {
+                if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTextureLava().getRegionWidth()) {
                     lava.repositionLava(lastLavaPos);
-                    lastLavaPos = lava.getPosLava().x + (lava.getTexture().getWidth());
+                    lastLavaPos = lava.getPosLava().x + (lava.getTextureLava().getRegionWidth());
                 }
             }
         } else {
             //render ground
             for (Ground ground : grounds) {
-                game.batch.draw(ground.getTexture(), (int)ground.getPosGround().x, (int)ground.getPosGround().y);
+                game.batch.draw(ground.getTextureGround(), (int)ground.getPosGround().x, (int)ground.getPosGround().y);
             }
 
             //set ground position
             for (Ground ground : grounds) {
-                if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTexture().getWidth()) {
-                    ground.repositionGround(ground.getPosGround().x + (ground.getTexture().getWidth() * 2));
+                if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
+                    ground.repositionGround(ground.getPosGround().x + (ground.getTextureGround().getRegionWidth() * 2));
                 }
             }
         }
@@ -266,7 +273,6 @@ public class GameScreen implements Screen{
                 } else {
                     if (timeSinceMillis(startingTime) > 2000) {
                         game.setScreen(new GameOverScreen(this.game, runner));
-                        dispose();
                     }
                 }
             }

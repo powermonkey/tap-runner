@@ -1,11 +1,8 @@
 package com.rcam.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 
 public class TapRunner extends Game{
 	public static final int WIDTH = 480;
@@ -28,6 +25,7 @@ public class TapRunner extends Game{
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+		GameAssetLoader.load();
 		this.setScreen(new MainMenuScreen(this));
 		if(adsController.isWifiConnected()) {
 			adsController.showBannerAd();

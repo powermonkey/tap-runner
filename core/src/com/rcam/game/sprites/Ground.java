@@ -1,23 +1,29 @@
 package com.rcam.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.rcam.game.GameAssetLoader;
 
 /**
  * Created by Rod on 4/14/2017.
  */
 
 public class Ground {
-    Texture groundTexture, lavaTexture;
-    Vector2 posGround, posLava;
-    Boolean isLava;
+    Vector2 posGround;
+    TextureAtlas atlas;
+    TextureAtlas.AtlasRegion ground;
 
     public Ground(){
-        groundTexture = new Texture("ground.png");
+        ground = GameAssetLoader.atlas.findRegion("ground");
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
+//        ground = atlas.findRegion("ground");
     }
 
     public Ground(float x){
-        groundTexture = new Texture("ground.png");
+        ground = GameAssetLoader.atlas.findRegion("ground");
+//        atlas = new TextureAtlas("packedimages/runner.atlas");
+//        ground = atlas.findRegion("ground");
         posGround = new Vector2(x, 0);
     }
 
@@ -26,8 +32,8 @@ public class Ground {
     }
 
 
-    public Texture getTexture() {
-        return groundTexture;
+    public TextureAtlas.AtlasRegion getTextureGround() {
+        return ground;
     }
 
 
@@ -40,6 +46,6 @@ public class Ground {
     }
 
     public void dispose(){
-        groundTexture.dispose();
+        GameAssetLoader.atlas.dispose();
     }
 }
