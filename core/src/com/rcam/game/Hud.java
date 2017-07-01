@@ -322,24 +322,33 @@ public class Hud{
     }
 
     public class PauseButton{
-        ImageButton button;
-        ImageButton.ImageButtonStyle buttonStyle;
+        ImageButton pauseButton;
+        ImageButton.ImageButtonStyle buttonStyle, unpauseStyle;
         TapRunner game;
         Group pauseGroup;
         Table rtable;
 
         public PauseButton(TapRunner game, GameScreen gameScreen){
             this.game = game;
-            button = new ImageButton(getCleanCrispySkin(), "default");
+            pauseButton = new ImageButton(getCleanCrispySkin(), "default");
             buttonStyle = new ImageButton.ImageButtonStyle();
+            unpauseStyle = new ImageButton.ImageButtonStyle();
+
             Skin buttonSkin = new Skin(GameAssetLoader.atlas);
+
             buttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
             buttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
             buttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
             buttonStyle.imageUp = buttonSkin.getDrawable("pause");
             buttonStyle.imageDown = buttonSkin.getDrawable("pause");
-            button.setStyle(buttonStyle);
-            pauseButtonListener(button, gameScreen);
+
+            unpauseStyle.up = getCleanCrispySkin().getDrawable("button-c");
+            unpauseStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
+            unpauseStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
+            unpauseStyle.imageUp = buttonSkin.getDrawable("forward");
+            unpauseStyle.imageDown = buttonSkin.getDrawable("forward");
+            pauseButton.setStyle(buttonStyle);
+            pauseButtonListener(pauseButton, gameScreen);
         }
 
         public void pauseButtonListener(final Button button, final GameScreen gameScreen){
@@ -347,8 +356,13 @@ public class Hud{
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                     if(!gameScreen.isPause) {
+                        pauseButton.setStyle(unpauseStyle);
                         gameScreen.isPause = true;
                         pauseGame();
+                    }else{
+                        pauseButton.setStyle(buttonStyle);
+                        gameScreen.isPause = false;
+                        rtable.remove();
                     }
                     return true;
                 }
@@ -480,7 +494,7 @@ public class Hud{
         }
 
         public ImageButton getPauseButton(){
-            return button;
+            return pauseButton;
         }
     }
 
