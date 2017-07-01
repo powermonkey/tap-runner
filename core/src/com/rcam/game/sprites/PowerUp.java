@@ -1,8 +1,6 @@
 package com.rcam.game.sprites;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
@@ -23,15 +21,9 @@ public class PowerUp implements Pool.Poolable{
     private final int RANDOM_POWER_UP = 6;
     private boolean touched;
     public boolean isSpawned;
-//    TextureRegion[] textureRegions;
     private int powerUpType;
     private Random rand;
-    private TextureAtlas atlas;
     private TextureAtlas.AtlasRegion[] powerUpAtlasRegions;
-
-//    public PowerUp(){
-//
-//    }
 
     public PowerUp(){
         TextureAtlas.AtlasRegion apple = GameAssetLoader.atlas.findRegion("powerup_apple");
@@ -40,13 +32,6 @@ public class PowerUp implements Pool.Poolable{
         TextureAtlas.AtlasRegion grapes = GameAssetLoader.atlas.findRegion("powerup_grapes");
         TextureAtlas.AtlasRegion strawberry = GameAssetLoader.atlas.findRegion("powerup_strawberry");
         TextureAtlas.AtlasRegion orange = GameAssetLoader.atlas.findRegion("powerup_orange");
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
-//        TextureAtlas.AtlasRegion apple = atlas.findRegion("powerup_apple");
-//        TextureAtlas.AtlasRegion cherry = atlas.findRegion("powerup_cherry");
-//        TextureAtlas.AtlasRegion banana = atlas.findRegion("powerup_banana");
-//        TextureAtlas.AtlasRegion grapes = atlas.findRegion("powerup_grapes");
-//        TextureAtlas.AtlasRegion strawberry = atlas.findRegion("powerup_strawberry");
-//        TextureAtlas.AtlasRegion orange = atlas.findRegion("powerup_orange");
 
         powerUpAtlasRegions = new TextureAtlas.AtlasRegion[6];
         powerUpAtlasRegions[0] = apple;
@@ -56,13 +41,6 @@ public class PowerUp implements Pool.Poolable{
         powerUpAtlasRegions[4] = strawberry;
         powerUpAtlasRegions[5] = orange;
 
-//        this.texture = new Texture("M484GoodFruits3.png");
-//        this.textureRegions = new TextureRegion[5];
-//        this.textureRegions[0] = new TextureRegion(texture, 7, 4, 25, 25); //cherry
-//        this.textureRegions[1] = new TextureRegion(texture, 63, 4, 25, 25); //grapes
-//        this.textureRegions[2] = new TextureRegion(texture, 34, 91, 25, 25); //orange
-//        this.textureRegions[3] = new TextureRegion(texture, 144, 91, 25, 25); //banana
-//        this.textureRegions[4] = new TextureRegion(texture, 92, 60, 25, 25); //apple
         this.position = new Vector2();
         this.rand = new Random();
         this.touched = false;
@@ -137,7 +115,7 @@ public class PowerUp implements Pool.Poolable{
     }
 
     public void dispose(){
-        atlas.dispose();
+        GameAssetLoader.atlas.dispose();
     }
 
     @Override

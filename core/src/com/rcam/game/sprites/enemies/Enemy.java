@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.rcam.game.GameAssetLoader;
 import com.rcam.game.sprites.Runner;
 
 import java.util.Vector;
@@ -26,7 +27,6 @@ public class Enemy {
     float damage;
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
-//    public Texture[] enemyTexture;
     public float textureHeight, textureWidth;
     public boolean isSpawned;
     public Animation<TextureRegion> animation, animationMonster1, animationMonster2;
@@ -34,11 +34,8 @@ public class Enemy {
     static Preferences prefs;
     TextureAtlas atlas;
     protected Array<TextureAtlas.AtlasRegion> enemyAtlasRegions;
-    private int monsterType;
 
     public Enemy(){
-//        this.enemyTexture = new Texture[2];
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
         enemyAtlasRegions = new Array<TextureAtlas.AtlasRegion>();
         this.velocity = new Vector2();
         this.speed = new Vector2();
@@ -85,10 +82,6 @@ public class Enemy {
         onTopBounds.set(x, y + ON_TOP_OFFSET , width, height + ON_TOP_OFFSET );
     }
 
-    public void setPosition(Vector2 position){
-        this.position = position;
-    }
-
     public float getDamage() {
         return damage;
     }
@@ -112,22 +105,6 @@ public class Enemy {
     public float getTextureWidth() {
         return textureWidth;
     }
-
-//    public TextureRegion[] createFrames(Texture enemy, int rows, int cols){
-//        TextureRegion[][] tmp = TextureRegion.split(enemy,
-//                enemy.getWidth() / cols,
-//                enemy.getHeight() / rows);
-//
-//        TextureRegion[] frames = new TextureRegion[cols * rows];
-//        int index = 0;
-//        for (int i = 0; i < rows; i++) {
-//            for (int j = 0; j < cols; j++) {
-//                frames[index++] = tmp[i][j];
-//            }
-//        }
-//
-//        return frames;
-//    }
 
     public void checkCollision(Runner runner) {
 //        Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
@@ -172,8 +149,6 @@ public class Enemy {
     }
 
     public void dispose(){
-        atlas.dispose();
-//        enemyTexture[0].dispose();
-//        enemyTexture[1].dispose();
+        GameAssetLoader.atlas.dispose();
     }
 }

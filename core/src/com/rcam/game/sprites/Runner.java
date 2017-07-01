@@ -23,10 +23,9 @@ public class Runner {
     public float MAX_SPEED = 150;
     public float MIN_SPEED = 50;
     static float RUN_SPEED = 50;
-//    static final float MAX_HEIGHT = 400;
     public final static float STARTING_X = 30;
     public final static float STARTING_Y = 112;
-    static final float JUMP_HEIGHT = 555;
+    static final float JUMP_HEIGHT = 535;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
@@ -146,7 +145,7 @@ public class Runner {
         if(isDead){
             velocity.x = -600;
         }
-        
+
         //maintain high speed
         speed.add(velocity.x, velocity.y);
 
@@ -258,7 +257,7 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 85;
+        velocity.y = 75;
         isJumping = true;
         isOnGround = false;
         isFalling = false;

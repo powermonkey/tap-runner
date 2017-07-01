@@ -36,7 +36,6 @@ public class GameOverScreen implements Screen{
     Label current, bestDistance, currentLabel, bestDistanceLabel;
     static Preferences prefs;
     String gameMode;
-    TextureAtlas atlas;
     TextureAtlas.AtlasRegion bg, blockYellow;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
@@ -46,16 +45,12 @@ public class GameOverScreen implements Screen{
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
-//        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
-//        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         rootTable = new Table();
         rootTable.setFillParent(true);
         table = new Table();
         bg = GameAssetLoader.atlas.findRegion("background");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
-
 
         prefs = Gdx.app.getPreferences("TapRunner");
         gameMode = prefs.getString("GameMode");

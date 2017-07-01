@@ -5,13 +5,11 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -30,7 +28,6 @@ public class MainMenuScreen implements Screen {
     TextButton exit, newGame, options, records;
     Stage stage;
     static Preferences prefs;
-    TextureAtlas atlas;
     TextureAtlas.AtlasRegion ground, bg, blockYellow;
 
     public MainMenuScreen(final TapRunner gam){
@@ -42,10 +39,6 @@ public class MainMenuScreen implements Screen {
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
 
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
-//        ground = atlas.findRegion("ground");
-//        bg = atlas.findRegion("background");
-//        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         Gdx.input.setInputProcessor(stage);
         rootTable = new Table();
@@ -144,7 +137,6 @@ public class MainMenuScreen implements Screen {
 
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-//        game.batch.draw(playBtn, (cam.viewportWidth / 2 ) - (playBtn.getWidth() / 2 ), cam.viewportHeight / 2);
         game.batch.draw(ground, 0,0);
         game.batch.end();
 
@@ -181,6 +173,6 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
         cleanCrispySkin.dispose();
         stage.dispose();
-        atlas.dispose();
+        GameAssetLoader.atlas.dispose();
     }
 }

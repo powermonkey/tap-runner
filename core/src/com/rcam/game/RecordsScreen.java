@@ -5,7 +5,6 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -35,7 +34,6 @@ public class RecordsScreen implements Screen{
     Runner runner;
     Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
     static Preferences prefs;
-    TextureAtlas atlas;
     TextureAtlas.AtlasRegion bg, blockYellow;
 
     public RecordsScreen(final TapRunner gam){
@@ -44,8 +42,6 @@ public class RecordsScreen implements Screen{
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
-//        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
-//        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         rootTable = new Table();
         rootTable.setFillParent(true);
@@ -55,7 +51,6 @@ public class RecordsScreen implements Screen{
         prefs = Gdx.app.getPreferences("TapRunner");
         bg = GameAssetLoader.atlas.findRegion("background");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
 
@@ -68,7 +63,6 @@ public class RecordsScreen implements Screen{
         goBackButton = new TextButton("Main Menu", cleanCrispySkin, "default");
         goBackButtonListener(goBackButton);
 
-//        bg = atlas.findRegion("background");
         ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
         Gdx.input.setInputProcessor(stage);
 
@@ -163,7 +157,7 @@ public class RecordsScreen implements Screen{
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();
         stage.dispose();
-        atlas.dispose();
+        GameAssetLoader.atlas.dispose();
         ground.dispose();
     }
 }

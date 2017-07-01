@@ -37,7 +37,6 @@ public class SettingsScreen implements Screen {
     CheckBox normalMode, groundLavaMode, enemyTouchSlows;
     TextButton okay;
     static Preferences prefs;
-    TextureAtlas atlas;
     TextureAtlas.AtlasRegion bg, blockYellow;
 
     public SettingsScreen(final TapRunner gam){
@@ -46,8 +45,6 @@ public class SettingsScreen implements Screen {
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
-//        cleanCrispySkin = new Skin(Gdx.files.internal("skin/clean-crispy-ui/clean-crispy-ui.json"));
-//        arcadeSkin = new Skin(Gdx.files.internal("skin/arcade-ui/arcade-ui.json"));
         stage = new Stage(new FitViewport(480, 800));
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -80,8 +77,6 @@ public class SettingsScreen implements Screen {
 
         bg = GameAssetLoader.atlas.findRegion("background");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
-//        bg = atlas.findRegion("background");
 
         ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
         Gdx.input.setInputProcessor(stage);
@@ -191,7 +186,7 @@ public class SettingsScreen implements Screen {
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();
         stage.dispose();
-        atlas.dispose();
+        GameAssetLoader.atlas.dispose();
         ground.dispose();
     }
 }

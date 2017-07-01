@@ -5,7 +5,6 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -33,13 +32,9 @@ public class GameScreen implements Screen{
     final TapRunner game;
     final float ENEMY_OFFSET_Y = 5;
     float spawnMarker = 50;
-    float levelMarker = 30;
-    float lavaMarker = 0;
-    float lavaMarkerMutliplier = 1;
     float powerUpMarker = 350;
     float lastLavaPos = 0;
     float lastGroundPos = 0;
-    int levelCounter = 1;
     static Preferences prefs;
 
     OrthographicCamera cam, bgCam;
@@ -64,16 +59,12 @@ public class GameScreen implements Screen{
     Enemy enemyObject;
     boolean isPause;
     Vector2 spawnPosition;
-    TextureAtlas atlas;
     TextureAtlas.AtlasRegion bg;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
 
         bg = GameAssetLoader.atlas.findRegion("background");
-
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
-//        bg = atlas.findRegion("background");
 
         runner = new Runner();
 
@@ -240,7 +231,6 @@ public class GameScreen implements Screen{
             }
 
             //set enemy position and render enemy
-//            if (runner.getPosition().x > levelMarker) {
             if (runner.getPosition().x > spawnMarker) {
                 if(level.getLevelKey() == 1 && level.isEndOfLevel){
                     runner.increaseSpeed(50);
@@ -351,13 +341,13 @@ public class GameScreen implements Screen{
             }
         }
 
-//        Iterator<? extends Enemy> iterEnemy = enemies.iterator();
-//        while(iterEnemy.hasNext()){
-//            Enemy enemy = iterEnemy.next();
-//            if (!enemy.isSpawned) {
-//                iterEnemy.remove();
-//            }
-//        }
+        Iterator<? extends Enemy> iterEnemy = enemies.iterator();
+        while(iterEnemy.hasNext()){
+            Enemy enemy = iterEnemy.next();
+            if (!enemy.isSpawned) {
+                iterEnemy.remove();
+            }
+        }
 
         //TODO: refactor, put in a function;
         GroundEnemy groundEnemyItem;
@@ -464,13 +454,13 @@ public class GameScreen implements Screen{
             }
         }
 
-//        Iterator<PowerUp> iterPowerUp = powerUps.iterator();
-//        while(iterPowerUp.hasNext()){
-//            PowerUp powUp = iterPowerUp.next();
-//            if (!powUp.isSpawned) {
-//                iterPowerUp.remove();
-//            }
-//        }
+        Iterator<PowerUp> iterPowerUp = powerUps.iterator();
+        while(iterPowerUp.hasNext()){
+            PowerUp powUp = iterPowerUp.next();
+            if (!powUp.isSpawned) {
+                iterPowerUp.remove();
+            }
+        }
 
         int len = powerUps.size;
         for(int i = len; --i >= 0;){
