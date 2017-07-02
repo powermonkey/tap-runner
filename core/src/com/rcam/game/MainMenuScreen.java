@@ -25,7 +25,7 @@ public class MainMenuScreen implements Screen {
     OrthographicCamera cam;
     Table rootTable, table;
     Skin cleanCrispySkin;
-    TextButton exit, newGame, options, records;
+    TextButton exit, newGame, options, records, credits;
     Stage stage;
     static Preferences prefs;
     TextureAtlas.AtlasRegion ground, bg, blockYellow;
@@ -48,11 +48,13 @@ public class MainMenuScreen implements Screen {
         newGame = new TextButton("New Game", cleanCrispySkin, "default");
         options = new TextButton("Options", cleanCrispySkin, "default");
         records = new TextButton("Records", cleanCrispySkin, "default");
+        credits = new TextButton("Credits", cleanCrispySkin, "default");
         exit = new TextButton("Exit", cleanCrispySkin, "default");
 
         newGameButtonListener(newGame);
         settingsButtonListener(options);
         recordsButtonListener(records);
+        creditsButtonListener(credits);
         exitButtonListener(exit);
 
 //        stage.setDebugAll(true);
@@ -64,6 +66,8 @@ public class MainMenuScreen implements Screen {
         table.add(options).center().uniform().width(150).height(50).expandX().padTop(30);
         table.row();
         table.add(records).center().uniform().width(150).height(50).expandX().padTop(30);
+        table.row();
+        table.add(credits).center().uniform().width(150).height(50).expandX().padTop(30);
         table.row();
         table.add(exit).center().uniform().width(150).height(50).expandX().padTop(30).padBottom(30);
         table.row();
@@ -110,6 +114,16 @@ public class MainMenuScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new RecordsScreen(game));
+                return true;
+            }
+        });
+    }
+
+    public void creditsButtonListener(TextButton button){
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new CreditsScreen(game));
                 return true;
             }
         });
