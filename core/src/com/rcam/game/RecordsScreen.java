@@ -29,12 +29,11 @@ public class RecordsScreen implements Screen{
     Skin cleanCrispySkin,arcadeSkin;
     Stage stage;
     Table rootTable, table, labelTable, goBackButtonTable;
-    Ground ground;
     TextButton goBackButton;
     Runner runner;
     Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
     static Preferences prefs;
-    TextureAtlas.AtlasRegion bg, blockYellow;
+    TextureAtlas.AtlasRegion bg, blockYellow, ground;
 
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
@@ -50,6 +49,7 @@ public class RecordsScreen implements Screen{
         labelTable = new Table();
         prefs = Gdx.app.getPreferences("TapRunner");
         bg = GameAssetLoader.atlas.findRegion("background");
+        ground = GameAssetLoader.atlas.findRegion("ground");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
@@ -63,11 +63,10 @@ public class RecordsScreen implements Screen{
         goBackButton = new TextButton("Main Menu", cleanCrispySkin, "default");
         goBackButtonListener(goBackButton);
 
-        ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
+
         Gdx.input.setInputProcessor(stage);
 
 //        stage.setDebugAll(true);
-
 
         labelTable.add(recordsLabel).colspan(2).expandX().center().uniform().pad(5);
         labelTable.row();
@@ -121,7 +120,7 @@ public class RecordsScreen implements Screen{
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        game.batch.draw(ground.getTextureGround(), 0, 0);
+        game.batch.draw(ground, 0, 0);
         game.batch.end();
         stage.act();
         stage.draw();
@@ -158,6 +157,5 @@ public class RecordsScreen implements Screen{
         arcadeSkin.dispose();
         stage.dispose();
         GameAssetLoader.atlas.dispose();
-        ground.dispose();
     }
 }
