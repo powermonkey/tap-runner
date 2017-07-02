@@ -26,4 +26,8 @@ public class GameAssetManager {
         manager.load(cleanCrispySkin, Skin.class, paramsCleanCrispySkin);
         manager.load(arcadeSkin, Skin.class, paramsArcadeSkin);
     }
+
+    public void dispose(){
+        manager.dispose();
+    }
 }
