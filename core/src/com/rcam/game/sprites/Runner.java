@@ -273,7 +273,7 @@ public class Runner {
 
     public void death(){
         animatingDeath = true;
-        velocity.y = 60;
+        velocity.y = 1000;
         velocity.x = 0;
         isJumping = true;
         isOnGround = false;
