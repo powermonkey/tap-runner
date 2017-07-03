@@ -99,7 +99,7 @@ public class PowerUp implements Pool.Poolable{
     }
 
     public void checkPowerUpCollision(Runner runner){
-        if(getBounds().overlaps(runner.getBounds()) ){
+        if(getBounds().overlaps(runner.getBounds()) && !runner.isDead ){
             if(prefs.getBoolean("SoundOn")) {
                 powerUpSound.play();
             }
