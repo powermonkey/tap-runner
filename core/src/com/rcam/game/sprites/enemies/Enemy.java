@@ -2,6 +2,7 @@ package com.rcam.game.sprites.enemies;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -32,11 +33,12 @@ public class Enemy {
     public Animation<TextureRegion> animation, animationMonster1, animationMonster2;
     public float stateTime;
     static Preferences prefs;
-    TextureAtlas atlas;
     protected Array<TextureAtlas.AtlasRegion> enemyAtlasRegions;
+    Sound hurtSound;
 
     public Enemy(){
         enemyAtlasRegions = new Array<TextureAtlas.AtlasRegion>();
+        hurtSound = GameAssetLoader.hurt;
         this.velocity = new Vector2();
         this.speed = new Vector2();
         this.touched = false;
@@ -133,6 +135,7 @@ public class Enemy {
                 runner.isFalling = false;
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0 && !runner.invulnerable) {
+                        hurtSound.play();
                         runner.health -= getDamage();
                         touched = true;
                         if(enemyTouchSlows) {

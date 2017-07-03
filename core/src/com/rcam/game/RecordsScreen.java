@@ -3,6 +3,7 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -34,6 +35,7 @@ public class RecordsScreen implements Screen{
     Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow, ground;
+    Sound blipSelectSound;
 
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
@@ -51,6 +53,7 @@ public class RecordsScreen implements Screen{
         bg = GameAssetLoader.atlas.findRegion("background");
         ground = GameAssetLoader.atlas.findRegion("ground");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        blipSelectSound = GameAssetLoader.blipSelect;
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
 
@@ -105,6 +108,7 @@ public class RecordsScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 game.setScreen(new MainMenuScreen(game));
                 return true;
             }

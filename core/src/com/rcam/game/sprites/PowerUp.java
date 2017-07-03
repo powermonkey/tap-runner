@@ -1,5 +1,6 @@
 package com.rcam.game.sprites;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -24,8 +25,10 @@ public class PowerUp implements Pool.Poolable{
     private int powerUpType;
     private Random rand;
     private TextureAtlas.AtlasRegion[] powerUpAtlasRegions;
+    Sound powerUpSound;
 
     public PowerUp(){
+        powerUpSound = GameAssetLoader.powerUp;
         TextureAtlas.AtlasRegion apple = GameAssetLoader.atlas.findRegion("powerup_apple");
         TextureAtlas.AtlasRegion cherry = GameAssetLoader.atlas.findRegion("powerup_cherry");
         TextureAtlas.AtlasRegion banana = GameAssetLoader.atlas.findRegion("powerup_banana");
@@ -93,6 +96,7 @@ public class PowerUp implements Pool.Poolable{
 
     public void checkPowerUpCollision(Runner runner){
         if(getBounds().overlaps(runner.getBounds()) ){
+            powerUpSound.play();
             if(!(runner.health >= runner.STARTING_HEALTH) && !touched && !runner.isDead){
                 runner.health += getHeal();
                 touched = true;

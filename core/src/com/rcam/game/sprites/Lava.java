@@ -1,5 +1,6 @@
 package com.rcam.game.sprites;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
@@ -21,15 +22,15 @@ public class Lava {
     boolean touched;
     TextureAtlas atlas;
     TextureAtlas.AtlasRegion lava;
+    Sound lavaBurnSound;
 
     public Lava(){
         lava = GameAssetLoader.atlas.findRegion("lava");
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
-//        lava = atlas.findRegion("lava");
     }
 
     public Lava(float x){
         atlas = new TextureAtlas("packedimages/runner.atlas");
+        lavaBurnSound = GameAssetLoader.lavaBurn;
         lava = atlas.findRegion("lava");
         posLava = new Vector2(x, 0);
         damage = 10;
@@ -60,6 +61,7 @@ public class Lava {
     public void checkLavaCollision(Runner runner){
         if(getBounds().overlaps(runner.getBounds())){
             if(runner.health > 0 && !touched && !runner.isDead && runner.isOnGround){
+                lavaBurnSound.play();
                 runner.health -= getDamage();
                 touched = true;
                 runner.invulnerable = true;

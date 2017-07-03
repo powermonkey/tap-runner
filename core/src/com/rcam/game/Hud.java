@@ -1,6 +1,7 @@
 package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -39,6 +40,8 @@ public class Hud extends Table{
     GameScreen gameScreen;
     TextureAtlas.AtlasRegion blockYellow;
     NinePatchDrawable patchDrawable;
+    Sound blipSelectSound, jumpSound, speedAdjustSound;
+
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
@@ -47,6 +50,9 @@ public class Hud extends Table{
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
+        blipSelectSound = GameAssetLoader.blipSelect;
+        jumpSound = GameAssetLoader.jump;
+        speedAdjustSound = GameAssetLoader.speedAdjust;
         rootTable = new Table();
         indicatorstable = new Table();
         distancetable = new Table();
@@ -187,6 +193,7 @@ public class Hud extends Table{
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if(!gameScreen.isPause) {
+                    speedAdjustSound.play();
                     runner.slowDown();
                 }
                 return true;
@@ -224,6 +231,7 @@ public class Hud extends Table{
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if(!gameScreen.isPause) {
+                    speedAdjustSound.play();
                     runner.run();
                 }
                 return true;
@@ -272,10 +280,12 @@ public class Hud extends Table{
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                     if(!gameScreen.isPause) {
+                        blipSelectSound.play(1.0f);
                         pauseButton.setStyle(unpauseStyle);
                         gameScreen.isPause = true;
                         pauseGame();
                     }else{
+                        blipSelectSound.play(1.0f);
                         pauseButton.setStyle(buttonStyle);
                         gameScreen.isPause = false;
                         rtable.remove();
@@ -352,6 +362,8 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    blipSelectSound.play();
+                    pauseButton.setStyle(buttonStyle);
                     gameScreen.isPause = false;
                     rtable.remove();
                     return true;
@@ -367,6 +379,7 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    blipSelectSound.play();
                     showInterstitialAd();
                     loadInterstitialAd();
                     game.setScreen(new GameScreen(game));
@@ -397,6 +410,7 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    blipSelectSound.play();
                     showInterstitialAd();
                     loadInterstitialAd();
                     game.setScreen(new MainMenuScreen(game));
@@ -428,6 +442,7 @@ public class Hud extends Table{
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                     if(!gameScreen.isPause) {
                         if (runner.isOnGround) {
+                            jumpSound.play();
                             runner.jump();
                         }
                     }

@@ -3,6 +3,7 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -29,6 +30,7 @@ public class MainMenuScreen implements Screen {
     Stage stage;
     static Preferences prefs;
     TextureAtlas.AtlasRegion ground, bg, blockYellow;
+    Sound blipSelectSound;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
@@ -38,6 +40,7 @@ public class MainMenuScreen implements Screen {
         ground = GameAssetLoader.atlas.findRegion("ground");
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        blipSelectSound = GameAssetLoader.blipSelect;
 
         stage = new Stage(new FitViewport(480, 800));
         Gdx.input.setInputProcessor(stage);
@@ -93,6 +96,7 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 game.setScreen(new GameScreen(game));
                 return true;
             }
@@ -103,6 +107,7 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 game.setScreen(new SettingsScreen(game));
                 return true;
             }
@@ -113,6 +118,7 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 game.setScreen(new RecordsScreen(game));
                 return true;
             }
@@ -123,6 +129,7 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 game.setScreen(new CreditsScreen(game));
                 return true;
             }

@@ -3,6 +3,7 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -38,6 +39,7 @@ public class SettingsScreen implements Screen {
     TextButton okay;
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow;
+    Sound blipSelectSound;
 
     public SettingsScreen(final TapRunner gam){
         this.game = gam;
@@ -45,6 +47,8 @@ public class SettingsScreen implements Screen {
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
+        blipSelectSound = GameAssetLoader.blipSelect;
+
         stage = new Stage(new FitViewport(480, 800));
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -136,6 +140,7 @@ public class SettingsScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 prefs.putString("GameMode", gameModeGroup.getChecked().getChildren().get(1).toString().replace("Label: ", ""));
                 prefs.putBoolean("EnemyTouchSlows", enemyTouchSlows.isChecked());
                 prefs.flush();

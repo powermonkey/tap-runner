@@ -3,6 +3,7 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,6 +38,7 @@ public class GameOverScreen implements Screen{
     static Preferences prefs;
     String gameMode;
     TextureAtlas.AtlasRegion bg, blockYellow;
+    Sound blipSelectSound;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -51,6 +53,7 @@ public class GameOverScreen implements Screen{
         table = new Table();
         bg = GameAssetLoader.atlas.findRegion("background");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        blipSelectSound = GameAssetLoader.blipSelect;
 
         prefs = Gdx.app.getPreferences("TapRunner");
         gameMode = prefs.getString("GameMode");
@@ -110,6 +113,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new MainMenuScreen(game));
@@ -122,6 +126,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new GameScreen(game));
@@ -134,6 +139,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                blipSelectSound.play();
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new SettingsScreen(game));
