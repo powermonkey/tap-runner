@@ -32,7 +32,7 @@ public class Runner {
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public float health;
     private long startingTime, lavaDamageTimeStart;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, invulnerable, isIdle;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, lavaInvulnerable, isIdle;
     Texture runnerTexture;
     Vector2 position, velocity, speed;
     TextureAtlas atlas;
@@ -54,7 +54,7 @@ public class Runner {
         isOnGround = true;
         isFalling = false;
         isTouched = false;
-        invulnerable = false;
+        lavaInvulnerable = false;
         isOnTopEnemy = false;
         isIdle = false;
 
@@ -119,10 +119,10 @@ public class Runner {
         speed.add(0, GRAVITY);
 
         //remove invulnerability
-        if(invulnerable){
+        if(lavaInvulnerable){
             if(timeSinceMillis(lavaDamageTimeStart) > 1000){
                 lavaDamageTimeStart = millis();
-                invulnerable = false;
+                lavaInvulnerable = false;
             }
         }
 

@@ -134,7 +134,7 @@ public class Enemy {
                 runnerOntop = true;
                 runner.isFalling = false;
             }else{
-                if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0 && !runner.invulnerable) {
+                if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
                         if(prefs.getBoolean("SoundOn")) {
                             hurtSound.play();
                         }

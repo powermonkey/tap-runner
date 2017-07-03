@@ -16,7 +16,7 @@ import static com.badlogic.gdx.utils.TimeUtils.millis;
  */
 
 public class Lava {
-    static float BOUNDS_TOP_OFFSET = 1;
+    static float BOUNDS_TOP_OFFSET = 2;
     Texture lavaTexture;
     Vector2 posLava;
     float damage;
@@ -36,7 +36,7 @@ public class Lava {
         lavaBurnSound = GameAssetLoader.lavaBurn;
         lava = atlas.findRegion("lava");
         posLava = new Vector2(x, 0);
-        damage = 10;
+        damage = 6;
         touched = false;
         bounds = new Rectangle(0, 0, lava.getRegionWidth(), lava.getRegionHeight() + BOUNDS_TOP_OFFSET);
         prefs = Gdx.app.getPreferences("TapRunner");
@@ -64,13 +64,13 @@ public class Lava {
 
     public void checkLavaCollision(Runner runner){
         if(getBounds().overlaps(runner.getBounds())){
-            if(runner.health > 0 && !touched && !runner.isDead && runner.isOnGround){
+            if(runner.health > 0 && !runner.lavaInvulnerable && !runner.isDead && runner.isOnGround){
                 if(prefs.getBoolean("SoundOn")) {
                     lavaBurnSound.play();
                 }
                 runner.health -= getDamage();
                 touched = true;
-                runner.invulnerable = true;
+                runner.lavaInvulnerable = true;
                 runner.setLavaDamageTimeStart(millis());
 //                runner.lavaBounce();
             } else if (runner.health <= 0) {

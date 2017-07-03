@@ -396,8 +396,8 @@ public class Hud extends Table{
                     if(prefs.getBoolean("SoundOn")) {
                         newGameblipSound.play();
                     }
-                    showInterstitialAd();
-                    loadInterstitialAd();
+//                    showInterstitialAd();
+//                    loadInterstitialAd();
                     game.setScreen(new GameScreen(game));
                     return true;
                 }
