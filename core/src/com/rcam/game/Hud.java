@@ -1,6 +1,7 @@
 package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -40,7 +41,8 @@ public class Hud extends Table{
     GameScreen gameScreen;
     TextureAtlas.AtlasRegion blockYellow;
     NinePatchDrawable patchDrawable;
-    Sound blipSelectSound, jumpSound, speedAdjustSound;
+    Sound blipSelectSound, newGameblipSound, jumpSound, speedAdjustSound;
+    Preferences prefs;
 
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
@@ -53,6 +55,7 @@ public class Hud extends Table{
         blipSelectSound = GameAssetLoader.blipSelect;
         jumpSound = GameAssetLoader.jump;
         speedAdjustSound = GameAssetLoader.speedAdjust;
+        newGameblipSound = GameAssetLoader.newGameblip;
         rootTable = new Table();
         indicatorstable = new Table();
         distancetable = new Table();
@@ -68,6 +71,7 @@ public class Hud extends Table{
         jumpButton = new JumpButton(runner);
         healthLabel = new Label("ENERGY", cleanCrispySkin);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
+        prefs = Gdx.app.getPreferences("TapRunner");
 
 
 //        stage.setDebugAll(true);
@@ -193,7 +197,9 @@ public class Hud extends Table{
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if(!gameScreen.isPause) {
-                    speedAdjustSound.play();
+                    if(prefs.getBoolean("SoundOn")) {
+                        speedAdjustSound.play();
+                    }
                     runner.slowDown();
                 }
                 return true;
@@ -231,7 +237,9 @@ public class Hud extends Table{
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if(!gameScreen.isPause) {
-                    speedAdjustSound.play();
+                    if(prefs.getBoolean("SoundOn")) {
+                        speedAdjustSound.play();
+                    }
                     runner.run();
                 }
                 return true;
@@ -280,12 +288,16 @@ public class Hud extends Table{
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                     if(!gameScreen.isPause) {
-                        blipSelectSound.play(1.0f);
+                        if(prefs.getBoolean("SoundOn")) {
+                            blipSelectSound.play(1.0f);
+                        }
                         pauseButton.setStyle(unpauseStyle);
                         gameScreen.isPause = true;
                         pauseGame();
                     }else{
-                        blipSelectSound.play(1.0f);
+                        if(prefs.getBoolean("SoundOn")) {
+                            blipSelectSound.play(1.0f);
+                        }
                         pauseButton.setStyle(buttonStyle);
                         gameScreen.isPause = false;
                         rtable.remove();
@@ -362,7 +374,9 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    blipSelectSound.play();
+                    if(prefs.getBoolean("SoundOn")) {
+                        blipSelectSound.play();
+                    }
                     pauseButton.setStyle(buttonStyle);
                     gameScreen.isPause = false;
                     rtable.remove();
@@ -379,7 +393,9 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    blipSelectSound.play();
+                    if(prefs.getBoolean("SoundOn")) {
+                        newGameblipSound.play();
+                    }
                     showInterstitialAd();
                     loadInterstitialAd();
                     game.setScreen(new GameScreen(game));
@@ -410,7 +426,9 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    blipSelectSound.play();
+                    if(prefs.getBoolean("SoundOn")) {
+                        blipSelectSound.play();
+                    }
                     showInterstitialAd();
                     loadInterstitialAd();
                     game.setScreen(new MainMenuScreen(game));
@@ -442,7 +460,9 @@ public class Hud extends Table{
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                     if(!gameScreen.isPause) {
                         if (runner.isOnGround) {
-                            jumpSound.play();
+                            if(prefs.getBoolean("SoundOn")) {
+                                jumpSound.play();
+                            }
                             runner.jump();
                         }
                     }
@@ -476,10 +496,8 @@ public class Hud extends Table{
     }
 
     public void dispose(){
-        cleanCrispySkin.dispose();
-        arcadeSkin.dispose();
         stage.dispose();
-        GameAssetLoader.atlas.dispose();
+        GameAssetLoader.dispose();
     }
 
 }

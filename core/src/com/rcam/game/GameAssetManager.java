@@ -17,6 +17,7 @@ public class GameAssetManager {
     public final String arcadeSkin = "skin/arcade-ui/arcade-ui.json";
 
     public final String blipSelect = "sounds/EC_Collect.wav";
+    public final String newGameblip = "sounds/Randomize54.wav";
     public final String jump = "sounds/jump_07.wav";
     public final String hurt = "sounds/SFX_Powerup_21.wav";
     public final String powerUp = "sounds/Score.wav";
@@ -37,6 +38,7 @@ public class GameAssetManager {
 
     public void loadSounds(){
         manager.load(blipSelect, Sound.class);
+        manager.load(newGameblip, Sound.class);
         manager.load(jump, Sound.class);
         manager.load(hurt, Sound.class);
         manager.load(powerUp, Sound.class);

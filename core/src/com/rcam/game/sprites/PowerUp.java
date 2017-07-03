@@ -1,5 +1,7 @@
 package com.rcam.game.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,7 +18,6 @@ import java.util.Random;
 public class PowerUp implements Pool.Poolable{
     protected Rectangle bounds;
     public Vector2 position;
-//    private Texture texture;
     private float heal;
     public final float SPAWN_OFFSET_X = 300;
     private final int RANDOM_POWER_UP = 6;
@@ -26,6 +27,7 @@ public class PowerUp implements Pool.Poolable{
     private Random rand;
     private TextureAtlas.AtlasRegion[] powerUpAtlasRegions;
     Sound powerUpSound;
+    Preferences prefs;
 
     public PowerUp(){
         powerUpSound = GameAssetLoader.powerUp;
@@ -49,6 +51,8 @@ public class PowerUp implements Pool.Poolable{
         this.touched = false;
         this.isSpawned = true;
         this.bounds = new Rectangle();
+
+        prefs = Gdx.app.getPreferences("TapRunner");
     }
 
     public void init(float x, float y){
@@ -96,7 +100,9 @@ public class PowerUp implements Pool.Poolable{
 
     public void checkPowerUpCollision(Runner runner){
         if(getBounds().overlaps(runner.getBounds()) ){
-            powerUpSound.play();
+            if(prefs.getBoolean("SoundOn")) {
+                powerUpSound.play();
+            }
             if(!(runner.health >= runner.STARTING_HEALTH) && !touched && !runner.isDead){
                 runner.health += getHeal();
                 touched = true;
@@ -119,7 +125,7 @@ public class PowerUp implements Pool.Poolable{
     }
 
     public void dispose(){
-        GameAssetLoader.atlas.dispose();
+        GameAssetLoader.dispose();
     }
 
     @Override

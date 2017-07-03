@@ -30,7 +30,8 @@ public class MainMenuScreen implements Screen {
     Stage stage;
     static Preferences prefs;
     TextureAtlas.AtlasRegion ground, bg, blockYellow;
-    Sound blipSelectSound;
+    Sound blipSelectSound, newGameblipSound;
+    Boolean soundOn;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
@@ -41,6 +42,7 @@ public class MainMenuScreen implements Screen {
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
         blipSelectSound = GameAssetLoader.blipSelect;
+        newGameblipSound = GameAssetLoader.newGameblip;
 
         stage = new Stage(new FitViewport(480, 800));
         Gdx.input.setInputProcessor(stage);
@@ -89,14 +91,21 @@ public class MainMenuScreen implements Screen {
             prefs.putString("GameMode", "Normal");
             prefs.flush();
         }
+        if (!prefs.contains("SoundOn")) {
+            prefs.putBoolean("SoundOn", true);
+            prefs.flush();
+        }
 
+        soundOn = prefs.getBoolean("SoundOn");
     }
 
     public void newGameButtonListener(TextButton button){
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(soundOn) {
+                    newGameblipSound.play();
+                }
                 game.setScreen(new GameScreen(game));
                 return true;
             }
@@ -107,7 +116,9 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(soundOn) {
+                    blipSelectSound.play();
+                }
                 game.setScreen(new SettingsScreen(game));
                 return true;
             }
@@ -118,7 +129,9 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(soundOn) {
+                    blipSelectSound.play();
+                }
                 game.setScreen(new RecordsScreen(game));
                 return true;
             }
@@ -129,7 +142,9 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(soundOn) {
+                    blipSelectSound.play();
+                }
                 game.setScreen(new CreditsScreen(game));
                 return true;
             }
@@ -140,8 +155,8 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
                 dispose();
+                Gdx.app.exit();
                 return true;
             }
         });
@@ -193,8 +208,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        cleanCrispySkin.dispose();
         stage.dispose();
-        GameAssetLoader.atlas.dispose();
+        GameAssetLoader.dispose();
     }
 }

@@ -46,6 +46,6 @@ public class Ground {
     }
 
     public void dispose(){
-        GameAssetLoader.atlas.dispose();
+        GameAssetLoader.dispose();
     }
 }

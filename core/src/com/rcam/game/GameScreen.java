@@ -500,16 +500,8 @@ public class GameScreen implements Screen{
 
     @Override
     public void dispose() {
+        GameAssetLoader.dispose();
         runner.dispose();
-        for(Ground ground : grounds)
-            ground.dispose();
         hud.dispose();
-        for(Enemy activeGroundEnemy : activeGroundEnemies)
-            activeGroundEnemy.dispose();
-        for(Enemy activeFlyingEnemy : activeFlyingEnemies)
-            activeFlyingEnemy.dispose();
-        for(PowerUp pUp : powerUps){
-            pUp.dispose();
-        }
     }
 }

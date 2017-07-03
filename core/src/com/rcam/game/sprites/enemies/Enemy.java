@@ -135,7 +135,9 @@ public class Enemy {
                 runner.isFalling = false;
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0 && !runner.invulnerable) {
-                        hurtSound.play();
+                        if(prefs.getBoolean("SoundOn")) {
+                            hurtSound.play();
+                        }
                         runner.health -= getDamage();
                         touched = true;
                         if(enemyTouchSlows) {
@@ -152,6 +154,6 @@ public class Enemy {
     }
 
     public void dispose(){
-        GameAssetLoader.atlas.dispose();
+        GameAssetLoader.dispose();
     }
 }

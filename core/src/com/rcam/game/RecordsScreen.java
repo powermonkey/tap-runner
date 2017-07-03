@@ -108,7 +108,9 @@ public class RecordsScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(prefs.getBoolean("SoundOn")) {
+                    blipSelectSound.play();
+                }
                 game.setScreen(new MainMenuScreen(game));
                 return true;
             }
@@ -157,9 +159,7 @@ public class RecordsScreen implements Screen{
 
     @Override
     public void dispose() {
-        cleanCrispySkin.dispose();
-        arcadeSkin.dispose();
         stage.dispose();
-        GameAssetLoader.atlas.dispose();
+        GameAssetLoader.dispose();
     }
 }

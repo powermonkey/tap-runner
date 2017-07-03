@@ -38,7 +38,7 @@ public class GameOverScreen implements Screen{
     static Preferences prefs;
     String gameMode;
     TextureAtlas.AtlasRegion bg, blockYellow;
-    Sound blipSelectSound;
+    Sound blipSelectSound, newGameblipSound;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -54,6 +54,7 @@ public class GameOverScreen implements Screen{
         bg = GameAssetLoader.atlas.findRegion("background");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
         blipSelectSound = GameAssetLoader.blipSelect;
+        newGameblipSound = GameAssetLoader.newGameblip;
 
         prefs = Gdx.app.getPreferences("TapRunner");
         gameMode = prefs.getString("GameMode");
@@ -113,7 +114,9 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(prefs.getBoolean("SoundOn")) {
+                    blipSelectSound.play();
+                }
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new MainMenuScreen(game));
@@ -126,7 +129,9 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(prefs.getBoolean("SoundOn")) {
+                    newGameblipSound.play();
+                }
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new GameScreen(game));
@@ -139,7 +144,9 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(prefs.getBoolean("SoundOn")) {
+                    blipSelectSound.play();
+                }
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new SettingsScreen(game));
@@ -152,8 +159,8 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
                 dispose();
+                Gdx.app.exit();
                 return true;
             }
         });
@@ -223,10 +230,7 @@ public class GameOverScreen implements Screen{
 
     @Override
     public void dispose() {
-        cleanCrispySkin.dispose();
-        arcadeSkin.dispose();
         stage.dispose();
-        GameAssetLoader.atlas.dispose();
-        ground.dispose();
+        GameAssetLoader.dispose();
     }
 }

@@ -41,7 +41,7 @@ public class FlyingEnemy extends Enemy implements Pool.Poolable{
     }
 
     public void dispose(){
-        GameAssetLoader.atlas.dispose();
+        GameAssetLoader.dispose();
     }
 
     @Override

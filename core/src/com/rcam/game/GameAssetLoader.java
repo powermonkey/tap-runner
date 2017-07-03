@@ -11,10 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class GameAssetLoader {
     public static TextureAtlas atlas;
     public static Skin cleanCrispySkin, arcadeSkin;
-    public static Sound blipSelect, jump, hurt, powerUp, speedAdjust, lavaBurn;
+    public static Sound blipSelect, newGameblip, jump, hurt, powerUp, speedAdjust, lavaBurn;
+    static GameAssetManager manager;
 
     public static void load() {
-        GameAssetManager manager = new GameAssetManager();
+        manager = new GameAssetManager();
         manager.loadImages();
         manager.loadSkin();
         manager.loadSounds();
@@ -25,6 +26,7 @@ public class GameAssetLoader {
         arcadeSkin = manager.manager.get("skin/arcade-ui/arcade-ui.json");
 
         blipSelect = manager.manager.get("sounds/EC_Collect.wav");
+        newGameblip = manager.manager.get("sounds/Randomize54.wav");
         jump = manager.manager.get("sounds/jump_07.wav");
         hurt = manager.manager.get("sounds/SFX_Powerup_21.wav");
         powerUp = manager.manager.get("sounds/Score.wav");
@@ -33,8 +35,16 @@ public class GameAssetLoader {
     }
 
     public static void dispose() {
+        manager.dispose();
         atlas.dispose();
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();
+        blipSelect.dispose();
+        newGameblip.dispose();
+        jump.dispose();
+        hurt.dispose();
+        powerUp.dispose();
+        lavaBurn.dispose();
+        speedAdjust.dispose();
     }
 }

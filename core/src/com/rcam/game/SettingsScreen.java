@@ -35,7 +35,7 @@ public class SettingsScreen implements Screen {
     Ground ground;
     Label gameModeLabel, otherOptionsLabel, settingsLabel;
     ButtonGroup gameModeGroup;
-    CheckBox normalMode, groundLavaMode, enemyTouchSlows;
+    CheckBox normalMode, groundLavaMode, enemyTouchSlows, soundOn;
     TextButton okay;
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow;
@@ -66,11 +66,15 @@ public class SettingsScreen implements Screen {
         normalMode = new CheckBox("Normal", cleanCrispySkin, "radio");
         groundLavaMode = new CheckBox("The Ground Is Lava", cleanCrispySkin, "radio");
         enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
+        soundOn = new CheckBox("Sound On", cleanCrispySkin, "default");
         okay = new TextButton("Okay", cleanCrispySkin, "default");
         okayButtonListener(okay);
 
         if (prefs.contains("EnemyTouchSlows")) {
             enemyTouchSlows.setChecked(prefs.getBoolean("EnemyTouchSlows"));
+        }
+        if (prefs.contains("EnemyTouchSlows")) {
+            soundOn.setChecked(prefs.getBoolean("SoundOn"));
         }
 
         gameModeGroup = new ButtonGroup(normalMode, groundLavaMode);
@@ -94,7 +98,6 @@ public class SettingsScreen implements Screen {
         settingsLabelTable.center().center().pad(10);
         settingsLabelTable.setBackground(new NinePatchDrawable(patch));
 
-
         gameModetable.setBackground(new NinePatchDrawable(patch));
         gameModetable.add(gameModeLabel).colspan(2).expandX().center().uniform();
         gameModetable.row();
@@ -108,6 +111,8 @@ public class SettingsScreen implements Screen {
         optionsTable.add(otherOptionsLabel).colspan(2).expandX().center().uniform();
         optionsTable.row();
         optionsTable.add(enemyTouchSlows).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
+        optionsTable.row();
+        optionsTable.add(soundOn).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
         optionsTable.row();
         optionsTable.center().center().pad(20);
         optionsTable.setBackground(new NinePatchDrawable(patch));
@@ -128,7 +133,6 @@ public class SettingsScreen implements Screen {
         rootTable.center().center();
 
         stage.addActor(rootTable);
-
     }
 
     @Override
@@ -140,10 +144,13 @@ public class SettingsScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
                 prefs.putString("GameMode", gameModeGroup.getChecked().getChildren().get(1).toString().replace("Label: ", ""));
                 prefs.putBoolean("EnemyTouchSlows", enemyTouchSlows.isChecked());
+                prefs.putBoolean("SoundOn", soundOn.isChecked());
                 prefs.flush();
+                if(prefs.getBoolean("SoundOn")) {
+                    blipSelectSound.play();
+                }
                 game.setScreen(new MainMenuScreen(game));
                 return true;
             }
@@ -188,10 +195,7 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void dispose() {
-        cleanCrispySkin.dispose();
-        arcadeSkin.dispose();
         stage.dispose();
-        GameAssetLoader.atlas.dispose();
-        ground.dispose();
+        GameAssetLoader.dispose();
     }
 }

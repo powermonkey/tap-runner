@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.rcam.game.GameAssetLoader;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
 import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
@@ -299,6 +300,6 @@ public class Runner {
     }
 
     public void dispose(){
-        atlas.dispose();
+        GameAssetLoader.dispose();
     }
 }

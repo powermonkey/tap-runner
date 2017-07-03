@@ -1,6 +1,7 @@
 package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -32,6 +33,7 @@ public class CreditsScreen implements Screen {
     TextureAtlas.AtlasRegion ground, bg, blockYellow;
     TextButton goBackButton;
     Sound blipSelectSound;
+    static Preferences prefs;
 
     public CreditsScreen(final TapRunner gam){
         game = gam;
@@ -56,6 +58,8 @@ public class CreditsScreen implements Screen {
         table6 = new Table();
         table7 = new Table();
         table8 = new Table();
+
+        prefs = Gdx.app.getPreferences("TapRunner");
 
         //runner & background texture
         Label runnerAndBgLabel = new Label("Runner & Background Texture by ", arcadeSkin, "screen");
@@ -201,7 +205,9 @@ public class CreditsScreen implements Screen {
         goBackButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                blipSelectSound.play();
+                if(prefs.getBoolean("SoundOn")) {
+                    blipSelectSound.play();
+                }
                 game.setScreen(new MainMenuScreen(game));
                 return true;
             }
@@ -343,6 +349,7 @@ public class CreditsScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        GameAssetLoader.dispose();
     }
 }
