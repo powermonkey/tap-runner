@@ -258,7 +258,7 @@ public class Runner {
     }
 
     public void jump(){
-        velocity.y = 70;
+        velocity.y = 71;
         isJumping = true;
         isOnGround = false;
         isFalling = false;
