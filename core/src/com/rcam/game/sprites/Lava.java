@@ -19,7 +19,7 @@ public class Lava {
     static float BOUNDS_TOP_OFFSET = 2;
     Texture lavaTexture;
     Vector2 posLava;
-    float damage;
+    float damage, damageIncrease;
     Rectangle bounds;
     boolean touched;
     TextureAtlas atlas;
@@ -36,7 +36,8 @@ public class Lava {
         lavaBurnSound = GameAssetLoader.lavaBurn;
         lava = atlas.findRegion("lava");
         posLava = new Vector2(x, 0);
-        damage = 6;
+        damage = 5;
+        damageIncrease = 5;
         touched = false;
         bounds = new Rectangle(0, 0, lava.getRegionWidth(), lava.getRegionHeight() + BOUNDS_TOP_OFFSET);
         prefs = Gdx.app.getPreferences("TapRunner");
@@ -60,6 +61,10 @@ public class Lava {
 
     public Rectangle getBounds(){
         return bounds;
+    }
+
+    public void increaseDamage(){
+        damage += damageIncrease;
     }
 
     public void checkLavaCollision(Runner runner){

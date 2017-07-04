@@ -234,10 +234,16 @@ public class GameScreen implements Screen{
             //set enemy position and render enemy
             if (runner.getPosition().x > spawnMarker) {
                 if(level.getLevelKey() == 1 && level.isEndOfLevel){
-                    runner.increaseSpeed();
-                    runner.increaseJump();
-                    runner.increaseGravity();
-                    runner.run();
+                    if(gameMode.equals("Normal")) {
+                        runner.increaseSpeed();
+                        runner.increaseJump();
+                        runner.increaseGravity();
+                        runner.run();
+                    }else{
+                        for (Lava lava : lavas) {
+                            lava.increaseDamage();
+                        }
+                    }
                 }
                 spawnEnemy();
             }

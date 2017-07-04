@@ -21,13 +21,13 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 public class Runner {
     static final float FRICTION = -1.5f;
     static float gravity;
-    static float gravityIncrease = -1;
+    static float gravityIncrease = -4;
     public float maxSpeed = 150;
     static float runSpeed = 50;
     static float speedIncrease = 50;
-    static float jumpValue = 71;
+    static float jumpValue = 70;
     static float jumpIncrease = 10;
-    static float jumpHeightIncrease = 20;
+    static float jumpHeightIncrease = 40;
     public final static float STARTING_X = 30;
     public final static float STARTING_Y = 112;
     static float jumpHeight = 525;
