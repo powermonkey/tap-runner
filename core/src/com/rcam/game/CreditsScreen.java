@@ -62,7 +62,7 @@ public class CreditsScreen implements Screen {
         prefs = Gdx.app.getPreferences("TapRunner");
 
         //runner & background texture
-        Label runnerAndBgLabel = new Label("Runner & Background Texture by ", arcadeSkin, "screen");
+        Label runnerAndBgLabel = new Label("Runner & Background Textures by ", arcadeSkin, "screen");
         Label runnerAndBgCredit = new Label("GrafxKid", arcadeSkin, "screen");
         Label runnerAndBgLicense = new Label("CC-BY 3.0", arcadeSkin, "screen");
         runnerAndBgCredit.setColor(Color.BLUE);
@@ -82,13 +82,15 @@ public class CreditsScreen implements Screen {
         });
 
         //enemy texture
-        Label enemyLabel = new Label("Enemy Texture by ", arcadeSkin, "screen");
+        Label enemyLabel = new Label("Enemy & Fruits Textures by ", arcadeSkin, "screen");
         Label enemyCredit = new Label("Master484", arcadeSkin, "screen");
         Label enemyLicense1 = new Label("CC-BY 3.0", arcadeSkin, "screen");
         Label enemyLicense2 = new Label("OGA-BY 3.0", arcadeSkin, "screen");
+        Label enemyLicense3 = new Label("CC0", arcadeSkin, "screen");
         enemyCredit.setColor(Color.BLUE);
         enemyLicense1.setColor(Color.BLUE);
         enemyLicense2.setColor(Color.BLUE);
+        enemyLicense3.setColor(Color.BLUE);
 
         enemyCredit.addListener(new ClickListener(){
             @Override
@@ -108,21 +110,7 @@ public class CreditsScreen implements Screen {
                 Gdx.net.openURI("http://static.opengameart.org/OGA-BY-3.0.txt");
             }
         });
-
-        //fruit power up texture
-        Label powerUpLabel = new Label("Fruits Texture by ", arcadeSkin, "screen");
-        Label powerUpCredit = new Label("Master484", arcadeSkin, "screen");
-        Label powerUpLicense = new Label("CC0", arcadeSkin, "screen");
-        powerUpCredit.setColor(Color.BLUE);
-        powerUpLicense.setColor(Color.BLUE);
-
-        powerUpCredit.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.net.openURI("http://m484games.ucoz.com/");
-            }
-        });
-        powerUpLicense.addListener(new ClickListener(){
+        enemyLicense3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.net.openURI("https://creativecommons.org/publicdomain/zero/1.0/");
@@ -150,49 +138,75 @@ public class CreditsScreen implements Screen {
         });
 
         //skins
-        Label skinLabel1 = new Label("Clean Crispy Skin by ", arcadeSkin, "screen");
-        Label skinCredit1 = new Label("Raymond Raeleus Buckley", arcadeSkin, "screen");
-        Label skinLicense1 = new Label("CC-BY 4.0", arcadeSkin, "screen");
-        skinCredit1.setColor(Color.BLUE);
-        skinLicense1.setColor(Color.BLUE);
-
-        skinCredit1.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.net.openURI("https://ray3k.wordpress.com/software/skin-composer-for-libgdx/");
-            }
-        });
-        skinLicense1.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.net.openURI("https://creativecommons.org/licenses/by/4.0/");
-            }
-        });
-
+        Label skinLabel = new Label("Clean Crispy Skin and ", arcadeSkin, "screen");
         Label skinLabel2 = new Label("Arcade Skin by ", arcadeSkin, "screen");
-        Label skinCredit2 = new Label("Raymond Raeleus Buckley", arcadeSkin, "screen");
-        Label skinLicense2 = new Label("CC-BY 4.0", arcadeSkin, "screen");
-        Label skinFontLicense2 = new Label("See font license", arcadeSkin, "screen");
-        skinCredit2.setColor(Color.BLUE);
-        skinLicense2.setColor(Color.BLUE);
-        skinFontLicense2.setColor(Color.BLUE);
+        Label skinCredit = new Label("Raymond Raeleus Buckley", arcadeSkin, "screen");
+        Label skinLicense = new Label("CC-BY 4.0", arcadeSkin, "screen");
+        Label skinFontLicense = new Label("Font license for Arcade Skin", arcadeSkin, "screen");
+        skinCredit.setColor(Color.BLUE);
+        skinLicense.setColor(Color.BLUE);
+        skinFontLicense.setColor(Color.BLUE);
 
-        skinCredit2.addListener(new ClickListener(){
+        skinCredit.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.net.openURI("https://ray3k.wordpress.com/software/skin-composer-for-libgdx/");
             }
         });
-        skinLicense2.addListener(new ClickListener(){
+        skinLicense.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.net.openURI("https://creativecommons.org/licenses/by/4.0/");
             }
         });
-        skinFontLicense2.addListener(new ClickListener(){
+        skinFontLicense.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.net.openURI("https://github.com/czyzby/gdx-skins/blob/master/arcade/RussoOne.txt");
+            }
+        });
+
+        //sound effects
+        Label soundLabel = new Label("Sound Effects by ", arcadeSkin, "screen");
+        Label soundCredit1 = new Label("KIIRA", arcadeSkin, "screen");
+        Label soundCredit2 = new Label("Jesús Lastra", arcadeSkin, "screen");
+        Label soundCredit3 = new Label("dklon", arcadeSkin, "screen");
+        Label soundCredit4 = new Label("8-bit Platformer SFX commissioned by Mark McCorkle", arcadeSkin, "screen");
+        Label soundLicense = new Label("CC-BY 3.0", arcadeSkin, "screen");
+        soundCredit1.setColor(Color.BLUE);
+        soundCredit2.setColor(Color.BLUE);
+        soundCredit3.setColor(Color.BLUE);
+        soundCredit4.setColor(Color.BLUE);
+        soundLicense.setColor(Color.BLUE);
+
+        soundCredit1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.net.openURI("https://opengameart.org/content/byte-man-sfx-1");
+            }
+        });
+        soundCredit2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.net.openURI("https://opengameart.org/content/8-bit-powerup-1");
+            }
+        });
+        soundCredit3.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.net.openURI("https://opengameart.org/content/platformer-jumping-sounds");
+            }
+        });
+        soundCredit4.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.net.openURI("https://opengameart.org/content/8-bit-platformer-sfx");
+            }
+        });
+        soundLicense.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.net.openURI("https://creativecommons.org/licenses/by/3.0/");
             }
         });
 
@@ -217,69 +231,70 @@ public class CreditsScreen implements Screen {
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
 
-        table.add(runnerAndBgLabel).pad(5);
+        table.add(runnerAndBgLabel);
         table.row();
-        table.add(runnerAndBgCredit).pad(5);
+        table.add(runnerAndBgCredit);
         table.row();
-        table.add(runnerAndBgLicense).pad(5);
+        table.add(runnerAndBgLicense);
         table.row();
-        table.center().center().pad(5);
+        table.center().center().pad(10);
         table.setBackground(new NinePatchDrawable(patch));
 
-        table2.add(enemyLabel).pad(5);
+        table2.add(enemyLabel);
         table2.row();
-        table2.add(enemyCredit).pad(5);
+        table2.add(enemyCredit);
         table2.row();
-        table2.add(enemyLicense1).pad(5);
+        table2.add(enemyLicense1);
         table2.row();
-        table2.add(enemyLicense2).pad(5);
+        table2.add(enemyLicense2);
         table2.row();
-        table2.center().center().pad(5);
+        table2.add(enemyLicense3);
+        table2.row();
+        table2.center().center().pad(10);
         table2.setBackground(new NinePatchDrawable(patch));
 
-        table3.add(iconsLabel).pad(5);
+        table3.add(iconsLabel);
         table3.row();
-        table3.add(iconsCredit).pad(5);
+        table3.add(iconsCredit);
         table3.row();
-        table3.add(iconsLicense).pad(5);
+        table3.add(iconsLicense);
         table3.row();
-        table3.center().center().pad(5);
+        table3.center().center().pad(10);
         table3.setBackground(new NinePatchDrawable(patch));
 
-        table4.add(powerUpLabel).pad(5);
-        table4.row();
-        table4.add(powerUpCredit).pad(5);
-        table4.row();
-        table4.add(powerUpLicense).pad(5);
-        table4.row();
-        table4.center().center().pad(5);
-        table4.setBackground(new NinePatchDrawable(patch));
-
-        table5.add(skinLabel1).pad(5);
+        table5.add(skinLabel);
         table5.row();
-        table5.add(skinCredit1).pad(5);
+        table5.add(skinLabel2);
         table5.row();
-        table5.add(skinLicense1).pad(5);
+        table5.add(skinCredit);
         table5.row();
-        table5.center().center().pad(5);
+        table5.add(skinLicense);
+        table5.row();
+        table5.add(skinFontLicense);
+        table5.row();
+        table5.center().center().pad(10);
         table5.setBackground(new NinePatchDrawable(patch));
 
-        table6.add(skinLabel2).pad(5);
+        table6.add(soundLabel);
         table6.row();
-        table6.add(skinCredit2).pad(5);
+        table6.add(soundCredit1);
         table6.row();
-        table6.add(skinLicense2).pad(5);
+        table6.add(soundCredit2);
         table6.row();
-        table6.add(skinFontLicense2).pad(5);
+        table6.add(soundCredit3);
         table6.row();
-        table6.center().center().pad(5);
+        table6.add(soundCredit4);
+        table6.row();
+        table6.add(soundLicense);
+        table6.row();
+        table6.center().center().pad(10);
         table6.setBackground(new NinePatchDrawable(patch));
 
-        table7.add(testerLabel).pad(5);
+        table7.add(testerLabel);
         table7.row();
-        table7.add(testerCredit).pad(5);
+        table7.add(testerCredit);
         table7.row();
-        table7.center().center().pad(5);
+        table7.center().center().pad(10);
         table7.setBackground(new NinePatchDrawable(patch));
 
         table8.add(goBackButton).pad(5).width(150).height(50).expandX().pad(15);
