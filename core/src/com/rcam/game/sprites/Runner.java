@@ -25,7 +25,7 @@ public class Runner {
     public float maxSpeed = 150;
     static float runSpeed = 50;
     static float speedIncrease = 50;
-    static float jumpValue = 70;
+    static float jumpValue = 65;
     static float jumpIncrease = 10;
     static float jumpHeightIncrease = 40;
     public final static float STARTING_X = 30;
