@@ -95,6 +95,7 @@ public class Hud extends Table{
         rootTable.row();
         rootTable.add(controlsTable).width(TapRunner.WIDTH).padBottom(20).height(120).expandX();
         rootTable.row();
+        rootTable.center().bottom();
         stage.addActor(rootTable);
     }
 
