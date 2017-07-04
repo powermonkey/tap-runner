@@ -234,7 +234,9 @@ public class GameScreen implements Screen{
             //set enemy position and render enemy
             if (runner.getPosition().x > spawnMarker) {
                 if(level.getLevelKey() == 1 && level.isEndOfLevel){
-                    runner.increaseSpeed(50);
+                    runner.increaseSpeed();
+                    runner.increaseJump();
+                    runner.increaseGravity();
                     runner.run();
                 }
                 spawnEnemy();
@@ -267,7 +269,7 @@ public class GameScreen implements Screen{
                     }
                 }
             }
-            hud.meter.update(runner.getSpeed().x);
+//            hud.meter.update(runner.getSpeed().x);
             hud.health.update();
             hud.distance.update();
 

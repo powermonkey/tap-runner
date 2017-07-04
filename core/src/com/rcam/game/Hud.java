@@ -30,9 +30,9 @@ public class Hud extends Table{
     Stage stage;
     Table rootTable, indicatorstable, distancetable, controlsTable;
     Skin cleanCrispySkin, arcadeSkin;
-    Meter meter;
-    RunButton runButton;
-    SlowDownButton slowDownButton;
+//    Meter meter;
+//    RunButton runButton;
+//    SlowDownButton slowDownButton;
     PauseButton pauseButton;
     JumpButton jumpButton;
     Distance distance;
@@ -62,11 +62,8 @@ public class Hud extends Table{
         controlsTable = new Table();
         rootTable.setFillParent(true);
         stage = new Stage(new FitViewport(480, 800));
-        meter = new Meter(runner);
         distance = new Distance(runner);
         health = new Health(runner);
-        runButton = new RunButton(runner);
-        slowDownButton = new SlowDownButton(runner);
         pauseButton = new PauseButton(tapRunner, gameScreen);
         jumpButton = new JumpButton(runner);
         healthLabel = new Label("ENERGY", cleanCrispySkin);
@@ -83,56 +80,51 @@ public class Hud extends Table{
         distancetable.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
         distancetable.row();
 
-        indicatorstable.add(healthLabel).width(80).padLeft(40);
-        indicatorstable.add(health.getHealthBar()).padRight(20);
+        indicatorstable.add(healthLabel).width(80).left();
         indicatorstable.row();
-        indicatorstable.add(speedMeterLabel).width(80).padLeft(40);
-        indicatorstable.add(meter.getSpeedMeter()).left().padLeft(2);
+        indicatorstable.add(health.getHealthBar()).padBottom(20);
         indicatorstable.row();
 
-        controlsTable.add(slowDownButton.getSlowDownButton()).padLeft(20).padRight(20).left();
-        controlsTable.add(runButton.getRunButton()).left();
-        controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).expandX().right();
+        controlsTable.add(indicatorstable).left().padLeft(20);
+        controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).expandX().padLeft(30);
         controlsTable.add(jumpButton.getJumpButton()).right().padRight(20).expandX();
         controlsTable.row();
         controlsTable.setBackground(patchDrawable);
 
         rootTable.add(distancetable).width(TapRunner.WIDTH).center().expand();
         rootTable.row();
-        rootTable.add(indicatorstable).width(TapRunner.WIDTH).bottom().expandX();
-        rootTable.row();
-        rootTable.add(controlsTable).width(TapRunner.WIDTH).bottom().height(130).expandX();
+        rootTable.add(controlsTable).width(TapRunner.WIDTH).padBottom(20).height(120).expandX();
         rootTable.row();
         stage.addActor(rootTable);
     }
 
-    public class Meter{
-        Label currentIndicator;
-        Label.LabelStyle style;
-        BitmapFont labelFont;
-        Runner runner;
-        public Meter(final Runner runner){
-            this.runner = runner;
-            labelFont = getArcadeSkin().getFont("screen");
-            labelFont.getData().markupEnabled = true;
-            style = new Label.LabelStyle(labelFont, null);
-            currentIndicator = new Label("[#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]", style);
-        }
-
-        public Label getSpeedMeter() {
-            return currentIndicator;
-        }
-
-        public void update(float speed){
-            if(speed <= runner.MAX_SPEED - 100) {
-                currentIndicator.setText("[#ffffff]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]");
-            }else if(speed <= runner.MAX_SPEED - 50) {
-                currentIndicator.setText("[#2a2a2a]1[] [#ffffff]2[] [#2a2a2a]MAX![]");
-            }else if(speed == runner.MAX_SPEED) {
-                currentIndicator.setText("[#2a2a2a]1[] [#2a2a2a]2[] [#ffffff]MAX![]");
-            }
-        }
-    }
+//    public class Meter{
+//        Label currentIndicator;
+//        Label.LabelStyle style;
+//        BitmapFont labelFont;
+//        Runner runner;
+//        public Meter(final Runner runner){
+//            this.runner = runner;
+//            labelFont = getArcadeSkin().getFont("screen");
+//            labelFont.getData().markupEnabled = true;
+//            style = new Label.LabelStyle(labelFont, null);
+//            currentIndicator = new Label("[#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]", style);
+//        }
+//
+//        public Label getSpeedMeter() {
+//            return currentIndicator;
+//        }
+//
+//        public void update(float speed){
+//            if(speed <= runner.maxSpeed - 100) {
+//                currentIndicator.setText("[#ffffff]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]");
+//            }else if(speed <= runner.maxSpeed - 50) {
+//                currentIndicator.setText("[#2a2a2a]1[] [#ffffff]2[] [#2a2a2a]MAX![]");
+//            }else if(speed == runner.maxSpeed) {
+//                currentIndicator.setText("[#2a2a2a]1[] [#2a2a2a]2[] [#ffffff]MAX![]");
+//            }
+//        }
+//    }
 
     public class Health{
         ProgressBar healthBar;
@@ -175,83 +167,83 @@ public class Hud extends Table{
         }
     }
 
-    public class SlowDownButton{
-        ImageButton sbutton;
-        ImageButton.ImageButtonStyle sbuttonStyle;
-
-        public SlowDownButton(Runner runner){
-            sbutton = new ImageButton(getCleanCrispySkin(), "default");
-            sbuttonStyle = new ImageButton.ImageButtonStyle();
-            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
-            sbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
-            sbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
-            sbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-            sbuttonStyle.imageUp = buttonSkin.getDrawable("backward");;
-            sbuttonStyle.imageDown = buttonSkin.getDrawable("backward");
-            sbutton.setStyle(sbuttonStyle);
-            button1Listener(sbutton, runner);
-        }
-
-        public void button1Listener(final ImageButton button, final Runner runner){
-            button.addListener(new InputListener(){
-                @Override
-                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(!gameScreen.isPause) {
-                    if(prefs.getBoolean("SoundOn")) {
-                        speedAdjustSound.play();
-                    }
-                    runner.slowDown();
-                }
-                return true;
-                }
-            });
-        }
-
-        public ImageButton getSlowDownButton(){
-            return sbutton;
-        }
-
-    }
-
-    public class RunButton{
-        ImageButton rbutton;
-        ImageButton.ImageButtonStyle rbuttonStyle;
-
-        public RunButton(Runner runner){
-            rbutton = new ImageButton(getCleanCrispySkin(), "default");
-            rbuttonStyle = new ImageButton.ImageButtonStyle();
-            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
-            rbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
-            rbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
-            rbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-            rbuttonStyle.imageUp = buttonSkin.getDrawable("forward");
-            rbuttonStyle.imageDown = buttonSkin.getDrawable("forward");
-
-            rbutton.setStyle(rbuttonStyle);
-
-            button1Listener(rbutton, runner);
-        }
-
-        public void button1Listener(final ImageButton button, final Runner runner){
-            button.addListener(new InputListener(){
-                @Override
-                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(!gameScreen.isPause) {
-                    if(prefs.getBoolean("SoundOn")) {
-                        speedAdjustSound.play();
-                    }
-                    runner.run();
-                }
-                return true;
-                }
-            });
-        }
-
-        public ImageButton getRunButton(){
-            return rbutton;
-        }
-
-    }
+//    public class SlowDownButton{
+//        ImageButton sbutton;
+//        ImageButton.ImageButtonStyle sbuttonStyle;
+//
+//        public SlowDownButton(Runner runner){
+//            sbutton = new ImageButton(getCleanCrispySkin(), "default");
+//            sbuttonStyle = new ImageButton.ImageButtonStyle();
+//            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
+//            sbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
+//            sbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
+//            sbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
+//            sbuttonStyle.imageUp = buttonSkin.getDrawable("backward");;
+//            sbuttonStyle.imageDown = buttonSkin.getDrawable("backward");
+//            sbutton.setStyle(sbuttonStyle);
+//            button1Listener(sbutton, runner);
+//        }
+//
+//        public void button1Listener(final ImageButton button, final Runner runner){
+//            button.addListener(new InputListener(){
+//                @Override
+//                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+//                if(!gameScreen.isPause) {
+//                    if(prefs.getBoolean("SoundOn")) {
+//                        speedAdjustSound.play();
+//                    }
+//                    runner.slowDown();
+//                }
+//                return true;
+//                }
+//            });
+//        }
+//
+//        public ImageButton getSlowDownButton(){
+//            return sbutton;
+//        }
+//
+//    }
+//
+//    public class RunButton{
+//        ImageButton rbutton;
+//        ImageButton.ImageButtonStyle rbuttonStyle;
+//
+//        public RunButton(Runner runner){
+//            rbutton = new ImageButton(getCleanCrispySkin(), "default");
+//            rbuttonStyle = new ImageButton.ImageButtonStyle();
+//            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
+//            rbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
+//            rbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
+//            rbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
+//            rbuttonStyle.imageUp = buttonSkin.getDrawable("forward");
+//            rbuttonStyle.imageDown = buttonSkin.getDrawable("forward");
+//
+//            rbutton.setStyle(rbuttonStyle);
+//
+//            button1Listener(rbutton, runner);
+//        }
+//
+//        public void button1Listener(final ImageButton button, final Runner runner){
+//            button.addListener(new InputListener(){
+//                @Override
+//                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+//                if(!gameScreen.isPause) {
+//                    if(prefs.getBoolean("SoundOn")) {
+//                        speedAdjustSound.play();
+//                    }
+//                    runner.run();
+//                }
+//                return true;
+//                }
+//            });
+//        }
+//
+//        public ImageButton getRunButton(){
+//            return rbutton;
+//        }
+//
+//    }
 
     public class PauseButton{
         ImageButton pauseButton;

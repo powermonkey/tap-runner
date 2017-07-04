@@ -20,13 +20,17 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 
 public class Runner {
     static final float FRICTION = -1.5f;
-    static final float GRAVITY = -23;
-    public float MAX_SPEED = 150;
-    public float MIN_SPEED = 50;
-    static float RUN_SPEED = 50;
+    static float gravity;
+    static float gravityIncrease = -1;
+    public float maxSpeed = 150;
+    static float runSpeed = 50;
+    static float speedIncrease = 50;
+    static float jumpValue = 71;
+    static float jumpIncrease = 10;
+    static float jumpHeightIncrease = 20;
     public final static float STARTING_X = 30;
     public final static float STARTING_Y = 112;
-    static final float JUMP_HEIGHT = 525;
+    static float jumpHeight = 525;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
@@ -57,7 +61,9 @@ public class Runner {
         lavaInvulnerable = false;
         isOnTopEnemy = false;
         isIdle = false;
-
+        gravity = -23; //reset gravity
+        jumpHeight = 525; //reset jump height
+        jumpValue = 71; //reset jump
         atlas = new TextureAtlas("packedimages/runner.atlas");
         regionStand = atlas.findRegion("stand");
         regionRun = atlas.findRegions("run");
@@ -104,9 +110,17 @@ public class Runner {
         return prefs.getInteger("BestDistanceLavaMode");
     }
 
-    public void increaseSpeed(int speed){
-        MAX_SPEED += speed;
-        MIN_SPEED += speed;
+    public void increaseSpeed(){
+        maxSpeed += speedIncrease;
+    }
+
+    public void increaseJump(){
+        jumpValue += jumpIncrease;
+        jumpHeight += jumpHeightIncrease;
+    }
+
+    public void increaseGravity(){
+        gravity = gravity + gravityIncrease;
     }
 
     public void update(float dt){
@@ -116,7 +130,7 @@ public class Runner {
 //        speed.add(FRICTION, 0);
 
        //make runner come back to the ground
-        speed.add(0, GRAVITY);
+        speed.add(0, gravity);
 
         //remove invulnerability
         if(lavaInvulnerable){
@@ -138,8 +152,8 @@ public class Runner {
         }
 
         // runner cannot stop; min speed
-        if(speed.x <= MIN_SPEED ){
-            speed.x = MIN_SPEED;
+        if(speed.x <= maxSpeed ){
+            speed.x = maxSpeed;
         }
 
         //if dead set velocity to immediate stop
@@ -154,25 +168,24 @@ public class Runner {
         if(!isJumping) {
             velocity.y = 0;
         }
-        if (speed.y < -46) {
+        if (speed.y < (gravity * 2)) {
             isJumping = false;
             isFalling = true;
         }
         //minimum fall height before isOnGround is set; allows jumping when on top enemy bridge
-        if (speed.y <= -46) {
+        if (speed.y <= (gravity * 2)) {
             isJumping = false;
             isOnGround = false;
         }
         //limit jump height
-        if(speed.y > JUMP_HEIGHT){
-            speed.y = JUMP_HEIGHT;
+        if(speed.y > jumpHeight){
+            speed.y = jumpHeight;
             isJumping = false;
         }
 
-//        if(!isMaintainHighSpeed) {
         //limit speed to max speed
-        if(speed.x >= MAX_SPEED){
-            speed.x = MAX_SPEED;
+        if(speed.x >= maxSpeed){
+            speed.x = maxSpeed;
         }
 
         //prevent speed.x from going negative
@@ -250,15 +263,15 @@ public class Runner {
     }
 
     public void run(){
-            velocity.x = RUN_SPEED;
+            velocity.x = runSpeed;
     }
 
     public void slowDown(){
-        velocity.x = -RUN_SPEED;
+        velocity.x = -runSpeed;
     }
 
     public void jump(){
-        velocity.y = 71;
+        velocity.y = jumpValue;
         isJumping = true;
         isOnGround = false;
         isFalling = false;
