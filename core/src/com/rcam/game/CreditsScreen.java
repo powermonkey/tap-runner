@@ -169,7 +169,7 @@ public class CreditsScreen implements Screen {
         //sound effects
         Label soundLabel = new Label("Sound Effects by ", arcadeSkin, "screen");
         Label soundCredit1 = new Label("KIIRA", arcadeSkin, "screen");
-        Label soundCredit2 = new Label("Jesús Lastra", arcadeSkin, "screen");
+        Label soundCredit2 = new Label("Jesus Lastra", arcadeSkin, "screen");
         Label soundCredit3 = new Label("dklon", arcadeSkin, "screen");
         Label soundCredit4 = new Label("8-bit Platformer SFX commissioned by Mark McCorkle", arcadeSkin, "screen");
         Label soundLicense = new Label("CC-BY 3.0", arcadeSkin, "screen");

@@ -53,11 +53,11 @@ public class Enemy {
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
-        if (!prefs.contains("EnemyTouchSlows")) {
-            prefs.putBoolean("EnemyTouchSlows", false);
-            prefs.flush();
-        }
-        enemyTouchSlows = prefs.getBoolean("EnemyTouchSlows", false);
+//        if (!prefs.contains("EnemyTouchSlows")) {
+//            prefs.putBoolean("EnemyTouchSlows", false);
+//            prefs.flush();
+//        }
+//        enemyTouchSlows = prefs.getBoolean("EnemyTouchSlows", false);
     }
 
     public void init(Vector2 pos){
@@ -140,10 +140,10 @@ public class Enemy {
                         }
                         runner.health -= getDamage();
                         touched = true;
-                        if(enemyTouchSlows) {
-                            runner.isTouched = true;
-                            runner.setVelocityX(runner.getVelocity().x - 50);
-                        }
+//                        if(enemyTouchSlows) {
+//                            runner.isTouched = true;
+//                            runner.setVelocityX(runner.getVelocity().x - 50);
+//                        }
                 } else if (runner.health <= 0) {
                     runner.isDead = true;
                 }

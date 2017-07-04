@@ -65,15 +65,15 @@ public class SettingsScreen implements Screen {
 
         normalMode = new CheckBox("Normal", cleanCrispySkin, "radio");
         groundLavaMode = new CheckBox("The Ground Is Lava", cleanCrispySkin, "radio");
-        enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
+//        enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         soundOn = new CheckBox("Sound On", cleanCrispySkin, "default");
         okay = new TextButton("Okay", cleanCrispySkin, "default");
         okayButtonListener(okay);
 
-        if (prefs.contains("EnemyTouchSlows")) {
-            enemyTouchSlows.setChecked(prefs.getBoolean("EnemyTouchSlows"));
-        }
-        if (prefs.contains("EnemyTouchSlows")) {
+//        if (prefs.contains("EnemyTouchSlows")) {
+//            enemyTouchSlows.setChecked(prefs.getBoolean("EnemyTouchSlows"));
+//        }
+        if (prefs.contains("SoundOn")) {
             soundOn.setChecked(prefs.getBoolean("SoundOn"));
         }
 
@@ -110,8 +110,8 @@ public class SettingsScreen implements Screen {
 
         optionsTable.add(otherOptionsLabel).colspan(2).expandX().center().uniform();
         optionsTable.row();
-        optionsTable.add(enemyTouchSlows).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
-        optionsTable.row();
+//        optionsTable.add(enemyTouchSlows).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
+//        optionsTable.row();
         optionsTable.add(soundOn).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
         optionsTable.row();
         optionsTable.center().center().pad(20);
@@ -145,7 +145,7 @@ public class SettingsScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 prefs.putString("GameMode", gameModeGroup.getChecked().getChildren().get(1).toString().replace("Label: ", ""));
-                prefs.putBoolean("EnemyTouchSlows", enemyTouchSlows.isChecked());
+//                prefs.putBoolean("EnemyTouchSlows", enemyTouchSlows.isChecked());
                 prefs.putBoolean("SoundOn", soundOn.isChecked());
                 prefs.flush();
                 if(prefs.getBoolean("SoundOn")) {
