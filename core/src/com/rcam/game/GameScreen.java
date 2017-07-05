@@ -165,8 +165,8 @@ public class GameScreen implements Screen{
         renderPowerUp();
 
         //render enemy
-        renderEnemy(activeGroundEnemies);
-        renderEnemy(activeFlyingEnemies);
+        renderEnemy(activeGroundEnemies, delta);
+        renderEnemy(activeFlyingEnemies, delta);
 
         if (gameMode.equals("The Ground Is Lava")) {
             //render ground
@@ -255,8 +255,6 @@ public class GameScreen implements Screen{
             }
 
             //update enemies
-            updateEnemies(activeGroundEnemies, delta);
-            updateEnemies(activeFlyingEnemies, delta);
 
             //render first then logic, fixes shaking texture ??
             runner.update(delta);
@@ -322,18 +320,7 @@ public class GameScreen implements Screen{
         spawnMarkerDistance(distance);
     }
 
-    private void updateEnemies(Array<? extends Enemy> enemies, float delta){
-        for (Enemy enemy : enemies) {
-            if (enemy.isSpawned) {
-                if (cam.position.x + cam.viewportWidth > enemy.getPosition().x + enemy.getTextureWidth()
-                        && enemy.getPosition().x + enemy.getTextureWidth() > cam.position.x - cam.viewportWidth ) {
-                    enemy.update(delta);
-                }
-            }
-        }
-    }
-
-    private void renderEnemy(Array<? extends Enemy> enemies){
+    private void renderEnemy(Array<? extends Enemy> enemies, float delta){
         for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
                 if (cam.position.x + cam.viewportWidth  > enemy.getPosition().x + enemy.getTextureWidth()
@@ -342,6 +329,9 @@ public class GameScreen implements Screen{
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, (int)enemy.getPosition().x, (int)enemy.getPosition().y);
                     enemy.checkCollision(runner);
+                    if(!isPause) {
+                        enemy.update(delta);
+                    }
                 } else if(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth()) {
                     enemy.isSpawned = false; //unspawn enemy when off camera
                 }
