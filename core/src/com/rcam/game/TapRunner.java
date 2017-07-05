@@ -25,9 +25,7 @@ public class TapRunner extends Game{
 	public void create () {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-//		GameAssetLoader.load();
 		this.setScreen(new LoadingScreen(this));
-//		this.setScreen(new MainMenuScreen(this));
 		if(adsController.isWifiConnected()) {
 			adsController.showBannerAd();
 		}

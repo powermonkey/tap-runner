@@ -93,6 +93,7 @@ public class LoadingScreen implements Screen{
 
     @Override
     public void dispose() {
-
+        manager.dispose();
+        atlas.dispose();
     }
 }
