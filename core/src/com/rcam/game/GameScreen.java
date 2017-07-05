@@ -337,15 +337,6 @@ public class GameScreen implements Screen{
                 } else if(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth()) {
                     enemy.isSpawned = false; //unspawn enemy when off camera
                 }
-//                if (cam.position.x + cam.viewportWidth - 100 > enemy.getPosition().x + enemy.getTextureWidth()
-//                    && enemy.getPosition().x + enemy.getTextureWidth() > cam.position.x - cam.viewportWidth + 100) {
-//                    enemy.stateTime += Gdx.graphics.getDeltaTime();
-//                    TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
-//                    game.batch.draw(currentFrame, (int)enemy.getPosition().x, (int)enemy.getPosition().y);
-//                    enemy.checkCollision(runner);
-//                } else if(cam.position.x - 100 > enemy.getPosition().x + enemy.getTextureWidth()){
-//                    enemy.isSpawned = false; //unspawn enemy when off camera
-//                }
             }
         }
 
