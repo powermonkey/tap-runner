@@ -3,7 +3,6 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -19,7 +18,6 @@ import com.rcam.game.sprites.enemies.Enemy;
 import com.rcam.game.sprites.enemies.FlyingEnemy;
 import com.rcam.game.sprites.enemies.GroundEnemy;
 
-import java.util.Iterator;
 import java.util.Random;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
@@ -58,7 +56,7 @@ public class GameScreen implements Screen{
     private GroundEnemy groundEnemyOject;
     private FlyingEnemy flyingEnemyOject;
     Enemy enemyObject;
-    boolean isPause;
+    boolean isPause, allLava;
     Vector2 spawnPosition;
     TextureAtlas.AtlasRegion bg;
 
@@ -125,6 +123,7 @@ public class GameScreen implements Screen{
         gameMode = prefs.getString("GameMode");
 
         if(gameMode.equals("The Ground Is Lava")){
+            allLava = false;
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 3));
         }
@@ -166,14 +165,16 @@ public class GameScreen implements Screen{
         renderPowerUp();
 
         //render enemy
-        renderEnemy(activeGroundEnemies, delta);
-        renderEnemy(activeFlyingEnemies, delta);
+        renderEnemy(activeGroundEnemies);
+        renderEnemy(activeFlyingEnemies);
 
         if (gameMode.equals("The Ground Is Lava")) {
             //render ground
-            for (Ground ground : grounds) {
-                if (cam.position.x - (cam.viewportWidth / 2) < ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
-                    game.batch.draw(ground.getTextureGround(), (int) ground.getPosGround().x, (int) ground.getPosGround().y);
+            if(!allLava) {
+                for (Ground ground : grounds) {
+                    if (cam.position.x - (cam.viewportWidth / 2) < ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
+                        game.batch.draw(ground.getTextureGround(), (int) ground.getPosGround().x, (int) ground.getPosGround().y);
+                    }
                 }
             }
 
@@ -188,6 +189,7 @@ public class GameScreen implements Screen{
 
             for (Lava lava : lavas) {
                 if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTextureLava().getRegionWidth()) {
+                    allLava = true;
                     lava.repositionLava(lastLavaPos);
                     lastLavaPos = lava.getPosLava().x + (lava.getTextureLava().getRegionWidth());
                 }
@@ -283,12 +285,10 @@ public class GameScreen implements Screen{
 
     private void spawnEnemy(){
         int[] levelDetails;
-        int type, spawnCount, pattern, monsterType, distance;
-        boolean enemyBridge = false, isVertical = false;
+        int type, spawnCount, monsterType, distance;
         levelDetails = level.getLevelPattern(level.getPattern());
         type = levelDetails[0];
         spawnCount = levelDetails[1];
-        pattern = levelDetails[2];
         monsterType = levelDetails[3];
         distance = levelDetails[5];
 
@@ -310,39 +310,42 @@ public class GameScreen implements Screen{
             spawnPosition.set(0,0);
         }
 
-        if(spawnCount > 1 && pattern == 1) {
-            enemyBridge = true;
-        }else if(spawnCount > 1 && pattern == 2){
-            isVertical = true;
-        }
-
         level.updatePattern();
-        spawnMarkerDistance(spawnCount, enemyBridge, isVertical, distance);
+        spawnMarkerDistance(distance);
     }
 
     private void updateEnemies(Array<? extends Enemy> enemies, float delta){
         for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
-                if (cam.position.x + cam.viewportWidth - 100 > enemy.getPosition().x + enemy.getTextureWidth()
-                        && enemy.getPosition().x + enemy.getTextureWidth() > cam.position.x - cam.viewportWidth + 100 ) {
+                if (cam.position.x + cam.viewportWidth > enemy.getPosition().x + enemy.getTextureWidth()
+                        && enemy.getPosition().x + enemy.getTextureWidth() > cam.position.x - cam.viewportWidth ) {
                     enemy.update(delta);
                 }
             }
         }
     }
 
-    private void renderEnemy(Array<? extends Enemy> enemies, float delta){
+    private void renderEnemy(Array<? extends Enemy> enemies){
         for (Enemy enemy : enemies) {
             if (enemy.isSpawned) {
-                if (cam.position.x + cam.viewportWidth - 100 > enemy.getPosition().x + enemy.getTextureWidth()
-                        && enemy.getPosition().x + enemy.getTextureWidth() > cam.position.x - cam.viewportWidth + 100 ) {
+                if (cam.position.x + cam.viewportWidth  > enemy.getPosition().x + enemy.getTextureWidth()
+                        && cam.position.x - (cam.viewportWidth / 2) < enemy.getPosition().x + enemy.getTextureWidth()) {
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, (int)enemy.getPosition().x, (int)enemy.getPosition().y);
                     enemy.checkCollision(runner);
-                } else if(cam.position.x - 100> enemy.getPosition().x + enemy.getTextureWidth()){
+                } else if(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth()) {
                     enemy.isSpawned = false; //unspawn enemy when off camera
                 }
+//                if (cam.position.x + cam.viewportWidth - 100 > enemy.getPosition().x + enemy.getTextureWidth()
+//                    && enemy.getPosition().x + enemy.getTextureWidth() > cam.position.x - cam.viewportWidth + 100) {
+//                    enemy.stateTime += Gdx.graphics.getDeltaTime();
+//                    TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
+//                    game.batch.draw(currentFrame, (int)enemy.getPosition().x, (int)enemy.getPosition().y);
+//                    enemy.checkCollision(runner);
+//                } else if(cam.position.x - 100 > enemy.getPosition().x + enemy.getTextureWidth()){
+//                    enemy.isSpawned = false; //unspawn enemy when off camera
+//                }
             }
         }
 
@@ -370,7 +373,7 @@ public class GameScreen implements Screen{
         }
     }
 
-    private void spawnMarkerDistance(int spawnCount, boolean enemyBridge, boolean isVertical, int enemyDistance){
+    private void spawnMarkerDistance(int enemyDistance){
         spawnMarker += ((enemyDistance - 1) * 32);
     }
 
@@ -443,11 +446,11 @@ public class GameScreen implements Screen{
 
         for(PowerUp powerUp : powerUps){
             if(powerUp.isSpawned) {
-                if (cam.position.x + cam.viewportWidth - 100 > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()
-                        && powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth() > cam.position.x - cam.viewportWidth + 100 ) {
+                if (cam.position.x + cam.viewportWidth > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()
+                    && cam.position.x - (cam.viewportWidth / 2) < powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()) {
                     powerUp.checkPowerUpCollision(runner);
                     game.batch.draw(powerUp.getAtlasRegion(), (int)powerUp.getPosition().x, (int)powerUp.getPosition().y);
-                } else if(cam.position.x - cam.viewportWidth > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()){
+                } else if(cam.position.x  - (cam.viewportWidth / 2) > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()){
                     powerUp.isSpawned = false; //unrender powerup when off camera
                 }
             }

@@ -71,7 +71,7 @@ public class Hud extends Table{
         prefs = Gdx.app.getPreferences("TapRunner");
 
 
-        stage.setDebugAll(true);
+//        stage.setDebugAll(true);
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
         patchDrawable = new NinePatchDrawable(patch);
