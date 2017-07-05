@@ -21,13 +21,13 @@ import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
 public class Runner {
     static final float FRICTION = -1.5f;
     static float gravity;
-    static float gravityIncrease = -4;
+    static float gravityIncrease = -9;
     public float maxSpeed = 150;
     static float runSpeed = 50;
     static float speedIncrease = 50;
     static float jumpValue = 65;
     static float jumpIncrease = 10;
-    static float jumpHeightIncrease = 40;
+    static float jumpHeightIncrease = 50;
     public final static float STARTING_X = 30;
     public final static float STARTING_Y = 112;
     static float jumpHeight = 525;
@@ -45,7 +45,7 @@ public class Runner {
     public float groundLevel, tempGround;
     private Rectangle bounds, intersectionBounds;
     static Preferences prefs;
-    public Animation<TextureRegion> animationSlow, animationNormal, animationFast;
+    public Animation<TextureRegion> animationFast;
     public float stateTime;
 
     public Runner(){
@@ -72,8 +72,6 @@ public class Runner {
         bounds = new Rectangle(STARTING_X - CONTACT_BOUNDS_OFFSET_X, STARTING_Y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight());
         intersectionBounds = new Rectangle(STARTING_X - CONTACT_BOUNDS_OFFSET_X, STARTING_Y - CONTACT_BOUNDS_OFFSET_Y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight() - CONTACT_BOUNDS_OFFSET_Y); //intersection bounds
 
-        animationSlow = new Animation<TextureRegion>(0.1f, regionRun);
-        animationNormal = new Animation<TextureRegion>(0.08f, regionRun);
         animationFast = new Animation<TextureRegion>(0.07f, regionRun);
 
         health = STARTING_HEALTH;

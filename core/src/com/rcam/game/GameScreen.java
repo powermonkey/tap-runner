@@ -164,15 +164,17 @@ public class GameScreen implements Screen{
 
         //spawn power up
         renderPowerUp();
-        //render enemy
 
+        //render enemy
         renderEnemy(activeGroundEnemies, delta);
         renderEnemy(activeFlyingEnemies, delta);
 
         if (gameMode.equals("The Ground Is Lava")) {
             //render ground
             for (Ground ground : grounds) {
-                game.batch.draw(ground.getTextureGround(), (int)ground.getPosGround().x, (int)ground.getPosGround().y);
+                if (cam.position.x - (cam.viewportWidth / 2) < ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
+                    game.batch.draw(ground.getTextureGround(), (int) ground.getPosGround().x, (int) ground.getPosGround().y);
+                }
             }
 
             //render lava
@@ -207,13 +209,7 @@ public class GameScreen implements Screen{
         //render runner
         runner.stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentRunnerFrame;
-        if(runner.getSpeed().x >= 150){
-            currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
-        }else if(runner.getSpeed().x < 100){
-            currentRunnerFrame = runner.animationSlow.getKeyFrame(runner.stateTime, true);
-        }else{
-            currentRunnerFrame = runner.animationNormal.getKeyFrame(runner.stateTime, true);
-        }
+        currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
 
         if(runner.isDead){
             game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
@@ -350,14 +346,6 @@ public class GameScreen implements Screen{
             }
         }
 
-        Iterator<? extends Enemy> iterEnemy = enemies.iterator();
-        while(iterEnemy.hasNext()){
-            Enemy enemy = iterEnemy.next();
-            if (!enemy.isSpawned) {
-                iterEnemy.remove();
-            }
-        }
-
         //TODO: refactor, put in a function;
         GroundEnemy groundEnemyItem;
         int groundEnemylen = activeGroundEnemies.size;
@@ -366,6 +354,7 @@ public class GameScreen implements Screen{
             if(!groundEnemyItem.isSpawned){
                 activeGroundEnemies.removeIndex(i);
                 groundEnemyPool.free(groundEnemyItem);
+                activeGroundEnemies.removeValue(groundEnemyItem, true);
             }
         }
 
@@ -376,6 +365,7 @@ public class GameScreen implements Screen{
             if(!flyingEnemyItem.isSpawned){
                 activeFlyingEnemies.removeIndex(i);
                 flyingEnemyPool.free(flyingEnemyItem);
+                activeFlyingEnemies.removeValue(flyingEnemyItem, true);
             }
         }
     }
@@ -463,20 +453,13 @@ public class GameScreen implements Screen{
             }
         }
 
-        Iterator<PowerUp> iterPowerUp = powerUps.iterator();
-        while(iterPowerUp.hasNext()){
-            PowerUp powUp = iterPowerUp.next();
-            if (!powUp.isSpawned) {
-                iterPowerUp.remove();
-            }
-        }
-
         int len = powerUps.size;
         for(int i = len; --i >= 0;){
             powerUpItem = powerUps.get(i);
             if(!powerUpItem.isSpawned){
                 powerUps.removeIndex(i);
                 powerUpPool.free(powerUpItem);
+                powerUps.removeValue(powerUpItem, true);
             }
         }
     }

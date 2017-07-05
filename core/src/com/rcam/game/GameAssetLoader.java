@@ -19,8 +19,9 @@ public class GameAssetLoader {
         manager.loadImages();
         manager.loadSkin();
         manager.loadSounds();
-        manager.manager.finishLoading();
+    }
 
+    public static void getLoadedAssets(){
         atlas = manager.manager.get("packedimages/runner.atlas");
         cleanCrispySkin = manager.manager.get("skin/clean-crispy-ui/clean-crispy-ui.json");
         arcadeSkin = manager.manager.get("skin/arcade-ui/arcade-ui.json");
@@ -32,6 +33,10 @@ public class GameAssetLoader {
         powerUp = manager.manager.get("sounds/Score.wav");
         lavaBurn = manager.manager.get("sounds/Explosion.wav");
         speedAdjust = manager.manager.get("sounds/Health_Up.wav");
+    }
+
+    public static boolean update(){
+        return manager.manager.update();
     }
 
     public static void dispose() {
