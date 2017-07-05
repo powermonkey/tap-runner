@@ -185,27 +185,35 @@ public class GameScreen implements Screen{
                 lava.update();
                 //check runner landing on lava
                 lava.checkLavaCollision(runner);
-            }
-
-            for (Lava lava : lavas) {
                 if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTextureLava().getRegionWidth()) {
                     allLava = true;
                     lava.repositionLava(lastLavaPos);
                     lastLavaPos = lava.getPosLava().x + (lava.getTextureLava().getRegionWidth());
                 }
             }
+
+//            for (Lava lava : lavas) {
+//                if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTextureLava().getRegionWidth()) {
+//                    allLava = true;
+//                    lava.repositionLava(lastLavaPos);
+//                    lastLavaPos = lava.getPosLava().x + (lava.getTextureLava().getRegionWidth());
+//                }
+//            }
         } else {
             //render ground
             for (Ground ground : grounds) {
                 game.batch.draw(ground.getTextureGround(), (int)ground.getPosGround().x, (int)ground.getPosGround().y);
-            }
-
-            //set ground position
-            for (Ground ground : grounds) {
                 if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
                     ground.repositionGround(ground.getPosGround().x + (ground.getTextureGround().getRegionWidth() * 2));
                 }
             }
+
+            //set ground position
+//            for (Ground ground : grounds) {
+//                if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
+//                    ground.repositionGround(ground.getPosGround().x + (ground.getTextureGround().getRegionWidth() * 2));
+//                }
+//            }
         }
 
         //render runner
