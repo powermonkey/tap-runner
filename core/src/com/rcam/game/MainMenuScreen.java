@@ -6,15 +6,23 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -24,14 +32,18 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class MainMenuScreen implements Screen {
     final TapRunner game;
     OrthographicCamera cam;
-    Table rootTable, table;
+    Table rootTable, table, titleTable;
     Skin cleanCrispySkin;
     TextButton exit, newGame, options, records, credits;
     Stage stage;
     static Preferences prefs;
     TextureAtlas.AtlasRegion ground, bg, blockYellow;
+    TextureRegion runnerJump;
     Sound blipSelectSound, newGameblipSound;
     Boolean soundOn;
+    Label title;
+    Image runner;
+    BitmapFont myFont;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
@@ -43,12 +55,24 @@ public class MainMenuScreen implements Screen {
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
+        runnerJump = GameAssetLoader.atlas.findRegion("jump");
+        myFont = GameAssetLoader.fonts;
 
         stage = new Stage(new FitViewport(480, 800));
         Gdx.input.setInputProcessor(stage);
         rootTable = new Table();
         rootTable.setFillParent(true);
         table = new Table();
+        titleTable = new Table();
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = myFont;
+
+        runner = new Image(runnerJump);
+
+        title = new Label("Happy Runnings", labelStyle);
+//        title.setWrap(true);
+        title.setAlignment(Align.center);
 
         newGame = new TextButton("New Game", cleanCrispySkin, "default");
         options = new TextButton("Options", cleanCrispySkin, "default");
@@ -66,6 +90,13 @@ public class MainMenuScreen implements Screen {
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
 
+        titleTable.add(runner);
+        titleTable.row();
+        titleTable.add(title).fill().center();
+        titleTable.row();
+        titleTable.setBackground(new NinePatchDrawable(patch));
+        titleTable.pad(30);
+
         table.add(newGame).center().uniform().width(150).height(50).expandX().padTop(30);
         table.row();
         table.add(options).center().uniform().width(150).height(50).expandX().padTop(30);
@@ -79,6 +110,8 @@ public class MainMenuScreen implements Screen {
         table.center().center().pad(20);
         table.setBackground(new NinePatchDrawable(patch));
 
+        rootTable.add(titleTable).pad(10);
+        rootTable.row();
         rootTable.add(table).width(TapRunner.WIDTH / 2);
         rootTable.row();
         rootTable.center().center();

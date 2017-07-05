@@ -3,6 +3,7 @@ package com.rcam.game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -15,6 +16,7 @@ public class GameAssetManager {
     public final String imagesPack = "packedimages/runner.atlas";
     public final String cleanCrispySkin = "skin/clean-crispy-ui/clean-crispy-ui.json";
     public final String arcadeSkin = "skin/arcade-ui/arcade-ui.json";
+    public final String fonts = "fonts/comfortaa.fnt";
 
     public final String blipSelect = "sounds/EC_Collect.wav";
     public final String newGameblip = "sounds/Randomize54.wav";
@@ -44,6 +46,10 @@ public class GameAssetManager {
         manager.load(powerUp, Sound.class);
         manager.load(lavaBurn, Sound.class);
         manager.load(speedAdjust, Sound.class);
+    }
+
+    public void loadFonts(){
+        manager.load(fonts, BitmapFont.class);
     }
 
     public void dispose(){
