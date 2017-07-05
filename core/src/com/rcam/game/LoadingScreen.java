@@ -33,8 +33,6 @@ public class LoadingScreen implements Screen{
         manager.manager.finishLoading();
 
         atlas = manager.manager.get("packedimages/runner.atlas");
-        bg = atlas.findRegion("background");
-        ground = atlas.findRegion("ground");
         regionRun = atlas.findRegions("run");
         animationFast = new Animation<TextureRegion>(0.07f, regionRun);
 
