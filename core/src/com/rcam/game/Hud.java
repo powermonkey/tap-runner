@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Runner;
 
@@ -42,6 +43,7 @@ public class Hud extends Table{
     Preferences prefs;
     NinePatch patchGreen, patchYellow;
     BitmapFont labelFont;
+    StringBuilder distanceValue;
 
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
@@ -66,6 +68,7 @@ public class Hud extends Table{
         controlsTable = new Table();
         rootTable.setFillParent(true);
         stage = new Stage(new FitViewport(480, 800));
+        distanceValue = new StringBuilder();
         distance = new Distance(runner);
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner, gameScreen);
@@ -136,7 +139,9 @@ public class Hud extends Table{
         }
 
         public String getText(){
-            return Integer.toString(runr.indicatePosition()).concat(" m");
+            distanceValue.delete(0, distanceValue.length());
+            distanceValue.append(runr.indicatePosition()).append(" m");
+            return distanceValue.toString();
         }
 
         public void update(){
