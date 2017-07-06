@@ -69,7 +69,7 @@ public class SettingsScreen implements Screen {
 //        enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         soundOn = new CheckBox("Sound On", cleanCrispySkin, "default");
 
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         BitmapFont labelFont = arcadeSkin.getFont("font");

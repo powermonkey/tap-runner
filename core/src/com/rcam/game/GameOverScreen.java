@@ -54,7 +54,7 @@ public class GameOverScreen implements Screen{
         table = new Table();
         bg = GameAssetLoader.atlas.findRegion("background");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
 

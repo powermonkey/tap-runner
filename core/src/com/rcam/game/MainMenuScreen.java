@@ -57,7 +57,7 @@ public class MainMenuScreen implements Screen {
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
         runnerJump = GameAssetLoader.atlas.findRegion("jump");

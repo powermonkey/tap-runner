@@ -49,7 +49,7 @@ public class Hud extends Table{
         setClip(true);
         this.gameScreen = gameScreen;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
         patchDrawableGreen = new NinePatchDrawable(patchGreen);
         patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
