@@ -30,9 +30,6 @@ public class Hud extends Table{
     Stage stage;
     Table rootTable, indicatorstable, distancetable, controlsTable;
     Skin cleanCrispySkin, arcadeSkin;
-//    Meter meter;
-//    RunButton runButton;
-//    SlowDownButton slowDownButton;
     PauseButton pauseButton;
     JumpButton jumpButton;
     Distance distance;
@@ -40,7 +37,7 @@ public class Hud extends Table{
     Label healthLabel, speedMeterLabel;
     GameScreen gameScreen;
     TextureAtlas.AtlasRegion blockYellow, blockGreen;
-    NinePatchDrawable patchDrawable;
+    NinePatchDrawable patchDrawableGreen, patchDrawableYellow;
     Sound blipSelectSound, newGameblipSound, jumpSound, speedAdjustSound;
     Preferences prefs;
 
@@ -50,6 +47,11 @@ public class Hud extends Table{
         setClip(true);
         this.gameScreen = gameScreen;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        patchDrawableGreen = new NinePatchDrawable(patchGreen);
+        NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
+        patchDrawableYellow = new NinePatchDrawable(patchYellow);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
         blipSelectSound = GameAssetLoader.blipSelect;
@@ -66,30 +68,30 @@ public class Hud extends Table{
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner, gameScreen);
         jumpButton = new JumpButton(runner);
-        healthLabel = new Label("ENERGY", cleanCrispySkin);
+        BitmapFont labelFont = arcadeSkin.getFont("screen");
+        Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
+        healthLabel = new Label("ENERGY", fontStyle);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
         prefs = Gdx.app.getPreferences("TapRunner");
 
 
 //        stage.setDebugAll(true);
 
-        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
-        patchDrawable = new NinePatchDrawable(patch);
         Gdx.input.setInputProcessor(stage);
 
         distancetable.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
         distancetable.row();
 
-        indicatorstable.add(healthLabel).width(80).left();
+        indicatorstable.add(healthLabel).width(80).left().padLeft(2).padBottom(2);
         indicatorstable.row();
-        indicatorstable.add(health.getHealthBar()).padBottom(20);
+        indicatorstable.add(health.getHealthBar()).padTop(2);
         indicatorstable.row();
 
         controlsTable.add(indicatorstable).left().padLeft(20);
         controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).expandX().padLeft(30);
-        controlsTable.add(jumpButton.getJumpButton()).right().padRight(20).expandX();
+        controlsTable.add(jumpButton.getJumpButton()).width(85).height(85).right().padRight(25).expandX();
         controlsTable.row();
-        controlsTable.setBackground(patchDrawable);
+        controlsTable.setBackground(patchDrawableGreen);
 
         rootTable.add(distancetable).width(TapRunner.WIDTH).center().expand();
         rootTable.row();
@@ -98,34 +100,6 @@ public class Hud extends Table{
         rootTable.center().bottom();
         stage.addActor(rootTable);
     }
-
-//    public class Meter{
-//        Label currentIndicator;
-//        Label.LabelStyle style;
-//        BitmapFont labelFont;
-//        Runner runner;
-//        public Meter(final Runner runner){
-//            this.runner = runner;
-//            labelFont = getArcadeSkin().getFont("screen");
-//            labelFont.getData().markupEnabled = true;
-//            style = new Label.LabelStyle(labelFont, null);
-//            currentIndicator = new Label("[#2a2a2a]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]", style);
-//        }
-//
-//        public Label getSpeedMeter() {
-//            return currentIndicator;
-//        }
-//
-//        public void update(float speed){
-//            if(speed <= runner.maxSpeed - 100) {
-//                currentIndicator.setText("[#ffffff]1[] [#2a2a2a]2[] [#2a2a2a]MAX![]");
-//            }else if(speed <= runner.maxSpeed - 50) {
-//                currentIndicator.setText("[#2a2a2a]1[] [#ffffff]2[] [#2a2a2a]MAX![]");
-//            }else if(speed == runner.maxSpeed) {
-//                currentIndicator.setText("[#2a2a2a]1[] [#2a2a2a]2[] [#ffffff]MAX![]");
-//            }
-//        }
-//    }
 
     public class Health{
         ProgressBar healthBar;
@@ -168,83 +142,6 @@ public class Hud extends Table{
         }
     }
 
-//    public class SlowDownButton{
-//        ImageButton sbutton;
-//        ImageButton.ImageButtonStyle sbuttonStyle;
-//
-//        public SlowDownButton(Runner runner){
-//            sbutton = new ImageButton(getCleanCrispySkin(), "default");
-//            sbuttonStyle = new ImageButton.ImageButtonStyle();
-//            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
-//            sbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
-//            sbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
-//            sbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-//            sbuttonStyle.imageUp = buttonSkin.getDrawable("backward");;
-//            sbuttonStyle.imageDown = buttonSkin.getDrawable("backward");
-//            sbutton.setStyle(sbuttonStyle);
-//            button1Listener(sbutton, runner);
-//        }
-//
-//        public void button1Listener(final ImageButton button, final Runner runner){
-//            button.addListener(new InputListener(){
-//                @Override
-//                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-//                if(!gameScreen.isPause) {
-//                    if(prefs.getBoolean("SoundOn")) {
-//                        speedAdjustSound.play();
-//                    }
-//                    runner.slowDown();
-//                }
-//                return true;
-//                }
-//            });
-//        }
-//
-//        public ImageButton getSlowDownButton(){
-//            return sbutton;
-//        }
-//
-//    }
-//
-//    public class RunButton{
-//        ImageButton rbutton;
-//        ImageButton.ImageButtonStyle rbuttonStyle;
-//
-//        public RunButton(Runner runner){
-//            rbutton = new ImageButton(getCleanCrispySkin(), "default");
-//            rbuttonStyle = new ImageButton.ImageButtonStyle();
-//            Skin buttonSkin = new Skin(GameAssetLoader.atlas);
-//            rbuttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
-//            rbuttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
-//            rbuttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
-//            rbuttonStyle.imageUp = buttonSkin.getDrawable("forward");
-//            rbuttonStyle.imageDown = buttonSkin.getDrawable("forward");
-//
-//            rbutton.setStyle(rbuttonStyle);
-//
-//            button1Listener(rbutton, runner);
-//        }
-//
-//        public void button1Listener(final ImageButton button, final Runner runner){
-//            button.addListener(new InputListener(){
-//                @Override
-//                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-//                if(!gameScreen.isPause) {
-//                    if(prefs.getBoolean("SoundOn")) {
-//                        speedAdjustSound.play();
-//                    }
-//                    runner.run();
-//                }
-//                return true;
-//                }
-//            });
-//        }
-//
-//        public ImageButton getRunButton(){
-//            return rbutton;
-//        }
-//
-//    }
 
     public class PauseButton{
         ImageButton pauseButton;
@@ -255,23 +152,23 @@ public class Hud extends Table{
 
         public PauseButton(TapRunner game, GameScreen gameScreen){
             this.game = game;
-            pauseButton = new ImageButton(getCleanCrispySkin(), "default");
             buttonStyle = new ImageButton.ImageButtonStyle();
             unpauseStyle = new ImageButton.ImageButtonStyle();
 
             Skin buttonSkin = new Skin(GameAssetLoader.atlas);
 
-            buttonStyle.up = getCleanCrispySkin().getDrawable("button-c");
-            buttonStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
-            buttonStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
+            pauseButton = new ImageButton(buttonStyle);
+
+            buttonStyle.up = patchDrawableYellow;
+            buttonStyle.down = patchDrawableYellow;
             buttonStyle.imageUp = buttonSkin.getDrawable("pause");
             buttonStyle.imageDown = buttonSkin.getDrawable("pause");
 
-            unpauseStyle.up = getCleanCrispySkin().getDrawable("button-c");
-            unpauseStyle.down = getCleanCrispySkin().getDrawable("button-pressed-over-c");
-            unpauseStyle.over = getCleanCrispySkin().getDrawable("button-over-c");
+            unpauseStyle.up = patchDrawableYellow;
+            unpauseStyle.down = patchDrawableYellow;
             unpauseStyle.imageUp = buttonSkin.getDrawable("forward");
             unpauseStyle.imageDown = buttonSkin.getDrawable("forward");
+
             pauseButton.setStyle(buttonStyle);
             pauseButtonListener(pauseButton, gameScreen);
         }
@@ -312,13 +209,10 @@ public class Hud extends Table{
             pauseTable = new Table();
             pauseGroup = new Group();
 
-            blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
-            NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
-            NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
             BitmapFont labelFont = arcadeSkin.getFont("font");
             TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-            buttonStyle.up = patchDrawableGreen;
-            buttonStyle.down = patchDrawableGreen;
+            buttonStyle.up = patchDrawableYellow;
+            buttonStyle.down = patchDrawableYellow;
             buttonStyle.font = labelFont;
 
             continueButton = new TextButton("Continue", buttonStyle);
@@ -341,7 +235,7 @@ public class Hud extends Table{
             pauseTable.row();
             pauseTable.add(exitButton).center().uniform().width(200).height(50).expandX().padTop(10).padBottom(30);
             pauseTable.row();
-            pauseTable.setBackground(patchDrawable);
+            pauseTable.setBackground(patchDrawableGreen);
 
             rtable.add(pauseTable).width(TapRunner.WIDTH / 2).center().center().expandX();
             rtable.row();
@@ -449,10 +343,11 @@ public class Hud extends Table{
     }
 
     public class JumpButton{
-        TextButton button;
+        Button button;
 
         public JumpButton(Runner runner){
-            button = new TextButton("JUMP", getCleanCrispySkin(), "arcade");
+            button = new Button(getArcadeSkin(), "yellow");
+            button.setSize(70, 70);
             buttonListener(button, runner);
         }
 
@@ -478,7 +373,7 @@ public class Hud extends Table{
             });
         }
 
-        public TextButton getJumpButton(){
+        public Button getJumpButton(){
             return button;
         }
 
