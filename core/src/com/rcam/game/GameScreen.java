@@ -191,14 +191,6 @@ public class GameScreen implements Screen{
                     lastLavaPos = lava.getPosLava().x + (lava.getTextureLava().getRegionWidth());
                 }
             }
-
-//            for (Lava lava : lavas) {
-//                if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTextureLava().getRegionWidth()) {
-//                    allLava = true;
-//                    lava.repositionLava(lastLavaPos);
-//                    lastLavaPos = lava.getPosLava().x + (lava.getTextureLava().getRegionWidth());
-//                }
-//            }
         } else {
             //render ground
             for (Ground ground : grounds) {
@@ -207,13 +199,6 @@ public class GameScreen implements Screen{
                     ground.repositionGround(ground.getPosGround().x + (ground.getTextureGround().getRegionWidth() * 2));
                 }
             }
-
-            //set ground position
-//            for (Ground ground : grounds) {
-//                if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
-//                    ground.repositionGround(ground.getPosGround().x + (ground.getTextureGround().getRegionWidth() * 2));
-//                }
-//            }
         }
 
         //render runner
@@ -253,8 +238,6 @@ public class GameScreen implements Screen{
                 }
                 spawnEnemy();
             }
-
-            //update enemies
 
             //render first then logic, fixes shaking texture ??
             runner.update(delta);
