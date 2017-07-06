@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import com.rcam.game.GameAssetLoader;
+import com.rcam.game.Hud;
 
 import java.util.Random;
 
@@ -98,13 +99,14 @@ public class PowerUp implements Pool.Poolable{
         }
     }
 
-    public void checkPowerUpCollision(Runner runner){
+    public void checkPowerUpCollision(Runner runner, Hud hud){
         if(getBounds().overlaps(runner.getBounds()) && !runner.isDead ){
             if(prefs.getBoolean("SoundOn")) {
                 powerUpSound.play();
             }
             if(!(runner.health >= runner.STARTING_HEALTH) && !touched && !runner.isDead){
                 runner.health += getHeal();
+                hud.health.update();
                 touched = true;
                 isSpawned = false;
                 //TODO optional speed boost and double jump for power up

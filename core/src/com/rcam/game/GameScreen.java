@@ -203,8 +203,7 @@ public class GameScreen implements Screen{
 
         //render runner
         runner.stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentRunnerFrame;
-        currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
+        TextureRegion currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
 
         if(runner.isDead){
             game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
@@ -263,9 +262,7 @@ public class GameScreen implements Screen{
                 }
             }
 //            hud.meter.update(runner.getSpeed().x);
-            hud.health.update();
             hud.distance.update();
-
         }
         game.batch.end();
         hud.render();
@@ -311,7 +308,7 @@ public class GameScreen implements Screen{
                     enemy.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
                     game.batch.draw(currentFrame, (int)enemy.getPosition().x, (int)enemy.getPosition().y);
-                    enemy.checkCollision(runner);
+                    enemy.checkCollision(runner, hud);
                     if(!isPause) {
                         enemy.update(delta);
                     }
@@ -418,7 +415,7 @@ public class GameScreen implements Screen{
             if(powerUp.isSpawned) {
                 if (cam.position.x + cam.viewportWidth > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()
                     && cam.position.x - (cam.viewportWidth / 2) < powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()) {
-                    powerUp.checkPowerUpCollision(runner);
+                    powerUp.checkPowerUpCollision(runner, hud);
                     game.batch.draw(powerUp.getAtlasRegion(), (int)powerUp.getPosition().x, (int)powerUp.getPosition().y);
                 } else if(cam.position.x  - (cam.viewportWidth / 2) > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()){
                     powerUp.isSpawned = false; //unrender powerup when off camera

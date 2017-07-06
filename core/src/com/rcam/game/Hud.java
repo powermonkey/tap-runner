@@ -34,7 +34,7 @@ public class Hud extends Table{
     PauseButton pauseButton;
     JumpButton jumpButton;
     Distance distance;
-    Health health;
+    public Health health;
     Label healthLabel, speedMeterLabel;
     GameScreen gameScreen;
     TextureAtlas.AtlasRegion blockYellow, blockGreen;
@@ -114,6 +114,7 @@ public class Hud extends Table{
             healthBar = new ProgressBar(1, 50, 1, false, getCleanCrispySkin(), "default-horizontal");
             healthBar.setAnimateDuration(.5f);
             this.runr = runner;
+            healthBar.setValue(runr.getHealth());
         }
 
         public ProgressBar getHealthBar() {
@@ -154,7 +155,7 @@ public class Hud extends Table{
         ImageButton pauseButton;
         ImageButton.ImageButtonStyle buttonStyle, unpauseStyle;
         TapRunner game;
-        Group pauseGroup;
+//        Group pauseGroup;
         Table rtable;
 
         public PauseButton(TapRunner game, GameScreen gameScreen){

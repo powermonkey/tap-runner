@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.rcam.game.GameAssetLoader;
+import com.rcam.game.Hud;
 import com.rcam.game.sprites.Runner;
 
 import java.util.Vector;
@@ -108,7 +109,7 @@ public class Enemy {
         return textureWidth;
     }
 
-    public void checkCollision(Runner runner) {
+    public void checkCollision(Runner runner, Hud hud) {
 //        Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
         Intersector.intersectRectangles(getOnTopBounds(), runner.getBounds(), intersectionOnTop);
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
@@ -139,6 +140,7 @@ public class Enemy {
                             hurtSound.play();
                         }
                         runner.health -= getDamage();
+                        hud.health.update();
                         touched = true;
 //                        if(enemyTouchSlows) {
 //                            runner.isTouched = true;
