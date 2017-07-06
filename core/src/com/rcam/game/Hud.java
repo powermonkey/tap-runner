@@ -40,6 +40,8 @@ public class Hud extends Table{
     NinePatchDrawable patchDrawableGreen, patchDrawableYellow;
     Sound blipSelectSound, newGameblipSound, jumpSound, speedAdjustSound;
     Preferences prefs;
+    NinePatch patchGreen, patchYellow;
+    BitmapFont labelFont;
 
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
@@ -48,9 +50,9 @@ public class Hud extends Table{
         this.gameScreen = gameScreen;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
         blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
-        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
         patchDrawableGreen = new NinePatchDrawable(patchGreen);
-        NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
+        patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
         patchDrawableYellow = new NinePatchDrawable(patchYellow);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
@@ -68,7 +70,7 @@ public class Hud extends Table{
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner, gameScreen);
         jumpButton = new JumpButton(runner);
-        BitmapFont labelFont = arcadeSkin.getFont("screen");
+        labelFont = arcadeSkin.getFont("screen");
         Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
         healthLabel = new Label("ENERGY", fontStyle);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
@@ -209,7 +211,7 @@ public class Hud extends Table{
             pauseTable = new Table();
             pauseGroup = new Group();
 
-            BitmapFont labelFont = arcadeSkin.getFont("font");
+            labelFont = arcadeSkin.getFont("font");
             TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
             buttonStyle.up = patchDrawableYellow;
             buttonStyle.down = patchDrawableYellow;

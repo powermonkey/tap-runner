@@ -24,7 +24,6 @@ public class GameAssetManager {
     public final String hurt = "sounds/SFX_Powerup_21.wav";
     public final String powerUp = "sounds/Score.wav";
     public final String lavaBurn = "sounds/Explosion.wav";
-    public final String speedAdjust = "sounds/Health_Up.wav";
 
     public void loadImages(){
         manager.load(imagesPack, TextureAtlas.class);
@@ -45,7 +44,6 @@ public class GameAssetManager {
         manager.load(hurt, Sound.class);
         manager.load(powerUp, Sound.class);
         manager.load(lavaBurn, Sound.class);
-        manager.load(speedAdjust, Sound.class);
     }
 
     public void loadFonts(){

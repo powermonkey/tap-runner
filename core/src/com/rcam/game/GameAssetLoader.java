@@ -37,9 +37,6 @@ public class GameAssetLoader {
         hurt = manager.manager.get("sounds/SFX_Powerup_21.wav");
         powerUp = manager.manager.get("sounds/Score.wav");
         lavaBurn = manager.manager.get("sounds/Explosion.wav");
-        speedAdjust = manager.manager.get("sounds/Health_Up.wav");
-
-
     }
 
     public static boolean update(){
@@ -48,6 +45,7 @@ public class GameAssetLoader {
 
     public static void dispose() {
         manager.dispose();
+        fonts.dispose();
         atlas.dispose();
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();
@@ -57,6 +55,5 @@ public class GameAssetLoader {
         hurt.dispose();
         powerUp.dispose();
         lavaBurn.dispose();
-        speedAdjust.dispose();
     }
 }
