@@ -214,7 +214,7 @@ public class Hud extends Table{
             rtable = new Table();
             rtable.setFillParent(true);
             pauseTable = new Table();
-            pauseGroup = new Group();
+//            pauseGroup = new Group();
 
             labelFont = arcadeSkin.getFont("font");
             TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
@@ -247,7 +247,7 @@ public class Hud extends Table{
             rtable.add(pauseTable).width(TapRunner.WIDTH / 2).center().center().expandX();
             rtable.row();
             rtable.row();
-            pauseGroup.addActor(rtable);
+//            pauseGroup.addActor(rtable);
             stage.addActor(rtable);
         }
 

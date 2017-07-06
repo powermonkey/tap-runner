@@ -219,7 +219,7 @@ public class GameScreen implements Screen{
         if(!isPause) {
             //set power up position and render power up
             if (runner.getPosition().x > powerUpMarker) {
-                spawnPowerUp(delta);
+                spawnPowerUp();
             }
 
             //set enemy position and render enemy
@@ -323,8 +323,7 @@ public class GameScreen implements Screen{
 
         //TODO: refactor, put in a function;
         GroundEnemy groundEnemyItem;
-        int groundEnemylen = activeGroundEnemies.size;
-        for(int i = groundEnemylen; --i >= 0;){
+        for(int i = activeGroundEnemies.size; --i >= 0;){
             groundEnemyItem = activeGroundEnemies.get(i);
             if(!groundEnemyItem.isSpawned){
                 activeGroundEnemies.removeIndex(i);
@@ -334,8 +333,7 @@ public class GameScreen implements Screen{
         }
 
         FlyingEnemy flyingEnemyItem;
-        int flyingEnemylen = activeFlyingEnemies.size;
-        for(int i = flyingEnemylen; --i >= 0;){
+        for(int i = activeFlyingEnemies.size; --i >= 0;){
             flyingEnemyItem = activeFlyingEnemies.get(i);
             if(!flyingEnemyItem.isSpawned){
                 activeFlyingEnemies.removeIndex(i);
@@ -391,7 +389,7 @@ public class GameScreen implements Screen{
         return spawnPosition;
     }
 
-    private void spawnPowerUp(float delta){
+    private void spawnPowerUp(){
         int num = rand.nextInt(3) + 1;
         int yFluc = rand.nextInt(130) + 1;
         int ctr = 1;
@@ -428,8 +426,7 @@ public class GameScreen implements Screen{
             }
         }
 
-        int len = powerUps.size;
-        for(int i = len; --i >= 0;){
+        for(int i = powerUps.size; --i >= 0;){
             powerUpItem = powerUps.get(i);
             if(!powerUpItem.isSpawned){
                 powerUps.removeIndex(i);

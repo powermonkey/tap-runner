@@ -28,8 +28,8 @@ public class Runner {
     static float jumpValue = 65;
     static float jumpIncrease = 10;
     static float jumpHeightIncrease = 50;
-    public final static float STARTING_X = 30;
-    public final static float STARTING_Y = 112;
+    public final float STARTING_X = 30;
+    public final float STARTING_Y = 112;
     static float jumpHeight = 525;
     static final int STARTING_HEALTH = 50;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
