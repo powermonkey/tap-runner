@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -38,7 +39,7 @@ public class SettingsScreen implements Screen {
     CheckBox normalMode, groundLavaMode, enemyTouchSlows, soundOn;
     TextButton okay;
     static Preferences prefs;
-    TextureAtlas.AtlasRegion bg, blockYellow;
+    TextureAtlas.AtlasRegion bg, blockYellow, blockGreen;
     Sound blipSelectSound;
 
     public SettingsScreen(final TapRunner gam){
@@ -67,7 +68,16 @@ public class SettingsScreen implements Screen {
         groundLavaMode = new CheckBox("The Ground Is Lava", cleanCrispySkin, "radio");
 //        enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         soundOn = new CheckBox("Sound On", cleanCrispySkin, "default");
-        okay = new TextButton("Okay", cleanCrispySkin, "default");
+
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
+        BitmapFont labelFont = arcadeSkin.getFont("font");
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.up = patchDrawableGreen;
+        buttonStyle.down = patchDrawableGreen;
+        buttonStyle.font = labelFont;
+        okay = new TextButton("Okay", buttonStyle);
         okayButtonListener(okay);
 
 //        if (prefs.contains("EnemyTouchSlows")) {

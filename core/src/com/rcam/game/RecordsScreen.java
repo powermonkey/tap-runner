@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -34,7 +35,7 @@ public class RecordsScreen implements Screen{
     Runner runner;
     Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
     static Preferences prefs;
-    TextureAtlas.AtlasRegion bg, blockYellow, ground;
+    TextureAtlas.AtlasRegion bg, blockYellow, blockGreen, ground;
     Sound blipSelectSound;
 
     public RecordsScreen(final TapRunner gam){
@@ -63,7 +64,16 @@ public class RecordsScreen implements Screen{
         bestNormalDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceNormalMode")) + " m", arcadeSkin, "default");
         bestLavaLabel = new Label("The Ground is Lava: ", cleanCrispySkin, "default");
         bestLavaDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceLavaMode")) + " m", arcadeSkin, "default");
-        goBackButton = new TextButton("Main Menu", cleanCrispySkin, "default");
+
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
+        BitmapFont labelFont = arcadeSkin.getFont("font");
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.up = patchDrawableGreen;
+        buttonStyle.down = patchDrawableGreen;
+        buttonStyle.font = labelFont;
+        goBackButton = new TextButton("Main Menu", buttonStyle);
         goBackButtonListener(goBackButton);
 
 
@@ -86,7 +96,7 @@ public class RecordsScreen implements Screen{
         table.pad(20, 20, 30, 20);
         table.setBackground(new NinePatchDrawable(patch));
 
-        goBackButtonTable.add(goBackButton).colspan(2).width(150).height(50).expandX().pad(15);
+        goBackButtonTable.add(goBackButton).colspan(2).width(200).height(50).expandX().pad(15);
         goBackButtonTable.row();
         goBackButtonTable.center().center();
         goBackButtonTable.setBackground(new NinePatchDrawable(patch));

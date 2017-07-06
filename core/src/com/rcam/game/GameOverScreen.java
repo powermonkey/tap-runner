@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -37,7 +38,7 @@ public class GameOverScreen implements Screen{
     Label current, bestDistance, currentLabel, bestDistanceLabel;
     static Preferences prefs;
     String gameMode;
-    TextureAtlas.AtlasRegion bg, blockYellow;
+    TextureAtlas.AtlasRegion bg, blockYellow, blockGreen;
     Sound blipSelectSound, newGameblipSound;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
@@ -53,13 +54,23 @@ public class GameOverScreen implements Screen{
         table = new Table();
         bg = GameAssetLoader.atlas.findRegion("background");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
 
         prefs = Gdx.app.getPreferences("TapRunner");
         gameMode = prefs.getString("GameMode");
 
-        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
+        NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
+        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
+        NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
+
+        BitmapFont labelFont = arcadeSkin.getFont("font");
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.up = patchDrawableGreen;
+        buttonStyle.down = patchDrawableGreen;
+        buttonStyle.font = labelFont;
 
         currentLabel = new Label("Current:", arcadeSkin, "default");
         current = new Label(Integer.toString(runner.indicatePosition()) + " m", arcadeSkin, "default");
@@ -70,13 +81,13 @@ public class GameOverScreen implements Screen{
             bestDistance = new Label(Integer.toString(runner.getHighScoreNormalMode()) + " m", arcadeSkin, "default");
         }
 
-        mainMenuButton = new TextButton("Main Menu", cleanCrispySkin, "default");
+        mainMenuButton = new TextButton("Main Menu", buttonStyle);
         mainMenuButtonListener(mainMenuButton, runner);
-        newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
+        newGameButton = new TextButton("New Game", buttonStyle);
         newGameButtonListener(newGameButton, runner);
-        settingsButton = new TextButton("Options", cleanCrispySkin, "default");
+        settingsButton = new TextButton("Options", buttonStyle);
         settingsButtonListener(settingsButton, runner);
-        exitButton = new TextButton("Exit", cleanCrispySkin, "default");
+        exitButton = new TextButton("Exit", buttonStyle);
         exitButtonListener(exitButton);
 
 //        bg = atlas.findRegion("background");
@@ -91,16 +102,16 @@ public class GameOverScreen implements Screen{
         table.add(currentLabel).expandX().center().right().uniform().padLeft(30);
         table.add(current).expandX().center().left().padLeft(10).uniform();
         table.row();
-        table.add(newGameButton).colspan(2).width(150).height(50).expandX().padTop(20);
+        table.add(newGameButton).colspan(2).width(200).height(50).expandX().padTop(20);
         table.row();
-        table.add(settingsButton).colspan(2).width(150).height(50).expandX().padTop(20);
+        table.add(settingsButton).colspan(2).width(200).height(50).expandX().padTop(4);
         table.row();
-        table.add(mainMenuButton).colspan(2).width(150).height(50).expandX().padTop(30);
+        table.add(mainMenuButton).colspan(2).width(200).height(50).expandX().padTop(4);
         table.row();
-        table.add(exitButton).colspan(2).width(150).height(50).expandX().padTop(30).padBottom(30);
+        table.add(exitButton).colspan(2).width(200).height(50).expandX().padTop(4).padBottom(30);
         table.row();
         table.center().center().pad(20);
-        table.setBackground(new NinePatchDrawable(patch));
+        table.setBackground(patchDrawableYellow);
 
         rootTable.add(table);
         rootTable.row();

@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,7 +31,7 @@ public class CreditsScreen implements Screen {
     Table rootTable, table, table2, table3, table4, table5, table6, table7, table8;
     Skin arcadeSkin, cleanCrispySkin;
     Stage stage;
-    TextureAtlas.AtlasRegion ground, bg, blockYellow;
+    TextureAtlas.AtlasRegion ground, bg, blockYellow, blockGreen;
     TextButton goBackButton;
     Sound blipSelectSound;
     static Preferences prefs;
@@ -215,7 +216,17 @@ public class CreditsScreen implements Screen {
         Label testerCredit = new Label("Donna Marie", arcadeSkin, "screen");
         testerCredit.setColor(Color.BLUE);
 
-        goBackButton = new TextButton("Main Menu", cleanCrispySkin, "default");
+
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
+        BitmapFont labelFont = arcadeSkin.getFont("font");
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.up = patchDrawableGreen;
+        buttonStyle.down = patchDrawableGreen;
+        buttonStyle.font = labelFont;
+        goBackButton = new TextButton("Main Menu", buttonStyle);
+
         goBackButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -297,7 +308,7 @@ public class CreditsScreen implements Screen {
         table7.center().center().pad(10);
         table7.setBackground(new NinePatchDrawable(patch));
 
-        table8.add(goBackButton).pad(5).width(150).height(50).expandX().pad(15);
+        table8.add(goBackButton).pad(5).width(200).height(50).expandX().pad(15);
         table8.row();
         table8.setBackground(new NinePatchDrawable(patch));
 

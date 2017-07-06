@@ -39,7 +39,7 @@ public class Hud extends Table{
     Health health;
     Label healthLabel, speedMeterLabel;
     GameScreen gameScreen;
-    TextureAtlas.AtlasRegion blockYellow;
+    TextureAtlas.AtlasRegion blockYellow, blockGreen;
     NinePatchDrawable patchDrawable;
     Sound blipSelectSound, newGameblipSound, jumpSound, speedAdjustSound;
     Preferences prefs;
@@ -312,25 +312,34 @@ public class Hud extends Table{
             pauseTable = new Table();
             pauseGroup = new Group();
 
-            continueButton = new TextButton("Continue", cleanCrispySkin, "default");
+            blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
+            NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+            NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
+            BitmapFont labelFont = arcadeSkin.getFont("font");
+            TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+            buttonStyle.up = patchDrawableGreen;
+            buttonStyle.down = patchDrawableGreen;
+            buttonStyle.font = labelFont;
+
+            continueButton = new TextButton("Continue", buttonStyle);
             continueButtonListener(continueButton);
 
-            newGameButton = new TextButton("New Game", cleanCrispySkin, "default");
+            newGameButton = new TextButton("New Game", buttonStyle);
             newGameButtonListener(newGameButton);
 
-            mainMenuButton = new TextButton("Main Menu", cleanCrispySkin, "default");
+            mainMenuButton = new TextButton("Main Menu", buttonStyle);
             mainMenuButtonListener(mainMenuButton);
 
-            exitButton = new TextButton("Exit", cleanCrispySkin, "default");
+            exitButton = new TextButton("Exit", buttonStyle);
             exitGameButtonListener(exitButton);
 
-            pauseTable.add(continueButton).center().uniform().width(150).height(50).expandX().padTop(30);
+            pauseTable.add(continueButton).center().uniform().width(200).height(50).expandX().padTop(20);
             pauseTable.row();
-            pauseTable.add(newGameButton).center().uniform().width(150).height(50).expandX().padTop(30);
+            pauseTable.add(newGameButton).center().uniform().width(200).height(50).expandX().padTop(10);
             pauseTable.row();
-            pauseTable.add(mainMenuButton).center().uniform().width(150).height(50).expandX().padTop(30);
+            pauseTable.add(mainMenuButton).center().uniform().width(200).height(50).expandX().padTop(10);
             pauseTable.row();
-            pauseTable.add(exitButton).center().uniform().width(150).height(50).expandX().padTop(30).padBottom(30);
+            pauseTable.add(exitButton).center().uniform().width(200).height(50).expandX().padTop(10).padBottom(30);
             pauseTable.row();
             pauseTable.setBackground(patchDrawable);
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -32,12 +35,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class MainMenuScreen implements Screen {
     final TapRunner game;
     OrthographicCamera cam;
-    Table rootTable, table, titleTable;
-    Skin cleanCrispySkin;
+    Table rootTable, table, titleTable, titleTableInner;
+    Skin cleanCrispySkin, arcadeSkin;
     TextButton exit, newGame, options, records, credits;
     Stage stage;
     static Preferences prefs;
-    TextureAtlas.AtlasRegion ground, bg, blockYellow;
+    TextureAtlas.AtlasRegion ground, bg, blockYellow, blockGreen;
     TextureRegion runnerJump;
     Sound blipSelectSound, newGameblipSound;
     Boolean soundOn;
@@ -52,7 +55,9 @@ public class MainMenuScreen implements Screen {
         bg = GameAssetLoader.atlas.findRegion("background");
         ground = GameAssetLoader.atlas.findRegion("ground");
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
+        arcadeSkin = GameAssetLoader.arcadeSkin;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_Green");
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
         runnerJump = GameAssetLoader.atlas.findRegion("jump");
@@ -64,6 +69,7 @@ public class MainMenuScreen implements Screen {
         rootTable.setFillParent(true);
         table = new Table();
         titleTable = new Table();
+        titleTableInner = new Table();
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = myFont;
@@ -71,14 +77,24 @@ public class MainMenuScreen implements Screen {
         runner = new Image(runnerJump);
 
         title = new Label("Happy Runnings", labelStyle);
-//        title.setWrap(true);
         title.setAlignment(Align.center);
+        NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
+        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
 
-        newGame = new TextButton("New Game", cleanCrispySkin, "default");
-        options = new TextButton("Options", cleanCrispySkin, "default");
-        records = new TextButton("Records", cleanCrispySkin, "default");
-        credits = new TextButton("Credits", cleanCrispySkin, "default");
-        exit = new TextButton("Exit", cleanCrispySkin, "default");
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
+        NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
+        BitmapFont labelFont = arcadeSkin.getFont("font");
+
+        buttonStyle.up = patchDrawableYellow;
+        buttonStyle.down = patchDrawableYellow;
+        buttonStyle.font = labelFont;
+
+        newGame = new TextButton("New Game", buttonStyle);
+        options = new TextButton("Options", buttonStyle);
+        records = new TextButton("Records", buttonStyle);
+        credits = new TextButton("Credits", buttonStyle);
+        exit = new TextButton("Exit", buttonStyle);
 
         newGameButtonListener(newGame);
         settingsButtonListener(options);
@@ -88,31 +104,35 @@ public class MainMenuScreen implements Screen {
 
 //        stage.setDebugAll(true);
 
-        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
+        titleTableInner.add(runner);
+        titleTableInner.row();
+        titleTableInner.add(title).fill().center();
+        titleTableInner.row();
+        titleTableInner.setBackground(patchDrawableYellow);
+        titleTableInner.pad(15, 20, 20 ,20);
 
-        titleTable.add(runner);
+        titleTable.add(titleTableInner);
         titleTable.row();
-        titleTable.add(title).fill().center();
-        titleTable.row();
-        titleTable.setBackground(new NinePatchDrawable(patch));
-        titleTable.pad(30);
+        titleTable.setBackground(patchDrawableGreen);
+        titleTable.pad(20);
 
-        table.add(newGame).center().uniform().width(150).height(50).expandX().padTop(30);
+        table.add(newGame).center().uniform().width(200).height(50).expandX().padTop(10);
         table.row();
-        table.add(options).center().uniform().width(150).height(50).expandX().padTop(30);
+        table.add(options).center().uniform().width(200).height(50).expandX().padTop(10);
         table.row();
-        table.add(records).center().uniform().width(150).height(50).expandX().padTop(30);
+        table.add(records).center().uniform().width(200).height(50).expandX().padTop(10);
         table.row();
-        table.add(credits).center().uniform().width(150).height(50).expandX().padTop(30);
+        table.add(credits).center().uniform().width(200).height(50).expandX().padTop(10);
         table.row();
-        table.add(exit).center().uniform().width(150).height(50).expandX().padTop(30).padBottom(30);
+        table.add(exit).center().uniform().width(200).height(50).expandX().padTop(10);
         table.row();
-        table.center().center().pad(20);
-        table.setBackground(new NinePatchDrawable(patch));
+        table.center().center();
+        table.pad(20);
+        table.setBackground(patchDrawableGreen);
 
-        rootTable.add(titleTable).pad(10);
+        rootTable.add(titleTable);
         rootTable.row();
-        rootTable.add(table).width(TapRunner.WIDTH / 2);
+        rootTable.add(table).width(TapRunner.WIDTH / 2).pad(20);
         rootTable.row();
         rootTable.center().center();
 
