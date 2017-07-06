@@ -210,19 +210,15 @@ public class Runner {
         intersectionBounds.setPosition(position.x  - CONTACT_BOUNDS_OFFSET_X, position.y - CONTACT_BOUNDS_OFFSET_Y);
     }
 
-    private void drainHealth(){
-        if(timeSinceMillis(startingTime) > 1000){
-            startingTime = millis();
-            health -= 1f;
-            if(health <= 0){
-                isDead = true;
-            }
-        }
-    }
-
-    public Texture getTexture() {
-        return runnerTexture;
-    }
+//    private void drainHealth(){
+//        if(timeSinceMillis(startingTime) > 1000){
+//            startingTime = millis();
+//            health -= 1f;
+//            if(health <= 0){
+//                isDead = true;
+//            }
+//        }
+//    }
 
     public TextureAtlas.AtlasRegion getRegionStand() {
         return regionStand;
@@ -242,18 +238,6 @@ public class Runner {
 
     public void setPositionY(float y) {
         position.y = y;
-    }
-
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocityX(float x) {
-        velocity.x = x;
-    }
-
-    public void setVelocityY(float y) {
-        velocity.y = y;
     }
 
     public void setLavaDamageTimeStart(long time) {
@@ -289,8 +273,6 @@ public class Runner {
         isJumping = true;
         isOnGround = false;
     }
-
-    public Vector2 getSpeed(){ return speed; }
 
     public Rectangle getBounds() {
         return bounds;
