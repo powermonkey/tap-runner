@@ -69,11 +69,9 @@ public class GameScreen implements Screen{
 
         bgCam = new OrthographicCamera();
         bgCam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
-        bgCam.update();
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
-        cam.update();
 
         isPause = false;
 
@@ -147,8 +145,6 @@ public class GameScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        bgCam.update();
-
         cam.position.x = (int)runner.getPosition().x + 100;
         cam.update();
 
@@ -165,7 +161,6 @@ public class GameScreen implements Screen{
         renderPowerUp();
 
         //render enemy
-
         renderEnemy(delta);
 
         if (gameMode.equals("The Ground Is Lava")) {
@@ -270,22 +265,24 @@ public class GameScreen implements Screen{
 
     private void spawnEnemy(){
         int[] levelDetails;
-        int type, spawnCount, monsterType, distance;
+        int type, spawnCount, monsterType, distance , pattern, heightAdjust;
         levelDetails = level.getLevelPattern(level.getPattern());
         type = levelDetails[0];
         spawnCount = levelDetails[1];
+        pattern = levelDetails[2];
         monsterType = levelDetails[3];
+        heightAdjust = levelDetails[4];
         distance = levelDetails[5];
 
         for(int i = 0; i <= spawnCount - 1; i++){
             Vector2 sPawnPos;
             if(type == 1){
-                sPawnPos = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, groundEnemyOject.textureWidth, groundEnemyOject.textureHeight, levelDetails);
+                sPawnPos = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, groundEnemyOject.getTextureWidth(), groundEnemyOject.getTextureHeight(), pattern, heightAdjust);
                 GroundEnemy item = groundEnemyPool.obtain();
                 item.init(monsterType, sPawnPos);
                 activeGroundEnemies.add(item);
             }else if(type == 2){
-                sPawnPos = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, flyingEnemyOject.getTextureWidth(), flyingEnemyOject.getTextureHeight(), levelDetails);
+                sPawnPos = enemySpawnPosition(i, enemyObject.SPAWN_OFFSET_FROM_CAM_X, flyingEnemyOject.getTextureWidth(), flyingEnemyOject.getTextureHeight(), pattern, heightAdjust);
                 FlyingEnemy item = flyingEnemyPool.obtain();
                 item.init(monsterType, sPawnPos);
                 activeFlyingEnemies.add(item);
@@ -315,6 +312,9 @@ public class GameScreen implements Screen{
                     }
                 } else if(cam.position.x - (cam.viewportWidth / 2) > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
+                    activeGroundEnemies.removeIndex(i);
+                    groundEnemyPool.free(groundEnemyRenderItem);
+                    activeGroundEnemies.removeValue(groundEnemyRenderItem, true);
                 }
             }
         }
@@ -333,30 +333,14 @@ public class GameScreen implements Screen{
                     }
                 } else if(cam.position.x - (cam.viewportWidth / 2) > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
+                    activeFlyingEnemies.removeIndex(i);
+                    flyingEnemyPool.free(flyingEnemyRenderItem);
+                    activeFlyingEnemies.removeValue(flyingEnemyRenderItem, true);
                 }
             }
         }
 
         //TODO: refactor, put in a function;
-        GroundEnemy groundEnemyItem;
-        for(int i = activeGroundEnemies.size; --i >= 0;){
-            groundEnemyItem = activeGroundEnemies.get(i);
-            if(!groundEnemyItem.isSpawned){
-                activeGroundEnemies.removeIndex(i);
-                groundEnemyPool.free(groundEnemyItem);
-                activeGroundEnemies.removeValue(groundEnemyItem, true);
-            }
-        }
-
-        FlyingEnemy flyingEnemyItem;
-        for(int i = activeFlyingEnemies.size; --i >= 0;){
-            flyingEnemyItem = activeFlyingEnemies.get(i);
-            if(!flyingEnemyItem.isSpawned){
-                activeFlyingEnemies.removeIndex(i);
-                flyingEnemyPool.free(flyingEnemyItem);
-                activeFlyingEnemies.removeValue(flyingEnemyItem, true);
-            }
-        }
     }
 
     private void spawnMarkerDistance(int enemyDistance){
@@ -364,10 +348,8 @@ public class GameScreen implements Screen{
     }
 
     //TODO refactor enemy spawn position
-    private Vector2 enemySpawnPosition(int counter, float offset, float width, float height, int[] levelDetails){
-        float heightAdjust = levelDetails[4];
-
-        switch(levelDetails[2]){
+    private Vector2 enemySpawnPosition(int counter, float offset, float width, float height, int pattern, float heightAdjust){
+        switch(pattern){
             case 1:
 //                pattern 1 horizontal (used for ground enemies mostly)
                 spawnPosition.x = spawnMarker + offset + (counter * (width));
@@ -439,18 +421,13 @@ public class GameScreen implements Screen{
                     game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
                 } else if(cam.position.x  - (cam.viewportWidth / 2) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
+                    powerUps.removeIndex(i);
+                    powerUpPool.free(powerUpItem);
+                    powerUps.removeValue(powerUpItem, true);
                 }
             }
         }
 
-        for(int i = powerUps.size; --i >= 0;){
-            powerUpItem = powerUps.get(i);
-            if(!powerUpItem.isSpawned){
-                powerUps.removeIndex(i);
-                powerUpPool.free(powerUpItem);
-                powerUps.removeValue(powerUpItem, true);
-            }
-        }
     }
 
     @Override

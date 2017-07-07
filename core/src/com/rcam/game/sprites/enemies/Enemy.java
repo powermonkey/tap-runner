@@ -110,7 +110,6 @@ public class Enemy {
     }
 
     public void checkCollision(Runner runner, Hud.Health hud) {
-//        Intersector.intersectRectangles(getBounds(), runner.getBounds(), intersection);
         Intersector.intersectRectangles(getOnTopBounds(), runner.getBounds(), intersectionOnTop);
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
 
