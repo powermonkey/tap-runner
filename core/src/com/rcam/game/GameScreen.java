@@ -165,8 +165,8 @@ public class GameScreen implements Screen{
         renderPowerUp();
 
         //render enemy
-        renderEnemy(activeGroundEnemies, delta);
-        renderEnemy(activeFlyingEnemies, delta);
+
+        renderEnemy(delta);
 
         if (gameMode.equals("The Ground Is Lava")) {
             //render ground
@@ -184,7 +184,7 @@ public class GameScreen implements Screen{
                 //update lava bounds
                 lava.update();
                 //check runner landing on lava
-                lava.checkLavaCollision(runner);
+                lava.checkLavaCollision(runner, hud.health);
                 if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTextureLava().getRegionWidth()) {
                     allLava = true;
                     lava.repositionLava(lastLavaPos);
@@ -261,7 +261,6 @@ public class GameScreen implements Screen{
                     }
                 }
             }
-//            hud.meter.update(runner.getSpeed().x);
             hud.distance.update();
         }
         game.batch.end();
@@ -300,20 +299,40 @@ public class GameScreen implements Screen{
         spawnMarkerDistance(distance);
     }
 
-    private void renderEnemy(Array<? extends Enemy> enemies, float delta){
-        for (Enemy enemy : enemies) {
-            if (enemy.isSpawned) {
-                if (cam.position.x + cam.viewportWidth  > enemy.getPosition().x + enemy.getTextureWidth()
-                        && cam.position.x - (cam.viewportWidth / 2) < enemy.getPosition().x + enemy.getTextureWidth()) {
-                    enemy.stateTime += Gdx.graphics.getDeltaTime();
-                    TextureRegion currentFrame = enemy.animation.getKeyFrame(enemy.stateTime, true);
-                    game.batch.draw(currentFrame, (int)enemy.getPosition().x, (int)enemy.getPosition().y);
-                    enemy.checkCollision(runner, hud);
+    private void renderEnemy(float delta){
+        GroundEnemy groundEnemyRenderItem;
+        for(int i = activeGroundEnemies.size; --i >= 0;){
+            groundEnemyRenderItem = activeGroundEnemies.get(i);
+            if(groundEnemyRenderItem.isSpawned){
+                if (cam.position.x + cam.viewportWidth  > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()
+                        && cam.position.x - (cam.viewportWidth / 2) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
+                    groundEnemyRenderItem.stateTime += Gdx.graphics.getDeltaTime();
+                    TextureRegion currentFrame = groundEnemyRenderItem.animation.getKeyFrame(groundEnemyRenderItem.stateTime, true);
+                    game.batch.draw(currentFrame, (int)groundEnemyRenderItem.getPosition().x, (int)groundEnemyRenderItem.getPosition().y);
+                    groundEnemyRenderItem.checkCollision(runner, hud.health);
                     if(!isPause) {
-                        enemy.update(delta);
+                        groundEnemyRenderItem.update(delta);
                     }
-                } else if(cam.position.x - (cam.viewportWidth / 2) > enemy.getPosition().x + enemy.getTextureWidth()) {
-                    enemy.isSpawned = false; //unspawn enemy when off camera
+                } else if(cam.position.x - (cam.viewportWidth / 2) > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
+                    groundEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
+                }
+            }
+        }
+        FlyingEnemy flyingEnemyRenderItem;
+        for(int i = activeFlyingEnemies.size; --i >= 0;){
+            flyingEnemyRenderItem = activeFlyingEnemies.get(i);
+            if(flyingEnemyRenderItem.isSpawned){
+                if (cam.position.x + cam.viewportWidth  > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()
+                        && cam.position.x - (cam.viewportWidth / 2) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
+                    flyingEnemyRenderItem.stateTime += Gdx.graphics.getDeltaTime();
+                    TextureRegion currentFrame = flyingEnemyRenderItem.animation.getKeyFrame(flyingEnemyRenderItem.stateTime, true);
+                    game.batch.draw(currentFrame, (int)flyingEnemyRenderItem.getPosition().x, (int)flyingEnemyRenderItem.getPosition().y);
+                    flyingEnemyRenderItem.checkCollision(runner, hud.health);
+                    if(!isPause) {
+                        flyingEnemyRenderItem.update(delta);
+                    }
+                } else if(cam.position.x - (cam.viewportWidth / 2) > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
+                    flyingEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
                 }
             }
         }
@@ -411,14 +430,15 @@ public class GameScreen implements Screen{
     public void renderPowerUp(){
         PowerUp powerUpItem;
 
-        for(PowerUp powerUp : powerUps){
-            if(powerUp.isSpawned) {
-                if (cam.position.x + cam.viewportWidth > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()
-                    && cam.position.x - (cam.viewportWidth / 2) < powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()) {
-                    powerUp.checkPowerUpCollision(runner, hud);
-                    game.batch.draw(powerUp.getAtlasRegion(), (int)powerUp.getPosition().x, (int)powerUp.getPosition().y);
-                } else if(cam.position.x  - (cam.viewportWidth / 2) > powerUp.getPosition().x + powerUp.getAtlasRegion().getRegionWidth()){
-                    powerUp.isSpawned = false; //unrender powerup when off camera
+        for(int i = powerUps.size; --i >= 0;){
+            powerUpItem = powerUps.get(i);
+            if(powerUpItem.isSpawned){
+                if (cam.position.x + cam.viewportWidth > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
+                        && cam.position.x - (cam.viewportWidth / 2) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
+                    powerUpItem.checkPowerUpCollision(runner, hud.health);
+                    game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
+                } else if(cam.position.x  - (cam.viewportWidth / 2) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
+                    powerUpItem.isSpawned = false; //unrender powerup when off camera
                 }
             }
         }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.rcam.game.GameAssetLoader;
+import com.rcam.game.Hud;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
 
@@ -67,13 +68,14 @@ public class Lava {
         damage += damageIncrease;
     }
 
-    public void checkLavaCollision(Runner runner){
+    public void checkLavaCollision(Runner runner, Hud.Health hud){
         if(getBounds().overlaps(runner.getBounds())){
             if(runner.health > 0 && !runner.lavaInvulnerable && !runner.isDead && runner.isOnGround){
                 if(prefs.getBoolean("SoundOn")) {
                     lavaBurnSound.play();
                 }
                 runner.health -= getDamage();
+                hud.update();
                 touched = true;
                 runner.lavaInvulnerable = true;
                 runner.setLavaDamageTimeStart(millis());
