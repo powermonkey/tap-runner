@@ -33,7 +33,6 @@ public class Hud extends Table{
     Skin cleanCrispySkin, arcadeSkin;
     PauseButton pauseButton;
     JumpButton jumpButton;
-    Distance distance;
     public Health health;
     Label healthLabel, speedMeterLabel;
     GameScreen gameScreen;
@@ -69,7 +68,6 @@ public class Hud extends Table{
         rootTable.setFillParent(true);
         stage = new Stage(new FitViewport(480, 800));
         distanceValue = new StringBuilder();
-        distance = new Distance(runner);
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner, gameScreen);
         jumpButton = new JumpButton(runner);
@@ -84,8 +82,8 @@ public class Hud extends Table{
 
         Gdx.input.setInputProcessor(stage);
 
-        distancetable.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
-        distancetable.row();
+//        distancetable.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
+//        distancetable.row();
 
         indicatorstable.add(healthLabel).width(80).left().padLeft(2).padBottom(2);
         indicatorstable.row();
@@ -98,8 +96,6 @@ public class Hud extends Table{
         controlsTable.row();
         controlsTable.setBackground(patchDrawableGreen);
 
-        rootTable.add(distancetable).width(TapRunner.WIDTH).center().expand();
-        rootTable.row();
         rootTable.add(controlsTable).width(TapRunner.WIDTH).padBottom(20).height(120).expandX();
         rootTable.row();
         rootTable.center().bottom();
@@ -126,29 +122,6 @@ public class Hud extends Table{
         }
     }
 
-    public class Distance{
-        Label indicator;
-        Runner runr;
-
-        public Distance(final Runner runner){
-            this.runr = runner;
-            indicator = new Label(getText(), getArcadeSkin(), "default");
-        }
-
-        public Label getIndicator(){
-            return indicator;
-        }
-
-        public String getText(){
-            distanceValue.delete(0, distanceValue.length());
-            distanceValue.append(runr.indicatePosition()).append(" m");
-            return distanceValue.toString();
-        }
-
-        public void update(){
-            indicator.setText(getText());
-        }
-    }
 
 
     public class PauseButton{

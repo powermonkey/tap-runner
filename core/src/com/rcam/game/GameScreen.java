@@ -5,11 +5,16 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Lava;
 import com.rcam.game.sprites.PowerUp;
@@ -59,6 +64,10 @@ public class GameScreen implements Screen{
     boolean isPause, allLava;
     Vector2 spawnPosition;
     TextureAtlas.AtlasRegion bg;
+    Skin arcadeSkin;
+    StringBuilder distanceValue;
+    BitmapFont distance;
+    GlyphLayout glyphLayout;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -68,7 +77,7 @@ public class GameScreen implements Screen{
         runner = new Runner();
 
         bgCam = new OrthographicCamera();
-        bgCam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
+        bgCam.setToOrtho(false);
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
@@ -111,6 +120,8 @@ public class GameScreen implements Screen{
         rand = new Random();
         level = new Level();
 
+        arcadeSkin = GameAssetLoader.arcadeSkin;
+
         prefs = Gdx.app.getPreferences("TapRunner");
 
         if (!prefs.contains("GameMode")) {
@@ -134,6 +145,10 @@ public class GameScreen implements Screen{
         keys = new KeyboardInput(runner);
 
         spawnPosition = new Vector2();
+        distanceValue = new StringBuilder();
+        distance = arcadeSkin.getFont("font");
+        glyphLayout = new GlyphLayout();
+
     }
 
     public void handleKeyboardInput() {
@@ -151,7 +166,12 @@ public class GameScreen implements Screen{
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
         game.batch.begin();
-        game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
+        game.batch.draw(bg, 0, 190, TapRunner.WIDTH, TapRunner.HEIGHT - 130);
+
+        //update and render distance indicator
+        glyphLayout.setText(distance, getText());
+        distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) / 2, TapRunner.HEIGHT / 2 + 180);
+
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
@@ -256,7 +276,6 @@ public class GameScreen implements Screen{
                     }
                 }
             }
-            hud.distance.update();
         }
         game.batch.end();
         hud.render();
@@ -430,6 +449,12 @@ public class GameScreen implements Screen{
 
     }
 
+    public String getText(){
+        distanceValue.delete(0, distanceValue.length());
+        distanceValue.append(runner.indicatePosition()).append(" m");
+        return distanceValue.toString();
+    }
+
     @Override
     public void show() {
 
@@ -460,5 +485,6 @@ public class GameScreen implements Screen{
         GameAssetLoader.dispose();
         runner.dispose();
         hud.dispose();
+        distance.dispose();
     }
 }

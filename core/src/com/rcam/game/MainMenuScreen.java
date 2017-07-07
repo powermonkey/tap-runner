@@ -54,8 +54,6 @@ public class MainMenuScreen implements Screen {
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         bg = GameAssetLoader.atlas.findRegion("background");
         ground = GameAssetLoader.atlas.findRegion("ground");
-        cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
-        arcadeSkin = GameAssetLoader.arcadeSkin;
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
         blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         blipSelectSound = GameAssetLoader.blipSelect;
