@@ -155,7 +155,6 @@ public class Hud extends Table{
         ImageButton pauseButton;
         ImageButton.ImageButtonStyle buttonStyle, unpauseStyle;
         TapRunner game;
-//        Group pauseGroup;
         Table rtable;
 
         public PauseButton(TapRunner game, GameScreen gameScreen){
@@ -215,9 +214,8 @@ public class Hud extends Table{
             rtable = new Table();
             rtable.setFillParent(true);
             pauseTable = new Table();
-//            pauseGroup = new Group();
 
-            labelFont = arcadeSkin.getFont("font");
+            BitmapFont labelFont = arcadeSkin.getFont("screen");
             TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
             buttonStyle.up = patchDrawableYellow;
             buttonStyle.down = patchDrawableYellow;
@@ -248,7 +246,6 @@ public class Hud extends Table{
             rtable.add(pauseTable).width(TapRunner.WIDTH / 2).center().center().expandX();
             rtable.row();
             rtable.row();
-//            pauseGroup.addActor(rtable);
             stage.addActor(rtable);
         }
 

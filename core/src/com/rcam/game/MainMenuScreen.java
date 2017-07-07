@@ -84,7 +84,7 @@ public class MainMenuScreen implements Screen {
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
-        BitmapFont labelFont = arcadeSkin.getFont("font");
+        BitmapFont labelFont = arcadeSkin.getFont("screen");
 
         buttonStyle.up = patchDrawableYellow;
         buttonStyle.down = patchDrawableYellow;

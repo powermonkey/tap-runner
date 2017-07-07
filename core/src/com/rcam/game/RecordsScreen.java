@@ -68,7 +68,7 @@ public class RecordsScreen implements Screen{
         blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
-        BitmapFont labelFont = arcadeSkin.getFont("font");
+        BitmapFont labelFont = arcadeSkin.getFont("screen");
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;

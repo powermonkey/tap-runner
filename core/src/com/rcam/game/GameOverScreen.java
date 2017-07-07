@@ -66,7 +66,7 @@ public class GameOverScreen implements Screen{
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
 
-        BitmapFont labelFont = arcadeSkin.getFont("font");
+        BitmapFont labelFont = arcadeSkin.getFont("screen");
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
