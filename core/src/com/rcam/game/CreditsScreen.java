@@ -28,7 +28,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class CreditsScreen implements Screen {
     final TapRunner game;
     OrthographicCamera cam;
-    Table rootTable, table, table2, table3, table4, table5, table6, table7, table8;
+    Table rootTable, table, table2, table3, table4, table5, table6, table7, table8, table9;
     Skin arcadeSkin, cleanCrispySkin;
     Stage stage;
     TextureAtlas.AtlasRegion ground, bg, blockYellow, blockGreen;
@@ -60,6 +60,7 @@ public class CreditsScreen implements Screen {
         table6 = new Table();
         table7 = new Table();
         table8 = new Table();
+        table9 = new Table();
 
         prefs = Gdx.app.getPreferences("TapRunner");
 
@@ -144,10 +145,8 @@ public class CreditsScreen implements Screen {
         Label skinLabel2 = new Label("Arcade Skin by ", arcadeSkin, "screen");
         Label skinCredit = new Label("Raymond Raeleus Buckley", arcadeSkin, "screen");
         Label skinLicense = new Label("CC-BY 4.0", arcadeSkin, "screen");
-        Label skinFontLicense = new Label("Font license for Arcade Skin", arcadeSkin, "screen");
         skinCredit.setColor(Color.BLUE);
         skinLicense.setColor(Color.BLUE);
-        skinFontLicense.setColor(Color.BLUE);
 
         skinCredit.addListener(new ClickListener(){
             @Override
@@ -159,12 +158,6 @@ public class CreditsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.net.openURI("https://creativecommons.org/licenses/by/4.0/");
-            }
-        });
-        skinFontLicense.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.net.openURI("https://github.com/czyzby/gdx-skins/blob/master/arcade/RussoOne.txt");
             }
         });
 
@@ -209,6 +202,26 @@ public class CreditsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.net.openURI("https://creativecommons.org/licenses/by/3.0/");
+            }
+        });
+
+        //fonts
+        Label fontLabel = new Label("Fonts by ", arcadeSkin, "screen");
+        Label fontCredit1 = new Label("Codeman38", arcadeSkin, "screen");
+        Label fontCredit2 = new Label("Russo", arcadeSkin, "screen");
+        fontCredit1.setColor(Color.BLUE);
+        fontCredit2.setColor(Color.BLUE);
+
+        fontCredit1.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.net.openURI("http://www.zone38.net/");
+            }
+        });
+        fontCredit2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.net.openURI("https://github.com/czyzby/gdx-skins/blob/master/arcade/RussoOne.txt");
             }
         });
 
@@ -282,8 +295,6 @@ public class CreditsScreen implements Screen {
         table5.row();
         table5.add(skinLicense);
         table5.row();
-        table5.add(skinFontLicense);
-        table5.row();
         table5.center().center().pad(10);
         table5.setBackground(new NinePatchDrawable(patch));
 
@@ -302,16 +313,25 @@ public class CreditsScreen implements Screen {
         table6.center().center().pad(10);
         table6.setBackground(new NinePatchDrawable(patch));
 
-        table7.add(testerLabel);
+        table7.add(fontLabel);
         table7.row();
-        table7.add(testerCredit);
+        table7.add(fontCredit1);
+        table7.row();
+        table7.add(fontCredit2);
         table7.row();
         table7.center().center().pad(10);
         table7.setBackground(new NinePatchDrawable(patch));
 
-        table8.add(goBackButton).pad(5).width(200).height(50).expandX().pad(15);
+        table8.add(testerLabel);
         table8.row();
+        table8.add(testerCredit);
+        table8.row();
+        table8.center().center().pad(10);
         table8.setBackground(new NinePatchDrawable(patch));
+
+        table9.add(goBackButton).pad(5).width(200).height(50).expandX().pad(15);
+        table9.row();
+        table9.setBackground(new NinePatchDrawable(patch));
 
         rootTable.add(table).fillX();
         rootTable.row();
@@ -328,6 +348,8 @@ public class CreditsScreen implements Screen {
         rootTable.add(table7).fillX();
         rootTable.row();
         rootTable.add(table8).fillX();
+        rootTable.row();
+        rootTable.add(table9).fillX();
         rootTable.row();
         rootTable.center().center();
 
