@@ -44,7 +44,7 @@ public class Hud extends Table{
     NinePatch patchGreen, patchYellow;
     BitmapFont labelFont;
     StringBuilder distanceValue;
-
+    BitmapFont buttonFonts;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
@@ -78,7 +78,7 @@ public class Hud extends Table{
         healthLabel = new Label("ENERGY", fontStyle);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
         prefs = Gdx.app.getPreferences("TapRunner");
-
+        buttonFonts = GameAssetLoader.buttonFonts;
 
 //        stage.setDebugAll(true);
 
@@ -215,11 +215,10 @@ public class Hud extends Table{
             rtable.setFillParent(true);
             pauseTable = new Table();
 
-            BitmapFont labelFont = arcadeSkin.getFont("screen");
             TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
             buttonStyle.up = patchDrawableYellow;
             buttonStyle.down = patchDrawableYellow;
-            buttonStyle.font = labelFont;
+            buttonStyle.font = buttonFonts;
 
             continueButton = new TextButton("Continue", buttonStyle);
             continueButtonListener(continueButton);

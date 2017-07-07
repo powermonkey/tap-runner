@@ -40,6 +40,7 @@ public class GameOverScreen implements Screen{
     String gameMode;
     TextureAtlas.AtlasRegion bg, blockYellow, blockGreen;
     Sound blipSelectSound, newGameblipSound;
+    BitmapFont buttonFonts;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -66,11 +67,11 @@ public class GameOverScreen implements Screen{
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
 
-        BitmapFont labelFont = arcadeSkin.getFont("screen");
+        buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
-        buttonStyle.font = labelFont;
+        buttonStyle.font = buttonFonts;
 
         currentLabel = new Label("Current:", arcadeSkin, "default");
         current = new Label(Integer.toString(runner.indicatePosition()) + " m", arcadeSkin, "default");

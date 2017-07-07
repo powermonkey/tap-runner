@@ -37,6 +37,7 @@ public class RecordsScreen implements Screen{
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow, blockGreen, ground;
     Sound blipSelectSound;
+    BitmapFont buttonFonts;
 
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
@@ -68,11 +69,11 @@ public class RecordsScreen implements Screen{
         blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
-        BitmapFont labelFont = arcadeSkin.getFont("screen");
+        buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
-        buttonStyle.font = labelFont;
+        buttonStyle.font = buttonFonts;
         goBackButton = new TextButton("Main Menu", buttonStyle);
         goBackButtonListener(goBackButton);
 

@@ -13,7 +13,7 @@ public class GameAssetLoader {
     public static TextureAtlas atlas;
     public static Skin cleanCrispySkin, arcadeSkin;
     public static Sound blipSelect, newGameblip, jump, hurt, powerUp, speedAdjust, lavaBurn;
-    public static BitmapFont fonts;
+    public static BitmapFont fonts, buttonFonts;
     static GameAssetManager manager;
 
     public static void load() {
@@ -30,6 +30,7 @@ public class GameAssetLoader {
         arcadeSkin = manager.manager.get("skin/arcade-ui/arcade-ui.json");
 
         fonts = manager.manager.get("fonts/comfortaa.fnt");
+        buttonFonts = manager.manager.get("fonts/prstart.fnt");
 
         blipSelect = manager.manager.get("sounds/EC_Collect.wav");
         newGameblip = manager.manager.get("sounds/Randomize54.wav");

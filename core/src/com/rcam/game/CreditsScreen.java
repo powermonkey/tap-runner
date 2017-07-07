@@ -35,6 +35,7 @@ public class CreditsScreen implements Screen {
     TextButton goBackButton;
     Sound blipSelectSound;
     static Preferences prefs;
+    BitmapFont buttonFonts;
 
     public CreditsScreen(final TapRunner gam){
         game = gam;
@@ -220,11 +221,11 @@ public class CreditsScreen implements Screen {
         blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
-        BitmapFont labelFont = arcadeSkin.getFont("screen");
+        buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
-        buttonStyle.font = labelFont;
+        buttonStyle.font = buttonFonts;
         goBackButton = new TextButton("Main Menu", buttonStyle);
 
         goBackButton.addListener(new InputListener(){

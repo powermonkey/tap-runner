@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -41,6 +40,7 @@ public class SettingsScreen implements Screen {
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow, blockGreen;
     Sound blipSelectSound;
+    BitmapFont buttonFonts;
 
     public SettingsScreen(final TapRunner gam){
         this.game = gam;
@@ -72,11 +72,11 @@ public class SettingsScreen implements Screen {
         blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
         NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
-        BitmapFont labelFont = arcadeSkin.getFont("screen");
+        buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
-        buttonStyle.font = labelFont;
+        buttonStyle.font = buttonFonts;
         okay = new TextButton("Okay", buttonStyle);
         okayButtonListener(okay);
 

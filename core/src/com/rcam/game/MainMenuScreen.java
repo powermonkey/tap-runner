@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
     Boolean soundOn;
     Label title;
     Image runner;
-    BitmapFont myFont;
+    BitmapFont myFont, buttonFonts;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
@@ -62,6 +62,7 @@ public class MainMenuScreen implements Screen {
         newGameblipSound = GameAssetLoader.newGameblip;
         runnerJump = GameAssetLoader.atlas.findRegion("jump");
         myFont = GameAssetLoader.fonts;
+        buttonFonts = GameAssetLoader.buttonFonts;
 
         stage = new Stage(new FitViewport(480, 800));
         Gdx.input.setInputProcessor(stage);
@@ -84,11 +85,10 @@ public class MainMenuScreen implements Screen {
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
-        BitmapFont labelFont = arcadeSkin.getFont("screen");
 
         buttonStyle.up = patchDrawableYellow;
         buttonStyle.down = patchDrawableYellow;
-        buttonStyle.font = labelFont;
+        buttonStyle.font = buttonFonts;
 
         newGame = new TextButton("New Game", buttonStyle);
         options = new TextButton("Options", buttonStyle);
