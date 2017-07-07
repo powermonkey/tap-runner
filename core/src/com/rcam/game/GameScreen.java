@@ -77,7 +77,7 @@ public class GameScreen implements Screen{
         runner = new Runner();
 
         bgCam = new OrthographicCamera();
-        bgCam.setToOrtho(false);
+        bgCam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
@@ -166,7 +166,7 @@ public class GameScreen implements Screen{
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
         game.batch.begin();
-        game.batch.draw(bg, 0, 190, TapRunner.WIDTH, TapRunner.HEIGHT - 130);
+        game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         //update and render distance indicator
         glyphLayout.setText(distance, getText());
         distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) / 2, TapRunner.HEIGHT / 2 + 180);
