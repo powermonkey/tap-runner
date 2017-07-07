@@ -167,11 +167,9 @@ public class GameScreen implements Screen{
         game.batch.setProjectionMatrix(bgCam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 190, TapRunner.WIDTH, TapRunner.HEIGHT - 130);
-
         //update and render distance indicator
         glyphLayout.setText(distance, getText());
         distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) / 2, TapRunner.HEIGHT / 2 + 180);
-
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
@@ -331,9 +329,6 @@ public class GameScreen implements Screen{
                     }
                 } else if(cam.position.x - (cam.viewportWidth / 2) > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
-                    activeGroundEnemies.removeIndex(i);
-                    groundEnemyPool.free(groundEnemyRenderItem);
-                    activeGroundEnemies.removeValue(groundEnemyRenderItem, true);
                 }
             }
         }
@@ -352,14 +347,30 @@ public class GameScreen implements Screen{
                     }
                 } else if(cam.position.x - (cam.viewportWidth / 2) > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
-                    activeFlyingEnemies.removeIndex(i);
-                    flyingEnemyPool.free(flyingEnemyRenderItem);
-                    activeFlyingEnemies.removeValue(flyingEnemyRenderItem, true);
                 }
             }
         }
 
         //TODO: refactor, put in a function;
+        GroundEnemy groundEnemyItem;
+        for(int i = activeGroundEnemies.size; --i >= 0;){
+            groundEnemyItem = activeGroundEnemies.get(i);
+            if(!groundEnemyItem.isSpawned){
+                activeGroundEnemies.removeIndex(i);
+                groundEnemyPool.free(groundEnemyItem);
+                activeGroundEnemies.removeValue(groundEnemyItem, true);
+            }
+        }
+
+        FlyingEnemy flyingEnemyItem;
+        for(int i = activeFlyingEnemies.size; --i >= 0;){
+            flyingEnemyItem = activeFlyingEnemies.get(i);
+            if(!flyingEnemyItem.isSpawned){
+                activeFlyingEnemies.removeIndex(i);
+                flyingEnemyPool.free(flyingEnemyItem);
+                activeFlyingEnemies.removeValue(flyingEnemyItem, true);
+            }
+        }
     }
 
     private void spawnMarkerDistance(int enemyDistance){
@@ -440,10 +451,16 @@ public class GameScreen implements Screen{
                     game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
                 } else if(cam.position.x  - (cam.viewportWidth / 2) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
-                    powerUps.removeIndex(i);
-                    powerUpPool.free(powerUpItem);
-                    powerUps.removeValue(powerUpItem, true);
                 }
+            }
+        }
+
+        for(int i = powerUps.size; --i >= 0;){
+            powerUpItem = powerUps.get(i);
+            if(!powerUpItem.isSpawned){
+                powerUps.removeIndex(i);
+                powerUpPool.free(powerUpItem);
+                powerUps.removeValue(powerUpItem, true);
             }
         }
 
