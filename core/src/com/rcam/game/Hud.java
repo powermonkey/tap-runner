@@ -44,6 +44,7 @@ public class Hud extends Table{
     BitmapFont labelFont;
     StringBuilder distanceValue;
     BitmapFont buttonFonts;
+    PauseMenu pauseMenu;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
@@ -61,6 +62,7 @@ public class Hud extends Table{
         jumpSound = GameAssetLoader.jump;
         speedAdjustSound = GameAssetLoader.speedAdjust;
         newGameblipSound = GameAssetLoader.newGameblip;
+        buttonFonts = GameAssetLoader.buttonFonts;
         rootTable = new Table();
         indicatorstable = new Table();
         controlsTable = new Table();
@@ -69,13 +71,14 @@ public class Hud extends Table{
         distanceValue = new StringBuilder();
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner, gameScreen);
+        pauseMenu = new PauseMenu(tapRunner, pauseButton);
         jumpButton = new JumpButton(runner);
         labelFont = arcadeSkin.getFont("screen");
         Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
         healthLabel = new Label("ENERGY", fontStyle);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
         prefs = Gdx.app.getPreferences("TapRunner");
-        buttonFonts = GameAssetLoader.buttonFonts;
+
 
 //        stage.setDebugAll(true);
 
@@ -118,13 +121,10 @@ public class Hud extends Table{
         }
     }
 
-
-
     public class PauseButton{
         ImageButton pauseButton;
         ImageButton.ImageButtonStyle buttonStyle, unpauseStyle;
         TapRunner game;
-        Table rtable;
 
         public PauseButton(TapRunner game, GameScreen gameScreen){
             this.game = game;
@@ -159,14 +159,14 @@ public class Hud extends Table{
                         }
                         pauseButton.setStyle(unpauseStyle);
                         gameScreen.isPause = true;
-                        pauseGame();
+                        pauseMenu.pauseTable.setVisible(true);
                     }else{
                         if(prefs.getBoolean("SoundOn")) {
                             blipSelectSound.play(1.0f);
                         }
                         pauseButton.setStyle(buttonStyle);
                         gameScreen.isPause = false;
-                        rtable.remove();
+                        pauseMenu.pauseTable.setVisible(false);
                     }
                     return true;
                 }
@@ -177,11 +177,22 @@ public class Hud extends Table{
             });
         }
 
-        public void pauseGame(){
-            Table pauseTable;
-            TextButton continueButton, newGameButton, mainMenuButton, exitButton;
-            rtable = new Table();
-            rtable.setFillParent(true);
+        public ImageButton getPauseButton(){
+            return pauseButton;
+        }
+    }
+
+    public class PauseMenu{
+        Table pauseTable, pauseRootTable;
+        TextButton continueButton, newGameButton, mainMenuButton, exitButton;
+        TapRunner game;
+        PauseButton pauseButton;
+
+        public PauseMenu(TapRunner tapRunner, final PauseButton pauseButton){
+            this.game = tapRunner;
+            this.pauseButton = pauseButton;
+            pauseRootTable = new Table();
+            pauseRootTable.setFillParent(true);
             pauseTable = new Table();
 
             TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
@@ -201,6 +212,7 @@ public class Hud extends Table{
             exitButton = new TextButton("Exit", buttonStyle);
             exitGameButtonListener(exitButton);
 
+            pauseTable.setVisible(false);
             pauseTable.add(continueButton).center().uniform().width(200).height(50).expandX().padTop(20);
             pauseTable.row();
             pauseTable.add(newGameButton).center().uniform().width(200).height(50).expandX().padTop(10);
@@ -211,10 +223,9 @@ public class Hud extends Table{
             pauseTable.row();
             pauseTable.setBackground(patchDrawableGreen);
 
-            rtable.add(pauseTable).width(TapRunner.WIDTH / 2).center().center().expandX();
-            rtable.row();
-            rtable.row();
-            stage.addActor(rtable);
+            pauseRootTable.add(pauseTable).width(TapRunner.WIDTH / 2).center().center().expandX();
+            pauseRootTable.row();
+            stage.addActor(pauseRootTable);
         }
 
         public void loadInterstitialAd(){
@@ -246,9 +257,9 @@ public class Hud extends Table{
                     if(prefs.getBoolean("SoundOn")) {
                         blipSelectSound.play();
                     }
-                    pauseButton.setStyle(buttonStyle);
+                    pauseButton.getPauseButton().setStyle(pauseButton.buttonStyle);
                     gameScreen.isPause = false;
-                    rtable.remove();
+                    pauseTable.setVisible(false);
                     return true;
                 }
 
@@ -267,6 +278,7 @@ public class Hud extends Table{
                     }
 //                    showInterstitialAd();
 //                    loadInterstitialAd();
+                    pauseTable.setVisible(false);
                     game.setScreen(new GameScreen(game));
                     return true;
                 }
@@ -310,9 +322,6 @@ public class Hud extends Table{
             });
         }
 
-        public ImageButton getPauseButton(){
-            return pauseButton;
-        }
     }
 
     public class JumpButton{
