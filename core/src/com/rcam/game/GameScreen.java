@@ -18,6 +18,7 @@ import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Lava;
 import com.rcam.game.sprites.PowerUp;
 import com.rcam.game.sprites.Runner;
+import com.rcam.game.sprites.Smoke;
 import com.rcam.game.sprites.enemies.Enemy;
 import com.rcam.game.sprites.enemies.FlyingEnemy;
 import com.rcam.game.sprites.enemies.GroundEnemy;
@@ -66,6 +67,7 @@ public class GameScreen implements Screen{
     StringBuilder distanceValue;
     BitmapFont distance;
     GlyphLayout glyphLayout;
+    Smoke smoke;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -134,6 +136,7 @@ public class GameScreen implements Screen{
             groundDisposed = false;
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 3));
+            smoke = new Smoke();
         }
 
         lastLavaPos = new Lava().getTextureLava().getRegionWidth() * 4;
@@ -239,6 +242,10 @@ public class GameScreen implements Screen{
             game.batch.draw(runner.getRegionJump(),(int) runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isIdle) {
             game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
+        }
+
+        if(runner.isSmoking) {
+            renderSmoke();
         }
 
         if(!isPause) {
@@ -477,6 +484,14 @@ public class GameScreen implements Screen{
             }
         }
 
+    }
+
+    public void renderSmoke(){
+        smoke.stateTime += Gdx.graphics.getDeltaTime();
+        TextureRegion currentSmokeFrameSlow = smoke.smokeAnimationSlow.getKeyFrame(runner.stateTime, true);
+        TextureRegion currentSmokeFrameFast = smoke.smokeAnimationFast.getKeyFrame(runner.stateTime, true);
+        game.batch.draw(currentSmokeFrameSlow, (int)runner.getPosition().x - 20, (int)runner.getPosition().y - 10);
+        game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, (int)runner.getPosition().y + 20);
     }
 
     public String getText(){

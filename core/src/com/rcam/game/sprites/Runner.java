@@ -36,12 +36,11 @@ public class Runner {
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public float health;
     private long startingTime, lavaDamageTimeStart;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, lavaInvulnerable, isIdle;
-    Texture runnerTexture;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, lavaInvulnerable, isIdle, isSmoking;
     Vector2 position, velocity, speed;
     TextureAtlas atlas;
     TextureAtlas.AtlasRegion regionStand, regionJump, regionDeath;
-    Array<TextureAtlas.AtlasRegion> regionRun;
+    Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke;
     public float groundLevel, tempGround;
     private Rectangle bounds, intersectionBounds;
     static Preferences prefs;
@@ -78,6 +77,10 @@ public class Runner {
         startingTime = millis();
 
         prefs = Gdx.app.getPreferences("TapRunner");
+
+        if(prefs.getString("GameMode").equals("The Ground Is Lava")){
+            isSmoking = false;
+        }
 
         if (!prefs.contains("BestDistanceNormalMode")) {
             prefs.putInteger("BestDistanceNormalMode", 0);
@@ -135,6 +138,7 @@ public class Runner {
             if(timeSinceMillis(lavaDamageTimeStart) > 1000){
                 lavaDamageTimeStart = millis();
                 lavaInvulnerable = false;
+                isSmoking = false;
             }
         }
 

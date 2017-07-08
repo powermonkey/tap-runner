@@ -75,6 +75,7 @@ public class Lava {
                     lavaBurnSound.play();
                 }
                 runner.health -= getDamage();
+                runner.isSmoking = true;
                 hud.update();
                 touched = true;
                 runner.lavaInvulnerable = true;
