@@ -51,7 +51,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final TapRunner gam){
         game = gam;
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2  + 50);
         bg = GameAssetLoader.atlas.findRegion("background");
         ground = GameAssetLoader.atlas.findRegion("ground");
         blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");

@@ -16,14 +16,10 @@ public class Ground {
 
     public Ground(){
         ground = GameAssetLoader.atlas.findRegion("ground");
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
-//        ground = atlas.findRegion("ground");
     }
 
     public Ground(float x){
         ground = GameAssetLoader.atlas.findRegion("ground");
-//        atlas = new TextureAtlas("packedimages/runner.atlas");
-//        ground = atlas.findRegion("ground");
         posGround = new Vector2(x, 0);
     }
 
