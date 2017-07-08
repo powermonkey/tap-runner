@@ -124,4 +124,12 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 			}
 		});
 	}
+
+	@Override
+	public void onDestroy() {
+		if (bannerAd != null) {
+			bannerAd.destroy();
+		}
+		super.onDestroy();
+	}
 }

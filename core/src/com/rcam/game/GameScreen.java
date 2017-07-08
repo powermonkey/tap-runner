@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -38,7 +37,6 @@ public class GameScreen implements Screen{
     float spawnMarker = 50;
     float powerUpMarker = 350;
     float lastLavaPos = 0;
-    float lastGroundPos = 0;
     static Preferences prefs;
 
     OrthographicCamera cam, bgCam;
@@ -140,7 +138,6 @@ public class GameScreen implements Screen{
         lastLavaPos = new Lava().getTextureLava().getRegionWidth() * 4;
         grounds.add(new Ground(0));
         grounds.add(new Ground(new Ground().getTextureGround().getRegionWidth()));
-        lastGroundPos = new Ground().getTextureGround().getRegionWidth();
         hud = new Hud(gam, runner, this);
         keys = new KeyboardInput(runner);
 
@@ -166,7 +163,7 @@ public class GameScreen implements Screen{
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
         game.batch.begin();
-        game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen
+        game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
         //update and render distance indicator
         glyphLayout.setText(distance, getText());
         distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) / 2, TapRunner.HEIGHT / 2 + 180 );
