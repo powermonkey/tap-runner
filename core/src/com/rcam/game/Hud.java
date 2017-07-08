@@ -29,7 +29,7 @@ import com.rcam.game.sprites.Runner;
 
 public class Hud extends Table{
     Stage stage;
-    Table rootTable, indicatorstable, distancetable, controlsTable;
+    Table rootTable, indicatorstable, controlsTable;
     Skin cleanCrispySkin, arcadeSkin;
     PauseButton pauseButton;
     JumpButton jumpButton;
@@ -63,7 +63,6 @@ public class Hud extends Table{
         newGameblipSound = GameAssetLoader.newGameblip;
         rootTable = new Table();
         indicatorstable = new Table();
-        distancetable = new Table();
         controlsTable = new Table();
         rootTable.setFillParent(true);
         stage = new Stage(new FitViewport(480, 800));
@@ -81,9 +80,6 @@ public class Hud extends Table{
 //        stage.setDebugAll(true);
 
         Gdx.input.setInputProcessor(stage);
-
-//        distancetable.add(distance.getIndicator()).padBottom(120).colspan(2).expand().center().center();
-//        distancetable.row();
 
         indicatorstable.add(healthLabel).width(80).left().padLeft(2).padBottom(2);
         indicatorstable.row();

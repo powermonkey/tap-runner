@@ -59,7 +59,7 @@ public class GameScreen implements Screen{
     private GroundEnemy groundEnemyOject;
     private FlyingEnemy flyingEnemyOject;
     Enemy enemyObject;
-    boolean isPause, allLava;
+    boolean isPause, groundRendered, groundDisposed;
     Vector2 spawnPosition;
     TextureAtlas.AtlasRegion bg;
     Skin arcadeSkin;
@@ -130,7 +130,8 @@ public class GameScreen implements Screen{
         gameMode = prefs.getString("GameMode");
 
         if(gameMode.equals("The Ground Is Lava")){
-            allLava = false;
+            groundRendered = false;
+            groundDisposed = false;
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 3));
         }
@@ -180,33 +181,48 @@ public class GameScreen implements Screen{
 
         if (gameMode.equals("The Ground Is Lava")) {
             //render ground
-            if(!allLava) {
-                for (Ground ground : grounds) {
-                    if (cam.position.x - (cam.viewportWidth / 2) < ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
-                        game.batch.draw(ground.getTextureGround(), (int) ground.getPosGround().x, (int) ground.getPosGround().y);
+            Ground groundItem;
+            if(!groundRendered) {
+                for(int i = grounds.size; --i >= 0;){
+                    groundItem = grounds.get(i);
+                    if (cam.position.x - (cam.viewportWidth / 2) < groundItem.getPosGround().x + groundItem.getTextureGround().getRegionWidth()) {
+                        game.batch.draw(groundItem.getTextureGround(), (int) groundItem.getPosGround().x, (int) groundItem.getPosGround().y);
                     }
                 }
+            }else if(groundDisposed){
+                for(int i = grounds.size; --i >= 0;){
+                    groundItem = grounds.get(i);
+                    grounds.removeIndex(i);
+                    grounds.removeValue(groundItem, true);
+                }
+                groundDisposed = false;
             }
 
             //render lava
-            for (Lava lava : lavas) {
-                game.batch.draw(lava.getTextureLava(), (int)lava.getPosLava().x, (int)lava.getPosLava().y);
+            Lava lavaItem;
+            for(int i = 0; i < lavas.size; i++){
+                lavaItem = lavas.get(i);
+                game.batch.draw(lavaItem.getTextureLava(), lavaItem.getPosLava().x, lavaItem.getPosLava().y);
                 //update lava bounds
-                lava.update();
+                lavaItem.update();
                 //check runner landing on lava
-                lava.checkLavaCollision(runner, hud.health);
-                if (cam.position.x - (cam.viewportWidth / 2) > lava.getPosLava().x + lava.getTextureLava().getRegionWidth()) {
-                    allLava = true;
-                    lava.repositionLava(lastLavaPos);
-                    lastLavaPos = lava.getPosLava().x + (lava.getTextureLava().getRegionWidth());
+                lavaItem.checkLavaCollision(runner, hud.health);
+                if (cam.position.x - (cam.viewportWidth / 2) > lavaItem.getPosLava().x + lavaItem.getTextureLava().getRegionWidth()) {
+                    groundDisposed = true;
+                    groundRendered = true;
+                    lavaItem.repositionLava(lastLavaPos);
+                    lastLavaPos = lavaItem.getPosLava().x + (lavaItem.getTextureLava().getRegionWidth());
                 }
             }
+
         } else {
             //render ground
-            for (Ground ground : grounds) {
-                game.batch.draw(ground.getTextureGround(), (int)ground.getPosGround().x, (int)ground.getPosGround().y);
-                if (cam.position.x - (cam.viewportWidth / 2) > ground.getPosGround().x + ground.getTextureGround().getRegionWidth()) {
-                    ground.repositionGround(ground.getPosGround().x + (ground.getTextureGround().getRegionWidth() * 2));
+            Ground groundItem;
+            for(int i = 0; i < grounds.size; i++){
+                groundItem = grounds.get(i);
+                game.batch.draw(groundItem.getTextureGround(), (int) groundItem.getPosGround().x, (int) groundItem.getPosGround().y);
+                if (cam.position.x - (cam.viewportWidth / 2) > groundItem.getPosGround().x + groundItem.getTextureGround().getRegionWidth()) {
+                    groundItem.repositionGround(groundItem.getPosGround().x + (groundItem.getTextureGround().getRegionWidth() * 2));
                 }
             }
         }
