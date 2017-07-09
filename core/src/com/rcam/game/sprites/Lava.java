@@ -29,7 +29,7 @@ public class Lava {
     Preferences prefs;
 
     public Lava(){
-        lava = GameAssetLoader.atlas.findRegion("lava");
+        lava = GameAssetLoader.lava;
     }
 
     public Lava(float x){

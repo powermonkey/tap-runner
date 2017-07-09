@@ -72,7 +72,7 @@ public class GameScreen implements Screen{
     public GameScreen(final TapRunner gam){
         this.game = gam;
 
-        bg = GameAssetLoader.atlas.findRegion("background");
+        bg = GameAssetLoader.bg;
 
         runner = new Runner();
 

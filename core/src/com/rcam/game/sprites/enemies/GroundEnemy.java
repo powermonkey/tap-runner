@@ -18,8 +18,8 @@ public class GroundEnemy extends Enemy implements Pool.Poolable{
 
     public GroundEnemy(){
         super();
-        Array<TextureAtlas.AtlasRegion> jellyGreen = GameAssetLoader.atlas.findRegions("jelly_green");
-        Array<TextureAtlas.AtlasRegion> jellyYellow = GameAssetLoader.atlas.findRegions("jelly_yellow");
+        Array<TextureAtlas.AtlasRegion> jellyGreen = GameAssetLoader.jellyGreen;
+        Array<TextureAtlas.AtlasRegion> jellyYellow = GameAssetLoader.jellyYellow;
         // fixed value since textures are currently the same size; refactor in future
         this.textureWidth = jellyGreen.get(0).getRegionWidth();
         this.textureHeight = jellyGreen.get(0).getRegionWidth() - ON_TOP_CONTACT_OFFSET;

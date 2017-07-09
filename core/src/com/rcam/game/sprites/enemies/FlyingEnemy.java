@@ -18,8 +18,8 @@ public class FlyingEnemy extends Enemy implements Pool.Poolable{
 
     public FlyingEnemy(){
         super();
-        Array<TextureAtlas.AtlasRegion> birdBlue = GameAssetLoader.atlas.findRegions("bird_blue");
-        Array<TextureAtlas.AtlasRegion> birdRed = GameAssetLoader.atlas.findRegions("bird_red");
+        Array<TextureAtlas.AtlasRegion> birdBlue = GameAssetLoader.birdBlue;
+        Array<TextureAtlas.AtlasRegion> birdRed = GameAssetLoader.birdRed;
         // fixed value since textures are currently the same size; refactor in future
         this.textureWidth = birdBlue.get(0).getRegionWidth();
         this.textureHeight = birdBlue.get(0).getRegionHeight() - ON_TOP_CONTACT_OFFSET;

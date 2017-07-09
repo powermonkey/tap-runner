@@ -38,7 +38,7 @@ public class SettingsScreen implements Screen {
     CheckBox normalMode, groundLavaMode, enemyTouchSlows, soundOn;
     TextButton okay;
     static Preferences prefs;
-    TextureAtlas.AtlasRegion bg, blockYellow, blockGreen;
+    TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen;
     Sound blipSelectSound;
     BitmapFont buttonFonts;
 
@@ -69,8 +69,8 @@ public class SettingsScreen implements Screen {
 //        enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         soundOn = new CheckBox("Sound On", cleanCrispySkin, "default");
 
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
-        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        blockYellowGreen = GameAssetLoader.blockYellowGreen;
+        NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();

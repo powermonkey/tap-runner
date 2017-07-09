@@ -38,7 +38,7 @@ public class GameOverScreen implements Screen{
     Label current, bestDistance, currentLabel, bestDistanceLabel;
     static Preferences prefs;
     String gameMode;
-    TextureAtlas.AtlasRegion bg, blockYellow, blockGreen;
+    TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen;
     Sound blipSelectSound, newGameblipSound;
     BitmapFont buttonFonts;
 
@@ -53,9 +53,9 @@ public class GameOverScreen implements Screen{
         rootTable = new Table();
         rootTable.setFillParent(true);
         table = new Table();
-        bg = GameAssetLoader.atlas.findRegion("background");
-        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
+        bg = GameAssetLoader.bg;
+        blockYellow = GameAssetLoader.blockYellow;
+        blockYellowGreen = GameAssetLoader.blockYellowGreen;
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
 
@@ -63,7 +63,7 @@ public class GameOverScreen implements Screen{
         gameMode = prefs.getString("GameMode");
 
         NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
-        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
 
@@ -91,7 +91,6 @@ public class GameOverScreen implements Screen{
         exitButton = new TextButton("Exit", buttonStyle);
         exitButtonListener(exitButton);
 
-//        bg = atlas.findRegion("background");
         ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
         Gdx.input.setInputProcessor(stage);
 

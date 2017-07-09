@@ -40,7 +40,7 @@ public class MainMenuScreen implements Screen {
     TextButton exit, newGame, options, records, credits;
     Stage stage;
     static Preferences prefs;
-    TextureAtlas.AtlasRegion ground, bg, blockYellow, blockGreen;
+    TextureAtlas.AtlasRegion ground, bg, blockYellow, blockYellowGreen;
     TextureRegion runnerJump;
     Sound blipSelectSound, newGameblipSound;
     Boolean soundOn;
@@ -52,10 +52,10 @@ public class MainMenuScreen implements Screen {
         game = gam;
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2  + 50);
-        bg = GameAssetLoader.atlas.findRegion("background");
-        ground = GameAssetLoader.atlas.findRegion("ground");
-        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
+        bg = GameAssetLoader.bg;
+        ground = GameAssetLoader.ground;
+        blockYellow = GameAssetLoader.blockYellow;
+        blockYellowGreen = GameAssetLoader.blockYellowGreen;
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
         runnerJump = GameAssetLoader.atlas.findRegion("jump");
@@ -78,7 +78,7 @@ public class MainMenuScreen implements Screen {
         title = new Label("Happy Runnings", labelStyle);
         title.setAlignment(Align.center);
         NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
-        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);

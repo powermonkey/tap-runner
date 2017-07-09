@@ -40,7 +40,7 @@ public class Runner {
     Vector2 position, velocity, speed;
     TextureAtlas atlas;
     TextureAtlas.AtlasRegion regionStand, regionJump, regionDeath;
-    Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke;
+    Array<TextureAtlas.AtlasRegion> regionRun;
     public float groundLevel, tempGround;
     private Rectangle bounds, intersectionBounds;
     static Preferences prefs;

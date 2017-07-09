@@ -4,6 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Rod on 7/1/2017.
@@ -11,6 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GameAssetLoader {
     public static TextureAtlas atlas;
+    public static TextureAtlas.AtlasRegion bg, regionStand, regionJump, regionDeath, ground, lava, blockYellow, blockYellowGreen,
+        pause, forward;
+    public static Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke, birdBlue, birdRed, jellyGreen, jellyYellow;
     public static Skin cleanCrispySkin, arcadeSkin;
     public static Sound blipSelect, newGameblip, jump, hurt, powerUp, speedAdjust, lavaBurn;
     public static BitmapFont fonts, buttonFonts;
@@ -26,6 +30,24 @@ public class GameAssetLoader {
 
     public static void getLoadedAssets(){
         atlas = manager.manager.get("packedimages/runner.atlas");
+        bg = atlas.findRegion("background");
+        regionStand = atlas.findRegion("stand");
+        regionRun = atlas.findRegions("run");
+        regionJump = atlas.findRegion("jump");
+        regionDeath = atlas.findRegion("death");
+        regionSmoke = atlas.findRegions("smoke");
+        ground = atlas.findRegion("ground");
+        lava = atlas.findRegion("lava");
+        birdBlue = atlas.findRegions("bird_blue");
+        birdRed = atlas.findRegions("bird_red");
+        jellyGreen = atlas.findRegions("jelly_green");
+        jellyYellow = atlas.findRegions("jelly_yellow");
+        blockYellow = atlas.findRegion("Block_Type2_Yellow");
+        blockYellowGreen = atlas.findRegion("Block_Type2_YellowGreen");
+        pause = atlas.findRegion("pause");
+        forward = atlas.findRegion("forward");
+
+
         cleanCrispySkin = manager.manager.get("skin/clean-crispy-ui/clean-crispy-ui.json");
         arcadeSkin = manager.manager.get("skin/arcade-ui/arcade-ui.json");
 

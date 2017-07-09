@@ -31,7 +31,7 @@ public class CreditsScreen implements Screen {
     Table rootTable, table, table2, table3, table4, table5, table6, table7, table8, table9;
     Skin arcadeSkin, cleanCrispySkin;
     Stage stage;
-    TextureAtlas.AtlasRegion ground, bg, blockYellow, blockGreen;
+    TextureAtlas.AtlasRegion ground, bg, blockYellow, blockYellowGreen;
     TextButton goBackButton;
     Sound blipSelectSound;
     static Preferences prefs;
@@ -41,11 +41,11 @@ public class CreditsScreen implements Screen {
         game = gam;
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
-        bg = GameAssetLoader.atlas.findRegion("background");
-        ground = GameAssetLoader.atlas.findRegion("ground");
+        bg = GameAssetLoader.bg;
+        ground = GameAssetLoader.ground;
         arcadeSkin = GameAssetLoader.arcadeSkin;
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
-        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        blockYellow = GameAssetLoader.blockYellow;
         blipSelectSound = GameAssetLoader.blipSelect;
 
         stage = new Stage(new FitViewport(480, 800));
@@ -231,8 +231,8 @@ public class CreditsScreen implements Screen {
         testerCredit.setColor(Color.BLUE);
 
 
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
-        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        blockYellowGreen = GameAssetLoader.blockYellowGreen;
+        NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();

@@ -15,11 +15,11 @@ public class Ground {
     TextureAtlas.AtlasRegion ground;
 
     public Ground(){
-        ground = GameAssetLoader.atlas.findRegion("ground");
+        ground = GameAssetLoader.ground;
     }
 
     public Ground(float x){
-        ground = GameAssetLoader.atlas.findRegion("ground");
+        ground = GameAssetLoader.ground;
         posGround = new Vector2(x, 0);
     }
 

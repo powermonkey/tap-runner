@@ -32,7 +32,7 @@ public class RecordsScreen implements Screen{
     TextButton goBackButton;
     Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
     static Preferences prefs;
-    TextureAtlas.AtlasRegion bg, blockYellow, blockGreen, ground;
+    TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen, ground;
     Sound blipSelectSound;
     BitmapFont buttonFonts;
 
@@ -49,9 +49,9 @@ public class RecordsScreen implements Screen{
         goBackButtonTable = new Table();
         labelTable = new Table();
         prefs = Gdx.app.getPreferences("TapRunner");
-        bg = GameAssetLoader.atlas.findRegion("background");
-        ground = GameAssetLoader.atlas.findRegion("ground");
-        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        bg = GameAssetLoader.bg;
+        ground = GameAssetLoader.ground;
+        blockYellow = GameAssetLoader.blockYellow;
         blipSelectSound = GameAssetLoader.blipSelect;
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
@@ -63,8 +63,8 @@ public class RecordsScreen implements Screen{
         bestLavaLabel = new Label("The Ground is Lava: ", cleanCrispySkin, "default");
         bestLavaDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceLavaMode")) + " m", arcadeSkin, "default");
 
-        blockGreen = GameAssetLoader.atlas.findRegion("Block_Type2_YellowGreen");
-        NinePatch patchGreen = new NinePatch(blockGreen, 4, 4, 4, 4);
+        blockYellowGreen = GameAssetLoader.blockYellowGreen;
+        NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
