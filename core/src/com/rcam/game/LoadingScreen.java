@@ -2,6 +2,7 @@ package com.rcam.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -17,22 +18,23 @@ public class LoadingScreen implements Screen{
     final TapRunner game;
     OrthographicCamera cam;
     Array<TextureAtlas.AtlasRegion> regionRun;
-    static GameAssetManager manager;
-    public static TextureAtlas atlas;
+    public static TextureAtlas loadingAtlas;
     public Animation<TextureRegion> animationFast;
     public float stateTime;
+    private final AssetManager assetManager;
+
 
     public LoadingScreen(final TapRunner gam){
         this.game = gam;
+        assetManager = new AssetManager();
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
 
-        manager = new GameAssetManager();
-        manager.loadImages();
-        manager.manager.finishLoading();
+        assetManager.load("packedimages/loading.atlas", TextureAtlas.class);
+        assetManager.finishLoading();
 
-        atlas = manager.manager.get("packedimages/runner.atlas");
-        regionRun = atlas.findRegions("run");
+        loadingAtlas = assetManager.get("packedimages/loading.atlas");
+        regionRun = loadingAtlas.findRegions("run");
         animationFast = new Animation<TextureRegion>(0.07f, regionRun);
 
         GameAssetLoader.load();
@@ -48,8 +50,6 @@ public class LoadingScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        cam.update();
-
         game.batch.setProjectionMatrix(cam.combined);
 
         if(GameAssetLoader.update()) {
@@ -61,8 +61,7 @@ public class LoadingScreen implements Screen{
         game.batch.begin();
 
         stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentRunnerFrame;
-        currentRunnerFrame = animationFast.getKeyFrame(stateTime, true);
+        TextureRegion currentRunnerFrame = animationFast.getKeyFrame(stateTime, true);
         game.batch.draw(currentRunnerFrame, (cam.viewportWidth / 2) - (currentRunnerFrame.getRegionWidth() / 2), (cam.viewportHeight / 2) - currentRunnerFrame.getRegionHeight());
 
         game.batch.end();
@@ -91,7 +90,7 @@ public class LoadingScreen implements Screen{
 
     @Override
     public void dispose() {
-        manager.dispose();
-        atlas.dispose();
+        assetManager.dispose();
+        loadingAtlas.dispose();
     }
 }

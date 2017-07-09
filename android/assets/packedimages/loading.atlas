@@ -1,0 +1,34 @@
+
+loading.png
+size: 128,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+run
+  rotate: false
+  xy: 2, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: 0
+run
+  rotate: false
+  xy: 44, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: 1
+run
+  rotate: false
+  xy: 44, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 86, 2
+  size: 40, 36
+  orig: 40, 36
+  offset: 0, 0
+  index: 2
