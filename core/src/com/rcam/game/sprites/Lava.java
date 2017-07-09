@@ -18,7 +18,6 @@ import static com.badlogic.gdx.utils.TimeUtils.millis;
 
 public class Lava {
     static float BOUNDS_TOP_OFFSET = 2;
-    Texture lavaTexture;
     Vector2 posLava;
     float damage, damageIncrease;
     Rectangle bounds;
@@ -70,7 +69,7 @@ public class Lava {
 
     public void checkLavaCollision(Runner runner, Hud.Health hud){
         if(getBounds().overlaps(runner.getBounds())){
-            if(runner.health > 0 && !runner.lavaInvulnerable && !runner.isDead && runner.isOnGround){
+            if(runner.health > 0 && !runner.lavaInvulnerable && !runner.isDead){
                 if(prefs.getBoolean("SoundOn")) {
                     lavaBurnSound.play();
                 }
