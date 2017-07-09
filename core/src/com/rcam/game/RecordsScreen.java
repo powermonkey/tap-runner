@@ -18,8 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.rcam.game.sprites.Ground;
-import com.rcam.game.sprites.Runner;
 
 /**
  * Created by Rod on 6/18/2017.
@@ -32,7 +30,6 @@ public class RecordsScreen implements Screen{
     Stage stage;
     Table rootTable, table, labelTable, goBackButtonTable;
     TextButton goBackButton;
-    Runner runner;
     Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow, blockGreen, ground;
@@ -76,7 +73,6 @@ public class RecordsScreen implements Screen{
         buttonStyle.font = buttonFonts;
         goBackButton = new TextButton("Main Menu", buttonStyle);
         goBackButtonListener(goBackButton);
-
 
         Gdx.input.setInputProcessor(stage);
 

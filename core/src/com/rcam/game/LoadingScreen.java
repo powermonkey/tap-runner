@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Array;
 public class LoadingScreen implements Screen{
     final TapRunner game;
     OrthographicCamera cam;
-    TextureAtlas.AtlasRegion ground, bg;
     Array<TextureAtlas.AtlasRegion> regionRun;
     static GameAssetManager manager;
     public static TextureAtlas atlas;
