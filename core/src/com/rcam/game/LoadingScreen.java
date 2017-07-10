@@ -58,8 +58,8 @@ public class LoadingScreen implements Screen{
             dispose();
         }
 
+        game.batch.disableBlending();
         game.batch.begin();
-
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentRunnerFrame = animationFast.getKeyFrame(stateTime, true);
         game.batch.draw(currentRunnerFrame, (cam.viewportWidth / 2) - (currentRunnerFrame.getRegionWidth() / 2), (cam.viewportHeight / 2) - currentRunnerFrame.getRegionHeight());

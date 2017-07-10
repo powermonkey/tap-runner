@@ -218,7 +218,7 @@ public class MainMenuScreen implements Screen {
         cam.update();
 
         game.batch.setProjectionMatrix(cam.combined);
-
+        game.batch.disableBlending();
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         game.batch.draw(ground, 0,0);
