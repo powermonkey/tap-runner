@@ -339,7 +339,7 @@ public class GameScreen implements Screen{
             groundEnemyRenderItem = activeGroundEnemies.get(i);
             if(groundEnemyRenderItem.isSpawned){
                 if (cam.position.x + 20 + cam.viewportWidth / 2 > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()
-                        && cam.position.x - 40 - (cam.viewportWidth / 4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
+                        && cam.position.x - 50 - (cam.viewportWidth / 4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = groundEnemyRenderItem.animation.getKeyFrame(groundEnemyRenderItem.stateTime, true);
                     game.batch.draw(currentFrame, (int)groundEnemyRenderItem.getPosition().x, (int)groundEnemyRenderItem.getPosition().y);
@@ -347,7 +347,7 @@ public class GameScreen implements Screen{
                     if(!isPause) {
                         groundEnemyRenderItem.update(delta);
                     }
-                } else if(cam.position.x - 40 - (cam.viewportWidth / 4) > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
+                } else if(cam.position.x - 50 - (cam.viewportWidth / 4) > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
                 }
             }
@@ -357,7 +357,7 @@ public class GameScreen implements Screen{
             flyingEnemyRenderItem = activeFlyingEnemies.get(i);
             if(flyingEnemyRenderItem.isSpawned){
                 if (cam.position.x + 20 + cam.viewportWidth / 2 > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()
-                        && cam.position.x - 40 - (cam.viewportWidth / 4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
+                        && cam.position.x - 50 - (cam.viewportWidth / 4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.stateTime += Gdx.graphics.getDeltaTime();
                     TextureRegion currentFrame = flyingEnemyRenderItem.animation.getKeyFrame(flyingEnemyRenderItem.stateTime, true);
                     game.batch.draw(currentFrame, (int)flyingEnemyRenderItem.getPosition().x, (int)flyingEnemyRenderItem.getPosition().y);
@@ -365,7 +365,7 @@ public class GameScreen implements Screen{
                     if(!isPause) {
                         flyingEnemyRenderItem.update(delta);
                     }
-                } else if(cam.position.x - 40 - (cam.viewportWidth / 4) > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
+                } else if(cam.position.x - 50 - (cam.viewportWidth / 4) > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
                 }
             }
@@ -466,10 +466,10 @@ public class GameScreen implements Screen{
             powerUpItem = powerUps.get(i);
             if(powerUpItem.isSpawned){
                 if (cam.position.x + 20 + cam.viewportWidth / 2> powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
-                        && cam.position.x - 40 - (cam.viewportWidth / 4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
+                        && cam.position.x - 50 - (cam.viewportWidth / 4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
                     powerUpItem.checkPowerUpCollision(runner, hud.health);
                     game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
-                } else if(cam.position.x  - 40 - (cam.viewportWidth / 4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
+                } else if(cam.position.x  - 50 - (cam.viewportWidth / 4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
                 }
             }
