@@ -32,9 +32,8 @@ public class Lava {
     }
 
     public Lava(float x){
-        atlas = new TextureAtlas("packedimages/runner.atlas");
+        lava = GameAssetLoader.lava;
         lavaBurnSound = GameAssetLoader.lavaBurn;
-        lava = atlas.findRegion("lava");
         posLava = new Vector2(x, 0);
         damage = 5;
         damageIncrease = 5;

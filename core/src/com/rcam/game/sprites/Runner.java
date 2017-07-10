@@ -63,11 +63,10 @@ public class Runner {
         gravity = -23; //reset gravity
         jumpHeight = 525; //reset jump height
         jumpValue = 71; //reset jump
-        atlas = new TextureAtlas("packedimages/runner.atlas");
-        regionStand = atlas.findRegion("stand");
-        regionRun = atlas.findRegions("run");
-        regionJump = atlas.findRegion("jump");
-        regionDeath = atlas.findRegion("death");
+        regionStand = GameAssetLoader.regionStand;
+        regionRun = GameAssetLoader.regionRun;
+        regionJump = GameAssetLoader.regionJump;
+        regionDeath = GameAssetLoader.regionDeath;
         bounds = new Rectangle(STARTING_X - CONTACT_BOUNDS_OFFSET_X, STARTING_Y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight());
         intersectionBounds = new Rectangle(STARTING_X - CONTACT_BOUNDS_OFFSET_X, STARTING_Y - CONTACT_BOUNDS_OFFSET_Y, regionStand.getRegionWidth() - CONTACT_BOUNDS_OFFSET_X, regionStand.getRegionHeight() - CONTACT_BOUNDS_OFFSET_Y); //intersection bounds
 

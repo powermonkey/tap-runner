@@ -58,7 +58,7 @@ public class MainMenuScreen implements Screen {
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
-        runnerJump = GameAssetLoader.atlas.findRegion("jump");
+        runnerJump = GameAssetLoader.regionJump;
         myFont = GameAssetLoader.fonts;
         buttonFonts = GameAssetLoader.buttonFonts;
 

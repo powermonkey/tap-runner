@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public class GameAssetLoader {
     public static TextureAtlas atlas;
     public static TextureAtlas.AtlasRegion bg, regionStand, regionJump, regionDeath, ground, lava, blockYellow, blockYellowGreen,
-        pause, forward;
+        pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange;
     public static Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke, birdBlue, birdRed, jellyGreen, jellyYellow;
     public static Skin cleanCrispySkin, arcadeSkin;
     public static Sound blipSelect, newGameblip, jump, hurt, powerUp, speedAdjust, lavaBurn;
@@ -46,6 +46,12 @@ public class GameAssetLoader {
         blockYellowGreen = atlas.findRegion("Block_Type2_YellowGreen");
         pause = atlas.findRegion("pause");
         forward = atlas.findRegion("forward");
+        powerupApple = atlas.findRegion("powerup_apple");
+        powerupCherry = atlas.findRegion("powerup_cherry");
+        powerupBanana = atlas.findRegion("powerup_banana");
+        powerupGrapes = atlas.findRegion("powerup_grapes");
+        powerupStrawberry = atlas.findRegion("powerup_strawberry");
+        powerupOrange = atlas.findRegion("powerup_orange");
 
 
         cleanCrispySkin = manager.manager.get("skin/clean-crispy-ui/clean-crispy-ui.json");

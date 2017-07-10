@@ -17,8 +17,7 @@ public class Smoke {
     public float stateTime;
 
     public Smoke(){
-        atlas = new TextureAtlas("packedimages/runner.atlas");
-        regionSmoke = atlas.findRegions("smoke");
+        regionSmoke = GameAssetLoader.regionSmoke;
         smokeAnimationFast = new Animation<TextureRegion>(0.06f, regionSmoke);
         smokeAnimationSlow = new Animation<TextureRegion>(0.05f, regionSmoke);
     }

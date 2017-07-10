@@ -32,12 +32,12 @@ public class PowerUp implements Pool.Poolable{
 
     public PowerUp(){
         powerUpSound = GameAssetLoader.powerUp;
-        TextureAtlas.AtlasRegion apple = GameAssetLoader.atlas.findRegion("powerup_apple");
-        TextureAtlas.AtlasRegion cherry = GameAssetLoader.atlas.findRegion("powerup_cherry");
-        TextureAtlas.AtlasRegion banana = GameAssetLoader.atlas.findRegion("powerup_banana");
-        TextureAtlas.AtlasRegion grapes = GameAssetLoader.atlas.findRegion("powerup_grapes");
-        TextureAtlas.AtlasRegion strawberry = GameAssetLoader.atlas.findRegion("powerup_strawberry");
-        TextureAtlas.AtlasRegion orange = GameAssetLoader.atlas.findRegion("powerup_orange");
+        TextureAtlas.AtlasRegion apple = GameAssetLoader.powerupApple;
+        TextureAtlas.AtlasRegion cherry = GameAssetLoader.powerupCherry;
+        TextureAtlas.AtlasRegion banana = GameAssetLoader.powerupBanana;
+        TextureAtlas.AtlasRegion grapes = GameAssetLoader.powerupGrapes;
+        TextureAtlas.AtlasRegion strawberry = GameAssetLoader.powerupStrawberry;
+        TextureAtlas.AtlasRegion orange = GameAssetLoader.powerupOrange;
 
         powerUpAtlasRegions = new TextureAtlas.AtlasRegion[6];
         powerUpAtlasRegions[0] = apple;

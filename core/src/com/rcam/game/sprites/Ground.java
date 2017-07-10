@@ -11,7 +11,6 @@ import com.rcam.game.GameAssetLoader;
 
 public class Ground {
     Vector2 posGround;
-    TextureAtlas atlas;
     TextureAtlas.AtlasRegion ground;
 
     public Ground(){

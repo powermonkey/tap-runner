@@ -93,8 +93,8 @@ public class SettingsScreen implements Screen {
         gameModeGroup.setMinCheckCount(1);
         gameModeGroup.setUncheckLast(true);
 
-        bg = GameAssetLoader.atlas.findRegion("background");
-        blockYellow = GameAssetLoader.atlas.findRegion("Block_Type2_Yellow");
+        bg = GameAssetLoader.bg;
+        blockYellow = GameAssetLoader.blockYellow;
 
         ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
         Gdx.input.setInputProcessor(stage);
