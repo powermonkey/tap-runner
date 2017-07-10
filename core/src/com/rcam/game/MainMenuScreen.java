@@ -158,6 +158,7 @@ public class MainMenuScreen implements Screen {
                     newGameblipSound.play();
                 }
                 game.setScreen(new GameScreen(game));
+                stage.dispose();
                 return true;
             }
         });
@@ -171,6 +172,7 @@ public class MainMenuScreen implements Screen {
                     blipSelectSound.play();
                 }
                 game.setScreen(new SettingsScreen(game));
+                stage.dispose();
                 return true;
             }
         });
@@ -184,6 +186,7 @@ public class MainMenuScreen implements Screen {
                     blipSelectSound.play();
                 }
                 game.setScreen(new RecordsScreen(game));
+                stage.dispose();
                 return true;
             }
         });
@@ -197,6 +200,7 @@ public class MainMenuScreen implements Screen {
                     blipSelectSound.play();
                 }
                 game.setScreen(new CreditsScreen(game));
+                stage.dispose();
                 return true;
             }
         });

@@ -248,6 +248,7 @@ public class CreditsScreen implements Screen {
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));
+                stage.dispose();
                 return true;
             }
         });

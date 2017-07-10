@@ -131,6 +131,7 @@ public class GameOverScreen implements Screen{
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new MainMenuScreen(game));
+                stage.dispose();
                 return true;
             }
         });
@@ -146,6 +147,7 @@ public class GameOverScreen implements Screen{
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new GameScreen(game));
+                stage.dispose();
                 return true;
             }
         });
@@ -161,6 +163,7 @@ public class GameOverScreen implements Screen{
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new SettingsScreen(game));
+                stage.dispose();
                 return true;
             }
         });

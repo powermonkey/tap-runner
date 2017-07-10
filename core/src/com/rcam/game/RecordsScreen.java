@@ -119,6 +119,7 @@ public class RecordsScreen implements Screen{
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));
+                stage.dispose();
                 return true;
             }
         });

@@ -162,6 +162,7 @@ public class SettingsScreen implements Screen {
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));
+                stage.dispose();
                 return true;
             }
         });
