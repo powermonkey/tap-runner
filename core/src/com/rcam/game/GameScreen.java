@@ -60,7 +60,7 @@ public class GameScreen implements Screen{
     private GroundEnemy groundEnemyOject;
     private FlyingEnemy flyingEnemyOject;
     Enemy enemyObject;
-    boolean isPause, groundRendered, groundDispose;
+    boolean isPause, groundRendered, groundDispose, lavaMode;
     Vector2 spawnPosition;
     TextureAtlas.AtlasRegion bg;
     Skin arcadeSkin;
@@ -130,8 +130,13 @@ public class GameScreen implements Screen{
         }
 
         gameMode = prefs.getString("GameMode");
+        if(gameMode.equals("The Ground Is Lava")) {
+            lavaMode = true;
+        }else{
+            lavaMode = false;
+        }
 
-        if(gameMode.equals("The Ground Is Lava")){
+        if(lavaMode){
             groundRendered = false;
             groundDispose = false;
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
@@ -166,6 +171,7 @@ public class GameScreen implements Screen{
 
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
+//        game.batch.disableBlending();
         game.batch.begin();
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
         //update and render distance indicator
@@ -174,6 +180,7 @@ public class GameScreen implements Screen{
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
+//        game.batch.enableBlending();
         game.batch.begin();
 
         //spawn power up
@@ -182,7 +189,7 @@ public class GameScreen implements Screen{
         //render enemy
         renderEnemy(delta);
 
-        if (gameMode.equals("The Ground Is Lava")) {
+        if (lavaMode) {
             //render ground
             Ground groundItem;
             if(!groundRendered) {
@@ -257,7 +264,7 @@ public class GameScreen implements Screen{
             //set enemy position and render enemy
             if (runner.getPosition().x > spawnMarker) {
                 if(level.getLevelKey() == 1 && level.isEndOfLevel){
-                    if(gameMode.equals("Normal")) {
+                    if(!lavaMode) {
                         runner.increaseSpeed();
                         runner.increaseJump();
                         runner.increaseGravity();
@@ -279,7 +286,7 @@ public class GameScreen implements Screen{
                 if (!runner.animatingDeath) {
                     startingTime = millis();
                     runner.death();
-                    if (gameMode.equals("The Ground Is Lava")) {
+                    if (lavaMode) {
                         if (runner.indicatePosition() > runner.getHighScoreLavaMode()) {
                             runner.setHighScoreLavaMode(runner.indicatePosition());
                         }

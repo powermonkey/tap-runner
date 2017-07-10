@@ -13,7 +13,6 @@ import com.rcam.game.GameAssetLoader;
 public class Smoke {
     Array<TextureAtlas.AtlasRegion> regionSmoke;
     public Animation<TextureRegion> smokeAnimationFast, smokeAnimationSlow;
-    TextureAtlas atlas;
     public float stateTime;
 
     public Smoke(){
@@ -23,7 +22,7 @@ public class Smoke {
     }
 
     public void dispose(){
-        GameAssetLoader.dispose();
+//        GameAssetLoader.dispose();
     }
 
 }
