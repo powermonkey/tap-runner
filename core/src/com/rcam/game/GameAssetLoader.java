@@ -16,7 +16,7 @@ public class GameAssetLoader {
         pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange;
     public static Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke, birdBlue, birdRed, jellyGreen, jellyYellow;
     public static Skin cleanCrispySkin, arcadeSkin;
-    public static Sound blipSelect, newGameblip, jump, hurt, powerUp, speedAdjust, lavaBurn;
+    public static Sound blipSelect, newGameblip, jump, hurt, powerUp, lavaBurn;
     public static BitmapFont fonts, buttonFonts;
     static GameAssetManager manager;
 
@@ -75,6 +75,7 @@ public class GameAssetLoader {
     public static void dispose() {
         manager.dispose();
         fonts.dispose();
+        buttonFonts.dispose();
         atlas.dispose();
         cleanCrispySkin.dispose();
         arcadeSkin.dispose();

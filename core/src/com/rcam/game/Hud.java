@@ -26,7 +26,7 @@ import com.rcam.game.sprites.Runner;
  * Created by Rod on 4/18/2017.
  */
 
-public class Hud extends Table{
+public class Hud{
     Stage stage;
     Table rootTable, indicatorstable, controlsTable;
     Skin cleanCrispySkin, arcadeSkin;
@@ -40,9 +40,8 @@ public class Hud extends Table{
     Sound blipSelectSound, newGameblipSound, jumpSound, speedAdjustSound;
     Preferences prefs;
     NinePatch patchGreen, patchYellow;
-    BitmapFont labelFont;
+    BitmapFont labelFont, buttonFonts;
     StringBuilder distanceValue;
-    BitmapFont buttonFonts;
     PauseMenu pauseMenu;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
@@ -59,7 +58,6 @@ public class Hud extends Table{
         arcadeSkin = GameAssetLoader.arcadeSkin;
         blipSelectSound = GameAssetLoader.blipSelect;
         jumpSound = GameAssetLoader.jump;
-        speedAdjustSound = GameAssetLoader.speedAdjust;
         newGameblipSound = GameAssetLoader.newGameblip;
         buttonFonts = GameAssetLoader.buttonFonts;
         rootTable = new Table();
@@ -77,7 +75,6 @@ public class Hud extends Table{
         healthLabel = new Label("ENERGY", fontStyle);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
         prefs = Gdx.app.getPreferences("TapRunner");
-
 
 //        stage.setDebugAll(true);
 
@@ -377,7 +374,12 @@ public class Hud extends Table{
 
     public void dispose(){
         stage.dispose();
-        GameAssetLoader.dispose();
+        labelFont.dispose();
+        buttonFonts.dispose();
+//        arcadeSkin.dispose();
+//        cleanCrispySkin.dispose();
+//        jumpSound.dispose();
+//        blipSelectSound.dispose();
+//        newGameblipSound.dispose();
     }
-
 }

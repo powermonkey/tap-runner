@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -58,7 +57,6 @@ public class GameOverScreen implements Screen{
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
-
         prefs = Gdx.app.getPreferences("TapRunner");
         gameMode = prefs.getString("GameMode");
 
@@ -131,7 +129,7 @@ public class GameOverScreen implements Screen{
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new MainMenuScreen(game));
-                stage.dispose();
+                dispose();
                 return true;
             }
         });
@@ -147,7 +145,7 @@ public class GameOverScreen implements Screen{
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new GameScreen(game));
-                stage.dispose();
+                dispose();
                 return true;
             }
         });
@@ -163,7 +161,7 @@ public class GameOverScreen implements Screen{
                 showInterstitialAd();
                 loadInterstitialAd();
                 game.setScreen(new SettingsScreen(game));
-                stage.dispose();
+                dispose();
                 return true;
             }
         });
@@ -173,7 +171,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
+                GameAssetLoader.dispose();
                 Gdx.app.exit();
                 return true;
             }
@@ -243,6 +241,10 @@ public class GameOverScreen implements Screen{
     @Override
     public void dispose() {
         stage.dispose();
-        GameAssetLoader.dispose();
+        buttonFonts.dispose();
+//        arcadeSkin.dispose();
+//        cleanCrispySkin.dispose();
+//        blipSelectSound.dispose();
+//        newGameblipSound.dispose();
     }
 }

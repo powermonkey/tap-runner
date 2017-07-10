@@ -119,7 +119,7 @@ public class RecordsScreen implements Screen{
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));
-                stage.dispose();
+                dispose();
                 return true;
             }
         });
@@ -166,6 +166,7 @@ public class RecordsScreen implements Screen{
     @Override
     public void dispose() {
         stage.dispose();
-        GameAssetLoader.dispose();
+        buttonFonts.dispose();
+//        GameAssetLoader.dispose();
     }
 }

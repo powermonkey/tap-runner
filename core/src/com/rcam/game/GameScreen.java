@@ -291,6 +291,7 @@ public class GameScreen implements Screen{
                 } else {
                     if (timeSinceMillis(startingTime) > 2000) {
                         game.setScreen(new GameOverScreen(this.game, runner));
+                        dispose();
                     }
                 }
             }
@@ -527,9 +528,8 @@ public class GameScreen implements Screen{
 
     @Override
     public void dispose() {
-        GameAssetLoader.dispose();
-        runner.dispose();
-        hud.dispose();
+//        arcadeSkin.dispose();
         distance.dispose();
+        hud.dispose();
     }
 }

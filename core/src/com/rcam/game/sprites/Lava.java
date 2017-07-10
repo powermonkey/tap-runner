@@ -21,7 +21,6 @@ public class Lava {
     float damage, damageIncrease;
     Rectangle bounds;
     boolean touched;
-    TextureAtlas atlas;
     TextureAtlas.AtlasRegion lava;
     Sound lavaBurnSound;
     Preferences prefs;

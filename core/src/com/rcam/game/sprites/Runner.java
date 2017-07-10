@@ -37,7 +37,6 @@ public class Runner {
     private long startingTime, lavaDamageTimeStart;
     public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, lavaInvulnerable, isIdle, isSmoking;
     Vector2 position, velocity, speed;
-    TextureAtlas atlas;
     TextureAtlas.AtlasRegion regionStand, regionJump, regionDeath;
     Array<TextureAtlas.AtlasRegion> regionRun;
     public float groundLevel, tempGround;
