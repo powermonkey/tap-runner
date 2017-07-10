@@ -60,7 +60,7 @@ public class GameScreen implements Screen{
     private GroundEnemy groundEnemyOject;
     private FlyingEnemy flyingEnemyOject;
     Enemy enemyObject;
-    boolean isPause, groundRendered, groundDisposed;
+    boolean isPause, groundRendered, groundDispose;
     Vector2 spawnPosition;
     TextureAtlas.AtlasRegion bg;
     Skin arcadeSkin;
@@ -133,7 +133,7 @@ public class GameScreen implements Screen{
 
         if(gameMode.equals("The Ground Is Lava")){
             groundRendered = false;
-            groundDisposed = false;
+            groundDispose = false;
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
             lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 3));
             smoke = new Smoke();
@@ -192,13 +192,14 @@ public class GameScreen implements Screen{
                         game.batch.draw(groundItem.getTextureGround(), (int) groundItem.getPosGround().x, (int) groundItem.getPosGround().y);
                     }
                 }
-            }else if(groundDisposed){
+                groundDispose = true;
+            }else if(groundDispose){
                 for(int i = grounds.size; --i >= 0;){
                     groundItem = grounds.get(i);
                     grounds.removeIndex(i);
                     grounds.removeValue(groundItem, true);
                 }
-                groundDisposed = false;
+                groundDispose = false;
             }
 
             //render lava
@@ -211,7 +212,6 @@ public class GameScreen implements Screen{
                 //check runner landing on lava
                 lavaItem.checkLavaCollision(runner, hud.health);
                 if (cam.position.x - (cam.viewportWidth / 2) > lavaItem.getPosLava().x + lavaItem.getTextureLava().getRegionWidth()) {
-                    groundDisposed = true;
                     groundRendered = true;
                     lavaItem.repositionLava(lastLavaPos);
                     lastLavaPos = lavaItem.getPosLava().x + (lavaItem.getTextureLava().getRegionWidth());
