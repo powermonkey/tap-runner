@@ -46,8 +46,8 @@ public class Hud extends Table{
     PauseMenu pauseMenu;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
-        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
-        setClip(true);
+//        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
+//        setClip(true);
         this.gameScreen = gameScreen;
         blockYellow = GameAssetLoader.blockYellow;
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
@@ -279,6 +279,7 @@ public class Hud extends Table{
 //                    loadInterstitialAd();
                     pauseTable.setVisible(false);
                     game.setScreen(new GameScreen(game));
+                    stage.dispose();
                     return true;
                 }
 
@@ -312,6 +313,7 @@ public class Hud extends Table{
                     showInterstitialAd();
                     loadInterstitialAd();
                     game.setScreen(new MainMenuScreen(game));
+                    stage.dispose();
                     return true;
                 }
 

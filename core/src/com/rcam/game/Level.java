@@ -7,13 +7,12 @@ package com.rcam.game;
 public class Level {
     static int pattern; //the enemy pattern inside a level
     static int levelKey;
-    private static float lavaMarkerOffset;
     public boolean isEndOfLevel;
     public int[][] levelHolder; // holds current level
-    public int[][] levelOne; //intro patterns
-    public int[][] levelTwo; //combo patterns
-    public int[][] levelThree; //no formation pattern
-    public int[][] levelFour; //more combo patterns
+    public final int[][] levelOne; //intro patterns
+    public final int[][] levelTwo; //combo patterns
+    public final int[][] levelThree; //no formation pattern
+    public final int[][] levelFour; //more combo patterns
 
     public Level(){
         pattern = 0; //set first pattern(e.g. inside curly braces of levelOne) for level
@@ -85,23 +84,18 @@ public class Level {
         levelHolder = levelOne;
     }
 
-    //lavaMarkerOffset > for less lava
     public void updatePattern(){
         if(levelHolder.length - 1 == Level.pattern) {
             if(levelKey == 1) {
                 levelHolder = levelTwo;
-                lavaMarkerOffset = 650;
                 levelKey = 2;
             }else if(levelKey == 2) {
-                lavaMarkerOffset = 500;
                 levelHolder = levelThree;
                 levelKey = 3;
             }else if(levelKey == 3){
-                lavaMarkerOffset = 210;
                 levelHolder = levelFour;
                 levelKey = 4;
             }else{
-                lavaMarkerOffset = 680;
                 levelHolder = levelOne;
                 levelKey = 1;
             }
@@ -115,10 +109,6 @@ public class Level {
 
     public int getPattern(){
         return pattern;
-    }
-
-    public float getLavaMarkerOffset(){
-        return lavaMarkerOffset;
     }
 
     public int[] getLevelPattern(int pattern){
