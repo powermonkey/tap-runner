@@ -465,11 +465,11 @@ public class GameScreen implements Screen{
         for(int i = powerUps.size; --i >= 0;){
             powerUpItem = powerUps.get(i);
             if(powerUpItem.isSpawned){
-                if (cam.position.x + cam.viewportWidth > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
-                        && cam.position.x - (cam.viewportWidth / 2) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
+                if (cam.position.x + 20 + cam.viewportWidth / 2> powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
+                        && cam.position.x - 40 - (cam.viewportWidth / 4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
                     powerUpItem.checkPowerUpCollision(runner, hud.health);
                     game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
-                } else if(cam.position.x  - (cam.viewportWidth / 2) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
+                } else if(cam.position.x  - 40 - (cam.viewportWidth / 4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
                 }
             }
