@@ -90,6 +90,6 @@ public class Lava {
     }
 
     public void dispose(){
-        GameAssetLoader.dispose();
+//        GameAssetLoader.dispose();
     }
 }

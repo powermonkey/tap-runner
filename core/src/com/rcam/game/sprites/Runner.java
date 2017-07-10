@@ -294,6 +294,6 @@ public class Runner {
     }
 
     public void dispose(){
-        GameAssetLoader.dispose();
+//        GameAssetLoader.dispose();
     }
 }

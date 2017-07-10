@@ -248,7 +248,7 @@ public class CreditsScreen implements Screen {
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));
-                stage.dispose();
+                dispose();
                 return true;
             }
         });
@@ -398,6 +398,7 @@ public class CreditsScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        GameAssetLoader.dispose();
+        buttonFonts.dispose();
+//        GameAssetLoader.dispose();
     }
 }

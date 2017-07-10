@@ -162,7 +162,7 @@ public class SettingsScreen implements Screen {
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));
-                stage.dispose();
+                dispose();
                 return true;
             }
         });
@@ -205,6 +205,7 @@ public class SettingsScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        GameAssetLoader.dispose();
+        buttonFonts.dispose();
+//        GameAssetLoader.dispose();
     }
 }

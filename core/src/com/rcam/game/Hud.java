@@ -276,7 +276,7 @@ public class Hud{
 //                    loadInterstitialAd();
                     pauseTable.setVisible(false);
                     game.setScreen(new GameScreen(game));
-                    stage.dispose();
+                    dispose();
                     return true;
                 }
 
@@ -290,6 +290,8 @@ public class Hud{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    dispose();
+                    GameAssetLoader.dispose();
                     Gdx.app.exit();
                     return true;
                 }
@@ -310,7 +312,7 @@ public class Hud{
                     showInterstitialAd();
                     loadInterstitialAd();
                     game.setScreen(new MainMenuScreen(game));
-                    stage.dispose();
+                    dispose();
                     return true;
                 }
 
@@ -376,10 +378,5 @@ public class Hud{
         stage.dispose();
         labelFont.dispose();
         buttonFonts.dispose();
-//        arcadeSkin.dispose();
-//        cleanCrispySkin.dispose();
-//        jumpSound.dispose();
-//        blipSelectSound.dispose();
-//        newGameblipSound.dispose();
     }
 }

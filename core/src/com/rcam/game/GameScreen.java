@@ -528,7 +528,6 @@ public class GameScreen implements Screen{
 
     @Override
     public void dispose() {
-//        arcadeSkin.dispose();
         distance.dispose();
         hud.dispose();
     }
