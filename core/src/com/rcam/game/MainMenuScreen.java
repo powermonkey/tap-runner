@@ -140,6 +140,7 @@ public class MainMenuScreen implements Screen {
         }
 
         soundOn = prefs.getBoolean("SoundOn");
+
     }
 
     public void newGameButtonListener(TextButton button){

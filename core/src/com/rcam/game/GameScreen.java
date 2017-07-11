@@ -154,7 +154,6 @@ public class GameScreen implements Screen{
         distanceValue = new StringBuilder();
         distance = arcadeSkin.getFont("font");
         glyphLayout = new GlyphLayout();
-
     }
 
     public void handleKeyboardInput() {
