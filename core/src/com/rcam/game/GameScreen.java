@@ -195,7 +195,7 @@ public class GameScreen implements Screen{
                 for(int i = grounds.size; --i >= 0;){
                     groundItem = grounds.get(i);
                     if (cam.position.x - (cam.viewportWidth / 2) < groundItem.getPosGround().x + groundItem.getTextureGround().getRegionWidth()) {
-                        game.batch.draw(groundItem.getTextureGround(),  (int)groundItem.getPosGround().x,  (int)groundItem.getPosGround().y);
+                        game.batch.draw(groundItem.getTextureGround(),  groundItem.getPosGround().x,  groundItem.getPosGround().y);
                     }
                 }
                 groundDispose = true;
@@ -212,7 +212,7 @@ public class GameScreen implements Screen{
             Lava lavaItem;
             for(int i = 0; i < lavas.size; i++){
                 lavaItem = lavas.get(i);
-                game.batch.draw(lavaItem.getTextureLava(), (int)lavaItem.getPosLava().x, (int)lavaItem.getPosLava().y);
+                game.batch.draw(lavaItem.getTextureLava(), lavaItem.getPosLava().x, lavaItem.getPosLava().y);
                 //update lava bounds
                 lavaItem.update();
                 //check runner landing on lava
@@ -385,7 +385,6 @@ public class GameScreen implements Screen{
             if(!groundEnemyItem.isSpawned){
                 activeGroundEnemies.removeIndex(i);
                 groundEnemyPool.free(groundEnemyItem);
-                activeGroundEnemies.removeValue(groundEnemyItem, true);
             }
         }
 
@@ -395,7 +394,6 @@ public class GameScreen implements Screen{
             if(!flyingEnemyItem.isSpawned){
                 activeFlyingEnemies.removeIndex(i);
                 flyingEnemyPool.free(flyingEnemyItem);
-                activeFlyingEnemies.removeValue(flyingEnemyItem, true);
             }
         }
     }
@@ -487,7 +485,6 @@ public class GameScreen implements Screen{
             if(!powerUpItem.isSpawned){
                 powerUps.removeIndex(i);
                 powerUpPool.free(powerUpItem);
-                powerUps.removeValue(powerUpItem, true);
             }
         }
 
