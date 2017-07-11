@@ -196,7 +196,7 @@ public class GameScreen implements Screen{
                 for(int i = grounds.size; --i >= 0;){
                     groundItem = grounds.get(i);
                     if (cam.position.x - (cam.viewportWidth / 2) < groundItem.getPosGround().x + groundItem.getTextureGround().getRegionWidth()) {
-                        game.batch.draw(groundItem.getTextureGround(), (int) groundItem.getPosGround().x, (int) groundItem.getPosGround().y);
+                        game.batch.draw(groundItem.getTextureGround(),  (int)groundItem.getPosGround().x,  (int)groundItem.getPosGround().y);
                     }
                 }
                 groundDispose = true;
@@ -213,7 +213,7 @@ public class GameScreen implements Screen{
             Lava lavaItem;
             for(int i = 0; i < lavas.size; i++){
                 lavaItem = lavas.get(i);
-                game.batch.draw(lavaItem.getTextureLava(), lavaItem.getPosLava().x, lavaItem.getPosLava().y);
+                game.batch.draw(lavaItem.getTextureLava(), (int)lavaItem.getPosLava().x, (int)lavaItem.getPosLava().y);
                 //update lava bounds
                 lavaItem.update();
                 //check runner landing on lava
@@ -230,7 +230,7 @@ public class GameScreen implements Screen{
             Ground groundItem;
             for(int i = 0; i < grounds.size; i++){
                 groundItem = grounds.get(i);
-                game.batch.draw(groundItem.getTextureGround(), (int) groundItem.getPosGround().x, (int) groundItem.getPosGround().y);
+                game.batch.draw(groundItem.getTextureGround(),  (int)groundItem.getPosGround().x,  (int)groundItem.getPosGround().y);
                 if (cam.position.x - (cam.viewportWidth / 2) > groundItem.getPosGround().x + groundItem.getTextureGround().getRegionWidth()) {
                     groundItem.repositionGround(groundItem.getPosGround().x + (groundItem.getTextureGround().getRegionWidth() * 2));
                 }
@@ -246,7 +246,7 @@ public class GameScreen implements Screen{
         }else if(runner.isIdle && !runner.isJumping){
             game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isOnGround) {
-            game.batch.draw(runner.getRegionJump(),(int) runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isIdle) {
             game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
         }
