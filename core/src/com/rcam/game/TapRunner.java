@@ -28,6 +28,8 @@ public class TapRunner extends Game{
 		this.setScreen(new LoadingScreen(this));
 		if(adsController.isWifiConnected()) {
 			adsController.showBannerAd();
+		}else{
+			adsController.hideBannerAd();
 		}
 	}
 

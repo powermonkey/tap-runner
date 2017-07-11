@@ -21,6 +21,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Runner;
 
+import static com.badlogic.gdx.utils.TimeUtils.millis;
+import static com.badlogic.gdx.utils.TimeUtils.timeSinceMillis;
+
 /**
  * Created by Rod on 5/2/2017.
  */
@@ -40,6 +43,7 @@ public class GameOverScreen implements Screen{
     TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen;
     Sound blipSelectSound, newGameblipSound;
     BitmapFont buttonFonts;
+    Long gameOverScreenStart, adTimer;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -116,7 +120,8 @@ public class GameOverScreen implements Screen{
         rootTable.center().center();
 
         stage.addActor(rootTable);
-
+        gameOverScreenStart = millis();
+        adTimer = 1000l;
     }
 
     public void mainMenuButtonListener(TextButton button, final Runner runner){
@@ -127,7 +132,6 @@ public class GameOverScreen implements Screen{
                     blipSelectSound.play();
                 }
                 showInterstitialAd();
-                loadInterstitialAd();
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
                 return true;
@@ -142,8 +146,6 @@ public class GameOverScreen implements Screen{
                 if(prefs.getBoolean("SoundOn")) {
                     newGameblipSound.play();
                 }
-                showInterstitialAd();
-                loadInterstitialAd();
                 game.setScreen(new GameScreen(game));
                 dispose();
                 return true;
@@ -159,7 +161,6 @@ public class GameOverScreen implements Screen{
                     blipSelectSound.play();
                 }
                 showInterstitialAd();
-                loadInterstitialAd();
                 game.setScreen(new SettingsScreen(game));
                 dispose();
                 return true;
@@ -177,17 +178,6 @@ public class GameOverScreen implements Screen{
                 return true;
             }
         });
-    }
-
-    public void loadInterstitialAd(){
-        if (game.adsController.isWifiConnected()) {
-            game.adsController.loadInterstitialAd(new Runnable() {
-                @Override
-                public void run() {
-                    //load new interstitial ad after closing ad
-                }
-            });
-        }
     }
 
     public void showInterstitialAd(){
@@ -208,6 +198,11 @@ public class GameOverScreen implements Screen{
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.disableBlending();
         game.batch.begin();
+        if(timeSinceMillis(gameOverScreenStart) > adTimer){
+            gameOverScreenStart = millis();
+            showInterstitialAd();
+            adTimer = 8000l;
+        }
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         game.batch.draw(ground.getTextureGround(), 0, 0);
         game.batch.end();

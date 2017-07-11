@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -75,8 +76,34 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				bannerAd.setVisibility(View.VISIBLE);
 				AdRequest.Builder builder = new AdRequest.Builder();
+				bannerAd.setAdListener(new AdListener() {
+					@Override
+					public void onAdClosed() {
+//						super.onAdClosed();
+					}
+
+					@Override
+					public void onAdFailedToLoad(int i) {
+//						super.onAdFailedToLoad(i);
+					}
+
+					@Override
+					public void onAdLeftApplication() {
+						super.onAdLeftApplication();
+					}
+
+					@Override
+					public void onAdOpened() {
+						super.onAdOpened();
+					}
+
+					@Override
+					public void onAdLoaded() {
+						bannerAd.setVisibility(View.VISIBLE);
+//						super.onAdLoaded();
+					}
+				});
 				AdRequest ad = builder.build();
 				bannerAd.loadAd(ad);
 			}
@@ -100,26 +127,16 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 			public void run() {
 				if(interstitialAd != null && interstitialAd.isLoaded()) {
 					interstitialAd.show();
-				}
-			}
-		});
-	}
-
-	@Override
-	public void loadInterstitialAd(final Runnable then) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				if (then != null) {
-					interstitialAd.setAdListener(new AdListener() {
-						@Override
-						public void onAdClosed() {
-							Gdx.app.postRunnable(then);
-							AdRequest.Builder builder = new AdRequest.Builder();
-							AdRequest ad = builder.build();
-							interstitialAd.loadAd(ad);
-						}
-					});
+					if (then != null) {
+						interstitialAd.setAdListener(new AdListener() {
+							@Override
+							public void onAdClosed() {
+								AdRequest.Builder builder = new AdRequest.Builder();
+								AdRequest ad = builder.build();
+								interstitialAd.loadAd(ad);
+							}
+						});
+					}
 				}
 			}
 		});

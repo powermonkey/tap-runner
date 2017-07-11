@@ -21,11 +21,6 @@ class DummyController implements AdsController {
     }
 
     @Override
-    public void loadInterstitialAd(Runnable then) {
-
-    }
-
-    @Override
     public void showInterstitialAd(Runnable then) {
 
     }

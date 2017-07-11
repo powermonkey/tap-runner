@@ -224,17 +224,6 @@ public class Hud{
             stage.addActor(pauseRootTable);
         }
 
-        public void loadInterstitialAd(){
-            if (game.adsController.isWifiConnected()) {
-                game.adsController.loadInterstitialAd(new Runnable() {
-                    @Override
-                    public void run() {
-                        //load new interstitial ad after closing ad
-                    }
-                });
-            }
-        }
-
         public void showInterstitialAd(){
             if (game.adsController.isWifiConnected()) {
                 game.adsController.showInterstitialAd(new Runnable() {
@@ -273,7 +262,6 @@ public class Hud{
                         newGameblipSound.play();
                     }
 //                    showInterstitialAd();
-//                    loadInterstitialAd();
                     pauseTable.setVisible(false);
                     game.setScreen(new GameScreen(game));
                     dispose();
@@ -310,7 +298,6 @@ public class Hud{
                         blipSelectSound.play();
                     }
                     showInterstitialAd();
-                    loadInterstitialAd();
                     game.setScreen(new MainMenuScreen(game));
                     dispose();
                     return true;
