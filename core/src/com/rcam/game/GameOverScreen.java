@@ -44,6 +44,7 @@ public class GameOverScreen implements Screen{
     Sound blipSelectSound, newGameblipSound;
     BitmapFont buttonFonts;
     Long gameOverScreenStart, adTimer;
+    boolean soundOn;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -63,6 +64,8 @@ public class GameOverScreen implements Screen{
         newGameblipSound = GameAssetLoader.newGameblip;
         prefs = Gdx.app.getPreferences("TapRunner");
         gameMode = prefs.getString("GameMode");
+        soundOn = prefs.getBoolean("SoundOn");
+
 
         NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
         NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
@@ -128,7 +131,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(prefs.getBoolean("SoundOn")) {
+                if(soundOn) {
                     blipSelectSound.play();
                 }
                 showInterstitialAd();
@@ -143,7 +146,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(prefs.getBoolean("SoundOn")) {
+                if(soundOn) {
                     newGameblipSound.play();
                 }
                 game.setScreen(new GameScreen(game));
@@ -157,7 +160,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(prefs.getBoolean("SoundOn")) {
+                if(soundOn) {
                     blipSelectSound.play();
                 }
                 showInterstitialAd();

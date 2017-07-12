@@ -3,6 +3,7 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -68,7 +69,8 @@ public class GameScreen implements Screen{
     BitmapFont distance;
     GlyphLayout glyphLayout;
     Smoke smoke;
-    float viewportDiv2, viewportDiv4 ,tapRunnerWidthDiv2, tapRunnerHeightDiv2 ;
+    float viewportDiv2, viewportDiv4 ,tapRunnerWidthDiv2, tapRunnerHeightDiv2, lerp ;
+    FPSLogger fpslogger;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -161,6 +163,8 @@ public class GameScreen implements Screen{
         distanceValue = new StringBuilder();
         distance = arcadeSkin.getFont("font");
         glyphLayout = new GlyphLayout();
+        fpslogger = new FPSLogger();
+        lerp = 0.1f;
     }
 
     public void handleKeyboardInput() {
@@ -172,7 +176,7 @@ public class GameScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        cam.position.x = (int)runner.getPosition().x + 100;
+        cam.position.x = runner.getPosition().x + 100;
         cam.update();
 
         //static background image
@@ -188,7 +192,7 @@ public class GameScreen implements Screen{
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.enableBlending();
         game.batch.begin();
-
+//        fpslogger.log();
         //spawn power up
         renderPowerUp();
 
@@ -236,7 +240,7 @@ public class GameScreen implements Screen{
             Ground groundItem;
             for(int i = 0; i < grounds.size; i++){
                 groundItem = grounds.get(i);
-                game.batch.draw(groundItem.getTextureGround(),  (int)groundItem.getPosGround().x,  (int)groundItem.getPosGround().y);
+                game.batch.draw(groundItem.getTextureGround(),  groundItem.getPosGround().x,  groundItem.getPosGround().y);
                 if (cam.position.x - (viewportDiv2) > groundItem.getPosGround().x + groundItem.getTextureGround().getRegionWidth()) {
                     groundItem.repositionGround(groundItem.getPosGround().x + (groundItem.getTextureGround().getRegionWidth() * 2));
                 }
@@ -244,21 +248,21 @@ public class GameScreen implements Screen{
         }
 
         //render runner
-        runner.stateTime += Gdx.graphics.getDeltaTime();
+        runner.stateTime += delta;
         TextureRegion currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
 
         if(runner.isDead){
-            game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(runner.getRegionDeath(), runner.getPosition().x, runner.getPosition().y);
         }else if(runner.isIdle && !runner.isJumping){
-            game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(runner.getRegionStand(), runner.getPosition().x, runner.getPosition().y);
         }else if(!runner.isOnGround) {
-            game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(runner.getRegionJump(), runner.getPosition().x, runner.getPosition().y);
         }else if(!runner.isIdle) {
-            game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(currentRunnerFrame, runner.getPosition().x, runner.getPosition().y);
         }
 
         if(runner.isSmoking) {
-            renderSmoke();
+            renderSmoke(delta);
         }
 
         if(!isPause) {
@@ -354,9 +358,9 @@ public class GameScreen implements Screen{
             if(groundEnemyRenderItem.isSpawned){
                 if (cam.position.x + 20 + viewportDiv2 > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()
                         && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
-                    groundEnemyRenderItem.stateTime += Gdx.graphics.getDeltaTime();
+                    groundEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = groundEnemyRenderItem.animation.getKeyFrame(groundEnemyRenderItem.stateTime, true);
-                    game.batch.draw(currentFrame, (int)groundEnemyRenderItem.getPosition().x, (int)groundEnemyRenderItem.getPosition().y);
+                    game.batch.draw(currentFrame, groundEnemyRenderItem.getPosition().x, groundEnemyRenderItem.getPosition().y);
                     groundEnemyRenderItem.checkCollision(runner, hud.health);
                     if(!isPause) {
                         groundEnemyRenderItem.update(delta);
@@ -372,9 +376,9 @@ public class GameScreen implements Screen{
             if(flyingEnemyRenderItem.isSpawned){
                 if (cam.position.x + 20 + viewportDiv2 > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()
                         && cam.position.x - 50 - (viewportDiv4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
-                    flyingEnemyRenderItem.stateTime += Gdx.graphics.getDeltaTime();
+                    flyingEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = flyingEnemyRenderItem.animation.getKeyFrame(flyingEnemyRenderItem.stateTime, true);
-                    game.batch.draw(currentFrame, (int)flyingEnemyRenderItem.getPosition().x, (int)flyingEnemyRenderItem.getPosition().y);
+                    game.batch.draw(currentFrame, flyingEnemyRenderItem.getPosition().x, flyingEnemyRenderItem.getPosition().y);
                     flyingEnemyRenderItem.checkCollision(runner, hud.health);
                     if(!isPause) {
                         flyingEnemyRenderItem.update(delta);
@@ -480,7 +484,7 @@ public class GameScreen implements Screen{
                 if (cam.position.x + 20 + viewportDiv2> powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
                         && cam.position.x - 50 - (viewportDiv4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
                     powerUpItem.checkPowerUpCollision(runner, hud.health);
-                    game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
+                    game.batch.draw(powerUpItem.getAtlasRegion(), powerUpItem.getPosition().x, powerUpItem.getPosition().y);
                 } else if(cam.position.x  - 50 - (viewportDiv4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
                 }
@@ -497,12 +501,12 @@ public class GameScreen implements Screen{
 
     }
 
-    public void renderSmoke(){
-        smoke.stateTime += Gdx.graphics.getDeltaTime();
+    public void renderSmoke(float delta){
+        smoke.stateTime += delta;
         TextureRegion currentSmokeFrameSlow = smoke.smokeAnimationSlow.getKeyFrame(runner.stateTime, true);
         TextureRegion currentSmokeFrameFast = smoke.smokeAnimationFast.getKeyFrame(runner.stateTime, true);
-        game.batch.draw(currentSmokeFrameSlow, (int)runner.getPosition().x - 20, (int)runner.getPosition().y - 10);
-        game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, (int)runner.getPosition().y + 20);
+        game.batch.draw(currentSmokeFrameSlow, runner.getPosition().x - 20, runner.getPosition().y - 10);
+        game.batch.draw(currentSmokeFrameFast, runner.getPosition().x - 30, runner.getPosition().y + 20);
     }
 
     public String getText(){

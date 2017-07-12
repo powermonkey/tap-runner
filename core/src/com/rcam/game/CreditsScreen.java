@@ -36,6 +36,7 @@ public class CreditsScreen implements Screen {
     Sound blipSelectSound;
     static Preferences prefs;
     BitmapFont buttonFonts;
+    boolean soundOn;
 
     public CreditsScreen(final TapRunner gam){
         game = gam;
@@ -63,6 +64,7 @@ public class CreditsScreen implements Screen {
         table9 = new Table();
 
         prefs = Gdx.app.getPreferences("TapRunner");
+        soundOn = prefs.getBoolean("SoundOn");
 
         //runner & background texture
         Label runnerAndBgLabel = new Label("Runner & Background Textures by ", arcadeSkin, "screen");
@@ -244,7 +246,7 @@ public class CreditsScreen implements Screen {
         goBackButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(prefs.getBoolean("SoundOn")) {
+                if(soundOn) {
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));

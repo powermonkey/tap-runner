@@ -35,6 +35,7 @@ public class RecordsScreen implements Screen{
     TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen, ground;
     Sound blipSelectSound;
     BitmapFont buttonFonts;
+    boolean soundOn;
 
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
@@ -49,6 +50,7 @@ public class RecordsScreen implements Screen{
         goBackButtonTable = new Table();
         labelTable = new Table();
         prefs = Gdx.app.getPreferences("TapRunner");
+        soundOn = prefs.getBoolean("SoundOn");
         bg = GameAssetLoader.bg;
         ground = GameAssetLoader.ground;
         blockYellow = GameAssetLoader.blockYellow;
@@ -115,7 +117,7 @@ public class RecordsScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(prefs.getBoolean("SoundOn")) {
+                if(soundOn) {
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));

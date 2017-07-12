@@ -59,7 +59,7 @@ public class LoadingScreen implements Screen{
         }
 
         game.batch.begin();
-        stateTime += Gdx.graphics.getDeltaTime();
+        stateTime += delta;
         TextureRegion currentRunnerFrame = animationFast.getKeyFrame(stateTime, true);
         game.batch.draw(currentRunnerFrame, (cam.viewportWidth * 0.5f) - (currentRunnerFrame.getRegionWidth() * 0.5f), (cam.viewportHeight * 0.5f) - currentRunnerFrame.getRegionHeight());
         game.batch.end();

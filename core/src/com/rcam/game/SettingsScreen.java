@@ -41,6 +41,7 @@ public class SettingsScreen implements Screen {
     TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen;
     Sound blipSelectSound;
     BitmapFont buttonFonts;
+    boolean soundTurnedOn;
 
     public SettingsScreen(final TapRunner gam){
         this.game = gam;
@@ -52,6 +53,7 @@ public class SettingsScreen implements Screen {
 
         stage = new Stage(new FitViewport(480, 800));
         prefs = Gdx.app.getPreferences("TapRunner");
+        soundTurnedOn = prefs.getBoolean("SoundOn");
 
         gameModetable = new Table();
         buttonsTable = new Table();
@@ -158,7 +160,7 @@ public class SettingsScreen implements Screen {
 //                prefs.putBoolean("EnemyTouchSlows", enemyTouchSlows.isChecked());
                 prefs.putBoolean("SoundOn", soundOn.isChecked());
                 prefs.flush();
-                if(prefs.getBoolean("SoundOn")) {
+                if(soundTurnedOn) {
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));
