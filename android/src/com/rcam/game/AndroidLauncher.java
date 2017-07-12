@@ -99,7 +99,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 			public void run() {
 				if(interstitialAd != null && interstitialAd.isLoaded()) {
 					interstitialAd.show();
-					if (then != null) {
+//					if (then != null) {
 						interstitialAd.setAdListener(new AdListener() {
 							@Override
 							public void onAdClosed() {
@@ -108,7 +108,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 								interstitialAd.loadAd(ad);
 							}
 						});
-					}
+//					}
 				}
 			}
 		});
