@@ -45,7 +45,7 @@ public class SettingsScreen implements Screen {
     public SettingsScreen(final TapRunner gam){
         this.game = gam;
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
+        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
         blipSelectSound = GameAssetLoader.blipSelect;
@@ -96,7 +96,7 @@ public class SettingsScreen implements Screen {
         bg = GameAssetLoader.bg;
         blockYellow = GameAssetLoader.blockYellow;
 
-        ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
+        ground = new Ground(cam.position.x - (cam.viewportWidth * 0.5f));
         Gdx.input.setInputProcessor(stage);
 
 //        stage.setDebugAll(true);
@@ -132,13 +132,13 @@ public class SettingsScreen implements Screen {
         buttonsTable.center().center().pad(20);
         buttonsTable.setBackground(new NinePatchDrawable(patch));
 
-        rootTable.add(settingsLabelTable).width(TapRunner.WIDTH / 2);
+        rootTable.add(settingsLabelTable).width(TapRunner.WIDTH * 0.5f);
         rootTable.row();
-        rootTable.add(gameModetable).width(TapRunner.WIDTH / 2);
+        rootTable.add(gameModetable).width(TapRunner.WIDTH * 0.5f);
         rootTable.row();
-        rootTable.add(optionsTable).width(TapRunner.WIDTH / 2);
+        rootTable.add(optionsTable).width(TapRunner.WIDTH * 0.5f);
         rootTable.row();
-        rootTable.add(buttonsTable).width(TapRunner.WIDTH / 2);
+        rootTable.add(buttonsTable).width(TapRunner.WIDTH * 0.5f);
         rootTable.row();
         rootTable.center().center();
 

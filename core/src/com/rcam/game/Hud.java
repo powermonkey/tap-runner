@@ -219,7 +219,7 @@ public class Hud{
             pauseTable.row();
             pauseTable.setBackground(patchDrawableGreen);
 
-            pauseRootTable.add(pauseTable).width(TapRunner.WIDTH / 2).center().center().expandX();
+            pauseRootTable.add(pauseTable).width(TapRunner.WIDTH * 0.5f).center().center().expandX();
             pauseRootTable.row();
             stage.addActor(pauseRootTable);
         }

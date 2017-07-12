@@ -49,7 +49,7 @@ public class GameOverScreen implements Screen{
         this.game = gam;
         this.runner = runner;
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
+        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
         stage = new Stage(new FitViewport(480, 800));
@@ -93,7 +93,7 @@ public class GameOverScreen implements Screen{
         exitButton = new TextButton("Exit", buttonStyle);
         exitButtonListener(exitButton);
 
-        ground = new Ground(cam.position.x - (cam.viewportWidth / 2));
+        ground = new Ground(cam.position.x - (cam.viewportWidth * 0.5f));
         Gdx.input.setInputProcessor(stage);
 
 //        stage.setDebugAll(true);

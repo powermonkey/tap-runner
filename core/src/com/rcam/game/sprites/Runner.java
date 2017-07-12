@@ -288,7 +288,7 @@ public class Runner {
     }
 
     public int indicatePosition(){
-        int s = Math.round(getPosition().x / 100);
+        int s = Math.round(getPosition().x * .01f);
 
         return s;
     }

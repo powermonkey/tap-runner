@@ -28,7 +28,7 @@ public class LoadingScreen implements Screen{
         this.game = gam;
         assetManager = new AssetManager();
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f);
 
         assetManager.load("packedimages/loading.atlas", TextureAtlas.class);
         assetManager.finishLoading();
@@ -61,8 +61,7 @@ public class LoadingScreen implements Screen{
         game.batch.begin();
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentRunnerFrame = animationFast.getKeyFrame(stateTime, true);
-        game.batch.draw(currentRunnerFrame, (cam.viewportWidth / 2) - (currentRunnerFrame.getRegionWidth() / 2), (cam.viewportHeight / 2) - currentRunnerFrame.getRegionHeight());
-
+        game.batch.draw(currentRunnerFrame, (cam.viewportWidth * 0.5f) - (currentRunnerFrame.getRegionWidth() * 0.5f), (cam.viewportHeight * 0.5f) - currentRunnerFrame.getRegionHeight());
         game.batch.end();
 
     }

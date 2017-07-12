@@ -40,7 +40,7 @@ public class CreditsScreen implements Screen {
     public CreditsScreen(final TapRunner gam){
         game = gam;
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
+        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
         bg = GameAssetLoader.bg;
         ground = GameAssetLoader.ground;
         arcadeSkin = GameAssetLoader.arcadeSkin;

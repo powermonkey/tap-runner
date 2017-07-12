@@ -39,7 +39,7 @@ public class RecordsScreen implements Screen{
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
+        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
         stage = new Stage(new FitViewport(480, 800));
