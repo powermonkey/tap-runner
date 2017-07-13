@@ -26,18 +26,17 @@ import com.rcam.game.sprites.Runner;
  * Created by Rod on 4/18/2017.
  */
 
-public class Hud{
+public class Hud extends Table{
     Stage stage;
     Table rootTable, indicatorstable, controlsTable;
     Skin cleanCrispySkin, arcadeSkin;
     PauseButton pauseButton;
-    JumpButton jumpButton;
     public Health health;
     Label healthLabel, speedMeterLabel;
     GameScreen gameScreen;
     TextureAtlas.AtlasRegion blockYellow, blockYellowGreen;
     NinePatchDrawable patchDrawableGreen, patchDrawableYellow;
-    Sound blipSelectSound, newGameblipSound, jumpSound, speedAdjustSound;
+    Sound blipSelectSound, newGameblipSound, jumpSound;
     Preferences prefs;
     NinePatch patchGreen, patchYellow;
     BitmapFont labelFont, buttonFonts;
@@ -45,8 +44,8 @@ public class Hud{
     PauseMenu pauseMenu;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
-//        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2 + 50);
-//        setClip(true);
+        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+        setClip(true);
         this.gameScreen = gameScreen;
         blockYellow = GameAssetLoader.blockYellow;
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
@@ -69,7 +68,6 @@ public class Hud{
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner, gameScreen);
         pauseMenu = new PauseMenu(tapRunner, pauseButton);
-        jumpButton = new JumpButton(runner);
         labelFont = arcadeSkin.getFont("screen");
         Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
         healthLabel = new Label("ENERGY", fontStyle);
@@ -85,16 +83,35 @@ public class Hud{
         indicatorstable.add(health.getHealthBar()).padTop(2);
         indicatorstable.row();
 
-        controlsTable.add(indicatorstable).left().padLeft(20);
-        controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).expandX().padLeft(30);
-        controlsTable.add(jumpButton.getJumpButton()).width(85).height(85).right().padRight(25).expandX();
+        controlsTable.add(indicatorstable).center().padBottom(20);
         controlsTable.row();
+        controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).center().expandX();
         controlsTable.setBackground(patchDrawableGreen);
 
-        rootTable.add(controlsTable).width(TapRunner.WIDTH).padBottom(20).height(120).expandX();
+        rootTable.add(controlsTable).width(TapRunner.WIDTH * 0.5f).padBottom(20).height(120);
         rootTable.row();
         rootTable.center().bottom();
+
         stage.addActor(rootTable);
+        stage.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                if(!gameScreen.isPause && !event.getTarget().toString().equals("Image")) {
+                    if (runner.isOnGround) {
+                        if(prefs.getBoolean("SoundOn")) {
+                            jumpSound.play();
+                        }
+                        runner.jump();
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                runner.isJumping = false;
+            }
+        });
     }
 
     public class Health{
@@ -309,47 +326,6 @@ public class Hud{
             });
         }
 
-    }
-
-    public class JumpButton{
-        Button button;
-
-        public JumpButton(Runner runner){
-            button = new Button(getArcadeSkin(), "yellow");
-            button.setSize(70, 70);
-            buttonListener(button, runner);
-        }
-
-        public void buttonListener(final Button button, final Runner runner){
-            button.addListener(new InputListener(){
-                @Override
-                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    if(!gameScreen.isPause) {
-                        if (runner.isOnGround) {
-                            if(prefs.getBoolean("SoundOn")) {
-                                jumpSound.play();
-                            }
-                            runner.jump();
-                        }
-                    }
-                    return true;
-                }
-
-                @Override
-                public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                    runner.isJumping = false;
-                }
-            });
-        }
-
-        public Button getJumpButton(){
-            return button;
-        }
-
-    }
-
-    public Skin getArcadeSkin(){
-        return arcadeSkin;
     }
 
     public Skin getCleanCrispySkin(){
