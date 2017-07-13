@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
@@ -42,11 +43,15 @@ public class Hud extends Table{
     BitmapFont labelFont, buttonFonts;
     StringBuilder distanceValue;
     PauseMenu pauseMenu;
+    Hint hint;
+    boolean soundOn;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
         setClip(true);
         this.gameScreen = gameScreen;
+        prefs = Gdx.app.getPreferences("TapRunner");
+        soundOn = prefs.getBoolean("SoundOn");
         blockYellow = GameAssetLoader.blockYellow;
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
         patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
@@ -66,13 +71,14 @@ public class Hud extends Table{
         stage = new Stage(new FitViewport(480, 800));
         distanceValue = new StringBuilder();
         health = new Health(runner);
-        pauseButton = new PauseButton(tapRunner, gameScreen);
+        pauseButton = new PauseButton(tapRunner);
         pauseMenu = new PauseMenu(tapRunner, pauseButton);
+        hint = new Hint();
         labelFont = arcadeSkin.getFont("screen");
         Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
         healthLabel = new Label("ENERGY", fontStyle);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
-        prefs = Gdx.app.getPreferences("TapRunner");
+
 
 //        stage.setDebugAll(true);
 
@@ -96,9 +102,10 @@ public class Hud extends Table{
         stage.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(!gameScreen.isPause && !event.getTarget().toString().equals("Image")) {
+                if(!gameScreen.isPause && !event.getTarget().toString().equals("Image") && !event.getTarget().toString().equals("Label: Okay")
+                        && !event.getTarget().toString().equals("Label: Continue")) {
                     if (runner.isOnGround) {
-                        if(prefs.getBoolean("SoundOn")) {
+                        if(soundOn) {
                             jumpSound.play();
                         }
                         runner.jump();
@@ -112,6 +119,73 @@ public class Hud extends Table{
                 runner.isJumping = false;
             }
         });
+    }
+
+    public class Hint{
+        Table rtable, table;
+        Label hint;
+        TextButton okay;
+        CheckBox hideHint;
+
+        public Hint(){
+            table = new Table();
+            rtable = new Table();
+            rtable.setFillParent(true);
+            TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+            buttonStyle.up = patchDrawableYellow;
+            buttonStyle.down = patchDrawableYellow;
+            buttonStyle.font = arcadeSkin.getFont("screen");
+
+            hint = new Label("Tap on screen to jump", arcadeSkin);
+            hideHint = new CheckBox("Never show again", cleanCrispySkin, "default");
+
+            gameScreen.isPause = true;
+
+            if (!prefs.contains("HideHint")) {
+                prefs.putBoolean("HideHint", false);
+                prefs.flush();
+            }
+
+            if(prefs.getBoolean("HideHint")){
+                table.setVisible(false);
+                gameScreen.isPause = false;
+            }else{
+                table.setVisible(true);
+            }
+
+            okay = new TextButton("Okay", buttonStyle);
+            okay.addListener(new InputListener(){
+                @Override
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                    if(soundOn) {
+                        blipSelectSound.play();
+                    }
+
+                    prefs.putBoolean("HideHint", hideHint.isChecked());
+                    prefs.flush();
+
+                    table.setVisible(false);
+                    gameScreen.isPause = false;
+
+                    return true;
+                }
+            });
+
+            table.add(hint).pad(5);
+            table.row();
+            table.add(hideHint).pad(25);
+            table.row();
+            table.add(okay).width(70).height(40).pad(10);
+            table.row();
+//            table.setWidth(200);
+//            table.setHeight(100);
+            table.setBackground(patchDrawableGreen);
+
+            rtable.add(table).center().center();
+            rtable.row();
+            stage.addActor(rtable);
+        }
+
     }
 
     public class Health{
@@ -139,7 +213,7 @@ public class Hud extends Table{
         ImageButton.ImageButtonStyle buttonStyle, unpauseStyle;
         TapRunner game;
 
-        public PauseButton(TapRunner game, GameScreen gameScreen){
+        public PauseButton(TapRunner game){
             this.game = game;
             buttonStyle = new ImageButton.ImageButtonStyle();
             unpauseStyle = new ImageButton.ImageButtonStyle();
@@ -159,22 +233,22 @@ public class Hud extends Table{
             unpauseStyle.imageDown = buttonSkin.getDrawable("forward");
 
             pauseButton.setStyle(buttonStyle);
-            pauseButtonListener(pauseButton, gameScreen);
+            pauseButtonListener(pauseButton);
         }
 
-        public void pauseButtonListener(final Button button, final GameScreen gameScreen){
+        public void pauseButtonListener(final Button button){
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                     if(!gameScreen.isPause) {
-                        if(prefs.getBoolean("SoundOn")) {
+                        if(soundOn) {
                             blipSelectSound.play(1.0f);
                         }
                         pauseButton.setStyle(unpauseStyle);
                         gameScreen.isPause = true;
                         pauseMenu.pauseTable.setVisible(true);
                     }else{
-                        if(prefs.getBoolean("SoundOn")) {
+                        if(soundOn) {
                             blipSelectSound.play(1.0f);
                         }
                         pauseButton.setStyle(buttonStyle);
@@ -256,7 +330,7 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    if(prefs.getBoolean("SoundOn")) {
+                    if(soundOn) {
                         blipSelectSound.play();
                     }
                     pauseButton.getPauseButton().setStyle(pauseButton.buttonStyle);
@@ -275,7 +349,7 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    if(prefs.getBoolean("SoundOn")) {
+                    if(soundOn) {
                         newGameblipSound.play();
                     }
 //                    showInterstitialAd();
@@ -311,7 +385,7 @@ public class Hud extends Table{
             button.addListener(new InputListener(){
                 @Override
                 public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                    if(prefs.getBoolean("SoundOn")) {
+                    if(soundOn) {
                         blipSelectSound.play();
                     }
                     showInterstitialAd();
