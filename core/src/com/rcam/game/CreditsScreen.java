@@ -47,6 +47,7 @@ public class CreditsScreen implements Screen {
         arcadeSkin = GameAssetLoader.arcadeSkin;
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         blockYellow = GameAssetLoader.blockYellow;
+        blockYellowGreen = GameAssetLoader.blockYellowGreen;
         blipSelectSound = GameAssetLoader.blipSelect;
 
         stage = new Stage(new FitViewport(480, 800));
@@ -233,9 +234,11 @@ public class CreditsScreen implements Screen {
         testerCredit.setColor(Color.BLUE);
 
 
-        blockYellowGreen = GameAssetLoader.blockYellowGreen;
+        NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
         NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
+
         buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
@@ -257,7 +260,7 @@ public class CreditsScreen implements Screen {
 
 //        stage.setDebugAll(true);
 
-        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
+
 
         table.add(runnerAndBgLabel);
         table.row();
@@ -266,7 +269,7 @@ public class CreditsScreen implements Screen {
         table.add(runnerAndBgLicense);
         table.row();
         table.center().center().pad(10);
-        table.setBackground(new NinePatchDrawable(patch));
+        table.setBackground(patchDrawableYellow);
 
         table2.add(enemyLabel);
         table2.row();
@@ -279,7 +282,7 @@ public class CreditsScreen implements Screen {
         table2.add(enemyLicense3);
         table2.row();
         table2.center().center().pad(10);
-        table2.setBackground(new NinePatchDrawable(patch));
+        table2.setBackground(patchDrawableYellow);
 
         table3.add(iconsLabel);
         table3.row();
@@ -288,7 +291,7 @@ public class CreditsScreen implements Screen {
         table3.add(iconsLicense);
         table3.row();
         table3.center().center().pad(10);
-        table3.setBackground(new NinePatchDrawable(patch));
+        table3.setBackground(patchDrawableYellow);
 
         table5.add(skinLabel);
         table5.row();
@@ -299,7 +302,7 @@ public class CreditsScreen implements Screen {
         table5.add(skinLicense);
         table5.row();
         table5.center().center().pad(10);
-        table5.setBackground(new NinePatchDrawable(patch));
+        table5.setBackground(patchDrawableYellow);
 
         table6.add(soundLabel);
         table6.row();
@@ -314,7 +317,7 @@ public class CreditsScreen implements Screen {
         table6.add(soundLicense);
         table6.row();
         table6.center().center().pad(10);
-        table6.setBackground(new NinePatchDrawable(patch));
+        table6.setBackground(patchDrawableYellow);
 
         table7.add(fontLabel);
         table7.row();
@@ -323,18 +326,18 @@ public class CreditsScreen implements Screen {
         table7.add(fontCredit2);
         table7.row();
         table7.center().center().pad(10);
-        table7.setBackground(new NinePatchDrawable(patch));
+        table7.setBackground(patchDrawableYellow);
 
         table8.add(testerLabel);
         table8.row();
         table8.add(testerCredit);
         table8.row();
         table8.center().center().pad(10);
-        table8.setBackground(new NinePatchDrawable(patch));
+        table8.setBackground(patchDrawableYellow);
 
         table9.add(goBackButton).pad(5).width(200).height(50).expandX().pad(15);
         table9.row();
-        table9.setBackground(new NinePatchDrawable(patch));
+        table9.setBackground(patchDrawableYellow);
 
         rootTable.add(table).fillX();
         rootTable.row();

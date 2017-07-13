@@ -50,6 +50,10 @@ public class SettingsScreen implements Screen {
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
         blipSelectSound = GameAssetLoader.blipSelect;
+        bg = GameAssetLoader.bg;
+        blockYellow = GameAssetLoader.blockYellow;
+        blockYellowGreen = GameAssetLoader.blockYellowGreen;
+        buttonFonts = GameAssetLoader.buttonFonts;
 
         stage = new Stage(new FitViewport(480, 800));
         prefs = Gdx.app.getPreferences("TapRunner");
@@ -71,10 +75,11 @@ public class SettingsScreen implements Screen {
 //        enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         soundOn = new CheckBox("Sound On", cleanCrispySkin, "default");
 
-        blockYellowGreen = GameAssetLoader.blockYellowGreen;
+
         NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
-        buttonFonts = GameAssetLoader.buttonFonts;
+        NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
@@ -95,22 +100,16 @@ public class SettingsScreen implements Screen {
         gameModeGroup.setMinCheckCount(1);
         gameModeGroup.setUncheckLast(true);
 
-        bg = GameAssetLoader.bg;
-        blockYellow = GameAssetLoader.blockYellow;
-
         ground = new Ground(cam.position.x - (cam.viewportWidth * 0.5f));
         Gdx.input.setInputProcessor(stage);
 
 //        stage.setDebugAll(true);
 
-        NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
-
         settingsLabelTable.add(settingsLabel).expandX().center().uniform();
         settingsLabelTable.row();
         settingsLabelTable.center().center().pad(10);
-        settingsLabelTable.setBackground(new NinePatchDrawable(patch));
+        settingsLabelTable.setBackground(patchDrawableYellow);
 
-        gameModetable.setBackground(new NinePatchDrawable(patch));
         gameModetable.add(gameModeLabel).colspan(2).expandX().center().uniform();
         gameModetable.row();
         gameModetable.add(normalMode).colspan(2).padTop(20).expandX().center().uniform();
@@ -118,7 +117,7 @@ public class SettingsScreen implements Screen {
         gameModetable.add(groundLavaMode).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
         gameModetable.row();
         gameModetable.center().center().pad(20);
-        gameModetable.setBackground(new NinePatchDrawable(patch));
+        gameModetable.setBackground(patchDrawableYellow);
 
         optionsTable.add(otherOptionsLabel).colspan(2).expandX().center().uniform();
         optionsTable.row();
@@ -127,12 +126,12 @@ public class SettingsScreen implements Screen {
         optionsTable.add(soundOn).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
         optionsTable.row();
         optionsTable.center().center().pad(20);
-        optionsTable.setBackground(new NinePatchDrawable(patch));
+        optionsTable.setBackground(patchDrawableYellow);
 
         buttonsTable.add(okay).width(150).height(50).expandX();
         buttonsTable.row();
         buttonsTable.center().center().pad(20);
-        buttonsTable.setBackground(new NinePatchDrawable(patch));
+        buttonsTable.setBackground(patchDrawableYellow);
 
         rootTable.add(settingsLabelTable).width(TapRunner.WIDTH * 0.5f);
         rootTable.row();

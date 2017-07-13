@@ -137,7 +137,7 @@ public class Hud extends Table{
             buttonStyle.font = arcadeSkin.getFont("screen");
 
             hint = new Label("Tap on screen to jump", arcadeSkin);
-            hideHint = new CheckBox("Never show again", cleanCrispySkin, "default");
+            hideHint = new CheckBox("Never show this again", cleanCrispySkin, "default");
 
             gameScreen.isPause = true;
 
