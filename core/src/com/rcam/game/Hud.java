@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Runner;
@@ -45,6 +46,7 @@ public class Hud extends Table{
     PauseMenu pauseMenu;
     Hint hint;
     boolean soundOn;
+    Distance distance;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
@@ -70,6 +72,7 @@ public class Hud extends Table{
         rootTable.setFillParent(true);
         stage = new Stage(new FitViewport(480, 800));
         distanceValue = new StringBuilder();
+        distance = new Distance(runner);
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner);
         pauseMenu = new PauseMenu(tapRunner, pauseButton);
@@ -177,8 +180,6 @@ public class Hud extends Table{
             table.row();
             table.add(okay).width(70).height(40).pad(10);
             table.row();
-//            table.setWidth(200);
-//            table.setHeight(100);
             table.setBackground(patchDrawableGreen);
 
             rtable.add(table).center().center();
@@ -186,6 +187,39 @@ public class Hud extends Table{
             stage.addActor(rtable);
         }
 
+    }
+
+    public class Distance{
+        Label indicator;
+        Runner runr;
+        Table distanceTable, rootTable;
+
+        public Distance(final Runner runner){
+            this.runr = runner;
+            indicator = new Label(getText(), arcadeSkin, "default");
+            distanceTable = new Table();
+            rootTable = new Table();
+            rootTable.setFillParent(true);
+
+            distanceTable.add(indicator).colspan(2);
+            distanceTable.row();
+
+            rootTable.add(distanceTable);
+            rootTable.row();
+            rootTable.setPosition(0, 200, Align.center);
+
+            stage.addActor(rootTable);
+        }
+
+        public String getText(){
+            distanceValue.delete(0, distanceValue.length());
+            distanceValue.append(runr.indicatePosition()).append(" m");
+            return distanceValue.toString();
+        }
+
+        public void update(){
+            indicator.setText(getText());
+        }
     }
 
     public class Health{
@@ -310,7 +344,7 @@ public class Hud extends Table{
             pauseTable.row();
             pauseTable.setBackground(patchDrawableGreen);
 
-            pauseRootTable.add(pauseTable).width(TapRunner.WIDTH * 0.5f).center().center().expandX();
+            pauseRootTable.add(pauseTable).width(TapRunner.WIDTH * 0.5f).center().center();
             pauseRootTable.row();
             stage.addActor(pauseRootTable);
         }

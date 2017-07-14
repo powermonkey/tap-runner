@@ -65,11 +65,11 @@ public class GameScreen implements Screen{
     Vector2 spawnPosition;
     TextureAtlas.AtlasRegion bg;
     Skin arcadeSkin;
-    StringBuilder distanceValue;
-    BitmapFont distance;
-    GlyphLayout glyphLayout;
+//    StringBuilder distanceValue;
+//    BitmapFont distance;
+//    GlyphLayout glyphLayout;
     Smoke smoke;
-    float viewportDiv2, viewportDiv4 ,tapRunnerWidthDiv2, tapRunnerHeightDiv2, lerp ;
+    float viewportDiv2, viewportDiv4 ,tapRunnerWidthDiv2, tapRunnerHeightDiv2 ;
     FPSLogger fpslogger;
 
     public GameScreen(final TapRunner gam){
@@ -160,11 +160,7 @@ public class GameScreen implements Screen{
         keys = new KeyboardInput(runner);
 
         spawnPosition = new Vector2();
-        distanceValue = new StringBuilder();
-        distance = arcadeSkin.getFont("font");
-        glyphLayout = new GlyphLayout();
         fpslogger = new FPSLogger();
-        lerp = 0.1f;
     }
 
     public void handleKeyboardInput() {
@@ -181,18 +177,18 @@ public class GameScreen implements Screen{
 
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
-//        game.batch.disableBlending();
+        game.batch.disableBlending();
+        game.batch.renderCalls = 0;
         game.batch.begin();
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
-        //update and render distance indicator
-        glyphLayout.setText(distance, getText());
-        distance.draw(game.batch, glyphLayout, (int)(TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180 );
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
+
         game.batch.enableBlending();
         game.batch.begin();
 //        fpslogger.log();
+
         //spawn power up
         renderPowerUp();
 
@@ -315,6 +311,7 @@ public class GameScreen implements Screen{
         }
         game.batch.end();
         hud.render();
+        hud.distance.update();
 //        handleKeyboardInput();
     }
 
@@ -509,12 +506,6 @@ public class GameScreen implements Screen{
         game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, (int)runner.getPosition().y + 20);
     }
 
-    public String getText(){
-        distanceValue.delete(0, distanceValue.length());
-        distanceValue.append(runner.indicatePosition()).append(" m");
-        return distanceValue.toString();
-    }
-
     @Override
     public void show() {
 
@@ -542,7 +533,6 @@ public class GameScreen implements Screen{
 
     @Override
     public void dispose() {
-        distance.dispose();
         hud.dispose();
     }
 }
