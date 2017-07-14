@@ -89,12 +89,12 @@ public class Hud extends Table{
         indicatorstable.add(health.getHealthBar()).padTop(2);
         indicatorstable.row();
 
-        controlsTable.add(indicatorstable).center().padBottom(20);
+        controlsTable.add(indicatorstable).center().padBottom(10);
         controlsTable.row();
         controlsTable.add(pauseButton.getPauseButton()).height(30).width(60).center().expandX();
         controlsTable.setBackground(patchDrawableGreen);
 
-        rootTable.add(controlsTable).width(TapRunner.WIDTH * 0.5f).padBottom(20).height(120);
+        rootTable.add(controlsTable).width(200).padBottom(50).height(100);
         rootTable.row();
         rootTable.center().bottom();
 
