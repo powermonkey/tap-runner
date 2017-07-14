@@ -364,6 +364,8 @@ public class GameScreen implements Screen{
                     }
                 } else if(cam.position.x - 50 - (viewportDiv4) > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
+                    activeGroundEnemies.removeIndex(i);
+                    groundEnemyPool.free(groundEnemyRenderItem);
                 }
             }
         }
@@ -382,28 +384,12 @@ public class GameScreen implements Screen{
                     }
                 } else if(cam.position.x - 50 - (viewportDiv4) > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
+                    activeFlyingEnemies.removeIndex(i);
+                    flyingEnemyPool.free(flyingEnemyRenderItem);
                 }
             }
         }
-
-        //TODO: refactor, put in a function;
-        GroundEnemy groundEnemyItem;
-        for(int i = activeGroundEnemies.size; --i >= 0;){
-            groundEnemyItem = activeGroundEnemies.get(i);
-            if(!groundEnemyItem.isSpawned){
-                activeGroundEnemies.removeIndex(i);
-                groundEnemyPool.free(groundEnemyItem);
-            }
-        }
-
-        FlyingEnemy flyingEnemyItem;
-        for(int i = activeFlyingEnemies.size; --i >= 0;){
-            flyingEnemyItem = activeFlyingEnemies.get(i);
-            if(!flyingEnemyItem.isSpawned){
-                activeFlyingEnemies.removeIndex(i);
-                flyingEnemyPool.free(flyingEnemyItem);
-            }
-        }
+        
     }
 
     private void spawnMarkerDistance(int enemyDistance){
@@ -484,15 +470,9 @@ public class GameScreen implements Screen{
                     game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
                 } else if(cam.position.x  - 50 - (viewportDiv4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
+                    powerUps.removeIndex(i);
+                    powerUpPool.free(powerUpItem);
                 }
-            }
-        }
-
-        for(int i = powerUps.size; --i >= 0;){
-            powerUpItem = powerUps.get(i);
-            if(!powerUpItem.isSpawned){
-                powerUps.removeIndex(i);
-                powerUpPool.free(powerUpItem);
             }
         }
 
@@ -500,8 +480,8 @@ public class GameScreen implements Screen{
 
     public void renderSmoke(float delta){
         smoke.stateTime += delta;
-        TextureRegion currentSmokeFrameSlow = smoke.smokeAnimationSlow.getKeyFrame(runner.stateTime, true);
-        TextureRegion currentSmokeFrameFast = smoke.smokeAnimationFast.getKeyFrame(runner.stateTime, true);
+        TextureRegion currentSmokeFrameSlow = smoke.smokeAnimationSlow.getKeyFrame(smoke.stateTime, true);
+        TextureRegion currentSmokeFrameFast = smoke.smokeAnimationFast.getKeyFrame(smoke.stateTime, true);
         game.batch.draw(currentSmokeFrameSlow, (int)runner.getPosition().x - 20, (int)runner.getPosition().y - 10);
         game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, (int)runner.getPosition().y + 20);
     }
