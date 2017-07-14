@@ -310,6 +310,8 @@ public class GameScreen implements Screen{
             }
         }
         game.batch.end();
+
+        game.batch.disableBlending();
         hud.render();
         hud.distance.update();
 //        handleKeyboardInput();
@@ -389,7 +391,7 @@ public class GameScreen implements Screen{
                 }
             }
         }
-        
+
     }
 
     private void spawnMarkerDistance(int enemyDistance){
