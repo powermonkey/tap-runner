@@ -36,6 +36,7 @@ public class RecordsScreen implements Screen{
     Sound blipSelectSound;
     BitmapFont buttonFonts;
     boolean soundOn;
+    StringBuilder bestNormalValue, bestLavaValue;
 
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
@@ -49,6 +50,8 @@ public class RecordsScreen implements Screen{
         table = new Table();
         goBackButtonTable = new Table();
         labelTable = new Table();
+        bestNormalValue = new StringBuilder();
+        bestLavaValue = new StringBuilder();
         prefs = Gdx.app.getPreferences("TapRunner");
         soundOn = prefs.getBoolean("SoundOn");
         bg = GameAssetLoader.bg;
@@ -61,9 +64,9 @@ public class RecordsScreen implements Screen{
         recordsLabel = new Label("Records", arcadeSkin, "default");
         bestLabel = new Label("Best Distance", arcadeSkin, "default");
         bestNormalLabel = new Label("Normal Mode: ", cleanCrispySkin, "default");
-        bestNormalDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceNormalMode")) + " m", arcadeSkin, "default");
+        bestNormalDistance = new Label(bestNormalValue.append(prefs.getInteger("BestDistanceNormalMode")).append(" m"), arcadeSkin, "default");
         bestLavaLabel = new Label("The Ground is Lava: ", cleanCrispySkin, "default");
-        bestLavaDistance = new Label(Integer.toString(prefs.getInteger("BestDistanceLavaMode")) + " m", arcadeSkin, "default");
+        bestLavaDistance = new Label(bestLavaValue.append(prefs.getInteger("BestDistanceLavaMode")).append(" m"), arcadeSkin, "default");
 
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
         NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);

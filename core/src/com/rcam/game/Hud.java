@@ -105,8 +105,7 @@ public class Hud extends Table{
         stage.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(!gameScreen.isPause && !event.getTarget().toString().equals("Image") && !event.getTarget().toString().equals("Label: Okay")
-                        && !event.getTarget().toString().equals("Label: Continue")) {
+                if(!gameScreen.isPause && !event.getTarget().hasParent()) {
                     if (runner.isOnGround) {
                         if(soundOn) {
                             jumpSound.play();
@@ -211,10 +210,10 @@ public class Hud extends Table{
             stage.addActor(rootTable);
         }
 
-        public String getText(){
+        public StringBuilder getText(){
             distanceValue.delete(0, distanceValue.length());
             distanceValue.append(runr.indicatePosition()).append(" m");
-            return distanceValue.toString();
+            return distanceValue;
         }
 
         public void update(){

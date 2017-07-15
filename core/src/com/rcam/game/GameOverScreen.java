@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Runner;
@@ -45,6 +46,7 @@ public class GameOverScreen implements Screen{
     BitmapFont buttonFonts;
     Long gameOverScreenStart, adTimer;
     boolean soundOn;
+    StringBuilder currentValue, bestValue;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -57,6 +59,8 @@ public class GameOverScreen implements Screen{
         rootTable = new Table();
         rootTable.setFillParent(true);
         table = new Table();
+        currentValue = new StringBuilder();
+        bestValue = new StringBuilder();
         bg = GameAssetLoader.bg;
         blockYellow = GameAssetLoader.blockYellow;
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
@@ -79,12 +83,12 @@ public class GameOverScreen implements Screen{
         buttonStyle.font = buttonFonts;
 
         currentLabel = new Label("Current:", arcadeSkin, "default");
-        current = new Label(Integer.toString(runner.indicatePosition()) + " m", arcadeSkin, "default");
+        current = new Label(currentValue.append(runner.indicatePosition()).append(" m"), arcadeSkin, "default");
         bestDistanceLabel = new Label("Best:", arcadeSkin, "default");
         if(gameMode.equals("The Ground Is Lava")){
-            bestDistance = new Label(Integer.toString(runner.getHighScoreLavaMode()) + " m", arcadeSkin, "default");
+            bestDistance = new Label(bestValue.append(runner.getHighScoreLavaMode()).append(" m"), arcadeSkin, "default");
         }else{
-            bestDistance = new Label(Integer.toString(runner.getHighScoreNormalMode()) + " m", arcadeSkin, "default");
+            bestDistance = new Label(bestValue.append(runner.getHighScoreNormalMode()).append(" m"), arcadeSkin, "default");
         }
 
         mainMenuButton = new TextButton("Main Menu", buttonStyle);

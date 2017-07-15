@@ -288,9 +288,7 @@ public class Runner {
     }
 
     public int indicatePosition(){
-        int s = Math.round(getPosition().x * .01f);
-
-        return s;
+        return Math.round(getPosition().x * .01f);
     }
 
     public void dispose(){
