@@ -242,9 +242,5 @@ public class GameOverScreen implements Screen{
     public void dispose() {
         stage.dispose();
         buttonFonts.dispose();
-//        arcadeSkin.dispose();
-//        cleanCrispySkin.dispose();
-//        blipSelectSound.dispose();
-//        newGameblipSound.dispose();
     }
 }
