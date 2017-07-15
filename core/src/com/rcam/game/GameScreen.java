@@ -197,8 +197,8 @@ public class GameScreen implements Screen{
                 if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
                     ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
                 }
-                game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
-                game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
+                game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, ground1.getPosGround().y);
+                game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, ground2.getPosGround().y);
                 groundDispose = true;
             }else if(groundDispose){
                 //remove ground after showing
@@ -226,8 +226,8 @@ public class GameScreen implements Screen{
                 lava2.repositionLava(lava2.getTextureLava().getRegionWidth() * 2);
             }
 
-            game.batch.draw(lava1.getTextureLava(), lava1.getPosLava().x, lava1.getPosLava().y);
-            game.batch.draw(lava2.getTextureLava(), lava2.getPosLava().x, lava2.getPosLava().y);
+            game.batch.draw(lava1.getTextureLava(), (int)lava1.getPosLava().x, lava1.getPosLava().y);
+            game.batch.draw(lava2.getTextureLava(), (int)lava2.getPosLava().x, lava2.getPosLava().y);
         } else {
             //render ground
             if(cam.position.x - viewportDiv2 > ground1.getPosGround().x + ground1.getTextureGround().getRegionWidth()) {
@@ -236,8 +236,8 @@ public class GameScreen implements Screen{
             if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
                 ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
             }
-            game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
-            game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
+            game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, ground1.getPosGround().y);
+            game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, ground2.getPosGround().y);
         }
 
         //render runner
@@ -392,6 +392,25 @@ public class GameScreen implements Screen{
             }
         }
 
+//        //TODO: refactor, put in a function;
+//        GroundEnemy groundEnemyItem;
+//        for(int i = activeGroundEnemies.size; --i >= 0;){
+//            groundEnemyItem = activeGroundEnemies.get(i);
+//            if(!groundEnemyItem.isSpawned){
+//                activeGroundEnemies.removeIndex(i);
+//                groundEnemyPool.free(groundEnemyItem);
+//            }
+//        }
+//
+//        FlyingEnemy flyingEnemyItem;
+//        for(int i = activeFlyingEnemies.size; --i >= 0;){
+//            flyingEnemyItem = activeFlyingEnemies.get(i);
+//            if(!flyingEnemyItem.isSpawned){
+//                activeFlyingEnemies.removeIndex(i);
+//                flyingEnemyPool.free(flyingEnemyItem);
+//            }
+//        }
+
     }
 
     private void spawnMarkerDistance(int enemyDistance){
@@ -469,7 +488,7 @@ public class GameScreen implements Screen{
                 if (cam.position.x + 20 + viewportDiv2> powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
                         && cam.position.x - 50 - (viewportDiv4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
                     powerUpItem.checkPowerUpCollision(runner, hud.health);
-                    game.batch.draw(powerUpItem.getAtlasRegion(), powerUpItem.getPosition().x, powerUpItem.getPosition().y);
+                    game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, powerUpItem.getPosition().y);
                 } else if(cam.position.x  - 50 - (viewportDiv4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
                     powerUps.removeIndex(i);
