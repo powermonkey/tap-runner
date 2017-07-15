@@ -23,7 +23,7 @@ public class Ground {
     }
 
     public void repositionGround(float x){
-        posGround.set(x, 0);
+        posGround.add(x, 0);
     }
 
 

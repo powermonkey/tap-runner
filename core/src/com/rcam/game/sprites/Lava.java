@@ -46,7 +46,7 @@ public class Lava {
     }
 
     public void repositionLava(float x){
-        posLava.set(x, 0);
+        posLava.add(x, 0);
     }
 
     public TextureAtlas.AtlasRegion getTextureLava() {

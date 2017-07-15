@@ -38,13 +38,13 @@ public class GameScreen implements Screen{
     final float ENEMY_OFFSET_Y = 5;
     float spawnMarker = 50;
     float powerUpMarker = 350;
-    float lastLavaPos = 0;
+//    float lastLavaPos = 0;
     static Preferences prefs;
 
     OrthographicCamera cam, bgCam;
     Runner runner;
-    Array<Ground> grounds;
-    Array<Lava> lavas;
+    Ground ground1, ground2;
+    Lava lava1, lava2;
     Hud hud;
     final Array<GroundEnemy> activeGroundEnemies;
     final Array<FlyingEnemy> activeFlyingEnemies;
@@ -65,9 +65,6 @@ public class GameScreen implements Screen{
     Vector2 spawnPosition;
     TextureAtlas.AtlasRegion bg;
     Skin arcadeSkin;
-//    StringBuilder distanceValue;
-//    BitmapFont distance;
-//    GlyphLayout glyphLayout;
     Smoke smoke;
     float viewportDiv2, viewportDiv4 ,tapRunnerWidthDiv2, tapRunnerHeightDiv2 ;
     FPSLogger fpslogger;
@@ -93,8 +90,8 @@ public class GameScreen implements Screen{
 
         isPause = false;
 
-        grounds = new Array<Ground>();
-        lavas = new Array<Lava>();
+//        grounds = new Array<Ground>();
+//        lavas = new Array<Lava>();
 
         enemyObject = new Enemy();
         groundEnemyOject = new GroundEnemy();
@@ -148,14 +145,18 @@ public class GameScreen implements Screen{
         if(lavaMode){
             groundRendered = false;
             groundDispose = false;
-            lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
-            lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 3));
+            lava1 = new Lava(new Lava().getTextureLava().getRegionWidth() * 2);
+            lava2 = new Lava(new Lava().getTextureLava().getRegionWidth() * 3);
+//            lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
+//            lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 3));
             smoke = new Smoke();
         }
 
-        lastLavaPos = new Lava().getTextureLava().getRegionWidth() * 4;
-        grounds.add(new Ground(0));
-        grounds.add(new Ground(new Ground().getTextureGround().getRegionWidth()));
+//        lastLavaPos = new Lava().getTextureLava().getRegionWidth() * 4;
+//        grounds.add(new Ground(0));
+//        grounds.add(new Ground(new Ground().getTextureGround().getRegionWidth()));
+        ground1 = new Ground(0);
+        ground2 = new Ground(new Ground().getTextureGround().getRegionWidth());
         hud = new Hud(gam, runner, this);
         keys = new KeyboardInput(runner);
 
@@ -171,8 +172,8 @@ public class GameScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        cam.position.x = (int)(runner.getPosition().x) * delta;
-        cam.position.set((int)runner.getPosition().x + 100, 225, 0);
+//        cam.position.x = (runner.getPosition().x) * delta;
+        cam.position.set(runner.getPosition().x + 100, 225, 0);
         cam.update();
 
         //static background image
@@ -197,50 +198,53 @@ public class GameScreen implements Screen{
 
         if (lavaMode) {
             //render ground
-            Ground groundItem;
             if(!groundRendered) {
-                for(int i = grounds.size; --i >= 0;){
-                    groundItem = grounds.get(i);
-                    if (cam.position.x - (viewportDiv2) < groundItem.getPosGround().x + groundItem.getTextureGround().getRegionWidth()) {
-                        game.batch.draw(groundItem.getTextureGround(), (int)groundItem.getPosGround().x, groundItem.getPosGround().y);
-                    }
+                //render ground
+                if(cam.position.x - viewportDiv2 > ground1.getPosGround().x + ground1.getTextureGround().getRegionWidth()) {
+                    ground1.repositionGround(ground1.getTextureGround().getRegionWidth() * 2);
                 }
+                if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
+                    ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
+                }
+                game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, ground1.getPosGround().y);
+                game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, ground2.getPosGround().y);
                 groundDispose = true;
             }else if(groundDispose){
-                for(int i = grounds.size; --i >= 0;){
-                    groundItem = grounds.get(i);
-                    grounds.removeIndex(i);
-                    grounds.removeValue(groundItem, true);
-                }
+                //remove ground after showing
+                ground1 = null;
+                ground2 = null;
                 groundDispose = false;
             }
 
             //render lava
-            Lava lavaItem;
-            for(int i = 0; i < lavas.size; i++){
-                lavaItem = lavas.get(i);
-                game.batch.draw(lavaItem.getTextureLava(), (int)lavaItem.getPosLava().x, lavaItem.getPosLava().y);
-                //update lava bounds
-                lavaItem.update();
-                //check runner landing on lava
-                lavaItem.checkLavaCollision(runner, hud.health);
-                if (cam.position.x - (viewportDiv2) > lavaItem.getPosLava().x + lavaItem.getTextureLava().getRegionWidth()) {
-                    groundRendered = true;
-                    lavaItem.repositionLava(lastLavaPos);
-                    lastLavaPos = lavaItem.getPosLava().x + (lavaItem.getTextureLava().getRegionWidth());
-                }
+            lava1.update();
+            lava1.checkLavaCollision(runner, hud.health);
+
+            lava2.update();
+            lava2.checkLavaCollision(runner, hud.health);
+
+            if (cam.position.x - (viewportDiv2) > lava1.getPosLava().x + lava1.getTextureLava().getRegionWidth()) {
+                groundRendered = true;
+                lava1.repositionLava(lava1.getTextureLava().getRegionWidth() * 2);
             }
 
+            if (cam.position.x - (viewportDiv2) > lava2.getPosLava().x + lava2.getTextureLava().getRegionWidth()) {
+                groundRendered = true;
+                lava2.repositionLava(lava2.getTextureLava().getRegionWidth() * 2);
+            }
+
+            game.batch.draw(lava1.getTextureLava(), (int)lava1.getPosLava().x, lava1.getPosLava().y);
+            game.batch.draw(lava2.getTextureLava(), (int)lava2.getPosLava().x, lava2.getPosLava().y);
         } else {
             //render ground
-            Ground groundItem;
-            for(int i = 0; i < grounds.size; i++){
-                groundItem = grounds.get(i);
-                game.batch.draw(groundItem.getTextureGround(), (int)groundItem.getPosGround().x, (int)groundItem.getPosGround().y);
-                if (cam.position.x - (viewportDiv2) > groundItem.getPosGround().x + groundItem.getTextureGround().getRegionWidth()) {
-                    groundItem.repositionGround(groundItem.getPosGround().x + (groundItem.getTextureGround().getRegionWidth() * 2));
-                }
+            if(cam.position.x - viewportDiv2 > ground1.getPosGround().x + ground1.getTextureGround().getRegionWidth()) {
+                ground1.repositionGround(ground1.getTextureGround().getRegionWidth() * 2);
             }
+            if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
+                ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
+            }
+            game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, ground1.getPosGround().y);
+            game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, ground2.getPosGround().y);
         }
 
         //render runner
@@ -248,13 +252,13 @@ public class GameScreen implements Screen{
         TextureRegion currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
 
         if(runner.isDead){
-            game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(runner.getRegionDeath(), runner.getPosition().x, runner.getPosition().y);
         }else if(runner.isIdle && !runner.isJumping){
-            game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(runner.getRegionStand(), runner.getPosition().x, runner.getPosition().y);
         }else if(!runner.isOnGround) {
-            game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(runner.getRegionJump(), runner.getPosition().x, runner.getPosition().y);
         }else if(!runner.isIdle) {
-            game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
+            game.batch.draw(currentRunnerFrame, runner.getPosition().x, runner.getPosition().y);
         }
 
         if(runner.isSmoking) {
@@ -276,9 +280,8 @@ public class GameScreen implements Screen{
                         runner.increaseGravity();
                         runner.run();
                     }else{
-                        for (Lava lava : lavas) {
-                            lava.increaseDamage();
-                        }
+                        lava1.increaseDamage();
+                        lava2.increaseDamage();
                     }
                 }
                 spawnEnemy();
@@ -359,7 +362,7 @@ public class GameScreen implements Screen{
                         && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = groundEnemyRenderItem.animation.getKeyFrame(groundEnemyRenderItem.stateTime, true);
-                    game.batch.draw(currentFrame, (int)groundEnemyRenderItem.getPosition().x, (int)groundEnemyRenderItem.getPosition().y);
+                    game.batch.draw(currentFrame, groundEnemyRenderItem.getPosition().x, groundEnemyRenderItem.getPosition().y);
                     groundEnemyRenderItem.checkCollision(runner, hud.health);
                     if(!isPause) {
                         groundEnemyRenderItem.update(delta);
@@ -379,7 +382,7 @@ public class GameScreen implements Screen{
                         && cam.position.x - 50 - (viewportDiv4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = flyingEnemyRenderItem.animation.getKeyFrame(flyingEnemyRenderItem.stateTime, true);
-                    game.batch.draw(currentFrame, (int)flyingEnemyRenderItem.getPosition().x, (int)flyingEnemyRenderItem.getPosition().y);
+                    game.batch.draw(currentFrame, flyingEnemyRenderItem.getPosition().x, flyingEnemyRenderItem.getPosition().y);
                     flyingEnemyRenderItem.checkCollision(runner, hud.health);
                     if(!isPause) {
                         flyingEnemyRenderItem.update(delta);
@@ -469,7 +472,7 @@ public class GameScreen implements Screen{
                 if (cam.position.x + 20 + viewportDiv2> powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
                         && cam.position.x - 50 - (viewportDiv4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
                     powerUpItem.checkPowerUpCollision(runner, hud.health);
-                    game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
+                    game.batch.draw(powerUpItem.getAtlasRegion(), powerUpItem.getPosition().x, powerUpItem.getPosition().y);
                 } else if(cam.position.x  - 50 - (viewportDiv4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
                     powerUps.removeIndex(i);
@@ -484,8 +487,8 @@ public class GameScreen implements Screen{
         smoke.stateTime += delta;
         TextureRegion currentSmokeFrameSlow = smoke.smokeAnimationSlow.getKeyFrame(smoke.stateTime, true);
         TextureRegion currentSmokeFrameFast = smoke.smokeAnimationFast.getKeyFrame(smoke.stateTime, true);
-        game.batch.draw(currentSmokeFrameSlow, (int)runner.getPosition().x - 20, (int)runner.getPosition().y - 10);
-        game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, (int)runner.getPosition().y + 20);
+        game.batch.draw(currentSmokeFrameSlow, runner.getPosition().x - 20, runner.getPosition().y - 10);
+        game.batch.draw(currentSmokeFrameFast, runner.getPosition().x - 30, runner.getPosition().y + 20);
     }
 
     @Override
