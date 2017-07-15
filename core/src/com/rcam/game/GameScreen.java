@@ -147,14 +147,9 @@ public class GameScreen implements Screen{
             groundDispose = false;
             lava1 = new Lava(new Lava().getTextureLava().getRegionWidth() * 2);
             lava2 = new Lava(new Lava().getTextureLava().getRegionWidth() * 3);
-//            lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 2));
-//            lavas.add(new Lava(new Lava().getTextureLava().getRegionWidth() * 3));
             smoke = new Smoke();
         }
 
-//        lastLavaPos = new Lava().getTextureLava().getRegionWidth() * 4;
-//        grounds.add(new Ground(0));
-//        grounds.add(new Ground(new Ground().getTextureGround().getRegionWidth()));
         ground1 = new Ground(0);
         ground2 = new Ground(new Ground().getTextureGround().getRegionWidth());
         hud = new Hud(gam, runner, this);
@@ -172,7 +167,6 @@ public class GameScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        cam.position.x = (runner.getPosition().x) * delta;
         cam.position.set(runner.getPosition().x + 100, 225, 0);
         cam.update();
 
