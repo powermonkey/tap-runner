@@ -3,7 +3,6 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -38,7 +37,6 @@ public class GameScreen implements Screen{
     final float ENEMY_OFFSET_Y = 5;
     float spawnMarker = 50;
     float powerUpMarker = 350;
-//    float lastLavaPos = 0;
     static Preferences prefs;
 
     OrthographicCamera cam, bgCam;
@@ -67,7 +65,6 @@ public class GameScreen implements Screen{
     Skin arcadeSkin;
     Smoke smoke;
     float viewportDiv2, viewportDiv4 ,tapRunnerWidthDiv2, tapRunnerHeightDiv2 ;
-    FPSLogger fpslogger;
     StringBuilder distanceValue;
     BitmapFont distance;
     GlyphLayout glyphLayout;
@@ -159,7 +156,6 @@ public class GameScreen implements Screen{
         distanceValue = new StringBuilder();
         distance = arcadeSkin.getFont("font");
         glyphLayout = new GlyphLayout();
-        fpslogger = new FPSLogger();
     }
 
     public void handleKeyboardInput() {
@@ -175,7 +171,6 @@ public class GameScreen implements Screen{
 
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
-//        game.batch.renderCalls = 0;
         game.batch.begin();
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
         //update and render distance indicator

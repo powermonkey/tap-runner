@@ -42,7 +42,7 @@ public class Hud extends Table{
     Preferences prefs;
     NinePatch patchGreen, patchYellow;
     BitmapFont labelFont, buttonFonts;
-    StringBuilder distanceValue;
+//    StringBuilder distanceValue;
     PauseMenu pauseMenu;
     Hint hint;
     boolean soundOn;
