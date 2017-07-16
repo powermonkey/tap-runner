@@ -49,7 +49,6 @@ public class LoadingScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         game.batch.setProjectionMatrix(cam.combined);
 
         if(GameAssetLoader.update()) {
@@ -63,7 +62,6 @@ public class LoadingScreen implements Screen{
         TextureRegion currentRunnerFrame = animationFast.getKeyFrame(stateTime, true);
         game.batch.draw(currentRunnerFrame, (cam.viewportWidth * 0.5f) - (currentRunnerFrame.getRegionWidth() * 0.5f), (cam.viewportHeight * 0.5f) - currentRunnerFrame.getRegionHeight());
         game.batch.end();
-
     }
 
     @Override

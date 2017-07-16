@@ -18,8 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Runner;
 
@@ -45,7 +43,7 @@ public class Hud extends Table{
 //    StringBuilder distanceValue;
     PauseMenu pauseMenu;
     Hint hint;
-    boolean soundOn, hideHintPref;
+    boolean soundOn;
 //    Distance distance;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){

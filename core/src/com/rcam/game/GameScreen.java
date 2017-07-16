@@ -150,7 +150,7 @@ public class GameScreen implements Screen{
         ground1 = new Ground(0);
         ground2 = new Ground(new Ground().getTextureGround().getRegionWidth());
         hud = new Hud(gam, runner, this);
-        keys = new KeyboardInput(runner);
+//        keys = new KeyboardInput(runner);
 
         spawnPosition = new Vector2();
         distanceValue = new StringBuilder();
@@ -169,19 +169,19 @@ public class GameScreen implements Screen{
         cam.position.set((int)runner.getPosition().x + 100, 225, 0);
         cam.update();
 
+//        game.batch.totalRenderCalls = 0;
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
         //update and render distance indicator
         glyphLayout.setText(distance, getText());
-        distance.draw(game.batch, glyphLayout, (int)(TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180 );
+        distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180 );
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
-        game.batch.enableBlending();
         game.batch.begin();
-
+        game.batch.enableBlending();
         //spawn power up
         renderPowerUp();
 
@@ -198,8 +198,8 @@ public class GameScreen implements Screen{
                 if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
                     ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
                 }
-                game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, (int)ground1.getPosGround().y);
-                game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, (int)ground2.getPosGround().y);
+                game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
+                game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
                 groundDispose = true;
             }else if(groundDispose){
                 //remove ground after showing
@@ -227,8 +227,8 @@ public class GameScreen implements Screen{
                 lava2.repositionLava(lava2.getTextureLava().getRegionWidth() * 2);
             }
 
-            game.batch.draw(lava1.getTextureLava(), (int)lava1.getPosLava().x, (int)lava1.getPosLava().y);
-            game.batch.draw(lava2.getTextureLava(), (int)lava2.getPosLava().x, (int)lava2.getPosLava().y);
+            game.batch.draw(lava1.getTextureLava(), lava1.getPosLava().x, lava1.getPosLava().y);
+            game.batch.draw(lava2.getTextureLava(), lava2.getPosLava().x, lava2.getPosLava().y);
         } else {
             //render ground
             if(cam.position.x - viewportDiv2 > ground1.getPosGround().x + ground1.getTextureGround().getRegionWidth()) {
@@ -237,8 +237,8 @@ public class GameScreen implements Screen{
             if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
                 ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
             }
-            game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, (int)ground1.getPosGround().y);
-            game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, (int)ground2.getPosGround().y);
+            game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
+            game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
         }
 
         //render runner
@@ -309,6 +309,7 @@ public class GameScreen implements Screen{
         game.batch.end();
 
         hud.render();
+//        System.out.println(game.batch.maxSpritesInBatch);
 //        handleKeyboardInput();
     }
 
@@ -479,7 +480,7 @@ public class GameScreen implements Screen{
                 if (cam.position.x + 20 + viewportDiv2> powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
                         && cam.position.x - 50 - (viewportDiv4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
                     powerUpItem.checkPowerUpCollision(runner, hud.health);
-                    game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
+                    game.batch.draw(powerUpItem.getAtlasRegion(), powerUpItem.getPosition().x, powerUpItem.getPosition().y);
                 } else if(cam.position.x  - 50 - (viewportDiv4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
                 }

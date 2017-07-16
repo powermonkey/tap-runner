@@ -23,7 +23,7 @@ public class TapRunner extends Game{
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
+		batch = new SpriteBatch(25);
 		font = new BitmapFont();
 		this.setScreen(new LoadingScreen(this));
 		if(adsController.isWifiConnected()) {
