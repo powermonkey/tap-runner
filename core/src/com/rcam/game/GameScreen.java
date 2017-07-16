@@ -179,6 +179,7 @@ public class GameScreen implements Screen{
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
+        game.batch.enableBlending();
         game.batch.begin();
 
         //spawn power up
