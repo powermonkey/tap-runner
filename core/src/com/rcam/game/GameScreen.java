@@ -93,9 +93,6 @@ public class GameScreen implements Screen{
 
         isPause = false;
 
-//        grounds = new Array<Ground>();
-//        lavas = new Array<Lava>();
-
         enemyObject = new Enemy();
         groundEnemyOject = new GroundEnemy();
         flyingEnemyOject = new FlyingEnemy();
@@ -178,7 +175,6 @@ public class GameScreen implements Screen{
 
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
-//        game.batch.disableBlending();
 //        game.batch.renderCalls = 0;
         game.batch.begin();
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
@@ -188,9 +184,7 @@ public class GameScreen implements Screen{
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
-//        game.batch.enableBlending();
         game.batch.begin();
-//        fpslogger.log();
 
         //spawn power up
         renderPowerUp();
@@ -319,9 +313,6 @@ public class GameScreen implements Screen{
         game.batch.end();
 
         hud.render();
-//        if(!isPause) {
-//            hud.distance.update();
-//        }
 //        handleKeyboardInput();
     }
 

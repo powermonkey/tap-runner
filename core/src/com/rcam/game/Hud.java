@@ -46,7 +46,7 @@ public class Hud extends Table{
     PauseMenu pauseMenu;
     Hint hint;
     boolean soundOn;
-    Distance distance;
+//    Distance distance;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
@@ -71,8 +71,8 @@ public class Hud extends Table{
         controlsTable = new Table();
         rootTable.setFillParent(true);
         stage = new Stage(new FitViewport(480, 800));
-        distanceValue = new StringBuilder();
-        distance = new Distance(runner);
+//        distanceValue = new StringBuilder();
+//        distance = new Distance(runner);
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner);
         pauseMenu = new PauseMenu(tapRunner, pauseButton);
@@ -188,38 +188,38 @@ public class Hud extends Table{
 
     }
 
-    public class Distance{
-        Label indicator;
-        Runner runr;
-        Table distanceTable, rootTable;
-
-        public Distance(final Runner runner){
-            this.runr = runner;
-            indicator = new Label(getText(), arcadeSkin, "default");
-            distanceTable = new Table();
-            rootTable = new Table();
-            rootTable.setFillParent(true);
-
-            distanceTable.add(indicator).colspan(2);
-            distanceTable.row();
-
-            rootTable.add(distanceTable);
-            rootTable.row();
-            rootTable.setPosition(0, 200, Align.center);
-
-            stage.addActor(rootTable);
-        }
-
-        public StringBuilder getText(){
-            distanceValue.delete(0, distanceValue.length());
-            distanceValue.append(runr.indicatePosition()).append(" m");
-            return distanceValue;
-        }
-
-        public void update(){
-            indicator.setText(getText());
-        }
-    }
+//    public class Distance{
+//        Label indicator;
+//        Runner runr;
+//        Table distanceTable, rootTable;
+//
+//        public Distance(final Runner runner){
+//            this.runr = runner;
+//            indicator = new Label(getText(), arcadeSkin, "default");
+//            distanceTable = new Table();
+//            rootTable = new Table();
+//            rootTable.setFillParent(true);
+//
+//            distanceTable.add(indicator).colspan(2);
+//            distanceTable.row();
+//
+//            rootTable.add(distanceTable);
+//            rootTable.row();
+//            rootTable.setPosition(0, 200, Align.center);
+//
+//            stage.addActor(rootTable);
+//        }
+//
+//        public StringBuilder getText(){
+//            distanceValue.delete(0, distanceValue.length());
+//            distanceValue.append(runr.indicatePosition()).append(" m");
+//            return distanceValue;
+//        }
+//
+//        public void update(){
+//            indicator.setText(getText());
+//        }
+//    }
 
     public class Health{
         ProgressBar healthBar;
