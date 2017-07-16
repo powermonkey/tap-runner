@@ -82,14 +82,6 @@ public class Hud extends Table{
         healthLabel = new Label("ENERGY", fontStyle);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
 
-        if (!prefs.contains("HideHint")) {
-            prefs.putBoolean("HideHint", false);
-            prefs.flush();
-        }
-
-        hideHintPref = prefs.getBoolean("HideHint");
-
-
 //        stage.setDebugAll(true);
 
         Gdx.input.setInputProcessor(stage);
@@ -152,7 +144,12 @@ public class Hud extends Table{
 
             gameScreen.isPause = true;
 
-            if(hideHintPref){
+            if (!prefs.contains("HideHint")) {
+                prefs.putBoolean("HideHint", false);
+                prefs.flush();
+            }
+
+            if(prefs.getBoolean("HideHint")){
                 table.setVisible(false);
                 gameScreen.isPause = false;
             }else{
