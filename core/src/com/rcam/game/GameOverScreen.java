@@ -203,7 +203,7 @@ public class GameOverScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(cam.combined);
-        game.batch.disableBlending();
+//        game.batch.disableBlending();
         game.batch.begin();
         if(timeSinceMillis(gameOverScreenStart) > adTimer){
             gameOverScreenStart = millis();

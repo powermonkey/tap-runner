@@ -6,12 +6,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Lava;
 import com.rcam.game.sprites.PowerUp;
@@ -65,6 +68,9 @@ public class GameScreen implements Screen{
     Smoke smoke;
     float viewportDiv2, viewportDiv4 ,tapRunnerWidthDiv2, tapRunnerHeightDiv2 ;
     FPSLogger fpslogger;
+    StringBuilder distanceValue;
+    BitmapFont distance;
+    GlyphLayout glyphLayout;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -153,6 +159,9 @@ public class GameScreen implements Screen{
         keys = new KeyboardInput(runner);
 
         spawnPosition = new Vector2();
+        distanceValue = new StringBuilder();
+        distance = arcadeSkin.getFont("font");
+        glyphLayout = new GlyphLayout();
         fpslogger = new FPSLogger();
     }
 
@@ -169,15 +178,17 @@ public class GameScreen implements Screen{
 
         //static background image
         game.batch.setProjectionMatrix(bgCam.combined);
-        game.batch.disableBlending();
-        game.batch.renderCalls = 0;
+//        game.batch.disableBlending();
+//        game.batch.renderCalls = 0;
         game.batch.begin();
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
+        //update and render distance indicator
+        glyphLayout.setText(distance, getText());
+        distance.draw(game.batch, glyphLayout, (int)(TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180 );
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
-
-        game.batch.enableBlending();
+//        game.batch.enableBlending();
         game.batch.begin();
 //        fpslogger.log();
 
@@ -197,8 +208,8 @@ public class GameScreen implements Screen{
                 if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
                     ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
                 }
-                game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, ground1.getPosGround().y);
-                game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, ground2.getPosGround().y);
+                game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, (int)ground1.getPosGround().y);
+                game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, (int)ground2.getPosGround().y);
                 groundDispose = true;
             }else if(groundDispose){
                 //remove ground after showing
@@ -226,8 +237,8 @@ public class GameScreen implements Screen{
                 lava2.repositionLava(lava2.getTextureLava().getRegionWidth() * 2);
             }
 
-            game.batch.draw(lava1.getTextureLava(), (int)lava1.getPosLava().x, lava1.getPosLava().y);
-            game.batch.draw(lava2.getTextureLava(), (int)lava2.getPosLava().x, lava2.getPosLava().y);
+            game.batch.draw(lava1.getTextureLava(), (int)lava1.getPosLava().x, (int)lava1.getPosLava().y);
+            game.batch.draw(lava2.getTextureLava(), (int)lava2.getPosLava().x, (int)lava2.getPosLava().y);
         } else {
             //render ground
             if(cam.position.x - viewportDiv2 > ground1.getPosGround().x + ground1.getTextureGround().getRegionWidth()) {
@@ -236,8 +247,8 @@ public class GameScreen implements Screen{
             if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
                 ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
             }
-            game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, ground1.getPosGround().y);
-            game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, ground2.getPosGround().y);
+            game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, (int)ground1.getPosGround().y);
+            game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, (int)ground2.getPosGround().y);
         }
 
         //render runner
@@ -245,13 +256,13 @@ public class GameScreen implements Screen{
         TextureRegion currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
 
         if(runner.isDead){
-            game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, runner.getPosition().y);
+            game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(runner.isIdle && !runner.isJumping){
-            game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, runner.getPosition().y);
+            game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isOnGround) {
-            game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, runner.getPosition().y);
+            game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isIdle) {
-            game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, runner.getPosition().y);
+            game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
         }
 
         if(runner.isSmoking) {
@@ -281,9 +292,7 @@ public class GameScreen implements Screen{
             }
 
             //render first then logic, fixes shaking texture ??
-            if(!isPause) {
-                runner.update(delta);
-            }
+            runner.update(delta);
 
             //if runner ran out of health
             if (runner.isDead) {
@@ -309,11 +318,10 @@ public class GameScreen implements Screen{
         }
         game.batch.end();
 
-        game.batch.disableBlending();
         hud.render();
-        if(!isPause) {
-            hud.distance.update();
-        }
+//        if(!isPause) {
+//            hud.distance.update();
+//        }
 //        handleKeyboardInput();
     }
 
@@ -359,15 +367,13 @@ public class GameScreen implements Screen{
                         && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = groundEnemyRenderItem.animation.getKeyFrame(groundEnemyRenderItem.stateTime, true);
-                    game.batch.draw(currentFrame, (int)groundEnemyRenderItem.getPosition().x, groundEnemyRenderItem.getPosition().y);
+                    game.batch.draw(currentFrame, (int)groundEnemyRenderItem.getPosition().x, (int)groundEnemyRenderItem.getPosition().y);
                     groundEnemyRenderItem.checkCollision(runner, hud.health);
                     if(!isPause) {
                         groundEnemyRenderItem.update(delta);
                     }
                 } else if(cam.position.x - 50 - (viewportDiv4) > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
-                    activeGroundEnemies.removeIndex(i);
-                    groundEnemyPool.free(groundEnemyRenderItem);
                 }
             }
         }
@@ -379,37 +385,35 @@ public class GameScreen implements Screen{
                         && cam.position.x - 50 - (viewportDiv4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = flyingEnemyRenderItem.animation.getKeyFrame(flyingEnemyRenderItem.stateTime, true);
-                    game.batch.draw(currentFrame, (int)flyingEnemyRenderItem.getPosition().x, flyingEnemyRenderItem.getPosition().y);
+                    game.batch.draw(currentFrame, (int)flyingEnemyRenderItem.getPosition().x, (int)flyingEnemyRenderItem.getPosition().y);
                     flyingEnemyRenderItem.checkCollision(runner, hud.health);
                     if(!isPause) {
                         flyingEnemyRenderItem.update(delta);
                     }
                 } else if(cam.position.x - 50 - (viewportDiv4) > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
-                    activeFlyingEnemies.removeIndex(i);
-                    flyingEnemyPool.free(flyingEnemyRenderItem);
                 }
             }
         }
 
-//        //TODO: refactor, put in a function;
-//        GroundEnemy groundEnemyItem;
-//        for(int i = activeGroundEnemies.size; --i >= 0;){
-//            groundEnemyItem = activeGroundEnemies.get(i);
-//            if(!groundEnemyItem.isSpawned){
-//                activeGroundEnemies.removeIndex(i);
-//                groundEnemyPool.free(groundEnemyItem);
-//            }
-//        }
-//
-//        FlyingEnemy flyingEnemyItem;
-//        for(int i = activeFlyingEnemies.size; --i >= 0;){
-//            flyingEnemyItem = activeFlyingEnemies.get(i);
-//            if(!flyingEnemyItem.isSpawned){
-//                activeFlyingEnemies.removeIndex(i);
-//                flyingEnemyPool.free(flyingEnemyItem);
-//            }
-//        }
+        //TODO: refactor, put in a function;
+        GroundEnemy groundEnemyItem;
+        for(int i = activeGroundEnemies.size; --i >= 0;){
+            groundEnemyItem = activeGroundEnemies.get(i);
+            if(!groundEnemyItem.isSpawned){
+                activeGroundEnemies.removeIndex(i);
+                groundEnemyPool.free(groundEnemyItem);
+            }
+        }
+
+        FlyingEnemy flyingEnemyItem;
+        for(int i = activeFlyingEnemies.size; --i >= 0;){
+            flyingEnemyItem = activeFlyingEnemies.get(i);
+            if(!flyingEnemyItem.isSpawned){
+                activeFlyingEnemies.removeIndex(i);
+                flyingEnemyPool.free(flyingEnemyItem);
+            }
+        }
 
     }
 
@@ -488,12 +492,18 @@ public class GameScreen implements Screen{
                 if (cam.position.x + 20 + viewportDiv2> powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
                         && cam.position.x - 50 - (viewportDiv4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
                     powerUpItem.checkPowerUpCollision(runner, hud.health);
-                    game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, powerUpItem.getPosition().y);
+                    game.batch.draw(powerUpItem.getAtlasRegion(), (int)powerUpItem.getPosition().x, (int)powerUpItem.getPosition().y);
                 } else if(cam.position.x  - 50 - (viewportDiv4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
-                    powerUps.removeIndex(i);
-                    powerUpPool.free(powerUpItem);
                 }
+            }
+        }
+
+        for(int i = powerUps.size; --i >= 0;){
+            powerUpItem = powerUps.get(i);
+            if(!powerUpItem.isSpawned){
+                powerUps.removeIndex(i);
+                powerUpPool.free(powerUpItem);
             }
         }
 
@@ -503,8 +513,14 @@ public class GameScreen implements Screen{
         smoke.stateTime += delta;
         TextureRegion currentSmokeFrameSlow = smoke.smokeAnimationSlow.getKeyFrame(smoke.stateTime, true);
         TextureRegion currentSmokeFrameFast = smoke.smokeAnimationFast.getKeyFrame(smoke.stateTime, true);
-        game.batch.draw(currentSmokeFrameSlow, (int)runner.getPosition().x - 20, runner.getPosition().y - 10);
-        game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, runner.getPosition().y + 20);
+        game.batch.draw(currentSmokeFrameSlow, (int)runner.getPosition().x - 20, (int)runner.getPosition().y - 10);
+        game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, (int)runner.getPosition().y + 20);
+    }
+
+    public StringBuilder getText(){
+        distanceValue.delete(0, distanceValue.length());
+        distanceValue.append(runner.indicatePosition()).append(" m");
+        return distanceValue;
     }
 
     @Override
@@ -534,6 +550,7 @@ public class GameScreen implements Screen{
 
     @Override
     public void dispose() {
+        distance.dispose();
         hud.dispose();
     }
 }
