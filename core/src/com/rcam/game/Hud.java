@@ -45,7 +45,7 @@ public class Hud extends Table{
 //    StringBuilder distanceValue;
     PauseMenu pauseMenu;
     Hint hint;
-    boolean soundOn;
+    boolean soundOn, hideHintPref;
 //    Distance distance;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
@@ -81,6 +81,13 @@ public class Hud extends Table{
         Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
         healthLabel = new Label("ENERGY", fontStyle);
         speedMeterLabel = new Label("SPEED", cleanCrispySkin);
+
+        if (!prefs.contains("HideHint")) {
+            prefs.putBoolean("HideHint", false);
+            prefs.flush();
+        }
+
+        hideHintPref = prefs.getBoolean("HideHint");
 
 
 //        stage.setDebugAll(true);
@@ -143,12 +150,7 @@ public class Hud extends Table{
 
             gameScreen.isPause = true;
 
-            if (!prefs.contains("HideHint")) {
-                prefs.putBoolean("HideHint", false);
-                prefs.flush();
-            }
-
-            if(prefs.getBoolean("HideHint")){
+            if(hideHintPref){
                 table.setVisible(false);
                 gameScreen.isPause = false;
             }else{

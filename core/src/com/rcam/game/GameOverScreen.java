@@ -92,11 +92,11 @@ public class GameOverScreen implements Screen{
         }
 
         mainMenuButton = new TextButton("Main Menu", buttonStyle);
-        mainMenuButtonListener(mainMenuButton, runner);
+        mainMenuButtonListener(mainMenuButton);
         newGameButton = new TextButton("New Game", buttonStyle);
-        newGameButtonListener(newGameButton, runner);
+        newGameButtonListener(newGameButton);
         settingsButton = new TextButton("Options", buttonStyle);
-        settingsButtonListener(settingsButton, runner);
+        settingsButtonListener(settingsButton);
         exitButton = new TextButton("Exit", buttonStyle);
         exitButtonListener(exitButton);
 
@@ -131,7 +131,7 @@ public class GameOverScreen implements Screen{
         adTimer = 1000l;
     }
 
-    public void mainMenuButtonListener(TextButton button, final Runner runner){
+    public void mainMenuButtonListener(TextButton button){
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -146,7 +146,7 @@ public class GameOverScreen implements Screen{
         });
     }
 
-    public void newGameButtonListener(TextButton button, final Runner runner){
+    public void newGameButtonListener(TextButton button){
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -160,7 +160,7 @@ public class GameOverScreen implements Screen{
         });
     }
 
-    public void settingsButtonListener(TextButton button, final Runner runner){
+    public void settingsButtonListener(TextButton button){
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
