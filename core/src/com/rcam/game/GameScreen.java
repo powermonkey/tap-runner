@@ -182,7 +182,7 @@ public class GameScreen implements Screen{
         cacheFontDistance.clear();
 //        glyphLayout = cacheFontDistance.setText(getText(), 0 ,0);
         glyphLayout.setText(distance, getText());
-        cacheFontDistance.setText(getText(), (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180);
+        cacheFontDistance.setText(glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180);
 //        glyphLayout.setText(cacheFontDistance, getText());
 //        distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180 );
         cacheFontDistance.draw(game.batch);
