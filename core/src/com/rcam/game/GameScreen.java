@@ -308,7 +308,7 @@ public class GameScreen implements Screen{
         }
         game.batch.end();
 
-        hud.render();
+        hud.render(delta);
 //        System.out.println(game.batch.maxSpritesInBatch);
 //        handleKeyboardInput();
     }

@@ -28,11 +28,11 @@ import com.rcam.game.sprites.Runner;
 
 public class Hud extends Table{
     Stage stage;
-    Table rootTable, indicatorstable, controlsTable;
+    Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable;
     Skin cleanCrispySkin, arcadeSkin;
     PauseButton pauseButton;
     public Health health;
-    Label healthLabel, speedMeterLabel;
+    Label healthLabel;
     GameScreen gameScreen;
     TextureAtlas.AtlasRegion blockYellow, blockYellowGreen;
     NinePatchDrawable patchDrawableGreen, patchDrawableYellow;
@@ -40,11 +40,9 @@ public class Hud extends Table{
     Preferences prefs;
     NinePatch patchGreen, patchYellow;
     BitmapFont labelFont, buttonFonts;
-//    StringBuilder distanceValue;
     PauseMenu pauseMenu;
     Hint hint;
     boolean soundOn;
-//    Distance distance;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
@@ -69,8 +67,6 @@ public class Hud extends Table{
         controlsTable = new Table();
         rootTable.setFillParent(true);
         stage = new Stage(new FitViewport(480, 800));
-//        distanceValue = new StringBuilder();
-//        distance = new Distance(runner);
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner);
         pauseMenu = new PauseMenu(tapRunner, pauseButton);
@@ -78,7 +74,6 @@ public class Hud extends Table{
         labelFont = arcadeSkin.getFont("screen");
         Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
         healthLabel = new Label("ENERGY", fontStyle);
-        speedMeterLabel = new Label("SPEED", cleanCrispySkin);
 
 //        stage.setDebugAll(true);
 
@@ -123,15 +118,14 @@ public class Hud extends Table{
     }
 
     public class Hint{
-        Table rtable, table;
         Label hint;
         TextButton okay;
         CheckBox hideHint;
 
         public Hint(){
-            table = new Table();
-            rtable = new Table();
-            rtable.setFillParent(true);
+            hintTable = new Table();
+            rootHintTable = new Table();
+            rootHintTable.setFillParent(true);
             TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
             buttonStyle.up = patchDrawableYellow;
             buttonStyle.down = patchDrawableYellow;
@@ -148,10 +142,12 @@ public class Hud extends Table{
             }
 
             if(prefs.getBoolean("HideHint")){
-                table.setVisible(false);
+                rootHintTable.remove();
+//                table.setVisible(false);
                 gameScreen.isPause = false;
             }else{
-                table.setVisible(true);
+                stage.addActor(rootHintTable);
+//                table.setVisible(true);
             }
 
             okay = new TextButton("Okay", buttonStyle);
@@ -165,60 +161,26 @@ public class Hud extends Table{
                     prefs.putBoolean("HideHint", hideHint.isChecked());
                     prefs.flush();
 
-                    table.setVisible(false);
+                    hintTable.setVisible(false);
                     gameScreen.isPause = false;
 
                     return true;
                 }
             });
 
-            table.add(hint).pad(5);
-            table.row();
-            table.add(hideHint).pad(25);
-            table.row();
-            table.add(okay).width(70).height(40).pad(10);
-            table.row();
-            table.setBackground(patchDrawableGreen);
+            hintTable.add(hint).pad(5);
+            hintTable.row();
+            hintTable.add(hideHint).pad(25);
+            hintTable.row();
+            hintTable.add(okay).width(70).height(40).pad(10);
+            hintTable.row();
+            hintTable.setBackground(patchDrawableGreen);
 
-            rtable.add(table).center().center();
-            rtable.row();
-            stage.addActor(rtable);
+            rootHintTable.add(hintTable).center().center();
+            rootHintTable.row();
         }
 
     }
-
-//    public class Distance{
-//        Label indicator;
-//        Runner runr;
-//        Table distanceTable, rootTable;
-//
-//        public Distance(final Runner runner){
-//            this.runr = runner;
-//            indicator = new Label(getText(), arcadeSkin, "default");
-//            distanceTable = new Table();
-//            rootTable = new Table();
-//            rootTable.setFillParent(true);
-//
-//            distanceTable.add(indicator).colspan(2);
-//            distanceTable.row();
-//
-//            rootTable.add(distanceTable);
-//            rootTable.row();
-//            rootTable.setPosition(0, 200, Align.center);
-//
-//            stage.addActor(rootTable);
-//        }
-//
-//        public StringBuilder getText(){
-//            distanceValue.delete(0, distanceValue.length());
-//            distanceValue.append(runr.indicatePosition()).append(" m");
-//            return distanceValue;
-//        }
-//
-//        public void update(){
-//            indicator.setText(getText());
-//        }
-//    }
 
     public class Health{
         ProgressBar healthBar;
@@ -278,14 +240,17 @@ public class Hud extends Table{
                         }
                         pauseButton.setStyle(unpauseStyle);
                         gameScreen.isPause = true;
-                        pauseMenu.pauseTable.setVisible(true);
+                        stage.addActor(pauseRootTable);
+//                        pauseMenu.pauseTable.setVisible(true);
                     }else{
                         if(soundOn) {
                             blipSelectSound.play(1.0f);
                         }
                         pauseButton.setStyle(buttonStyle);
                         gameScreen.isPause = false;
-                        pauseMenu.pauseTable.setVisible(false);
+                        pauseRootTable.remove();
+
+//                        pauseMenu.pauseTable.setVisible(false);
                     }
                     return true;
                 }
@@ -302,7 +267,6 @@ public class Hud extends Table{
     }
 
     public class PauseMenu{
-        Table pauseTable, pauseRootTable;
         TextButton continueButton, newGameButton, mainMenuButton, exitButton;
         TapRunner game;
         PauseButton pauseButton;
@@ -331,7 +295,7 @@ public class Hud extends Table{
             exitButton = new TextButton("Exit", buttonStyle);
             exitGameButtonListener(exitButton);
 
-            pauseTable.setVisible(false);
+//            pauseTable.setVisible(false);
             pauseTable.add(continueButton).center().uniform().width(200).height(50).expandX().padTop(20);
             pauseTable.row();
             pauseTable.add(newGameButton).center().uniform().width(200).height(50).expandX().padTop(10);
@@ -344,7 +308,8 @@ public class Hud extends Table{
 
             pauseRootTable.add(pauseTable).width(TapRunner.WIDTH * 0.5f).center().center();
             pauseRootTable.row();
-            stage.addActor(pauseRootTable);
+
+//            stage.addActor(pauseRootTable);
         }
 
         public void showInterstitialAd(){
@@ -367,7 +332,7 @@ public class Hud extends Table{
                     }
                     pauseButton.getPauseButton().setStyle(pauseButton.buttonStyle);
                     gameScreen.isPause = false;
-                    pauseTable.setVisible(false);
+                    pauseRootTable.remove();
                     return true;
                 }
 
@@ -385,7 +350,7 @@ public class Hud extends Table{
                         newGameblipSound.play();
                     }
 //                    showInterstitialAd();
-                    pauseTable.setVisible(false);
+                    pauseRootTable.remove();
                     game.setScreen(new GameScreen(game));
                     dispose();
                     return true;
@@ -421,6 +386,7 @@ public class Hud extends Table{
                         blipSelectSound.play();
                     }
                     showInterstitialAd();
+                    pauseRootTable.remove();
                     game.setScreen(new MainMenuScreen(game));
                     dispose();
                     return true;
@@ -438,8 +404,8 @@ public class Hud extends Table{
         return cleanCrispySkin;
     }
 
-    public void render(){
-        stage.act();
+    public void render(float delta){
+        stage.act(delta);
         stage.draw();
     }
 
