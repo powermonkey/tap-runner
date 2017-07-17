@@ -143,11 +143,14 @@ public class Hud extends Table{
 
             if(prefs.getBoolean("HideHint")){
                 rootHintTable.remove();
-//                table.setVisible(false);
+                hintTable.setVisible(false);
+                rootHintTable.setVisible(false);
+                rootHintTable.remove();
                 gameScreen.isPause = false;
             }else{
+                hintTable.setVisible(true);
+                rootHintTable.setVisible(true);
                 stage.addActor(rootHintTable);
-//                table.setVisible(true);
             }
 
             okay = new TextButton("Okay", buttonStyle);
@@ -175,9 +178,11 @@ public class Hud extends Table{
             hintTable.add(okay).width(70).height(40).pad(10);
             hintTable.row();
             hintTable.setBackground(patchDrawableGreen);
+            hintTable.setVisible(false);
 
             rootHintTable.add(hintTable).center().center();
             rootHintTable.row();
+            rootHintTable.setVisible(false);
         }
 
     }
@@ -240,17 +245,18 @@ public class Hud extends Table{
                         }
                         pauseButton.setStyle(unpauseStyle);
                         gameScreen.isPause = true;
+                        pauseTable.setVisible(true);
+                        pauseRootTable.setVisible(true);
                         stage.addActor(pauseRootTable);
-//                        pauseMenu.pauseTable.setVisible(true);
                     }else{
                         if(soundOn) {
                             blipSelectSound.play(1.0f);
                         }
                         pauseButton.setStyle(buttonStyle);
                         gameScreen.isPause = false;
+                        pauseTable.setVisible(false);
+                        pauseRootTable.setVisible(false);
                         pauseRootTable.remove();
-
-//                        pauseMenu.pauseTable.setVisible(false);
                     }
                     return true;
                 }
@@ -295,7 +301,6 @@ public class Hud extends Table{
             exitButton = new TextButton("Exit", buttonStyle);
             exitGameButtonListener(exitButton);
 
-//            pauseTable.setVisible(false);
             pauseTable.add(continueButton).center().uniform().width(200).height(50).expandX().padTop(20);
             pauseTable.row();
             pauseTable.add(newGameButton).center().uniform().width(200).height(50).expandX().padTop(10);
@@ -305,9 +310,11 @@ public class Hud extends Table{
             pauseTable.add(exitButton).center().uniform().width(200).height(50).expandX().padTop(10).padBottom(30);
             pauseTable.row();
             pauseTable.setBackground(patchDrawableGreen);
+            pauseTable.setVisible(false);
 
             pauseRootTable.add(pauseTable).width(TapRunner.WIDTH * 0.5f).center().center();
             pauseRootTable.row();
+            pauseRootTable.setVisible(false);
 
 //            stage.addActor(pauseRootTable);
         }

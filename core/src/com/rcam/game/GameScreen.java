@@ -173,20 +173,8 @@ public class GameScreen implements Screen{
         cam.position.set((int)runner.getPosition().x + 100, 225, 0);
         cam.update();
 
-//        game.batch.totalRenderCalls = 0;
-        //static background image
-        game.batch.setProjectionMatrix(bgCam.combined);
-        game.batch.begin();
-        game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
-        //update and render distance indicator
-        cacheFontDistance.clear();
-//        glyphLayout = cacheFontDistance.setText(getText(), 0 ,0);
-        glyphLayout.setText(distance, getText());
-        cacheFontDistance.setText(glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180);
-//        glyphLayout.setText(cacheFontDistance, getText());
-//        distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180 );
-        cacheFontDistance.draw(game.batch);
-        game.batch.end();
+        //render background
+        renderBg();
 
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
@@ -240,14 +228,7 @@ public class GameScreen implements Screen{
             game.batch.draw(lava2.getTextureLava(), lava2.getPosLava().x, lava2.getPosLava().y);
         } else {
             //render ground
-            if(cam.position.x - viewportDiv2 > ground1.getPosGround().x + ground1.getTextureGround().getRegionWidth()) {
-                ground1.repositionGround(ground1.getTextureGround().getRegionWidth() * 2);
-            }
-            if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
-                ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
-            }
-            game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
-            game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
+            renderGround();
         }
 
         //render runner
@@ -512,6 +493,30 @@ public class GameScreen implements Screen{
         TextureRegion currentSmokeFrameFast = smoke.smokeAnimationFast.getKeyFrame(smoke.stateTime, true);
         game.batch.draw(currentSmokeFrameSlow, (int)runner.getPosition().x - 20, (int)runner.getPosition().y - 10);
         game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, (int)runner.getPosition().y + 20);
+    }
+
+    public void renderBg(){
+        //static background image
+        game.batch.setProjectionMatrix(bgCam.combined);
+        game.batch.begin();
+        game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
+        //update and render distance indicator
+//        cacheFontDistance.clear();
+        glyphLayout.setText(distance, getText());
+        cacheFontDistance.setText(glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180);
+        cacheFontDistance.draw(game.batch);
+        game.batch.end();
+    }
+
+    public void renderGround(){
+        if(cam.position.x - viewportDiv2 > ground1.getPosGround().x + ground1.getTextureGround().getRegionWidth()) {
+            ground1.repositionGround(ground1.getTextureGround().getRegionWidth() * 2);
+        }
+        if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
+            ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
+        }
+        game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
+        game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
     }
 
     public StringBuilder getText(){
