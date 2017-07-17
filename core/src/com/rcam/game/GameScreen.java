@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -67,6 +68,8 @@ public class GameScreen implements Screen{
     float viewportDiv2, viewportDiv4 ,tapRunnerWidthDiv2, tapRunnerHeightDiv2 ;
     StringBuilder distanceValue;
     BitmapFont distance;
+    BitmapFontCache cacheFontDistance;
+
     GlyphLayout glyphLayout;
 
     public GameScreen(final TapRunner gam){
@@ -155,6 +158,7 @@ public class GameScreen implements Screen{
         spawnPosition = new Vector2();
         distanceValue = new StringBuilder();
         distance = arcadeSkin.getFont("font");
+        cacheFontDistance = new BitmapFontCache(distance);
         glyphLayout = new GlyphLayout();
     }
 
@@ -175,8 +179,13 @@ public class GameScreen implements Screen{
         game.batch.begin();
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
         //update and render distance indicator
+        cacheFontDistance.clear();
+//        glyphLayout = cacheFontDistance.setText(getText(), 0 ,0);
         glyphLayout.setText(distance, getText());
-        distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180 );
+        cacheFontDistance.setText(getText(), (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180);
+//        glyphLayout.setText(cacheFontDistance, getText());
+//        distance.draw(game.batch, glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180 );
+        cacheFontDistance.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(cam.combined);
