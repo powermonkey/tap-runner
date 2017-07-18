@@ -232,18 +232,7 @@ public class GameScreen implements Screen{
         }
 
         //render runner
-        runner.stateTime += delta;
-        TextureRegion currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
-
-        if(runner.isDead){
-            game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
-        }else if(runner.isIdle && !runner.isJumping){
-            game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, (int)runner.getPosition().y);
-        }else if(!runner.isOnGround) {
-            game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
-        }else if(!runner.isIdle) {
-            game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
-        }
+        renderRunner(delta);
 
         if(runner.isSmoking) {
             renderSmoke(delta);
@@ -517,6 +506,21 @@ public class GameScreen implements Screen{
         }
         game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
         game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
+    }
+
+    public void renderRunner(float delta){
+        runner.stateTime += delta;
+        TextureRegion currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
+
+        if(runner.isDead){
+            game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+        }else if(runner.isIdle && !runner.isJumping){
+            game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+        }else if(!runner.isOnGround) {
+            game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
+        }else if(!runner.isIdle) {
+            game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
+        }
     }
 
     public StringBuilder getText(){

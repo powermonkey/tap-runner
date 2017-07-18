@@ -26,7 +26,7 @@ import com.rcam.game.sprites.Runner;
  * Created by Rod on 4/18/2017.
  */
 
-public class Hud extends Table{
+public class Hud{
     Stage stage;
     Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable;
     Skin cleanCrispySkin, arcadeSkin;
@@ -45,8 +45,8 @@ public class Hud extends Table{
     boolean soundOn;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
-        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
-        setClip(true);
+//        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+//        setClip(true);
         this.gameScreen = gameScreen;
         prefs = Gdx.app.getPreferences("TapRunner");
         soundOn = prefs.getBoolean("SoundOn");
@@ -66,7 +66,7 @@ public class Hud extends Table{
         indicatorstable = new Table();
         controlsTable = new Table();
         rootTable.setFillParent(true);
-        stage = new Stage(new FitViewport(480, 800));
+        stage = new Stage(new FitViewport(480, 800), gameScreen.game.batch);
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner);
         pauseMenu = new PauseMenu(tapRunner, pauseButton);

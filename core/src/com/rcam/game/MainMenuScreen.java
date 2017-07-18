@@ -54,7 +54,7 @@ public class MainMenuScreen implements Screen {
         myFont = GameAssetLoader.fonts;
         buttonFonts = GameAssetLoader.buttonFonts;
 
-        stage = new Stage(new FitViewport(480, 800));
+        stage = new Stage(new FitViewport(480, 800), game.batch);
         Gdx.input.setInputProcessor(stage);
         rootTable = new Table();
         rootTable.setFillParent(true);
@@ -215,7 +215,6 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(cam.combined);
-        game.batch.disableBlending();
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         game.batch.draw(ground, 0,0);

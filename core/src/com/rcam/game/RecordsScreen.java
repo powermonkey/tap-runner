@@ -44,7 +44,7 @@ public class RecordsScreen implements Screen{
         cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
-        stage = new Stage(new FitViewport(480, 800));
+        stage = new Stage(new FitViewport(480, 800), game.batch);
         rootTable = new Table();
         rootTable.setFillParent(true);
         table = new Table();
@@ -135,7 +135,6 @@ public class RecordsScreen implements Screen{
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(cam.combined);
-        game.batch.disableBlending();
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         game.batch.draw(ground, 0, 0);
