@@ -6,9 +6,11 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -26,7 +28,7 @@ import com.rcam.game.sprites.Runner;
  * Created by Rod on 4/18/2017.
  */
 
-public class Hud{
+public class Hud extends Table{
     Stage stage;
     Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable;
     Skin cleanCrispySkin, arcadeSkin;
@@ -43,10 +45,11 @@ public class Hud{
     PauseMenu pauseMenu;
     Hint hint;
     boolean soundOn;
+    Actor screenActor;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
-//        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
-//        setClip(true);
+        setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
+        setClip(true);
         this.gameScreen = gameScreen;
         prefs = Gdx.app.getPreferences("TapRunner");
         soundOn = prefs.getBoolean("SoundOn");
@@ -74,6 +77,7 @@ public class Hud{
         labelFont = arcadeSkin.getFont("screen");
         Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
         healthLabel = new Label("ENERGY", fontStyle);
+        screenActor = new Actor();
 
 //        stage.setDebugAll(true);
 
@@ -92,14 +96,15 @@ public class Hud{
         rootTable.add(controlsTable).width(200).padBottom(50).height(100);
         rootTable.row();
         rootTable.center().bottom();
+        rootTable.setTouchable(Touchable.childrenOnly);
 
-        stage.addActor(rootTable);
-        stage.addListener(new InputListener(){
+        screenActor.setBounds(stage.getViewport().getScreenX(), stage.getViewport().getScreenY(), stage.getViewport().getScreenWidth(), stage.getViewport().getScreenHeight());
+        screenActor.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(!gameScreen.isPause && !event.getTarget().hasParent()) {
+                if(!gameScreen.isPause) {
                     if (runner.isOnGround) {
-                        if(soundOn) {
+                        if (soundOn) {
                             jumpSound.play();
                         }
                         runner.jump();
@@ -110,11 +115,13 @@ public class Hud{
 
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                if(!gameScreen.isPause && !event.getTarget().hasParent()) {
+                if(!gameScreen.isPause) {
                     runner.isJumping = false;
                 }
             }
         });
+        stage.addActor(screenActor);
+        stage.addActor(rootTable);
     }
 
     public class Hint{

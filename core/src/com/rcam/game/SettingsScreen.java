@@ -178,7 +178,7 @@ public class SettingsScreen implements Screen {
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         game.batch.draw(ground.getTextureGround(), 0, 0);
         game.batch.end();
-        stage.act();
+//        stage.act();
         stage.draw();
     }
 
