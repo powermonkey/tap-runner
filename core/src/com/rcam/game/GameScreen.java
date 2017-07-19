@@ -169,6 +169,8 @@ public class GameScreen implements Screen{
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
+        game.batch.renderCalls = 0;
+        game.batch.totalRenderCalls = 0;
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.position.set((int)runner.getPosition().x + 100, 225, 0);
         cam.update();
@@ -178,7 +180,6 @@ public class GameScreen implements Screen{
 
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
-        game.batch.enableBlending();
         //spawn power up
         renderPowerUp();
 
@@ -286,7 +287,6 @@ public class GameScreen implements Screen{
             }
         }
         game.batch.end();
-
         hud.render(delta);
 //        System.out.println(game.batch.maxSpritesInBatch);
 //        handleKeyboardInput();
@@ -489,12 +489,16 @@ public class GameScreen implements Screen{
         game.batch.setProjectionMatrix(bgCam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
+        renderDistanceIndicator();
+        game.batch.end();
+    }
+
+    public void renderDistanceIndicator(){
         //update and render distance indicator
 //        cacheFontDistance.clear();
         glyphLayout.setText(distance, getText());
         cacheFontDistance.setText(glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180);
         cacheFontDistance.draw(game.batch);
-        game.batch.end();
     }
 
     public void renderGround(){
