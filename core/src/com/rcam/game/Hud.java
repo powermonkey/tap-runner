@@ -73,7 +73,6 @@ public class Hud extends Table{
         health = new Health(runner);
         pauseButton = new PauseButton(tapRunner);
         pauseMenu = new PauseMenu(tapRunner, pauseButton);
-        hint = new Hint();
         labelFont = arcadeSkin.getFont("screen");
         Label.LabelStyle fontStyle = new Label.LabelStyle(labelFont, null);
         healthLabel = new Label("ENERGY", fontStyle);
@@ -121,6 +120,7 @@ public class Hud extends Table{
             }
         });
         stage.addActor(screenActor);
+        hint = new Hint();
         stage.addActor(rootTable);
     }
 
@@ -140,26 +140,6 @@ public class Hud extends Table{
 
             hint = new Label("Tap on screen to jump", arcadeSkin);
             hideHint = new CheckBox("Never show this again", cleanCrispySkin, "default");
-
-            gameScreen.isPause = true;
-
-            if (!prefs.contains("HideHint")) {
-                prefs.putBoolean("HideHint", false);
-                prefs.flush();
-            }
-
-            if(prefs.getBoolean("HideHint")){
-                rootHintTable.remove();
-                hintTable.setVisible(false);
-                rootHintTable.setVisible(false);
-                rootHintTable.remove();
-                gameScreen.isPause = false;
-            }else{
-                hintTable.setVisible(true);
-                rootHintTable.setVisible(true);
-                stage.addActor(rootHintTable);
-            }
-
             okay = new TextButton("Okay", buttonStyle);
             okay.addListener(new InputListener(){
                 @Override
@@ -190,6 +170,25 @@ public class Hud extends Table{
             rootHintTable.add(hintTable).center().center();
             rootHintTable.row();
             rootHintTable.setVisible(false);
+
+            gameScreen.isPause = true;
+
+            if (!prefs.contains("HideHint")) {
+                prefs.putBoolean("HideHint", false);
+                prefs.flush();
+            }
+
+            if(prefs.getBoolean("HideHint")){
+                rootHintTable.remove();
+                hintTable.setVisible(false);
+                rootHintTable.setVisible(false);
+                rootHintTable.remove();
+                gameScreen.isPause = false;
+            }else{
+                hintTable.setVisible(true);
+                rootHintTable.setVisible(true);
+                stage.addActor(rootHintTable);
+            }
         }
 
     }
