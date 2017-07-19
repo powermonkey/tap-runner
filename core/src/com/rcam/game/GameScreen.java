@@ -495,7 +495,6 @@ public class GameScreen implements Screen{
 
     public void renderDistanceIndicator(){
         //update and render distance indicator
-//        cacheFontDistance.clear();
         glyphLayout.setText(distance, getText());
         cacheFontDistance.setText(glyphLayout, (TapRunner.WIDTH - glyphLayout.width) * .5f, tapRunnerHeightDiv2 + 180);
         cacheFontDistance.draw(game.batch);
