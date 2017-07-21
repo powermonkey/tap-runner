@@ -57,8 +57,8 @@ public class GameOverScreen implements Screen{
         arcadeSkin = GameAssetLoader.arcadeSkin;
         stage = new Stage(new FitViewport(480, 800), game.batch);
         rootTable = new Table();
-        rootTable.setFillParent(true);
         table = new Table();
+        rootTable.setFillParent(true);
         currentValue = new StringBuilder();
         bestValue = new StringBuilder();
         bg = GameAssetLoader.bg;
@@ -66,6 +66,7 @@ public class GameOverScreen implements Screen{
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
         blipSelectSound = GameAssetLoader.blipSelect;
         newGameblipSound = GameAssetLoader.newGameblip;
+        buttonFonts = GameAssetLoader.buttonFonts;
         prefs = Gdx.app.getPreferences("TapRunner");
         gameMode = prefs.getString("GameMode");
         soundOn = prefs.getBoolean("SoundOn");
@@ -76,7 +77,6 @@ public class GameOverScreen implements Screen{
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
 
-        buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
@@ -92,12 +92,12 @@ public class GameOverScreen implements Screen{
         }
 
         mainMenuButton = new TextButton("Main Menu", buttonStyle);
-        mainMenuButtonListener(mainMenuButton);
         newGameButton = new TextButton("New Game", buttonStyle);
-        newGameButtonListener(newGameButton);
         settingsButton = new TextButton("Options", buttonStyle);
-        settingsButtonListener(settingsButton);
         exitButton = new TextButton("Exit", buttonStyle);
+        settingsButtonListener(settingsButton);
+        newGameButtonListener(newGameButton);
+        mainMenuButtonListener(mainMenuButton);
         exitButtonListener(exitButton);
 
         ground = new Ground(cam.position.x - (cam.viewportWidth * 0.5f));
@@ -214,6 +214,7 @@ public class GameOverScreen implements Screen{
         game.batch.end();
 
 //        stage.act();
+        game.batch.setProjectionMatrix(stage.getCamera().combined);
         stage.draw();
     }
 

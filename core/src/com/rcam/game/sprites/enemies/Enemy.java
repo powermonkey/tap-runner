@@ -110,7 +110,7 @@ public class Enemy {
         return textureWidth;
     }
 
-    public void checkCollision(Runner runner, Hud.Health hud) {
+    public void checkCollision(Runner runner, Hud hud) {
         Intersector.intersectRectangles(getOnTopBounds(), runner.getBounds(), intersectionOnTop);
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
 
@@ -140,7 +140,7 @@ public class Enemy {
                             hurtSound.play();
                         }
                         runner.health -= getDamage();
-                        hud.update();
+                        hud.healthUpdate();
                         touched = true;
 //                        if(enemyTouchSlows) {
 //                            runner.isTouched = true;

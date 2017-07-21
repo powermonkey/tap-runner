@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
@@ -74,7 +75,7 @@ public class GameScreen implements Screen{
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
-
+        GLProfiler.enable();
         bg = GameAssetLoader.bg;
 
         runner = new Runner();
@@ -209,10 +210,10 @@ public class GameScreen implements Screen{
             //render lava
             if(!isPause) {
                 lava1.update();
-                lava1.checkLavaCollision(runner, hud.health);
+                lava1.checkLavaCollision(runner, hud);
 
                 lava2.update();
-                lava2.checkLavaCollision(runner, hud.health);
+                lava2.checkLavaCollision(runner, hud);
             }
 
             if (cam.position.x - (viewportDiv2) > lava1.getPosLava().x + lava1.getTextureLava().getRegionWidth()) {
@@ -287,6 +288,7 @@ public class GameScreen implements Screen{
             }
         }
         game.batch.end();
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.render(delta);
 //        System.out.println(game.batch.maxSpritesInBatch);
 //        handleKeyboardInput();
@@ -335,7 +337,7 @@ public class GameScreen implements Screen{
                     groundEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = groundEnemyRenderItem.animation.getKeyFrame(groundEnemyRenderItem.stateTime, true);
                     game.batch.draw(currentFrame, (int)groundEnemyRenderItem.getPosition().x, (int)groundEnemyRenderItem.getPosition().y);
-                    groundEnemyRenderItem.checkCollision(runner, hud.health);
+                    groundEnemyRenderItem.checkCollision(runner, hud);
                     if(!isPause) {
                         groundEnemyRenderItem.update(delta);
                     }
@@ -353,7 +355,7 @@ public class GameScreen implements Screen{
                     flyingEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = flyingEnemyRenderItem.animation.getKeyFrame(flyingEnemyRenderItem.stateTime, true);
                     game.batch.draw(currentFrame, (int)flyingEnemyRenderItem.getPosition().x, (int)flyingEnemyRenderItem.getPosition().y);
-                    flyingEnemyRenderItem.checkCollision(runner, hud.health);
+                    flyingEnemyRenderItem.checkCollision(runner, hud);
                     if(!isPause) {
                         flyingEnemyRenderItem.update(delta);
                     }
@@ -458,7 +460,7 @@ public class GameScreen implements Screen{
             if(powerUpItem.isSpawned){
                 if (cam.position.x + 20 + viewportDiv2> powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()
                         && cam.position.x - 50 - (viewportDiv4) < powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()) {
-                    powerUpItem.checkPowerUpCollision(runner, hud.health);
+                    powerUpItem.checkPowerUpCollision(runner, hud);
                     game.batch.draw(powerUpItem.getAtlasRegion(), powerUpItem.getPosition().x, powerUpItem.getPosition().y);
                 } else if(cam.position.x  - 50 - (viewportDiv4) > powerUpItem.getPosition().x + powerUpItem.getAtlasRegion().getRegionWidth()){
                     powerUpItem.isSpawned = false; //unrender powerup when off camera
@@ -491,6 +493,7 @@ public class GameScreen implements Screen{
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
         renderDistanceIndicator();
         game.batch.end();
+
     }
 
     public void renderDistanceIndicator(){

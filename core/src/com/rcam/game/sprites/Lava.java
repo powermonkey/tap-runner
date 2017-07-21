@@ -65,7 +65,7 @@ public class Lava {
         damage += damageIncrease;
     }
 
-    public void checkLavaCollision(Runner runner, Hud.Health hud){
+    public void checkLavaCollision(Runner runner, Hud hud){
         if(getBounds().overlaps(runner.getBounds())){
             if(runner.health > 0 && !runner.lavaInvulnerable && !runner.isDead){
                 if(soundOn) {
@@ -73,7 +73,7 @@ public class Lava {
                 }
                 runner.health -= getDamage();
                 runner.isSmoking = true;
-                hud.update();
+                hud.healthUpdate();
                 touched = true;
                 runner.lavaInvulnerable = true;
                 runner.setLavaDamageTimeStart(millis());
