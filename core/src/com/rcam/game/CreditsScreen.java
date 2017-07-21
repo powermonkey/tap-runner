@@ -49,11 +49,11 @@ public class CreditsScreen implements Screen {
         blockYellow = GameAssetLoader.blockYellow;
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
         blipSelectSound = GameAssetLoader.blipSelect;
+        buttonFonts = GameAssetLoader.buttonFonts;
 
         stage = new Stage(new FitViewport(480, 800), game.batch);
         Gdx.input.setInputProcessor(stage);
         rootTable = new Table();
-        rootTable.setFillParent(true);
         table = new Table();
         table2 = new Table();
         table3 = new Table();
@@ -63,6 +63,7 @@ public class CreditsScreen implements Screen {
         table7 = new Table();
         table8 = new Table();
         table9 = new Table();
+        rootTable.setFillParent(true);
 
         prefs = Gdx.app.getPreferences("TapRunner");
         soundOn = prefs.getBoolean("SoundOn");
@@ -235,11 +236,10 @@ public class CreditsScreen implements Screen {
 
 
         NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
-        NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
         NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
 
-        buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
@@ -259,8 +259,6 @@ public class CreditsScreen implements Screen {
         });
 
 //        stage.setDebugAll(true);
-
-
 
         table.add(runnerAndBgLabel);
         table.row();

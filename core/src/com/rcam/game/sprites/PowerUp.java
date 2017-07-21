@@ -99,14 +99,14 @@ public class PowerUp implements Pool.Poolable{
         }
     }
 
-    public void checkPowerUpCollision(Runner runner, Hud.Health hud){
+    public void checkPowerUpCollision(Runner runner, Hud hud){
         if(getBounds().overlaps(runner.getBounds()) && !runner.isDead ){
             if(prefs.getBoolean("SoundOn")) {
                 powerUpSound.play();
             }
             if(!(runner.health >= runner.STARTING_HEALTH) && !touched && !runner.isDead){
                 runner.health += getHeal();
-                hud.update();
+                hud.healthUpdate();
                 touched = true;
                 isSpawned = false;
                 //TODO optional speed boost and double jump for power up

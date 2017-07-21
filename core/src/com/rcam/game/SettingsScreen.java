@@ -45,8 +45,6 @@ public class SettingsScreen implements Screen {
 
     public SettingsScreen(final TapRunner gam){
         this.game = gam;
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
         blipSelectSound = GameAssetLoader.blipSelect;
@@ -54,6 +52,8 @@ public class SettingsScreen implements Screen {
         blockYellow = GameAssetLoader.blockYellow;
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
         buttonFonts = GameAssetLoader.buttonFonts;
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
 
         stage = new Stage(new FitViewport(480, 800), game.batch);
         prefs = Gdx.app.getPreferences("TapRunner");
@@ -75,11 +75,11 @@ public class SettingsScreen implements Screen {
 //        enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         soundOn = new CheckBox("Sound On", cleanCrispySkin, "default");
 
-
         NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
-        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
+
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;

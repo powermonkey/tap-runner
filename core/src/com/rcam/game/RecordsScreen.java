@@ -40,26 +40,33 @@ public class RecordsScreen implements Screen{
 
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         arcadeSkin = GameAssetLoader.arcadeSkin;
-        stage = new Stage(new FitViewport(480, 800), game.batch);
-        rootTable = new Table();
-        rootTable.setFillParent(true);
-        table = new Table();
-        goBackButtonTable = new Table();
-        labelTable = new Table();
-        bestNormalValue = new StringBuilder();
-        bestLavaValue = new StringBuilder();
-        prefs = Gdx.app.getPreferences("TapRunner");
-        soundOn = prefs.getBoolean("SoundOn");
         bg = GameAssetLoader.bg;
         ground = GameAssetLoader.ground;
         blockYellow = GameAssetLoader.blockYellow;
         blipSelectSound = GameAssetLoader.blipSelect;
+        blockYellowGreen = GameAssetLoader.blockYellowGreen;
+        buttonFonts = GameAssetLoader.buttonFonts;
+
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f + 50);
+        stage = new Stage(new FitViewport(480, 800), game.batch);
+        rootTable = new Table();
+        table = new Table();
+        goBackButtonTable = new Table();
+        labelTable = new Table();
+        rootTable.setFillParent(true);
+
+        bestNormalValue = new StringBuilder();
+        bestLavaValue = new StringBuilder();
+        prefs = Gdx.app.getPreferences("TapRunner");
+        soundOn = prefs.getBoolean("SoundOn");
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
+        NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
+        NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patch);
+        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
 
         recordsLabel = new Label("Records", arcadeSkin, "default");
         bestLabel = new Label("Best Distance", arcadeSkin, "default");
@@ -68,10 +75,6 @@ public class RecordsScreen implements Screen{
         bestLavaLabel = new Label("The Ground is Lava: ", cleanCrispySkin, "default");
         bestLavaDistance = new Label(bestLavaValue.append(prefs.getInteger("BestDistanceLavaMode")).append(" m"), arcadeSkin, "default");
 
-        blockYellowGreen = GameAssetLoader.blockYellowGreen;
-        NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
-        NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
-        buttonFonts = GameAssetLoader.buttonFonts;
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
@@ -85,7 +88,7 @@ public class RecordsScreen implements Screen{
 
         labelTable.add(recordsLabel).colspan(2).expandX().center().uniform().pad(5);
         labelTable.row();
-        labelTable.setBackground(new NinePatchDrawable(patch));
+        labelTable.setBackground(patchDrawableYellow);
 
         table.add(bestLabel).colspan(2).expandX().center().center().uniform().padBottom(15);
         table.row();
@@ -96,12 +99,12 @@ public class RecordsScreen implements Screen{
         table.add(bestLavaDistance).expandX().center().left().padLeft(10).uniform();
         table.row();
         table.pad(20, 20, 30, 20);
-        table.setBackground(new NinePatchDrawable(patch));
+        table.setBackground(patchDrawableYellow);
 
         goBackButtonTable.add(goBackButton).colspan(2).width(200).height(50).expandX().pad(15);
         goBackButtonTable.row();
         goBackButtonTable.center().center();
-        goBackButtonTable.setBackground(new NinePatchDrawable(patch));
+        goBackButtonTable.setBackground(patchDrawableYellow);
 
 
         rootTable.add(labelTable).fillX();

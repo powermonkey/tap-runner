@@ -43,8 +43,6 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f  + 50);
         bg = GameAssetLoader.bg;
         ground = GameAssetLoader.ground;
         blockYellow = GameAssetLoader.blockYellow;
@@ -55,13 +53,15 @@ public class MainMenuScreen implements Screen {
         myFont = GameAssetLoader.fonts;
         buttonFonts = GameAssetLoader.buttonFonts;
 
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f  + 50);
         stage = new Stage(new FitViewport(480, 800), game.batch);
         Gdx.input.setInputProcessor(stage);
         rootTable = new Table();
-        rootTable.setFillParent(true);
         table = new Table();
         titleTable = new Table();
         titleTableInner = new Table();
+        rootTable.setFillParent(true);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = myFont;
@@ -72,10 +72,10 @@ public class MainMenuScreen implements Screen {
         title.setAlignment(Align.center);
         NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
         NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
-
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
         NinePatchDrawable patchDrawableYellow = new NinePatchDrawable(patchYellow);
+
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
 
         buttonStyle.up = patchDrawableYellow;
         buttonStyle.down = patchDrawableYellow;
