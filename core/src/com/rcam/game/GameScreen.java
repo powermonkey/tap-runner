@@ -288,6 +288,7 @@ public class GameScreen implements Screen{
             }
         }
         game.batch.end();
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.render(delta);
 //        System.out.println(game.batch.maxSpritesInBatch);
 //        handleKeyboardInput();
@@ -492,6 +493,7 @@ public class GameScreen implements Screen{
         game.batch.draw(bg, 0, 199, TapRunner.WIDTH + 80, TapRunner.HEIGHT - 193.2f); //float for height; really odd; no pixelating from menu to game screen on desktop
         renderDistanceIndicator();
         game.batch.end();
+
     }
 
     public void renderDistanceIndicator(){
