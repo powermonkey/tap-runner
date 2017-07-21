@@ -143,6 +143,7 @@ public class RecordsScreen implements Screen{
         game.batch.draw(ground, 0, 0);
         game.batch.end();
 //        stage.act();
+        game.batch.setProjectionMatrix(stage.getCamera().combined);
         stage.draw();
     }
 

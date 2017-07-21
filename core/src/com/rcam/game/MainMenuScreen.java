@@ -222,6 +222,7 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
 
 //        stage.act();
+        game.batch.setProjectionMatrix(stage.getCamera().combined);
         stage.draw();
     }
 

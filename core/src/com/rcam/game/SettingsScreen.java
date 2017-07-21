@@ -179,6 +179,7 @@ public class SettingsScreen implements Screen {
         game.batch.draw(ground.getTextureGround(), 0, 0);
         game.batch.end();
 //        stage.act();
+        game.batch.setProjectionMatrix(stage.getCamera().combined);
         stage.draw();
     }
 
