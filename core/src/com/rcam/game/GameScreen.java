@@ -70,12 +70,11 @@ public class GameScreen implements Screen{
     StringBuilder distanceValue;
     BitmapFont distance;
     BitmapFontCache cacheFontDistance;
-
     GlyphLayout glyphLayout;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
-        GLProfiler.enable();
+//        GLProfiler.enable();
         bg = GameAssetLoader.bg;
 
         runner = new Runner();
@@ -153,7 +152,7 @@ public class GameScreen implements Screen{
 
         ground1 = new Ground(0);
         ground2 = new Ground(new Ground().getTextureGround().getRegionWidth());
-        hud = new Hud(gam, runner, this);
+        hud = new Hud(game, runner, this);
 //        keys = new KeyboardInput(runner);
 
         spawnPosition = new Vector2();
@@ -170,8 +169,6 @@ public class GameScreen implements Screen{
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        game.batch.renderCalls = 0;
-        game.batch.totalRenderCalls = 0;
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.position.set((int)runner.getPosition().x + 100, 225, 0);
         cam.update();
@@ -197,8 +194,8 @@ public class GameScreen implements Screen{
                 if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
                     ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
                 }
-                game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
-                game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
+                game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, (int)ground1.getPosGround().y);
+                game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, (int)ground2.getPosGround().y);
                 groundDispose = true;
             }else if(groundDispose){
                 //remove ground after showing
@@ -226,8 +223,8 @@ public class GameScreen implements Screen{
                 lava2.repositionLava(lava2.getTextureLava().getRegionWidth() * 2);
             }
 
-            game.batch.draw(lava1.getTextureLava(), lava1.getPosLava().x, lava1.getPosLava().y);
-            game.batch.draw(lava2.getTextureLava(), lava2.getPosLava().x, lava2.getPosLava().y);
+            game.batch.draw(lava1.getTextureLava(), (int)lava1.getPosLava().x, (int)lava1.getPosLava().y);
+            game.batch.draw(lava2.getTextureLava(), (int)lava2.getPosLava().x, (int)lava2.getPosLava().y);
         } else {
             //render ground
             renderGround();
@@ -290,7 +287,8 @@ public class GameScreen implements Screen{
         game.batch.end();
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.render(delta);
-//        System.out.println(game.batch.maxSpritesInBatch);
+//        System.out.println(GLProfiler.textureBindings +" "+GLProfiler.calls +" "+GLProfiler.drawCalls+" "+GLProfiler.vertexCount.count+" "+GLProfiler.shaderSwitches);
+//        GLProfiler.reset();
 //        handleKeyboardInput();
     }
 
@@ -336,7 +334,7 @@ public class GameScreen implements Screen{
                         && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.stateTime += delta;
                     TextureRegion currentFrame = groundEnemyRenderItem.animation.getKeyFrame(groundEnemyRenderItem.stateTime, true);
-                    game.batch.draw(currentFrame, (int)groundEnemyRenderItem.getPosition().x, (int)groundEnemyRenderItem.getPosition().y);
+                    game.batch.draw(currentFrame, groundEnemyRenderItem.getPosition().x, groundEnemyRenderItem.getPosition().y);
                     groundEnemyRenderItem.checkCollision(runner, hud);
                     if(!isPause) {
                         groundEnemyRenderItem.update(delta);
@@ -510,8 +508,8 @@ public class GameScreen implements Screen{
         if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
             ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
         }
-        game.batch.draw(ground1.getTextureGround(), ground1.getPosGround().x, ground1.getPosGround().y);
-        game.batch.draw(ground2.getTextureGround(), ground2.getPosGround().x, ground2.getPosGround().y);
+        game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, (int)ground1.getPosGround().y);
+        game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, (int)ground2.getPosGround().y);
     }
 
     public void renderRunner(float delta){
