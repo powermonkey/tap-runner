@@ -36,7 +36,7 @@ public class Runner {
     public float health;
     private long startingTime, lavaDamageTimeStart;
     public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, lavaInvulnerable, isIdle, isSmoking;
-    Vector2 position, velocity, speed;
+    Vector2 position, velocity, speed, previousPosition;
     TextureAtlas.AtlasRegion regionStand, regionJump, regionDeath;
     Array<TextureAtlas.AtlasRegion> regionRun;
     public float groundLevel, tempGround;
@@ -235,6 +235,15 @@ public class Runner {
 
     public Vector2 getPosition() {
         return position;
+    }
+
+    public void copyCurrentPosition(){
+        previousPosition = position;
+    }
+
+    public void interpolate(float alpha) {
+        position.x = position.x * alpha + previousPosition.x * (1.0f - alpha);
+        position.y = position.y * alpha + previousPosition.y * (1.0f - alpha);
     }
 
     public void setPositionY(float y) {

@@ -27,7 +27,7 @@ public class Enemy {
     public final static float ON_TOP_OFFSET = 60;
     public boolean touched, runnerOntop, enemyTouchSlows;
     float damage;
-    public Vector2 position, velocity, speed;
+    public Vector2 position, velocity, speed, previousPosition;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
     public float textureHeight, textureWidth;
     public boolean isSpawned, soundOn;
@@ -108,6 +108,15 @@ public class Enemy {
 
     public float getTextureWidth() {
         return textureWidth;
+    }
+
+    public void copyCurrentPosition(){
+        previousPosition = position;
+    }
+
+    public void interpolate(float alpha) {
+        position.x = position.x * alpha + previousPosition.x * (1.0f - alpha);
+        position.y = position.y * alpha + previousPosition.y * (1.0f - alpha);
     }
 
     public void checkCollision(Runner runner, Hud hud) {

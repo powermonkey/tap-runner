@@ -71,6 +71,9 @@ public class GameScreen implements Screen{
     BitmapFont distance;
     BitmapFontCache cacheFontDistance;
     GlyphLayout glyphLayout;
+    float deltaStateTime = 0;
+    float tick = 1 / 60f;
+    int maxUpdatesPerFrame = 1;
 
     public GameScreen(final TapRunner gam){
         this.game = gam;
@@ -168,6 +171,10 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
+        if ( delta > 0.25f ){
+            delta = 0.25f;
+        }
+        deltaStateTime += delta;
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.position.set((int)runner.getPosition().x + 100, 225, 0);
@@ -213,19 +220,14 @@ public class GameScreen implements Screen{
                 lava2.checkLavaCollision(runner, hud);
             }
 
-            if (cam.position.x - (viewportDiv2) > lava1.getPosLava().x + lava1.getTextureLava().getRegionWidth()) {
-                groundRendered = true;
-                lava1.repositionLava(lava1.getTextureLava().getRegionWidth() * 2);
-            }
+            //update lava
+            updateLava();
+            //render lava
+            renderLava();
 
-            if (cam.position.x - (viewportDiv2) > lava2.getPosLava().x + lava2.getTextureLava().getRegionWidth()) {
-                groundRendered = true;
-                lava2.repositionLava(lava2.getTextureLava().getRegionWidth() * 2);
-            }
-
-            game.batch.draw(lava1.getTextureLava(), (int)lava1.getPosLava().x, (int)lava1.getPosLava().y);
-            game.batch.draw(lava2.getTextureLava(), (int)lava2.getPosLava().x, (int)lava2.getPosLava().y);
         } else {
+            //update ground
+            updateGround();
             //render ground
             renderGround();
         }
@@ -259,8 +261,43 @@ public class GameScreen implements Screen{
                 spawnEnemy();
             }
 
-            //render first then logic, fixes shaking texture ??
-            runner.update(delta);
+            int updatesThisFrame = 0;
+            while (deltaStateTime >= tick && updatesThisFrame < maxUpdatesPerFrame) {
+                GroundEnemy groundEnemyRenderItem;
+                for(int i = activeGroundEnemies.size; --i >= 0;){
+                    groundEnemyRenderItem = activeGroundEnemies.get(i);
+                    if(groundEnemyRenderItem.isSpawned){
+                        if (cam.position.x + 20 + viewportDiv2 > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()
+                                && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
+                            groundEnemyRenderItem.copyCurrentPosition();
+                        }
+                    }
+                }
+                FlyingEnemy flyingEnemyRenderItem;
+                for(int i = activeFlyingEnemies.size; --i >= 0;){
+                    flyingEnemyRenderItem = activeFlyingEnemies.get(i);
+                    if(flyingEnemyRenderItem.isSpawned){
+                        if (cam.position.x + 20 + viewportDiv2 > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()
+                                && cam.position.x - 50 - (viewportDiv4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
+                            flyingEnemyRenderItem.copyCurrentPosition();
+                        }
+                    }
+                }
+                runner.copyCurrentPosition();
+
+                //render first then logic, fixes shaking texture ??
+                runner.update(tick);
+                //update enemies
+                updateEnemy(tick);
+
+                updatesThisFrame++;
+                deltaStateTime -= tick;
+
+                //interpolate update
+                interpolate(deltaStateTime / tick);
+            }
+
+
 
             //if runner ran out of health
             if (runner.isDead) {
@@ -336,9 +373,6 @@ public class GameScreen implements Screen{
                     TextureRegion currentFrame = groundEnemyRenderItem.animation.getKeyFrame(groundEnemyRenderItem.stateTime, true);
                     game.batch.draw(currentFrame, groundEnemyRenderItem.getPosition().x, groundEnemyRenderItem.getPosition().y);
                     groundEnemyRenderItem.checkCollision(runner, hud);
-                    if(!isPause) {
-                        groundEnemyRenderItem.update(delta);
-                    }
                 } else if(cam.position.x - 50 - (viewportDiv4) > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
                     groundEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
                 }
@@ -354,9 +388,6 @@ public class GameScreen implements Screen{
                     TextureRegion currentFrame = flyingEnemyRenderItem.animation.getKeyFrame(flyingEnemyRenderItem.stateTime, true);
                     game.batch.draw(currentFrame, (int)flyingEnemyRenderItem.getPosition().x, (int)flyingEnemyRenderItem.getPosition().y);
                     flyingEnemyRenderItem.checkCollision(runner, hud);
-                    if(!isPause) {
-                        flyingEnemyRenderItem.update(delta);
-                    }
                 } else if(cam.position.x - 50 - (viewportDiv4) > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
                     flyingEnemyRenderItem.isSpawned = false; //unspawn enemy when off camera
                 }
@@ -502,14 +533,34 @@ public class GameScreen implements Screen{
     }
 
     public void renderGround(){
+        game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, (int)ground1.getPosGround().y);
+        game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, (int)ground2.getPosGround().y);
+    }
+
+    public void updateGround(){
         if(cam.position.x - viewportDiv2 > ground1.getPosGround().x + ground1.getTextureGround().getRegionWidth()) {
             ground1.repositionGround(ground1.getTextureGround().getRegionWidth() * 2);
         }
         if(cam.position.x - viewportDiv2 > ground2.getPosGround().x + ground2.getTextureGround().getRegionWidth()) {
             ground2.repositionGround(ground2.getTextureGround().getRegionWidth() * 2);
         }
-        game.batch.draw(ground1.getTextureGround(), (int)ground1.getPosGround().x, (int)ground1.getPosGround().y);
-        game.batch.draw(ground2.getTextureGround(), (int)ground2.getPosGround().x, (int)ground2.getPosGround().y);
+    }
+
+    public void renderLava(){
+        game.batch.draw(lava1.getTextureLava(), (int)lava1.getPosLava().x, (int)lava1.getPosLava().y);
+        game.batch.draw(lava2.getTextureLava(), (int)lava2.getPosLava().x, (int)lava2.getPosLava().y);
+    }
+
+    public void updateLava(){
+        if (cam.position.x - (viewportDiv2) > lava1.getPosLava().x + lava1.getTextureLava().getRegionWidth()) {
+            groundRendered = true;
+            lava1.repositionLava(lava1.getTextureLava().getRegionWidth() * 2);
+        }
+
+        if (cam.position.x - (viewportDiv2) > lava2.getPosLava().x + lava2.getTextureLava().getRegionWidth()) {
+            groundRendered = true;
+            lava2.repositionLava(lava2.getTextureLava().getRegionWidth() * 2);
+        }
     }
 
     public void renderRunner(float delta){
@@ -524,6 +575,58 @@ public class GameScreen implements Screen{
             game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isIdle) {
             game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
+        }
+    }
+
+    public void updateEnemy(float delta){
+        GroundEnemy groundEnemyRenderItem;
+        for(int i = activeGroundEnemies.size; --i >= 0;){
+            groundEnemyRenderItem = activeGroundEnemies.get(i);
+            if(groundEnemyRenderItem.isSpawned){
+                if (cam.position.x + 20 + viewportDiv2 > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()
+                        && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
+                    if(!isPause) {
+                        groundEnemyRenderItem.update(delta);
+                    }
+                }
+            }
+        }
+
+        FlyingEnemy flyingEnemyRenderItem;
+        for(int i = activeFlyingEnemies.size; --i >= 0;){
+            flyingEnemyRenderItem = activeFlyingEnemies.get(i);
+            if(flyingEnemyRenderItem.isSpawned){
+                if (cam.position.x + 20 + viewportDiv2 > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()
+                        && cam.position.x - 50 - (viewportDiv4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
+                    if(!isPause) {
+                        flyingEnemyRenderItem.update(delta);
+                    }
+                }
+            }
+        }
+    }
+
+    public void interpolate(float alpha){
+        runner.interpolate(alpha);
+        GroundEnemy groundEnemyRenderItem;
+        for(int i = activeGroundEnemies.size; --i >= 0;){
+            groundEnemyRenderItem = activeGroundEnemies.get(i);
+            if(groundEnemyRenderItem.isSpawned){
+                if (cam.position.x + 20 + viewportDiv2 > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()
+                        && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
+                    groundEnemyRenderItem.interpolate(alpha);
+                }
+            }
+        }
+        FlyingEnemy flyingEnemyRenderItem;
+        for(int i = activeFlyingEnemies.size; --i >= 0;){
+            flyingEnemyRenderItem = activeFlyingEnemies.get(i);
+            if(flyingEnemyRenderItem.isSpawned){
+                if (cam.position.x + 20 + viewportDiv2 > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()
+                        && cam.position.x - 50 - (viewportDiv4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
+                    flyingEnemyRenderItem.interpolate(alpha);
+                }
+            }
         }
     }
 
