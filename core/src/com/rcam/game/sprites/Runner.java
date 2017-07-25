@@ -243,7 +243,7 @@ public class Runner {
 
     public void interpolate(float alpha) {
         position.x = position.x * alpha + previousPosition.x * (1.0f - alpha);
-        position.y = position.y * alpha + previousPosition.y * (1.0f - alpha);
+//        position.y = position.y * alpha + previousPosition.y * (1.0f - alpha);
     }
 
     public void setPositionY(float y) {
