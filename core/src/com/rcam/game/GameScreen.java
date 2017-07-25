@@ -174,7 +174,7 @@ public class GameScreen implements Screen{
         if ( delta > 0.25f ){
             delta = 0.25f;
         }
-        deltaStateTime += delta;
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.position.set((int)runner.getPosition().x + 100, 225, 0);
@@ -261,6 +261,7 @@ public class GameScreen implements Screen{
                 spawnEnemy();
             }
 
+            deltaStateTime += delta;
             int updatesThisFrame = 0;
             while (deltaStateTime >= tick && updatesThisFrame < maxUpdatesPerFrame) {
                 GroundEnemy groundEnemyRenderItem;
