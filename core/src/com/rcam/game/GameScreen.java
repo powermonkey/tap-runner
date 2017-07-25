@@ -72,7 +72,7 @@ public class GameScreen implements Screen{
     BitmapFontCache cacheFontDistance;
     GlyphLayout glyphLayout;
     float deltaStateTime = 0;
-    float tick = 1 / 60f;
+    float tick = 1f / 60f;
     int maxUpdatesPerFrame = 1;
 
     public GameScreen(final TapRunner gam){
