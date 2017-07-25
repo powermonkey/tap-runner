@@ -264,26 +264,6 @@ public class GameScreen implements Screen{
             deltaStateTime += delta;
             int updatesThisFrame = 0;
             while (deltaStateTime >= tick && updatesThisFrame < maxUpdatesPerFrame) {
-                GroundEnemy groundEnemyRenderItem;
-                for(int i = activeGroundEnemies.size; --i >= 0;){
-                    groundEnemyRenderItem = activeGroundEnemies.get(i);
-                    if(groundEnemyRenderItem.isSpawned){
-                        if (cam.position.x + 20 + viewportDiv2 > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()
-                                && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
-                            groundEnemyRenderItem.copyCurrentPosition();
-                        }
-                    }
-                }
-                FlyingEnemy flyingEnemyRenderItem;
-                for(int i = activeFlyingEnemies.size; --i >= 0;){
-                    flyingEnemyRenderItem = activeFlyingEnemies.get(i);
-                    if(flyingEnemyRenderItem.isSpawned){
-                        if (cam.position.x + 20 + viewportDiv2 > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()
-                                && cam.position.x - 50 - (viewportDiv4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
-                            flyingEnemyRenderItem.copyCurrentPosition();
-                        }
-                    }
-                }
                 runner.copyCurrentPosition();
 
                 //render first then logic, fixes shaking texture ??
@@ -609,26 +589,6 @@ public class GameScreen implements Screen{
 
     public void interpolate(float alpha){
         runner.interpolate(alpha);
-        GroundEnemy groundEnemyRenderItem;
-        for(int i = activeGroundEnemies.size; --i >= 0;){
-            groundEnemyRenderItem = activeGroundEnemies.get(i);
-            if(groundEnemyRenderItem.isSpawned){
-                if (cam.position.x + 20 + viewportDiv2 > groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()
-                        && cam.position.x - 50 - (viewportDiv4) < groundEnemyRenderItem.getPosition().x + groundEnemyRenderItem.getTextureWidth()) {
-                    groundEnemyRenderItem.interpolate(alpha);
-                }
-            }
-        }
-        FlyingEnemy flyingEnemyRenderItem;
-        for(int i = activeFlyingEnemies.size; --i >= 0;){
-            flyingEnemyRenderItem = activeFlyingEnemies.get(i);
-            if(flyingEnemyRenderItem.isSpawned){
-                if (cam.position.x + 20 + viewportDiv2 > flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()
-                        && cam.position.x - 50 - (viewportDiv4) < flyingEnemyRenderItem.getPosition().x + flyingEnemyRenderItem.getTextureWidth()) {
-                    flyingEnemyRenderItem.interpolate(alpha);
-                }
-            }
-        }
     }
 
     public StringBuilder getText(){
