@@ -138,7 +138,6 @@ public class GameOverScreen implements Screen{
                 if(soundOn) {
                     blipSelectSound.play();
                 }
-                showInterstitialAd();
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
                 return true;
@@ -167,7 +166,6 @@ public class GameOverScreen implements Screen{
                 if(soundOn) {
                     blipSelectSound.play();
                 }
-                showInterstitialAd();
                 game.setScreen(new SettingsScreen(game));
                 dispose();
                 return true;
@@ -207,7 +205,7 @@ public class GameOverScreen implements Screen{
         if(timeSinceMillis(gameOverScreenStart) > adTimer){
             gameOverScreenStart = millis();
             showInterstitialAd();
-            adTimer = 8000l;
+            adTimer = 10000L;
         }
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         game.batch.draw(ground.getTextureGround(), 0, 0);
