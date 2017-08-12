@@ -127,8 +127,9 @@ public class GameOverScreen implements Screen{
         rootTable.center().center();
 
         stage.addActor(rootTable);
-        gameOverScreenStart = millis();
-        adTimer = 1000l;
+        showInterstitialAd();
+//        gameOverScreenStart = millis();
+//        adTimer = 10l;
     }
 
     public void mainMenuButtonListener(TextButton button){
@@ -202,11 +203,11 @@ public class GameOverScreen implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
-        if(timeSinceMillis(gameOverScreenStart) > adTimer){
-            gameOverScreenStart = millis();
-            showInterstitialAd();
-            adTimer = 10000L;
-        }
+//        if(timeSinceMillis(gameOverScreenStart) > adTimer){
+//            gameOverScreenStart = millis();
+//            showInterstitialAd();
+//            adTimer = 10000L;
+//        }
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
         game.batch.draw(ground.getTextureGround(), 0, 0);
         game.batch.end();
