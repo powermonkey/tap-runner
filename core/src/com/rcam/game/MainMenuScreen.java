@@ -85,7 +85,7 @@ public class MainMenuScreen implements Screen {
         buttonStyle.font = buttonFonts;
 
         newGame = new TextButton("New Game", buttonStyle);
-        options = new TextButton("Game Mode", buttonStyle);
+        options = new TextButton("Game Modes", buttonStyle);
         records = new TextButton("Records", buttonStyle);
         credits = new TextButton("Credits", buttonStyle);
         exit = new TextButton("Exit", buttonStyle);
