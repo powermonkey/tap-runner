@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Ground;
+import com.rcam.game.sprites.Lava;
 import com.rcam.game.sprites.Runner;
 
 import static com.badlogic.gdx.utils.TimeUtils.millis;
@@ -36,6 +37,7 @@ public class GameOverScreen implements Screen{
     Stage stage;
     Table rootTable, table;
     Ground ground;
+    Lava lava;
     TextButton newGameButton, exitButton, settingsButton, mainMenuButton;
     Runner runner;
     Label current, bestDistance, currentLabel, bestDistanceLabel;
@@ -87,6 +89,7 @@ public class GameOverScreen implements Screen{
         bestDistanceLabel = new Label("Best:", arcadeSkin, "default");
         if(gameMode.equals("The Ground Is Lava")){
             bestDistance = new Label(bestValue.append(runner.getHighScoreLavaMode()).append(" m"), arcadeSkin, "default");
+            lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
         }else{
             bestDistance = new Label(bestValue.append(runner.getHighScoreNormalMode()).append(" m"), arcadeSkin, "default");
         }
@@ -127,7 +130,7 @@ public class GameOverScreen implements Screen{
         rootTable.center().center();
 
         stage.addActor(rootTable);
-        showInterstitialAd();
+//        showInterstitialAd();
 //        gameOverScreenStart = millis();
 //        adTimer = 10l;
     }
@@ -186,16 +189,16 @@ public class GameOverScreen implements Screen{
         });
     }
 
-    public void showInterstitialAd(){
-        if (game.adsController.isWifiConnected()) {
-            game.adsController.showInterstitialAd(new Runnable() {
-                @Override
-                public void run() {
-                    //show interstitial ad
-                }
-            });
-        }
-    }
+//    public void showInterstitialAd(){
+//        if (game.adsController.isWifiConnected()) {
+//            game.adsController.showInterstitialAd(new Runnable() {
+//                @Override
+//                public void run() {
+//                    //show interstitial ad
+//                }
+//            });
+//        }
+//    }
 
     @Override
     public void render(float delta) {
@@ -209,7 +212,11 @@ public class GameOverScreen implements Screen{
 //            adTimer = 10000L;
 //        }
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        game.batch.draw(ground.getTextureGround(), 0, 0);
+        if(gameMode.equals("The Ground Is Lava")){
+            game.batch.draw(lava.getTextureLava(), 0, 0);
+        }else{
+            game.batch.draw(ground.getTextureGround(), 0, 0);
+        }
         game.batch.end();
 
 //        stage.act();

@@ -30,7 +30,7 @@ public class Enemy {
     public Vector2 position, velocity, speed;
     protected Rectangle bounds, intersection, intersectionBounds, onTopBounds, intersectionOnTop;
     public float textureHeight, textureWidth;
-    public boolean isSpawned, soundOn;
+    public boolean isSpawned;
     public Animation<TextureRegion> animation, animationMonster1, animationMonster2;
     public float stateTime;
     static Preferences prefs;
@@ -53,7 +53,6 @@ public class Enemy {
         this.onTopBounds = new Rectangle();
 
         prefs = Gdx.app.getPreferences("TapRunner");
-        soundOn = prefs.getBoolean("SoundOn");
 
 //        if (!prefs.contains("EnemyTouchSlows")) {
 //            prefs.putBoolean("EnemyTouchSlows", false);
@@ -136,7 +135,7 @@ public class Enemy {
                 runner.isFalling = false;
             }else{
                 if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
-                        if(soundOn) {
+                        if(prefs.getBoolean("SoundOn")) {
                             hurtSound.play();
                         }
                         runner.health -= getDamage();

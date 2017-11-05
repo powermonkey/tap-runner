@@ -15,10 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -29,7 +31,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class MainMenuScreen implements Screen {
     final TapRunner game;
     OrthographicCamera cam;
-    Table rootTable, table, titleTable, titleTableInner;
+    Table rootTable, table, titleTable, titleTableInner, tableAudioState;
     TextButton exit, newGame, options, records, credits;
     Stage stage;
     static Preferences prefs;
@@ -61,6 +63,7 @@ public class MainMenuScreen implements Screen {
         table = new Table();
         titleTable = new Table();
         titleTableInner = new Table();
+        tableAudioState = new Table();
         rootTable.setFillParent(true);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -82,7 +85,7 @@ public class MainMenuScreen implements Screen {
         buttonStyle.font = buttonFonts;
 
         newGame = new TextButton("New Game", buttonStyle);
-        options = new TextButton("Options", buttonStyle);
+        options = new TextButton("Game Mode", buttonStyle);
         records = new TextButton("Records", buttonStyle);
         credits = new TextButton("Credits", buttonStyle);
         exit = new TextButton("Exit", buttonStyle);
@@ -120,6 +123,8 @@ public class MainMenuScreen implements Screen {
         table.center().center();
         table.pad(20);
         table.setBackground(patchDrawableGreen);
+
+
 
         rootTable.add(titleTable);
         rootTable.row();

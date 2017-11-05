@@ -20,7 +20,7 @@ public class Lava {
     Vector2 posLava;
     float damage, damageIncrease;
     Rectangle bounds;
-    boolean touched, soundOn;
+    boolean touched;
     TextureAtlas.AtlasRegion lava;
     Sound lavaBurnSound;
     Preferences prefs;
@@ -38,7 +38,6 @@ public class Lava {
         touched = false;
         bounds = new Rectangle(0, 0, lava.getRegionWidth(), lava.getRegionHeight() + BOUNDS_TOP_OFFSET);
         prefs = Gdx.app.getPreferences("TapRunner");
-        soundOn = prefs.getBoolean("SoundOn");
     }
 
     public void update(){
@@ -68,7 +67,7 @@ public class Lava {
     public void checkLavaCollision(Runner runner, Hud hud){
         if(getBounds().overlaps(runner.getBounds())){
             if(runner.health > 0 && !runner.lavaInvulnerable && !runner.isDead){
-                if(soundOn) {
+                if(prefs.getBoolean("SoundOn")) {
                     lavaBurnSound.play();
                 }
                 runner.health -= getDamage();

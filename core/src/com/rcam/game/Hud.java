@@ -32,17 +32,16 @@ import com.rcam.game.sprites.Runner;
 
 public class Hud extends Table implements Disposable{
     Stage stage;
-    Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable;
+    Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable, audioStateTable;
     Skin cleanCrispySkin, arcadeSkin;
     Label healthLabel, hint;
     GameScreen gameScreen;
-    TextureAtlas.AtlasRegion blockYellow, blockYellowGreen, pause, forward;
+    TextureAtlas.AtlasRegion blockYellow, blockYellowGreen, pause, forward, audioOnImage, audioOffImage;
     NinePatchDrawable patchDrawableGreen, patchDrawableYellow;
     Sound blipSelectSound, newGameblipSound, jumpSound;
     Preferences prefs;
     NinePatch patchGreen, patchYellow;
     BitmapFont labelFont, buttonFonts;
-    boolean soundOn;
     Actor screenActor;
     ImageButton pauseButton;
     ImageButton.ImageButtonStyle buttonStyle, unpauseStyle;
@@ -52,6 +51,8 @@ public class Hud extends Table implements Disposable{
     TapRunner game;
     final TextButton.TextButtonStyle pauseButtonStyle, hintButtonStyle;
     CheckBox hideHint;
+    ImageButton audioButton;
+    ImageButton.ImageButtonStyle audioOnButtonStyle, audioOffButtonStyle;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
@@ -60,7 +61,6 @@ public class Hud extends Table implements Disposable{
         this.gameScreen = gameScreen;
         this.runner = runner;
         prefs = Gdx.app.getPreferences("TapRunner");
-        soundOn = prefs.getBoolean("SoundOn");
         blockYellow = GameAssetLoader.blockYellow;
         blockYellowGreen = GameAssetLoader.blockYellowGreen;
         arcadeSkin = GameAssetLoader.arcadeSkin;
@@ -71,6 +71,8 @@ public class Hud extends Table implements Disposable{
         newGameblipSound = GameAssetLoader.newGameblip;
         buttonFonts = GameAssetLoader.buttonFonts;
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
+        audioOnImage = GameAssetLoader.audioOn;
+        audioOffImage = GameAssetLoader.audioOff;
 
         stage = new Stage(new FitViewport(480, 800), game.batch);
 
@@ -88,6 +90,7 @@ public class Hud extends Table implements Disposable{
         pauseTable = new Table();
         hintTable = new Table();
         rootHintTable = new Table();
+        audioStateTable = new Table();
         rootHintTable.setFillParent(true);
         rootTable.setFillParent(true);
         pauseRootTable.setFillParent(true);
@@ -121,6 +124,26 @@ public class Hud extends Table implements Disposable{
         exitButton = new TextButton("Exit", pauseButtonStyle);
         okay = new TextButton("Okay", hintButtonStyle);
 
+        audioOnButtonStyle = new ImageButton.ImageButtonStyle();
+        audioOffButtonStyle = new ImageButton.ImageButtonStyle();
+        audioOnButtonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(audioOnImage));
+        audioOnButtonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(audioOnImage));
+        audioOffButtonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(audioOffImage));
+        audioOffButtonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(audioOffImage));
+        audioButton = new ImageButton(audioOnButtonStyle);
+
+        setSoundImage();
+
+        audioButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                prefs.putBoolean("SoundOn", !prefs.getBoolean("SoundOn"));
+                prefs.flush();
+                setSoundImage();
+                return true;
+            }
+        });
+
         //touch screen to jump
         screenActor.setBounds(stage.getViewport().getScreenX(), stage.getViewport().getScreenY(), stage.getViewport().getScreenWidth(), stage.getViewport().getScreenHeight());
         screenActor.addListener(new InputListener(){
@@ -128,7 +151,7 @@ public class Hud extends Table implements Disposable{
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if(!gameScreen.isPause) {
                     if (runner.isOnGround) {
-                        if (soundOn) {
+                        if (prefs.getBoolean("SoundOn")) {
                             jumpSound.play();
                         }
                         runner.jump();
@@ -200,7 +223,7 @@ public class Hud extends Table implements Disposable{
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if(!gameScreen.isPause) {
-                    if(soundOn) {
+                    if(prefs.getBoolean("SoundOn")) {
                         blipSelectSound.play(1.0f);
                     }
                     pauseButton.setStyle(unpauseStyle);
@@ -209,7 +232,7 @@ public class Hud extends Table implements Disposable{
                     pauseRootTable.setVisible(true);
                     stage.addActor(pauseRootTable);
                 }else{
-                    if(soundOn) {
+                    if(prefs.getBoolean("SoundOn")) {
                         blipSelectSound.play(1.0f);
                     }
                     pauseButton.setStyle(buttonStyle);
@@ -229,7 +252,7 @@ public class Hud extends Table implements Disposable{
         okay.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(soundOn) {
+                if(prefs.getBoolean("SoundOn")) {
                     blipSelectSound.play();
                 }
 
@@ -246,7 +269,7 @@ public class Hud extends Table implements Disposable{
         continueButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(soundOn) {
+                if(prefs.getBoolean("SoundOn")) {
                     blipSelectSound.play();
                 }
                 pauseButton.setStyle(buttonStyle);
@@ -264,7 +287,7 @@ public class Hud extends Table implements Disposable{
         newGameButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(soundOn) {
+                if(prefs.getBoolean("SoundOn")) {
                     newGameblipSound.play();
                 }
 //                    showInterstitialAd();
@@ -282,10 +305,10 @@ public class Hud extends Table implements Disposable{
         mainMenuButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                if(soundOn) {
+                if(prefs.getBoolean("SoundOn")) {
                     blipSelectSound.play();
                 }
-                showInterstitialAd();
+//                showInterstitialAd();
                 pauseRootTable.remove();
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
@@ -339,22 +362,37 @@ public class Hud extends Table implements Disposable{
         controlsTable.add(pauseButton).height(30).width(60).center().expandX();
         controlsTable.setBackground(patchDrawableGreen);
 
-        rootTable.add(controlsTable).width(200).padBottom(50).height(100);
+        audioStateTable.add(audioButton).center();
+        audioStateTable.row();
+        audioStateTable.pad(10);
+
+        rootTable.add(controlsTable).width(200).height(100).expandX();
+        rootTable.row();
+        rootTable.add(audioStateTable).left().width(50).height(50).expandX();
         rootTable.row();
         rootTable.center().bottom();
         rootTable.setTouchable(Touchable.childrenOnly);
+
         stage.addActor(rootTable);
 
     }
 
-    public void showInterstitialAd(){
-        if (game.adsController.isWifiConnected()) {
-            game.adsController.showInterstitialAd(new Runnable() {
-                @Override
-                public void run() {
-                    //show interstitial ad
-                }
-            });
+//    public void showInterstitialAd(){
+//        if (game.adsController.isWifiConnected()) {
+//            game.adsController.showInterstitialAd(new Runnable() {
+//                @Override
+//                public void run() {
+//                    //show interstitial ad
+//                }
+//            });
+//        }
+//    }
+
+    public void setSoundImage() {
+        if(prefs.getBoolean("SoundOn")){
+            audioButton.setStyle(audioOnButtonStyle);
+        }else{
+            audioButton.setStyle(audioOffButtonStyle);
         }
     }
 

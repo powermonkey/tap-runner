@@ -41,7 +41,6 @@ public class SettingsScreen implements Screen {
     TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen;
     Sound blipSelectSound;
     BitmapFont buttonFonts;
-    boolean soundTurnedOn;
 
     public SettingsScreen(final TapRunner gam){
         this.game = gam;
@@ -57,7 +56,6 @@ public class SettingsScreen implements Screen {
 
         stage = new Stage(new FitViewport(480, 800), game.batch);
         prefs = Gdx.app.getPreferences("TapRunner");
-        soundTurnedOn = prefs.getBoolean("SoundOn");
 
         gameModetable = new Table();
         buttonsTable = new Table();
@@ -68,7 +66,6 @@ public class SettingsScreen implements Screen {
 
         gameModeLabel = new Label("Game Mode", arcadeSkin, "default");
         otherOptionsLabel = new Label("Extras", arcadeSkin, "default");
-        settingsLabel = new Label("Options", arcadeSkin, "default");
 
         normalMode = new CheckBox("Normal", cleanCrispySkin, "radio");
         groundLavaMode = new CheckBox("The Ground Is Lava", cleanCrispySkin, "radio");
@@ -105,28 +102,26 @@ public class SettingsScreen implements Screen {
 
 //        stage.setDebugAll(true);
 
-        settingsLabelTable.add(settingsLabel).expandX().center().uniform();
+        settingsLabelTable.add(gameModeLabel).expandX().center().uniform();
         settingsLabelTable.row();
         settingsLabelTable.center().center().pad(10);
         settingsLabelTable.setBackground(patchDrawableYellow);
 
-        gameModetable.add(gameModeLabel).colspan(2).expandX().center().uniform();
+        gameModetable.add(normalMode).colspan(2).padTop(15).expandX().center().uniform();
         gameModetable.row();
-        gameModetable.add(normalMode).colspan(2).padTop(20).expandX().center().uniform();
-        gameModetable.row();
-        gameModetable.add(groundLavaMode).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
+        gameModetable.add(groundLavaMode).colspan(2).padTop(30).padBottom(20).expandX().center().uniform();
         gameModetable.row();
         gameModetable.center().center().pad(20);
         gameModetable.setBackground(patchDrawableYellow);
 
-        optionsTable.add(otherOptionsLabel).colspan(2).expandX().center().uniform();
-        optionsTable.row();
+//        optionsTable.add(otherOptionsLabel).colspan(2).expandX().center().uniform();
+//        optionsTable.row();
 //        optionsTable.add(enemyTouchSlows).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
 //        optionsTable.row();
-        optionsTable.add(soundOn).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
-        optionsTable.row();
-        optionsTable.center().center().pad(20);
-        optionsTable.setBackground(patchDrawableYellow);
+//        optionsTable.add(soundOn).colspan(2).padTop(20).padBottom(20).expandX().center().uniform();
+//        optionsTable.row();
+//        optionsTable.center().center().pad(20);
+//        optionsTable.setBackground(patchDrawableYellow);
 
         buttonsTable.add(okay).width(150).height(50).expandX();
         buttonsTable.row();
@@ -137,8 +132,8 @@ public class SettingsScreen implements Screen {
         rootTable.row();
         rootTable.add(gameModetable).width(TapRunner.WIDTH * 0.5f);
         rootTable.row();
-        rootTable.add(optionsTable).width(TapRunner.WIDTH * 0.5f);
-        rootTable.row();
+//        rootTable.add(optionsTable).width(TapRunner.WIDTH * 0.5f);
+//        rootTable.row();
         rootTable.add(buttonsTable).width(TapRunner.WIDTH * 0.5f);
         rootTable.row();
         rootTable.center().center();
@@ -159,7 +154,7 @@ public class SettingsScreen implements Screen {
 //                prefs.putBoolean("EnemyTouchSlows", enemyTouchSlows.isChecked());
                 prefs.putBoolean("SoundOn", soundOn.isChecked());
                 prefs.flush();
-                if(soundTurnedOn) {
+                if(prefs.getBoolean("SoundOn")) {
                     blipSelectSound.play();
                 }
                 game.setScreen(new MainMenuScreen(game));

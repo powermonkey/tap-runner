@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public class GameAssetLoader {
     public static TextureAtlas atlas;
     public static TextureAtlas.AtlasRegion bg, regionStand, regionJump, regionDeath, ground, lava, blockYellow, blockYellowGreen,
-        pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange;
+        pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange, audioOn, audioOff;
     public static Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke, birdBlue, birdRed, jellyGreen, jellyYellow;
     public static Skin cleanCrispySkin, arcadeSkin;
     public static Sound blipSelect, newGameblip, jump, hurt, powerUp, lavaBurn;
@@ -46,6 +46,8 @@ public class GameAssetLoader {
         blockYellowGreen = atlas.findRegion("Block_Type2_YellowGreen");
         pause = atlas.findRegion("pause");
         forward = atlas.findRegion("forward");
+        audioOn = atlas.findRegion("musicOn");
+        audioOff = atlas.findRegion("musicOff");
         powerupApple = atlas.findRegion("powerup_apple");
         powerupCherry = atlas.findRegion("powerup_cherry");
         powerupBanana = atlas.findRegion("powerup_banana");
