@@ -19,10 +19,10 @@ import com.google.android.gms.ads.InterstitialAd;
 
 public class AndroidLauncher extends AndroidApplication implements AdsController{
 	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
-	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
+//	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
 
 	AdView bannerAd;
-	InterstitialAd interstitialAd;
+//	InterstitialAd interstitialAd;
 	View gameView;
 	RelativeLayout layout;
 
@@ -52,12 +52,12 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		bannerAd.setAdUnitId(BANNER_AD_UNIT_ID);
 		bannerAd.setAdSize(AdSize.SMART_BANNER);
 
-		interstitialAd = new InterstitialAd(this);
-		interstitialAd.setAdUnitId(INTERSTITIAL_AD_UNIT_ID);
-
-		AdRequest.Builder builder = new AdRequest.Builder();
-		AdRequest ad = builder.build();
-		interstitialAd.loadAd(ad);
+//		interstitialAd = new InterstitialAd(this);
+//		interstitialAd.setAdUnitId(INTERSTITIAL_AD_UNIT_ID);
+//
+//		AdRequest.Builder builder = new AdRequest.Builder();
+//		AdRequest ad = builder.build();
+//		interstitialAd.loadAd(ad);
 	}
 
 	@Override
@@ -92,27 +92,27 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		});
 	}
 
-	@Override
-	public void showInterstitialAd(final Runnable then) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				if(interstitialAd != null && interstitialAd.isLoaded()) {
-					interstitialAd.show();
-//					if (then != null) {
-						interstitialAd.setAdListener(new AdListener() {
-							@Override
-							public void onAdClosed() {
-								AdRequest.Builder builder = new AdRequest.Builder();
-								AdRequest ad = builder.build();
-								interstitialAd.loadAd(ad);
-							}
-						});
-//					}
-				}
-			}
-		});
-	}
+//	@Override
+//	public void showInterstitialAd(final Runnable then) {
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				if(interstitialAd != null && interstitialAd.isLoaded()) {
+//					interstitialAd.show();
+////					if (then != null) {
+//						interstitialAd.setAdListener(new AdListener() {
+//							@Override
+//							public void onAdClosed() {
+//								AdRequest.Builder builder = new AdRequest.Builder();
+//								AdRequest ad = builder.build();
+//								interstitialAd.loadAd(ad);
+//							}
+//						});
+////					}
+//				}
+//			}
+//		});
+//	}
 
 	@Override
 	public void onDestroy() {

@@ -20,8 +20,8 @@ class DummyController implements AdsController {
 
     }
 
-    @Override
-    public void showInterstitialAd(Runnable then) {
-
-    }
+//    @Override
+//    public void showInterstitialAd(Runnable then) {
+//
+//    }
 }
