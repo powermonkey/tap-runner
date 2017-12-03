@@ -96,7 +96,7 @@ public class GameOverScreen implements Screen{
 
         mainMenuButton = new TextButton("Main Menu", buttonStyle);
         newGameButton = new TextButton("New Game", buttonStyle);
-        settingsButton = new TextButton("Options", buttonStyle);
+        settingsButton = new TextButton("Game Modes", buttonStyle);
         exitButton = new TextButton("Exit", buttonStyle);
         settingsButtonListener(settingsButton);
         newGameButtonListener(newGameButton);
