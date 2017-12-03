@@ -21,6 +21,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
 //	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
 
+
 	AdView bannerAd;
 //	InterstitialAd interstitialAd;
 	View gameView;
