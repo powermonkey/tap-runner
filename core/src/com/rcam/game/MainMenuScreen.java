@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.rcam.game.sprites.Lava;
 
 /**
  * Created by Rod on 4/14/2017.
@@ -42,6 +43,8 @@ public class MainMenuScreen implements Screen {
     Label title;
     Image runner;
     BitmapFont myFont, buttonFonts;
+    String gameMode;
+    Lava lava;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
@@ -147,6 +150,8 @@ public class MainMenuScreen implements Screen {
 
         soundOn = prefs.getBoolean("SoundOn");
 
+        gameMode = prefs.getString("GameMode");
+        lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
     }
 
     public void newGameButtonListener(TextButton button){
@@ -223,7 +228,11 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        game.batch.draw(ground, 0,0);
+        if(gameMode.equals("The Ground Is Lava")){
+            game.batch.draw(lava.getTextureLava(), 0, 0);
+        }else{
+            game.batch.draw(ground, 0, 0);
+        }
         game.batch.end();
 
 //        stage.act();

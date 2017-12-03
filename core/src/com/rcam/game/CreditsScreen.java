@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.rcam.game.sprites.Lava;
 
 /**
  * Created by Rod on 7/3/2017.
@@ -37,6 +38,8 @@ public class CreditsScreen implements Screen {
     static Preferences prefs;
     BitmapFont buttonFonts;
     boolean soundOn;
+    Lava lava;
+    String gameMode;
 
     public CreditsScreen(final TapRunner gam){
         game = gam;
@@ -67,6 +70,10 @@ public class CreditsScreen implements Screen {
 
         prefs = Gdx.app.getPreferences("TapRunner");
         soundOn = prefs.getBoolean("SoundOn");
+
+        lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
+
+        gameMode = prefs.getString("GameMode");
 
         //runner & background texture
         Label runnerAndBgLabel = new Label("Runner & Background Textures by ", arcadeSkin, "screen");
@@ -372,7 +379,11 @@ public class CreditsScreen implements Screen {
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        game.batch.draw(ground, 0, 0);
+        if(gameMode.equals("The Ground Is Lava")){
+            game.batch.draw(lava.getTextureLava(), 0, 0);
+        }else{
+            game.batch.draw(ground, 0, 0);
+        }
         game.batch.end();
 //        stage.act();
         game.batch.setProjectionMatrix(stage.getCamera().combined);

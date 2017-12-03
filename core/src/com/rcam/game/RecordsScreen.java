@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.rcam.game.sprites.Lava;
 
 /**
  * Created by Rod on 6/18/2017.
@@ -37,6 +38,8 @@ public class RecordsScreen implements Screen{
     BitmapFont buttonFonts;
     boolean soundOn;
     StringBuilder bestNormalValue, bestLavaValue;
+    Lava lava;
+    String gameMode;
 
     public RecordsScreen(final TapRunner gam){
         this.game = gam;
@@ -62,6 +65,10 @@ public class RecordsScreen implements Screen{
         bestLavaValue = new StringBuilder();
         prefs = Gdx.app.getPreferences("TapRunner");
         soundOn = prefs.getBoolean("SoundOn");
+
+        lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
+
+        gameMode = prefs.getString("GameMode");
 
         NinePatch patch = new NinePatch(blockYellow, 4, 4, 4, 4);
         NinePatch patchGreen = new NinePatch(blockYellowGreen, 4, 4, 4, 4);
@@ -140,7 +147,11 @@ public class RecordsScreen implements Screen{
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        game.batch.draw(ground, 0, 0);
+        if(gameMode.equals("The Ground Is Lava")){
+            game.batch.draw(lava.getTextureLava(), 0, 0);
+        }else{
+            game.batch.draw(ground, 0, 0);
+        }
         game.batch.end();
 //        stage.act();
         game.batch.setProjectionMatrix(stage.getCamera().combined);

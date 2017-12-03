@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Ground;
+import com.rcam.game.sprites.Lava;
 
 /**
  * Created by Rod on 6/5/2017.
@@ -41,6 +42,8 @@ public class SettingsScreen implements Screen {
     TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen;
     Sound blipSelectSound;
     BitmapFont buttonFonts;
+    String gameMode;
+    Lava lava;
 
     public SettingsScreen(final TapRunner gam){
         this.game = gam;
@@ -90,6 +93,10 @@ public class SettingsScreen implements Screen {
         if (prefs.contains("SoundOn")) {
             soundOn.setChecked(prefs.getBoolean("SoundOn"));
         }
+
+        lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
+
+        gameMode = prefs.getString("GameMode");
 
         gameModeGroup = new ButtonGroup(normalMode, groundLavaMode);
         gameModeGroup.setChecked(prefs.getString("GameMode"));
@@ -171,7 +178,11 @@ public class SettingsScreen implements Screen {
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        game.batch.draw(ground.getTextureGround(), 0, 0);
+        if(gameMode.equals("The Ground Is Lava")){
+            game.batch.draw(lava.getTextureLava(), 0, 0);
+        }else{
+            game.batch.draw(ground.getTextureGround(), 0, 0);
+        }
         game.batch.end();
 //        stage.act();
         game.batch.setProjectionMatrix(stage.getCamera().combined);
