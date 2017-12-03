@@ -44,6 +44,10 @@ public class Runner {
     static Preferences prefs;
     public Animation<TextureRegion> animationFast;
     public float stateTime;
+    public enum Damage {
+        CLEAR, TAKE
+    }
+    Damage damageStatus;
 
     public Runner(){
         position = new Vector2(STARTING_X, STARTING_Y);
@@ -88,6 +92,8 @@ public class Runner {
             prefs.putInteger("BestDistanceLavaMode", 0);
             prefs.flush();
         }
+
+        setDamageStatus(Damage.CLEAR);
     }
 
     public void setHighScoreNormalMode(int val) {
@@ -119,6 +125,16 @@ public class Runner {
 
     public void increaseGravity(){
         gravity = gravity + gravityIncrease;
+    }
+
+    public void setDamageStatus(Damage status)
+    {
+        damageStatus = status;
+    }
+
+    public Damage getDamageStatus()
+    {
+        return damageStatus;
     }
 
     public void update(float dt){

@@ -3,6 +3,7 @@ package com.rcam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.StringBuilder;
+import com.badlogic.gdx.utils.Timer;
 import com.rcam.game.sprites.Ground;
 import com.rcam.game.sprites.Lava;
 import com.rcam.game.sprites.PowerUp;
@@ -548,6 +550,7 @@ public class GameScreen implements Screen{
         runner.stateTime += delta;
         TextureRegion currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
 
+        runnerDamageAnimation();
         if(runner.isDead){
             game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(runner.isIdle && !runner.isJumping){
@@ -556,6 +559,24 @@ public class GameScreen implements Screen{
             game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isIdle) {
             game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
+        }
+    }
+
+    public void runnerDamageAnimation()
+    {
+        if(runner.getDamageStatus() == Runner.Damage.TAKE) {
+            game.batch.setColor(Color.BROWN);
+            float delay = .05f; // seconds
+
+            Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    runner.setDamageStatus(Runner.Damage.CLEAR);
+                }
+            }, delay);
+
+        } else {
+            game.batch.setColor(Color.WHITE);
         }
     }
 

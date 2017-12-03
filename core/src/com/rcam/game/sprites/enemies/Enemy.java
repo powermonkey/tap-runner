@@ -139,6 +139,7 @@ public class Enemy {
                             hurtSound.play();
                         }
                         runner.health -= getDamage();
+                        runner.setDamageStatus(Runner.Damage.TAKE);
                         hud.healthUpdate();
                         touched = true;
 //                        if(enemyTouchSlows) {
