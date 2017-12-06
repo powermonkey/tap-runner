@@ -32,7 +32,7 @@ import com.rcam.game.sprites.Runner;
 
 public class Hud extends Table implements Disposable{
     Stage stage;
-    Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable, audioStateTable;
+    Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable, audioStateTable, pauseButtonTable;
     Skin cleanCrispySkin, arcadeSkin;
     Label healthLabel, hint;
     GameScreen gameScreen;
@@ -91,6 +91,7 @@ public class Hud extends Table implements Disposable{
         hintTable = new Table();
         rootHintTable = new Table();
         audioStateTable = new Table();
+        pauseButtonTable = new Table();
         rootHintTable.setFillParent(true);
         rootTable.setFillParent(true);
         pauseRootTable.setFillParent(true);
@@ -208,10 +209,10 @@ public class Hud extends Table implements Disposable{
         healthBar.setValue(runner.getHealth());
 
         //pause button
-        buttonStyle.up = patchDrawableYellow;
-        buttonStyle.down = patchDrawableYellow;
-        unpauseStyle.up = patchDrawableYellow;
-        unpauseStyle.down = patchDrawableYellow;
+//        buttonStyle.up = patchDrawableYellow;
+//        buttonStyle.down = patchDrawableYellow;
+//        unpauseStyle.up = patchDrawableYellow;
+//        unpauseStyle.down = patchDrawableYellow;
 
         buttonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(pause));
         buttonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(pause));
@@ -359,20 +360,35 @@ public class Hud extends Table implements Disposable{
 
         controlsTable.add(indicatorstable).center().padBottom(10);
         controlsTable.row();
-        controlsTable.add(pauseButton).height(30).width(60).center().expandX();
         controlsTable.setBackground(patchDrawableGreen);
+
+        Table buttonsTable;
+
+        buttonsTable = new Table();
+        buttonsTable.setFillParent(true);
 
         audioStateTable.add(audioButton).center();
         audioStateTable.row();
         audioStateTable.pad(10);
 
-        rootTable.add(controlsTable).width(200).height(100).expandX();
-        rootTable.row();
-        rootTable.add(audioStateTable).left().width(50).height(50).expandX();
-        rootTable.row();
-        rootTable.center().bottom();
-        rootTable.setTouchable(Touchable.childrenOnly);
+        pauseButtonTable.add(pauseButton).center();
+        pauseButtonTable.row();
+        pauseButtonTable.pad(10);
 
+        buttonsTable.add(audioStateTable);
+        buttonsTable.row();
+        buttonsTable.add(pauseButtonTable);
+        buttonsTable.row();
+        buttonsTable.bottom().left();
+
+//        rootTable.add(buttonsTable).expandX().left();
+//        rootTable.row();
+        rootTable.add(controlsTable).width(180).height(80).expandX().center().pad(50);
+        rootTable.row();
+        rootTable.left().bottom();
+        rootTable.setTouchable(Touchable.disabled);
+
+        stage.addActor(buttonsTable);
         stage.addActor(rootTable);
 
     }
