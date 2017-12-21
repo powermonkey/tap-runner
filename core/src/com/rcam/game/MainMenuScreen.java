@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -34,6 +35,7 @@ public class MainMenuScreen implements Screen {
     OrthographicCamera cam;
     Table rootTable, table, titleTable, titleTableInner, tableAudioState;
     TextButton exit, newGame, options, records, credits;
+    ImageTextButton rate;
     Stage stage;
     static Preferences prefs;
     TextureAtlas.AtlasRegion ground, bg, blockYellow, blockYellowGreen;
@@ -45,6 +47,7 @@ public class MainMenuScreen implements Screen {
     BitmapFont myFont, buttonFonts;
     String gameMode;
     Lava lava;
+    TextureAtlas.AtlasRegion star;
 
     public MainMenuScreen(final TapRunner gam){
         game = gam;
@@ -57,6 +60,7 @@ public class MainMenuScreen implements Screen {
         runnerJump = GameAssetLoader.regionJump;
         myFont = GameAssetLoader.fonts;
         buttonFonts = GameAssetLoader.buttonFonts;
+        star = GameAssetLoader.star;
 
         cam = new OrthographicCamera();
         cam.setToOrtho(false, TapRunner.WIDTH * 0.5f, TapRunner.HEIGHT * 0.5f  + 50);
@@ -93,11 +97,23 @@ public class MainMenuScreen implements Screen {
         credits = new TextButton("Credits", buttonStyle);
         exit = new TextButton("Exit", buttonStyle);
 
+        ImageTextButton.ImageTextButtonStyle rateButtonStyle = new ImageTextButton.ImageTextButtonStyle();
+        rateButtonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(star));
+        rateButtonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(star));
+        rateButtonStyle.up = patchDrawableYellow;
+        rateButtonStyle.down = patchDrawableYellow;
+        rateButtonStyle.font = buttonFonts;
+        rate = new ImageTextButton("Rate", rateButtonStyle);
+        rate.clearChildren();
+        rate.add(rate.getLabel());
+        rate.add(rate.getImage());
+
         newGameButtonListener(newGame);
         settingsButtonListener(options);
         recordsButtonListener(records);
         creditsButtonListener(credits);
         exitButtonListener(exit);
+        rateButtonListener(rate);
 
 //        stage.setDebugAll(true);
 
@@ -120,6 +136,8 @@ public class MainMenuScreen implements Screen {
         table.add(records).center().uniform().width(200).height(50).expandX().padTop(10);
         table.row();
         table.add(credits).center().uniform().width(200).height(50).expandX().padTop(10);
+        table.row();
+        table.add(rate).center().uniform().width(200).height(50).expandX().padTop(10);
         table.row();
         table.add(exit).center().uniform().width(200).height(50).expandX().padTop(10);
         table.row();
@@ -205,6 +223,17 @@ public class MainMenuScreen implements Screen {
                 }
                 game.setScreen(new CreditsScreen(game));
                 dispose();
+                return true;
+            }
+        });
+    }
+
+    public void rateButtonListener(ImageTextButton button){
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.net.openURI("market://details?id=com.rcam.game");
+
                 return true;
             }
         });

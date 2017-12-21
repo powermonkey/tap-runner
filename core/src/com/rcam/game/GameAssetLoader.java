@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public class GameAssetLoader {
     public static TextureAtlas atlas;
     public static TextureAtlas.AtlasRegion bg, regionStand, regionJump, regionDeath, ground, lava, blockYellow, blockYellowGreen,
-        pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange, audioOn, audioOff;
+        pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange, audioOn, audioOff, star;
     public static Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke, birdBlue, birdRed, jellyGreen, jellyYellow;
     public static Skin cleanCrispySkin, arcadeSkin;
     public static Sound blipSelect, newGameblip, jump, hurt, powerUp, lavaBurn;
@@ -54,7 +54,7 @@ public class GameAssetLoader {
         powerupGrapes = atlas.findRegion("powerup_grapes");
         powerupStrawberry = atlas.findRegion("powerup_strawberry");
         powerupOrange = atlas.findRegion("powerup_orange");
-
+        star = atlas.findRegion("star");
 
         cleanCrispySkin = manager.manager.get("skin/clean-crispy-ui/clean-crispy-ui.json");
         arcadeSkin = manager.manager.get("skin/arcade-ui/arcade-ui.json");

@@ -9,14 +9,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.rcam.game.sprites.Ground;
@@ -49,6 +52,8 @@ public class GameOverScreen implements Screen{
     Long gameOverScreenStart, adTimer;
     boolean soundOn;
     StringBuilder currentValue, bestValue;
+    TextureAtlas.AtlasRegion star;
+    ImageTextButton rateButton;
 
     public GameOverScreen(final TapRunner gam, final Runner runner){
         this.game = gam;
@@ -72,6 +77,7 @@ public class GameOverScreen implements Screen{
         prefs = Gdx.app.getPreferences("TapRunner");
         gameMode = prefs.getString("GameMode");
         soundOn = prefs.getBoolean("SoundOn");
+        star = GameAssetLoader.star;
 
 
         NinePatch patchYellow = new NinePatch(blockYellow, 4, 4, 4, 4);
@@ -83,6 +89,17 @@ public class GameOverScreen implements Screen{
         buttonStyle.up = patchDrawableGreen;
         buttonStyle.down = patchDrawableGreen;
         buttonStyle.font = buttonFonts;
+
+        ImageTextButton.ImageTextButtonStyle rateButtonStyle = new ImageTextButton.ImageTextButtonStyle();
+        rateButtonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(star));
+        rateButtonStyle.imageDown = new TextureRegionDrawable(new TextureRegion(star));
+        rateButtonStyle.up = patchDrawableGreen;
+        rateButtonStyle.down = patchDrawableGreen;
+        rateButtonStyle.font = buttonFonts;
+        rateButton = new ImageTextButton("Rate", rateButtonStyle);
+        rateButton.clearChildren();
+        rateButton.add(rateButton.getLabel());
+        rateButton.add(rateButton.getImage());
 
         currentLabel = new Label("Current:", arcadeSkin, "default");
         current = new Label(currentValue.append(runner.indicatePosition()).append(" m"), arcadeSkin, "default");
@@ -102,6 +119,7 @@ public class GameOverScreen implements Screen{
         newGameButtonListener(newGameButton);
         mainMenuButtonListener(mainMenuButton);
         exitButtonListener(exitButton);
+        rateButtonListener(rateButton);
 
         ground = new Ground(cam.position.x - (cam.viewportWidth * 0.5f));
         Gdx.input.setInputProcessor(stage);
@@ -116,11 +134,13 @@ public class GameOverScreen implements Screen{
         table.row();
         table.add(newGameButton).colspan(2).width(200).height(50).expandX().padTop(20);
         table.row();
-        table.add(settingsButton).colspan(2).width(200).height(50).expandX().padTop(4);
+        table.add(settingsButton).colspan(2).width(200).height(50).expandX().padTop(10);
         table.row();
-        table.add(mainMenuButton).colspan(2).width(200).height(50).expandX().padTop(4);
+        table.add(mainMenuButton).colspan(2).width(200).height(50).expandX().padTop(10);
         table.row();
-        table.add(exitButton).colspan(2).width(200).height(50).expandX().padTop(4).padBottom(30);
+        table.add(rateButton).colspan(2).width(200).height(50).expandX().padTop(10);
+        table.row();
+        table.add(exitButton).colspan(2).width(200).height(50).expandX().padTop(10).padBottom(30);
         table.row();
         table.center().center().pad(20);
         table.setBackground(patchDrawableYellow);
@@ -184,6 +204,17 @@ public class GameOverScreen implements Screen{
                 dispose();
                 GameAssetLoader.dispose();
                 Gdx.app.exit();
+                return true;
+            }
+        });
+    }
+
+    public void rateButtonListener(ImageTextButton button){
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.net.openURI("market://details?id=com.rcam.game");
+
                 return true;
             }
         });
