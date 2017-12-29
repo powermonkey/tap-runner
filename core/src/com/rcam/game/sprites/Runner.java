@@ -30,7 +30,10 @@ public class Runner {
     public final float STARTING_X = 30;
     public final float STARTING_Y = 112;
     static float jumpHeight = 525;
-    static final int STARTING_HEALTH = 50;
+    static final int NORMAL_HEALTH = 50;
+    static final int MAX_HEALTH = 50;
+    static final int ONE_HIT_WONDER_HEALTH = 4;
+    static final int FIRST_DEGREE_BURN_HEALTH = 4;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public float health;
@@ -74,10 +77,19 @@ public class Runner {
 
         animationFast = new Animation<TextureRegion>(0.07f, regionRun);
 
-        health = STARTING_HEALTH;
-        startingTime = millis();
-
         prefs = Gdx.app.getPreferences("TapRunner");
+
+        if(prefs.getString("GameMode").equals("One Hit Wonder")) {
+            health = ONE_HIT_WONDER_HEALTH;
+        } else if(prefs.getString("GameMode").equals("First Degree Burn")){
+            health = FIRST_DEGREE_BURN_HEALTH;
+        } else if(prefs.getString("GameMode").equals("The Ground Is Lava")){
+            health = NORMAL_HEALTH;
+        } else if (prefs.getString("GameMode").equals("Normal")) {
+            health = NORMAL_HEALTH;
+        }
+
+        startingTime = millis();
 
         if(prefs.getString("GameMode").equals("The Ground Is Lava")){
             isSmoking = false;
@@ -106,12 +118,30 @@ public class Runner {
         prefs.flush();
     }
 
+    public void setHighScoreOneHitWonderMode(int val) {
+        prefs.putInteger("BestDistanceOneHitWonderMode", val);
+        prefs.flush();
+    }
+
+    public void setHighScoreFirstDegreeBurnMode(int val) {
+        prefs.putInteger("BestDistanceFirstDegreeBurnMode", val);
+        prefs.flush();
+    }
+
     public int getHighScoreNormalMode() {
         return prefs.getInteger("BestDistanceNormalMode");
     }
 
     public int getHighScoreLavaMode() {
         return prefs.getInteger("BestDistanceLavaMode");
+    }
+
+    public int getHighScoreOneHitWonderMode() {
+        return prefs.getInteger("BestDistanceOneHitWonderMode");
+    }
+
+    public int getHighScoreFirstDegreeBurnMode() {
+        return prefs.getInteger("BestDistanceFirstDegreeBurnMode");
     }
 
     public void increaseSpeed(){

@@ -141,7 +141,7 @@ public class GameScreen implements Screen{
         }
 
         gameMode = prefs.getString("GameMode");
-        if(gameMode.equals("The Ground Is Lava")) {
+        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn")) {
             lavaMode = true;
         }else{
             lavaMode = false;
@@ -287,13 +287,21 @@ public class GameScreen implements Screen{
                 if (!runner.animatingDeath) {
                     startingTime = millis();
                     runner.death();
-                    if (lavaMode) {
+                    if (gameMode.equals("The Ground Is Lava")) {
                         if (runner.indicatePosition() > runner.getHighScoreLavaMode()) {
                             runner.setHighScoreLavaMode(runner.indicatePosition());
                         }
-                    } else {
+                    } else if(gameMode.equals("Normal")){
                         if (runner.indicatePosition() > runner.getHighScoreNormalMode()) {
                             runner.setHighScoreNormalMode(runner.indicatePosition());
+                        }
+                    } else if(gameMode.equals("One Hit Wonder")){
+                        if (runner.indicatePosition() > runner.getHighScoreOneHitWonderMode()) {
+                            runner.setHighScoreOneHitWonderMode(runner.indicatePosition());
+                        }
+                    } else if(gameMode.equals("First Degree Burn")) {
+                        if (runner.indicatePosition() > runner.getHighScoreFirstDegreeBurnMode()) {
+                            runner.setHighScoreFirstDegreeBurnMode(runner.indicatePosition());
                         }
                     }
                 } else {

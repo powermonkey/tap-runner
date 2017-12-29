@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
@@ -32,7 +33,7 @@ import com.rcam.game.sprites.Runner;
 
 public class Hud extends Table implements Disposable{
     Stage stage;
-    Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable, audioStateTable, pauseButtonTable;
+    Table rootTable, indicatorstable, controlsTable, pauseTable, pauseRootTable, rootHintTable, hintTable, audioStateTable, pauseButtonTable, heartRootTable;
     Skin cleanCrispySkin, arcadeSkin;
     Label healthLabel, hint;
     GameScreen gameScreen;
@@ -53,6 +54,7 @@ public class Hud extends Table implements Disposable{
     CheckBox hideHint;
     ImageButton audioButton;
     ImageButton.ImageButtonStyle audioOnButtonStyle, audioOffButtonStyle;
+    Image heart;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
@@ -73,6 +75,8 @@ public class Hud extends Table implements Disposable{
         cleanCrispySkin = GameAssetLoader.cleanCrispySkin;
         audioOnImage = GameAssetLoader.audioOn;
         audioOffImage = GameAssetLoader.audioOff;
+//        TextureAtlas.AtlasRegion heartRegion = GameAssetLoader.forward;
+//        heart = new Image( new TextureRegion(heartRegion));
 
         stage = new Stage(new FitViewport(480, 800), game.batch);
 
@@ -87,6 +91,7 @@ public class Hud extends Table implements Disposable{
         indicatorstable = new Table();
         controlsTable = new Table();
         pauseRootTable = new Table();
+//        heartRootTable = new Table();
         pauseTable = new Table();
         hintTable = new Table();
         rootHintTable = new Table();
@@ -95,6 +100,7 @@ public class Hud extends Table implements Disposable{
         rootHintTable.setFillParent(true);
         rootTable.setFillParent(true);
         pauseRootTable.setFillParent(true);
+//        heartRootTable.setFillParent(true);
         hintButtonStyle = new TextButton.TextButtonStyle();
         pauseButtonStyle = new TextButton.TextButtonStyle();
 
@@ -355,8 +361,14 @@ public class Hud extends Table implements Disposable{
         //hud
         indicatorstable.add(healthLabel).width(80).left().padLeft(2).padBottom(2);
         indicatorstable.row();
-        indicatorstable.add(healthBar).padTop(2);
-        indicatorstable.row();
+
+        if(prefs.getString("GameMode").equals("My Heart Will Go On")) {
+            //TODO:
+        } else {
+            indicatorstable.add(healthBar).padTop(2);
+            indicatorstable.row();
+
+        }
 
         controlsTable.add(indicatorstable).center().padBottom(10);
         controlsTable.row();

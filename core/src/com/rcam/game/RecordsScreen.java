@@ -31,13 +31,13 @@ public class RecordsScreen implements Screen{
     Stage stage;
     Table rootTable, table, labelTable, goBackButtonTable;
     TextButton goBackButton;
-    Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance;
+    Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance, bestOneHitWonderLabel, bestOneHitWonderDistance, bestFirstDegreeBurnLabel, bestFirstDegreeBurnDistance;
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen, ground;
     Sound blipSelectSound;
     BitmapFont buttonFonts;
     boolean soundOn;
-    StringBuilder bestNormalValue, bestLavaValue;
+    StringBuilder bestNormalValue, bestLavaValue, bestOneHitWonderValue, bestFirstDegreeBurnValue;
     Lava lava;
     String gameMode;
 
@@ -63,6 +63,9 @@ public class RecordsScreen implements Screen{
 
         bestNormalValue = new StringBuilder();
         bestLavaValue = new StringBuilder();
+        bestOneHitWonderValue = new StringBuilder();
+        bestFirstDegreeBurnValue = new StringBuilder();
+
         prefs = Gdx.app.getPreferences("TapRunner");
         soundOn = prefs.getBoolean("SoundOn");
 
@@ -76,11 +79,16 @@ public class RecordsScreen implements Screen{
         NinePatchDrawable patchDrawableGreen = new NinePatchDrawable(patchGreen);
 
         recordsLabel = new Label("Records", arcadeSkin, "default");
-        bestLabel = new Label("Best Distance", arcadeSkin, "default");
+        bestLabel = new Label("Best Distances", arcadeSkin, "default");
+
         bestNormalLabel = new Label("Normal Mode: ", cleanCrispySkin, "default");
         bestNormalDistance = new Label(bestNormalValue.append(prefs.getInteger("BestDistanceNormalMode")).append(" m"), arcadeSkin, "default");
         bestLavaLabel = new Label("The Ground is Lava: ", cleanCrispySkin, "default");
         bestLavaDistance = new Label(bestLavaValue.append(prefs.getInteger("BestDistanceLavaMode")).append(" m"), arcadeSkin, "default");
+        bestOneHitWonderLabel = new Label("One Hit Wonder: ", cleanCrispySkin, "default");
+        bestOneHitWonderDistance = new Label(bestOneHitWonderValue.append(prefs.getInteger("BestDistanceOneHitWonderMode")).append(" m"), arcadeSkin, "default");
+        bestFirstDegreeBurnLabel = new Label("First Degree Burn: ", cleanCrispySkin, "default");
+        bestFirstDegreeBurnDistance = new Label(bestFirstDegreeBurnValue.append(prefs.getInteger("BestDistanceFirstDegreeBurnMode")).append(" m"), arcadeSkin, "default");
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
@@ -104,6 +112,12 @@ public class RecordsScreen implements Screen{
         table.row();
         table.add(bestLavaLabel).expandX().center().right().uniform().padLeft(10);
         table.add(bestLavaDistance).expandX().center().left().padLeft(10).uniform();
+        table.row();
+        table.add(bestOneHitWonderLabel).expandX().center().right().uniform().padLeft(10);
+        table.add(bestOneHitWonderDistance).expandX().center().left().padLeft(10).uniform();
+        table.row();
+        table.add(bestFirstDegreeBurnLabel).expandX().center().right().uniform().padLeft(10);
+        table.add(bestFirstDegreeBurnDistance).expandX().center().left().padLeft(10).uniform();
         table.row();
         table.pad(20, 20, 30, 20);
         table.setBackground(patchDrawableYellow);
@@ -147,7 +161,7 @@ public class RecordsScreen implements Screen{
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        if(gameMode.equals("The Ground Is Lava")){
+        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn")){
             game.batch.draw(lava.getTextureLava(), 0, 0);
         }else{
             game.batch.draw(ground, 0, 0);

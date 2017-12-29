@@ -104,10 +104,15 @@ public class GameOverScreen implements Screen{
         currentLabel = new Label("Current:", arcadeSkin, "default");
         current = new Label(currentValue.append(runner.indicatePosition()).append(" m"), arcadeSkin, "default");
         bestDistanceLabel = new Label("Best:", arcadeSkin, "default");
-        if(gameMode.equals("The Ground Is Lava")){
+        if(gameMode.equals("The Ground Is Lava")) {
             bestDistance = new Label(bestValue.append(runner.getHighScoreLavaMode()).append(" m"), arcadeSkin, "default");
             lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
-        }else{
+        } else if(gameMode.equals("First Degree Burn")) {
+            bestDistance = new Label(bestValue.append(runner.getHighScoreFirstDegreeBurnMode()).append(" m"), arcadeSkin, "default");
+            lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
+        } else if(gameMode.equals("One Hit Wonder")) {
+            bestDistance = new Label(bestValue.append(runner.getHighScoreOneHitWonderMode()).append(" m"), arcadeSkin, "default");
+        } else {
             bestDistance = new Label(bestValue.append(runner.getHighScoreNormalMode()).append(" m"), arcadeSkin, "default");
         }
 
@@ -243,7 +248,7 @@ public class GameOverScreen implements Screen{
 //            adTimer = 10000L;
 //        }
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        if(gameMode.equals("The Ground Is Lava")){
+        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn")){
             game.batch.draw(lava.getTextureLava(), 0, 0);
         }else{
             game.batch.draw(ground.getTextureGround(), 0, 0);

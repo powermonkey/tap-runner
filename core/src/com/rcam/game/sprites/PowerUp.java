@@ -104,13 +104,16 @@ public class PowerUp implements Pool.Poolable{
             if(prefs.getBoolean("SoundOn")) {
                 powerUpSound.play();
             }
-            if(!(runner.health >= runner.STARTING_HEALTH) && !touched && !runner.isDead){
-                runner.health += getHeal();
-                hud.healthUpdate();
+
+            if(!(runner.health >= runner.MAX_HEALTH) && !touched && !runner.isDead){
+                if(prefs.getString("GameMode").equals("One Hit Wonder") || prefs.getString("GameMode").equals("First Degree Burn")) {
+                    //no effect
+                } else {
+                    runner.health += getHeal();
+                    hud.healthUpdate();
+                }
                 touched = true;
                 isSpawned = false;
-                //TODO optional speed boost and double jump for power up
-//                velocity.x = 400; //activates speed boost and grants double jump for one use
             }
             isSpawned = false;
         }else{

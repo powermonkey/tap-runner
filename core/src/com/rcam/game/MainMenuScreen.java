@@ -257,7 +257,7 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        if(gameMode.equals("The Ground Is Lava")){
+        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn")){
             game.batch.draw(lava.getTextureLava(), 0, 0);
         }else{
             game.batch.draw(ground, 0, 0);

@@ -112,7 +112,6 @@ public class Enemy {
     public void checkCollision(Runner runner, Hud hud) {
         Intersector.intersectRectangles(getOnTopBounds(), runner.getBounds(), intersectionOnTop);
         Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds);
-
         // make runner fall
         if(runner.isOnTopEnemy && runnerOntop && !Intersector.intersectRectangles(getBounds(), runner.getIntersectionBounds(), intersectionBounds)) {
             runnerOntop = false;
