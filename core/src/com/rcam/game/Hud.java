@@ -112,7 +112,7 @@ public class Hud extends Table implements Disposable{
         hint = new Label("Tap on screen to jump", arcadeSkin);
 
         screenActor = new Actor();
-        healthBar = new ProgressBar(1, 50, 1, false, cleanCrispySkin, "default-horizontal");
+        healthBar = new ProgressBar(1, runner.getHealth(), 1, false, cleanCrispySkin, "default-horizontal");
 
         buttonStyle = new ImageButton.ImageButtonStyle();
         unpauseStyle = new ImageButton.ImageButtonStyle();
