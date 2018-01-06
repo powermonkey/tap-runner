@@ -35,7 +35,7 @@ public class Runner {
     static final int ONE_HIT_WONDER_HEALTH = 4;
     static final int FIRST_DEGREE_BURN_HEALTH = 4;
     static final int HEART_HEALTH = 1;
-    static final int MAX_HEARTS = 3;
+    static final int MAX_HEARTS = 5;
     public int maxPowerUpToCollect;
     static final int MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON = 10;
     static final int MAX_POWER_UP_COLLECT_BURNING_DESIRE = 5;
@@ -231,7 +231,7 @@ public class Runner {
        //make runner come back to the ground
         speed.add(0, gravity);
 
-        //remove invulnerability
+        //lava invulnerable
         if(lavaInvulnerable){
             if(timeSinceMillis(lavaDamageTimeStart) > 500){
                 lavaDamageTimeStart = millis();

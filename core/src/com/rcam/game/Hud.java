@@ -372,10 +372,10 @@ public class Hud extends Table implements Disposable{
 
         if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burning Desire")) {
             indicatorstable.add(powerUpImage).center().center().expandX().width(25).height(25).padTop(2);
-            indicatorstable.add(powerUpCounterLabel).width(75).center().center().expandX().padTop(2);
+            indicatorstable.add(powerUpCounterLabel).width(75).center().center().expandX().padTop(2).padRight(20);
             indicatorstable.row();
             addHeart();
-            indicatorstable.add(heartGroup).center().center().expandX().padTop(2).colspan(3);
+            indicatorstable.add(heartGroup).center().center().expandX().padTop(5).colspan(3).width(100).padRight(16);
             controlsTable.add(indicatorstable).expandX().center().padBottom(10);
             controlsTable.row();
         } else {
