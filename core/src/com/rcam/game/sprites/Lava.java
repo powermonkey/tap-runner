@@ -18,12 +18,15 @@ import static com.badlogic.gdx.utils.TimeUtils.millis;
 public class Lava {
     static float BOUNDS_TOP_OFFSET = 2;
     Vector2 posLava;
-    float damage, damageIncrease;
+    float damage;
     Rectangle bounds;
     boolean touched;
     TextureAtlas.AtlasRegion lava;
     Sound lavaBurnSound;
     Preferences prefs;
+    public final float DEFAULT_DAMAGE = 5;
+    public final float HEART_DAMAGE = 1;
+    public final float DAMAGE_INCREASE = 5;
 
     public Lava(){
         lava = GameAssetLoader.lava;
@@ -33,11 +36,14 @@ public class Lava {
         lava = GameAssetLoader.lava;
         lavaBurnSound = GameAssetLoader.lavaBurn;
         posLava = new Vector2(x, 0);
-        damage = 5;
-        damageIncrease = 5;
         touched = false;
         bounds = new Rectangle(0, 0, lava.getRegionWidth(), lava.getRegionHeight() + BOUNDS_TOP_OFFSET);
         prefs = Gdx.app.getPreferences("TapRunner");
+        if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
+            damage = HEART_DAMAGE;
+        } else {
+            damage = DEFAULT_DAMAGE;
+        }
     }
 
     public void update(){
@@ -61,7 +67,7 @@ public class Lava {
     }
 
     public void increaseDamage(){
-        damage += damageIncrease;
+        damage += DAMAGE_INCREASE;
     }
 
     public void checkLavaCollision(Runner runner, Hud hud){
@@ -72,8 +78,14 @@ public class Lava {
                 }
                 runner.health -= getDamage();
                 runner.setDamageStatus(Runner.Damage.TAKE);
+                if(prefs.getString("GameMode").equals("Burn Baby Burn")){
+                    runner.setHeartStatus(Runner.Heart.REMOVE);
+                    hud.removeHeart();
+                } else {
+                    hud.healthUpdate();
+                }
                 runner.isSmoking = true;
-                hud.healthUpdate();
+
                 touched = true;
                 runner.lavaInvulnerable = true;
                 runner.setLavaDamageTimeStart(millis());

@@ -31,13 +31,14 @@ public class RecordsScreen implements Screen{
     Stage stage;
     Table rootTable, table, labelTable, goBackButtonTable;
     TextButton goBackButton;
-    Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance, bestOneHitWonderLabel, bestOneHitWonderDistance, bestFirstDegreeBurnLabel, bestFirstDegreeBurnDistance;
+    Label bestLabel, bestNormalLabel, bestLavaLabel, recordsLabel, bestNormalDistance, bestLavaDistance, bestOneHitWonderLabel, bestOneHitWonderDistance, bestFirstDegreeBurnLabel, bestFirstDegreeBurnDistance,
+            bestMyHeartWillGoOnLabel, bestBurnBabyBurnLabel, bestMyHeartWillGoOnDistance, bestBurnBabyBurnDistance;
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen, ground;
     Sound blipSelectSound;
     BitmapFont buttonFonts;
     boolean soundOn;
-    StringBuilder bestNormalValue, bestLavaValue, bestOneHitWonderValue, bestFirstDegreeBurnValue;
+    StringBuilder bestNormalValue, bestLavaValue, bestOneHitWonderValue, bestFirstDegreeBurnValue, bestMyHeartWillGoOnValue, bestBurnBabyBurnValue;
     Lava lava;
     String gameMode;
 
@@ -65,6 +66,8 @@ public class RecordsScreen implements Screen{
         bestLavaValue = new StringBuilder();
         bestOneHitWonderValue = new StringBuilder();
         bestFirstDegreeBurnValue = new StringBuilder();
+        bestMyHeartWillGoOnValue = new StringBuilder();
+        bestBurnBabyBurnValue = new StringBuilder();
 
         prefs = Gdx.app.getPreferences("TapRunner");
         soundOn = prefs.getBoolean("SoundOn");
@@ -89,6 +92,10 @@ public class RecordsScreen implements Screen{
         bestOneHitWonderDistance = new Label(bestOneHitWonderValue.append(prefs.getInteger("BestDistanceOneHitWonderMode")).append(" m"), arcadeSkin, "default");
         bestFirstDegreeBurnLabel = new Label("First Degree Burn: ", cleanCrispySkin, "default");
         bestFirstDegreeBurnDistance = new Label(bestFirstDegreeBurnValue.append(prefs.getInteger("BestDistanceFirstDegreeBurnMode")).append(" m"), arcadeSkin, "default");
+        bestMyHeartWillGoOnLabel = new Label("My Heart Will Go On: ", cleanCrispySkin, "default");
+        bestMyHeartWillGoOnDistance = new Label(bestMyHeartWillGoOnValue.append(prefs.getInteger("BestDistanceMyHeartWillGoOnMode")).append(" m"), arcadeSkin, "default");
+        bestBurnBabyBurnLabel = new Label("Burn Baby Burn: ", cleanCrispySkin, "default");
+        bestBurnBabyBurnDistance = new Label(bestBurnBabyBurnValue.append(prefs.getInteger("BestDistanceBurnBabyBurnMode")).append(" m"), arcadeSkin, "default");
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.up = patchDrawableGreen;
@@ -118,6 +125,12 @@ public class RecordsScreen implements Screen{
         table.row();
         table.add(bestFirstDegreeBurnLabel).expandX().center().right().uniform().padLeft(10);
         table.add(bestFirstDegreeBurnDistance).expandX().center().left().padLeft(10).uniform();
+        table.row();
+        table.add(bestMyHeartWillGoOnLabel).expandX().center().right().uniform().padLeft(10);
+        table.add(bestMyHeartWillGoOnDistance).expandX().center().left().padLeft(10).uniform();
+        table.row();
+        table.add(bestBurnBabyBurnLabel).expandX().center().right().uniform().padLeft(10);
+        table.add(bestBurnBabyBurnDistance).expandX().center().left().padLeft(10).uniform();
         table.row();
         table.pad(20, 20, 30, 20);
         table.setBackground(patchDrawableYellow);

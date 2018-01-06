@@ -112,6 +112,10 @@ public class GameOverScreen implements Screen{
             lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
         } else if(gameMode.equals("One Hit Wonder")) {
             bestDistance = new Label(bestValue.append(runner.getHighScoreOneHitWonderMode()).append(" m"), arcadeSkin, "default");
+        } else if(gameMode.equals("My Heart Will Go On")) {
+            bestDistance = new Label(bestValue.append(runner.getHighScoreMyHeartWillGoOnMode()).append(" m"), arcadeSkin, "default");
+        } else if(gameMode.equals("Burn Baby Burn")) {
+            bestDistance = new Label(bestValue.append(runner.getHighScoreBurnBabyBurnMode()).append(" m"), arcadeSkin, "default");
         } else {
             bestDistance = new Label(bestValue.append(runner.getHighScoreNormalMode()).append(" m"), arcadeSkin, "default");
         }
@@ -218,7 +222,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.net.openURI("market://details?id=com.rcam.game");
+                Gdx.net.openURI("https://play.google.com/store/apps/details?id=com.rcam.game");
 
                 return true;
             }

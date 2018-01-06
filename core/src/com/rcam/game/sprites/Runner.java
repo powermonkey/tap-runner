@@ -34,8 +34,14 @@ public class Runner {
     static final int MAX_HEALTH = 50;
     static final int ONE_HIT_WONDER_HEALTH = 4;
     static final int FIRST_DEGREE_BURN_HEALTH = 4;
+    static final int HEART_HEALTH = 1;
+    public static final int MAX_HEARTS = 5;
+    public int maxPowerUpToCollect;
+    public static final int MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON = 10;
+    public static final int MAX_POWER_UP_COLLECT_BURN_BABY_BURN = 5;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
+    public static int powerUpCounter;
     public float health;
     private long startingTime, lavaDamageTimeStart;
     public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, lavaInvulnerable, isIdle, isSmoking;
@@ -51,6 +57,10 @@ public class Runner {
         CLEAR, TAKE
     }
     Damage damageStatus;
+    public enum Heart {
+        ADD, REMOVE, NORMAL
+    }
+    Heart heartStatus;
 
     public Runner(){
         position = new Vector2(STARTING_X, STARTING_Y);
@@ -81,12 +91,20 @@ public class Runner {
 
         if(prefs.getString("GameMode").equals("One Hit Wonder")) {
             health = ONE_HIT_WONDER_HEALTH;
-        } else if(prefs.getString("GameMode").equals("First Degree Burn")){
+        } else if (prefs.getString("GameMode").equals("First Degree Burn")){
             health = FIRST_DEGREE_BURN_HEALTH;
-        } else if(prefs.getString("GameMode").equals("The Ground Is Lava")){
+        } else if (prefs.getString("GameMode").equals("The Ground Is Lava")){
             health = NORMAL_HEALTH;
         } else if (prefs.getString("GameMode").equals("Normal")) {
             health = NORMAL_HEALTH;
+        } else if (prefs.getString("GameMode").equals("My Heart Will Go On")) {
+            health = HEART_HEALTH;
+            powerUpCounter = 0;
+            setMaxPowerUpToCollect(MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON);
+        } else if (prefs.getString("GameMode").equals("Burn Baby Burn")) {
+            health = HEART_HEALTH;
+            powerUpCounter = 0;
+            setMaxPowerUpToCollect(MAX_POWER_UP_COLLECT_BURN_BABY_BURN);
         }
 
         startingTime = millis();
@@ -106,6 +124,7 @@ public class Runner {
         }
 
         setDamageStatus(Damage.CLEAR);
+        setHeartStatus(Heart.NORMAL);
     }
 
     public void setHighScoreNormalMode(int val) {
@@ -144,6 +163,32 @@ public class Runner {
         return prefs.getInteger("BestDistanceFirstDegreeBurnMode");
     }
 
+    public int getHighScoreMyHeartWillGoOnMode() {
+        return prefs.getInteger("BestDistanceMyHeartWillGoOnMode");
+    }
+
+    public void setHighScoreMyHeartWillGoOnMode(int val) {
+        prefs.putInteger("BestDistanceMyHeartWillGoOnMode", val);
+        prefs.flush();
+    }
+
+    public int getHighScoreBurnBabyBurnMode() {
+        return prefs.getInteger("BestDistanceBurnBabyBurnMode");
+    }
+
+    public void setHighScoreBurnBabyBurnMode(int val) {
+        prefs.putInteger("BestDistanceBurnBabyBurnMode", val);
+        prefs.flush();
+    }
+
+    public void setMaxPowerUpToCollect(int powerUps) {
+        maxPowerUpToCollect = powerUps;
+    }
+
+    public int getMaxPowerUpToCollect() {
+        return maxPowerUpToCollect;
+    }
+
     public void increaseSpeed(){
         maxSpeed += speedIncrease;
     }
@@ -167,6 +212,16 @@ public class Runner {
         return damageStatus;
     }
 
+    public void setHeartStatus(Heart status)
+    {
+        heartStatus = status;
+    }
+
+    public Heart getHeartStatus()
+    {
+        return heartStatus;
+    }
+
     public void update(float dt){
 //        drainHealth();
 
@@ -176,9 +231,9 @@ public class Runner {
        //make runner come back to the ground
         speed.add(0, gravity);
 
-        //remove invulnerability
+        //lava invulnerable
         if(lavaInvulnerable){
-            if(timeSinceMillis(lavaDamageTimeStart) > 1000){
+            if(timeSinceMillis(lavaDamageTimeStart) > 750){
                 lavaDamageTimeStart = millis();
                 lavaInvulnerable = false;
                 isSmoking = false;

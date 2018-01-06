@@ -13,10 +13,10 @@ import com.badlogic.gdx.utils.Array;
 public class GameAssetLoader {
     public static TextureAtlas atlas;
     public static TextureAtlas.AtlasRegion bg, regionStand, regionJump, regionDeath, ground, lava, blockYellow, blockYellowGreen,
-        pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange, audioOn, audioOff, star;
+        pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange, audioOn, audioOff, star, heart;
     public static Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke, birdBlue, birdRed, jellyGreen, jellyYellow;
     public static Skin cleanCrispySkin, arcadeSkin;
-    public static Sound blipSelect, newGameblip, jump, hurt, powerUp, lavaBurn;
+    public static Sound blipSelect, newGameblip, jump, hurt, powerUp, lavaBurn, addHeartBlip;
     public static BitmapFont fonts, buttonFonts;
     static GameAssetManager manager;
 
@@ -55,6 +55,7 @@ public class GameAssetLoader {
         powerupStrawberry = atlas.findRegion("powerup_strawberry");
         powerupOrange = atlas.findRegion("powerup_orange");
         star = atlas.findRegion("star");
+        heart = atlas.findRegion("heart");
 
         cleanCrispySkin = manager.manager.get("skin/clean-crispy-ui/clean-crispy-ui.json");
         arcadeSkin = manager.manager.get("skin/arcade-ui/arcade-ui.json");
@@ -68,6 +69,7 @@ public class GameAssetLoader {
         hurt = manager.manager.get("sounds/SFX_Powerup_21.wav");
         powerUp = manager.manager.get("sounds/Score.wav");
         lavaBurn = manager.manager.get("sounds/Explosion.wav");
+        addHeartBlip = manager.manager.get("sounds/Pickup_Coin.wav");
     }
 
     public static boolean update(){
@@ -87,5 +89,6 @@ public class GameAssetLoader {
         hurt.dispose();
         powerUp.dispose();
         lavaBurn.dispose();
+        addHeartBlip.dispose();
     }
 }

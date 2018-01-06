@@ -27,11 +27,12 @@ public class PowerUp implements Pool.Poolable{
     private int powerUpType;
     private Random rand;
     private TextureAtlas.AtlasRegion[] powerUpAtlasRegions;
-    Sound powerUpSound;
+    Sound powerUpSound, addHeartBlip;
     Preferences prefs;
 
     public PowerUp(){
         powerUpSound = GameAssetLoader.powerUp;
+        addHeartBlip = GameAssetLoader.addHeartBlip;
         TextureAtlas.AtlasRegion apple = GameAssetLoader.powerupApple;
         TextureAtlas.AtlasRegion cherry = GameAssetLoader.powerupCherry;
         TextureAtlas.AtlasRegion banana = GameAssetLoader.powerupBanana;
@@ -108,6 +109,25 @@ public class PowerUp implements Pool.Poolable{
             if(!(runner.health >= runner.MAX_HEALTH) && !touched && !runner.isDead){
                 if(prefs.getString("GameMode").equals("One Hit Wonder") || prefs.getString("GameMode").equals("First Degree Burn")) {
                     //no effect
+                } else if (prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
+                    if(runner.getHealth() < runner.MAX_HEARTS) {
+                        runner.powerUpCounter ++;
+                        if (runner.powerUpCounter == runner.getMaxPowerUpToCollect()) {
+                            runner.health += 1;
+                            runner.powerUpCounter = 0;
+                            runner.setHeartStatus(Runner.Heart.ADD);
+                            if(prefs.getBoolean("SoundOn")) {
+                                addHeartBlip.play();
+                            }
+                            hud.addHeart();
+                        }
+                    }
+//                    else {
+//                        runner.powerUpCounter ++;
+//                        if (runner.powerUpCounter == runner.getMaxPowerUpToCollect()) {
+//                            runner.powerUpCounter = 0;
+//                        }
+//                    }
                 } else {
                     runner.health += getHeal();
                     hud.healthUpdate();

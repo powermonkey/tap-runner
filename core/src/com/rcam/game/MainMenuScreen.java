@@ -232,7 +232,7 @@ public class MainMenuScreen implements Screen {
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.net.openURI("market://details?id=com.rcam.game");
+                Gdx.net.openURI("https://play.google.com/store/apps/details?id=com.rcam.game");
 
                 return true;
             }
@@ -257,7 +257,7 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn")){
+        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn") || gameMode.equals("Burn Baby Burn")){
             game.batch.draw(lava.getTextureLava(), 0, 0);
         }else{
             game.batch.draw(ground, 0, 0);
