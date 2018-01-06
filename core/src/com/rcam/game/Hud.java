@@ -62,6 +62,7 @@ public class Hud extends Table implements Disposable{
     Image powerUpImage;
     StringBuilder powerUpCounter;
     Label.LabelStyle fontStyle;
+    String gameMode;
 
     public Hud(final TapRunner tapRunner, final Runner runner, final GameScreen gameScreen){
         setBounds(0, 0, TapRunner.WIDTH / 2, TapRunner.HEIGHT / 2);
@@ -369,8 +370,9 @@ public class Hud extends Table implements Disposable{
         pauseRootTable.setVisible(false);
 
         //hud
+        gameMode = prefs.getString("GameMode");
 
-        if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
+        if(gameMode.equals("My Heart Will Go On") || gameMode.equals("Burn Baby Burn")) {
             indicatorstable.add(powerUpImage).center().center().expandX().width(25).height(25).padTop(2);
             indicatorstable.add(powerUpCounterLabel).width(75).center().center().expandX().padTop(2).padRight(20);
             indicatorstable.row();
@@ -446,7 +448,7 @@ public class Hud extends Table implements Disposable{
     public StringBuilder getPowerUpCounter(){
         powerUpCounter.delete(0, powerUpCounter.length());
         if(runner.getHealth() == runner.MAX_HEARTS) {
-            if(prefs.getString("GameMode").equals("My Heart Will Go On")) {
+            if(gameMode.equals("My Heart Will Go On")) {
                 powerUpCounter.append(" x ");
                 powerUpCounter.append(runner.MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON);
             } else {
@@ -463,7 +465,7 @@ public class Hud extends Table implements Disposable{
     }
 
     public void render(float delta){
-        if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
+        if(gameMode.equals("My Heart Will Go On") || gameMode.equals("Burn Baby Burn")) {
             getPowerUpCounter();
         }
 

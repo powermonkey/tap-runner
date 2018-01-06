@@ -222,7 +222,7 @@ public class GameOverScreen implements Screen{
         button.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.net.openURI("market://details?id=com.rcam.game");
+                Gdx.net.openURI("https://play.google.com/store/apps/details?id=com.rcam.game");
 
                 return true;
             }
