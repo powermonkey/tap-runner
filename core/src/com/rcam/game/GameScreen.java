@@ -141,7 +141,7 @@ public class GameScreen implements Screen{
         }
 
         gameMode = prefs.getString("GameMode");
-        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn") || gameMode.equals("Burning Desire")) {
+        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn") || gameMode.equals("Burn Baby Burn")) {
             lavaMode = true;
         }else{
             lavaMode = false;
@@ -307,9 +307,9 @@ public class GameScreen implements Screen{
                         if (runner.indicatePosition() > runner.getHighScoreMyHeartWillGoOnMode()) {
                             runner.setHighScoreMyHeartWillGoOnMode(runner.indicatePosition());
                         }
-                    } else if(gameMode.equals("Burning Desire")) {
-                        if (runner.indicatePosition() > runner.getHighScoreBurningDesireMode()) {
-                            runner.setHighScoreBurningDesireMode(runner.indicatePosition());
+                    } else if(gameMode.equals("Burn Baby Burn")) {
+                        if (runner.indicatePosition() > runner.getHighScoreBurnBabyBurnMode()) {
+                            runner.setHighScoreBurnBabyBurnMode(runner.indicatePosition());
                         }
                     }
                 } else {

@@ -114,8 +114,8 @@ public class GameOverScreen implements Screen{
             bestDistance = new Label(bestValue.append(runner.getHighScoreOneHitWonderMode()).append(" m"), arcadeSkin, "default");
         } else if(gameMode.equals("My Heart Will Go On")) {
             bestDistance = new Label(bestValue.append(runner.getHighScoreMyHeartWillGoOnMode()).append(" m"), arcadeSkin, "default");
-        } else if(gameMode.equals("Burning Desire")) {
-            bestDistance = new Label(bestValue.append(runner.getHighScoreBurningDesireMode()).append(" m"), arcadeSkin, "default");
+        } else if(gameMode.equals("Burn Baby Burn")) {
+            bestDistance = new Label(bestValue.append(runner.getHighScoreBurnBabyBurnMode()).append(" m"), arcadeSkin, "default");
         } else {
             bestDistance = new Label(bestValue.append(runner.getHighScoreNormalMode()).append(" m"), arcadeSkin, "default");
         }

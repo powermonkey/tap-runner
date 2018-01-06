@@ -33,7 +33,7 @@ public class FlyingEnemy extends Enemy implements Pool.Poolable{
         monsterType = monsterType - 1;
         super.init(pos);
 
-        if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burning Desire")) {
+        if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
             damage = HEART_DAMAGE;
         } else {
             damage = DEFAULT_DAMAGE;

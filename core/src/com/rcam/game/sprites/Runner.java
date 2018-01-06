@@ -38,7 +38,7 @@ public class Runner {
     static final int MAX_HEARTS = 5;
     public int maxPowerUpToCollect;
     static final int MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON = 10;
-    static final int MAX_POWER_UP_COLLECT_BURNING_DESIRE = 5;
+    static final int MAX_POWER_UP_COLLECT_BURN_BABY_BURN = 5;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public static int powerUpCounter;
@@ -101,10 +101,10 @@ public class Runner {
             health = HEART_HEALTH;
             powerUpCounter = 0;
             setMaxPowerUpToCollect(MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON);
-        } else if (prefs.getString("GameMode").equals("Burning Desire")) {
+        } else if (prefs.getString("GameMode").equals("Burn Baby Burn")) {
             health = HEART_HEALTH;
             powerUpCounter = 0;
-            setMaxPowerUpToCollect(MAX_POWER_UP_COLLECT_BURNING_DESIRE);
+            setMaxPowerUpToCollect(MAX_POWER_UP_COLLECT_BURN_BABY_BURN);
         }
 
         startingTime = millis();
@@ -172,12 +172,12 @@ public class Runner {
         prefs.flush();
     }
 
-    public int getHighScoreBurningDesireMode() {
-        return prefs.getInteger("BestDistanceBurningDesireMode");
+    public int getHighScoreBurnBabyBurnMode() {
+        return prefs.getInteger("BestDistanceBurnBabyBurnMode");
     }
 
-    public void setHighScoreBurningDesireMode(int val) {
-        prefs.putInteger("BestDistanceBurningDesireMode", val);
+    public void setHighScoreBurnBabyBurnMode(int val) {
+        prefs.putInteger("BestDistanceBurnBabyBurnMode", val);
         prefs.flush();
     }
 

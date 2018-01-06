@@ -109,7 +109,7 @@ public class PowerUp implements Pool.Poolable{
             if(!(runner.health >= runner.MAX_HEALTH) && !touched && !runner.isDead){
                 if(prefs.getString("GameMode").equals("One Hit Wonder") || prefs.getString("GameMode").equals("First Degree Burn")) {
                     //no effect
-                } else if (prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burning Desire")) {
+                } else if (prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
                     if(runner.getHealth() < runner.MAX_HEARTS) {
                         runner.powerUpCounter ++;
                         if (runner.powerUpCounter == runner.getMaxPowerUpToCollect()) {

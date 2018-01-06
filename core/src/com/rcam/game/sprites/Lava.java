@@ -39,7 +39,7 @@ public class Lava {
         touched = false;
         bounds = new Rectangle(0, 0, lava.getRegionWidth(), lava.getRegionHeight() + BOUNDS_TOP_OFFSET);
         prefs = Gdx.app.getPreferences("TapRunner");
-        if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burning Desire")) {
+        if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
             damage = HEART_DAMAGE;
         } else {
             damage = DEFAULT_DAMAGE;
@@ -78,7 +78,7 @@ public class Lava {
                 }
                 runner.health -= getDamage();
                 runner.setDamageStatus(Runner.Damage.TAKE);
-                if(prefs.getString("GameMode").equals("Burning Desire")){
+                if(prefs.getString("GameMode").equals("Burn Baby Burn")){
                     runner.setHeartStatus(Runner.Heart.REMOVE);
                     hud.removeHeart();
                 } else {

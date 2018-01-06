@@ -139,7 +139,7 @@ public class Enemy {
                         }
                         runner.health -= getDamage();
                         runner.setDamageStatus(Runner.Damage.TAKE);
-                        if (prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burning Desire")) {
+                        if (prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
                             runner.setHeartStatus(Runner.Heart.REMOVE);
                             hud.removeHeart();
                         }else {
