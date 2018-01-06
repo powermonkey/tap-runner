@@ -36,7 +36,7 @@ public class SettingsScreen implements Screen {
     Ground ground;
     Label gameModeLabel, otherOptionsLabel, settingsLabel;
     ButtonGroup gameModeGroup;
-    CheckBox normalMode, groundLavaMode, enemyTouchSlows, soundOn, oneHitWonderMode, firstDegreeBurn;
+    CheckBox normalMode, groundLavaMode, enemyTouchSlows, soundOn, oneHitWonderMode, firstDegreeBurn, myHeartWillGoOn, burningDesire;
     TextButton okay;
     static Preferences prefs;
     TextureAtlas.AtlasRegion bg, blockYellow, blockYellowGreen;
@@ -74,6 +74,8 @@ public class SettingsScreen implements Screen {
         groundLavaMode = new CheckBox("The Ground Is Lava", cleanCrispySkin, "radio");
         oneHitWonderMode = new CheckBox("One Hit Wonder", cleanCrispySkin, "radio");
         firstDegreeBurn = new CheckBox("First Degree Burn", cleanCrispySkin, "radio");
+        myHeartWillGoOn = new CheckBox("My Heart Will Go On", cleanCrispySkin, "radio");
+        burningDesire = new CheckBox("Burning Desire", cleanCrispySkin, "radio");
 //        enemyTouchSlows = new CheckBox("Enemy Touch Slows", cleanCrispySkin, "default");
         soundOn = new CheckBox("Sound On", cleanCrispySkin, "default");
 
@@ -100,7 +102,7 @@ public class SettingsScreen implements Screen {
 
         gameMode = prefs.getString("GameMode");
 
-        gameModeGroup = new ButtonGroup(normalMode, groundLavaMode, oneHitWonderMode, firstDegreeBurn);
+        gameModeGroup = new ButtonGroup(normalMode, groundLavaMode, oneHitWonderMode, firstDegreeBurn, myHeartWillGoOn, burningDesire);
         gameModeGroup.setChecked(prefs.getString("GameMode"));
         gameModeGroup.setMaxCheckCount(1);
         gameModeGroup.setMinCheckCount(1);
@@ -118,11 +120,15 @@ public class SettingsScreen implements Screen {
 
         gameModetable.add(normalMode).colspan(2).padTop(15).expandX().center().uniform();
         gameModetable.row();
-        gameModetable.add(groundLavaMode).colspan(2).padTop(25).expandX().center().uniform();
+        gameModetable.add(groundLavaMode).colspan(2).padTop(50).expandX().center().uniform();
         gameModetable.row();
-        gameModetable.add(oneHitWonderMode).colspan(2).padTop(25).expandX().center().uniform();
+        gameModetable.add(oneHitWonderMode).colspan(2).padTop(50).expandX().center().uniform();
         gameModetable.row();
-        gameModetable.add(firstDegreeBurn).colspan(2).padTop(25).padBottom(20).expandX().center().uniform();
+        gameModetable.add(firstDegreeBurn).colspan(2).padTop(50).expandX().center().uniform();
+        gameModetable.row();
+        gameModetable.add(myHeartWillGoOn).colspan(2).padTop(50).expandX().center().uniform();
+        gameModetable.row();
+        gameModetable.add(burningDesire).colspan(2).padTop(50).padBottom(20).expandX().center().uniform();
         gameModetable.row();
         gameModetable.center().center().pad(20);
         gameModetable.setBackground(patchDrawableYellow);
@@ -184,7 +190,7 @@ public class SettingsScreen implements Screen {
         game.batch.setProjectionMatrix(cam.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 112, TapRunner.WIDTH - 200, TapRunner.HEIGHT - 459);
-        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn")){
+        if(gameMode.equals("The Ground Is Lava") || gameMode.equals("First Degree Burn") || gameMode.equals("Burning Desire")){
             game.batch.draw(lava.getTextureLava(), 0, 0);
         }else{
             game.batch.draw(ground.getTextureGround(), 0, 0);

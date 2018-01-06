@@ -139,7 +139,13 @@ public class Enemy {
                         }
                         runner.health -= getDamage();
                         runner.setDamageStatus(Runner.Damage.TAKE);
-                        hud.healthUpdate();
+                        if (prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burning Desire")) {
+                            runner.setHeartStatus(Runner.Heart.REMOVE);
+                            hud.removeHeart();
+                        }else {
+                            hud.healthUpdate();
+                        }
+
                         touched = true;
 //                        if(enemyTouchSlows) {
 //                            runner.isTouched = true;

@@ -112,6 +112,10 @@ public class GameOverScreen implements Screen{
             lava = new Lava(cam.position.x - (cam.viewportWidth * 0.5f));
         } else if(gameMode.equals("One Hit Wonder")) {
             bestDistance = new Label(bestValue.append(runner.getHighScoreOneHitWonderMode()).append(" m"), arcadeSkin, "default");
+        } else if(gameMode.equals("My Heart Will Go On")) {
+            bestDistance = new Label(bestValue.append(runner.getHighScoreMyHeartWillGoOnMode()).append(" m"), arcadeSkin, "default");
+        } else if(gameMode.equals("Burning Desire")) {
+            bestDistance = new Label(bestValue.append(runner.getHighScoreBurningDesireMode()).append(" m"), arcadeSkin, "default");
         } else {
             bestDistance = new Label(bestValue.append(runner.getHighScoreNormalMode()).append(" m"), arcadeSkin, "default");
         }

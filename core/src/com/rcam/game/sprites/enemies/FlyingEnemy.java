@@ -15,6 +15,8 @@ import com.rcam.game.GameAssetLoader;
 public class FlyingEnemy extends Enemy implements Pool.Poolable{
     public final static float ON_TOP_CONTACT_OFFSET = 5;
     public static final float CONTACT_BOUNDS_OFFSET_X = 10;
+    public final float DEFAULT_DAMAGE = 7;
+    public final float HEART_DAMAGE = 1;
 
     public FlyingEnemy(){
         super();
@@ -30,7 +32,13 @@ public class FlyingEnemy extends Enemy implements Pool.Poolable{
     public void init(int monsterType, Vector2 pos){
         monsterType = monsterType - 1;
         super.init(pos);
-        damage = 7;
+
+        if(prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burning Desire")) {
+            damage = HEART_DAMAGE;
+        } else {
+            damage = DEFAULT_DAMAGE;
+        }
+
         if(monsterType == 0){
             animation = animationMonster1;
         }else{
