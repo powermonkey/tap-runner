@@ -121,12 +121,13 @@ public class PowerUp implements Pool.Poolable{
                             }
                             hud.addHeart();
                         }
-                    } else {
-                        runner.powerUpCounter ++;
-                        if (runner.powerUpCounter == runner.getMaxPowerUpToCollect()) {
-                            runner.powerUpCounter = 0;
-                        }
                     }
+//                    else {
+//                        runner.powerUpCounter ++;
+//                        if (runner.powerUpCounter == runner.getMaxPowerUpToCollect()) {
+//                            runner.powerUpCounter = 0;
+//                        }
+//                    }
                 } else {
                     runner.health += getHeal();
                     hud.healthUpdate();

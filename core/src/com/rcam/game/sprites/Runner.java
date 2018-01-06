@@ -35,7 +35,7 @@ public class Runner {
     static final int ONE_HIT_WONDER_HEALTH = 4;
     static final int FIRST_DEGREE_BURN_HEALTH = 4;
     static final int HEART_HEALTH = 1;
-    static final int MAX_HEARTS = 5;
+    public static final int MAX_HEARTS = 5;
     public int maxPowerUpToCollect;
     static final int MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON = 10;
     static final int MAX_POWER_UP_COLLECT_BURN_BABY_BURN = 5;
@@ -233,7 +233,7 @@ public class Runner {
 
         //lava invulnerable
         if(lavaInvulnerable){
-            if(timeSinceMillis(lavaDamageTimeStart) > 500){
+            if(timeSinceMillis(lavaDamageTimeStart) > 750){
                 lavaDamageTimeStart = millis();
                 lavaInvulnerable = false;
                 isSmoking = false;
