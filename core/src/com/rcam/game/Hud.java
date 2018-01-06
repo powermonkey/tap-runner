@@ -446,7 +446,13 @@ public class Hud extends Table implements Disposable{
     public StringBuilder getPowerUpCounter(){
         powerUpCounter.delete(0, powerUpCounter.length());
         if(runner.getHealth() == runner.MAX_HEARTS) {
-            powerUpCounter.append(" x 10");
+            if(prefs.getString("GameMode").equals("My Heart Will Go On")) {
+                powerUpCounter.append(" x ");
+                powerUpCounter.append(runner.MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON);
+            } else {
+                powerUpCounter.append(" x 0");
+                powerUpCounter.append(runner.MAX_POWER_UP_COLLECT_BURN_BABY_BURN);
+            }
         } else {
             powerUpCounter.append(" x 0");
             powerUpCounter.append(runner.powerUpCounter);

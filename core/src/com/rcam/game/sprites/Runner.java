@@ -37,8 +37,8 @@ public class Runner {
     static final int HEART_HEALTH = 1;
     public static final int MAX_HEARTS = 5;
     public int maxPowerUpToCollect;
-    static final int MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON = 10;
-    static final int MAX_POWER_UP_COLLECT_BURN_BABY_BURN = 5;
+    public static final int MAX_POWER_UP_COLLECT_MY_HEART_WILL_GO_ON = 10;
+    public static final int MAX_POWER_UP_COLLECT_BURN_BABY_BURN = 5;
     public static final float CONTACT_BOUNDS_OFFSET_Y = 4;
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public static int powerUpCounter;
