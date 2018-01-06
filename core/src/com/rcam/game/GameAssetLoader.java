@@ -16,7 +16,7 @@ public class GameAssetLoader {
         pause, forward, powerupApple, powerupCherry, powerupBanana, powerupGrapes, powerupStrawberry, powerupOrange, audioOn, audioOff, star, heart;
     public static Array<TextureAtlas.AtlasRegion> regionRun, regionSmoke, birdBlue, birdRed, jellyGreen, jellyYellow;
     public static Skin cleanCrispySkin, arcadeSkin;
-    public static Sound blipSelect, newGameblip, jump, hurt, powerUp, lavaBurn;
+    public static Sound blipSelect, newGameblip, jump, hurt, powerUp, lavaBurn, addHeartBlip;
     public static BitmapFont fonts, buttonFonts;
     static GameAssetManager manager;
 
@@ -69,6 +69,7 @@ public class GameAssetLoader {
         hurt = manager.manager.get("sounds/SFX_Powerup_21.wav");
         powerUp = manager.manager.get("sounds/Score.wav");
         lavaBurn = manager.manager.get("sounds/Explosion.wav");
+        addHeartBlip = manager.manager.get("sounds/Pickup_Coin.wav");
     }
 
     public static boolean update(){
@@ -88,5 +89,6 @@ public class GameAssetLoader {
         hurt.dispose();
         powerUp.dispose();
         lavaBurn.dispose();
+        addHeartBlip.dispose();
     }
 }

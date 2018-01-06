@@ -27,11 +27,12 @@ public class PowerUp implements Pool.Poolable{
     private int powerUpType;
     private Random rand;
     private TextureAtlas.AtlasRegion[] powerUpAtlasRegions;
-    Sound powerUpSound;
+    Sound powerUpSound, addHeartBlip;
     Preferences prefs;
 
     public PowerUp(){
         powerUpSound = GameAssetLoader.powerUp;
+        addHeartBlip = GameAssetLoader.addHeartBlip;
         TextureAtlas.AtlasRegion apple = GameAssetLoader.powerupApple;
         TextureAtlas.AtlasRegion cherry = GameAssetLoader.powerupCherry;
         TextureAtlas.AtlasRegion banana = GameAssetLoader.powerupBanana;
@@ -115,6 +116,9 @@ public class PowerUp implements Pool.Poolable{
                             runner.health += 1;
                             runner.powerUpCounter = 0;
                             runner.setHeartStatus(Runner.Heart.ADD);
+                            if(prefs.getBoolean("SoundOn")) {
+                                addHeartBlip.play();
+                            }
                             hud.addHeart();
                         }
                     } else {
