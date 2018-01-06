@@ -445,7 +445,7 @@ public class Hud extends Table implements Disposable{
 
     public StringBuilder getPowerUpCounter(){
         powerUpCounter.delete(0, powerUpCounter.length());
-        powerUpCounter.append(" x ");
+        powerUpCounter.append(" x 0");
         powerUpCounter.append(runner.powerUpCounter);
         powerUpCounterLabel.setText(powerUpCounter);
         return powerUpCounter;
