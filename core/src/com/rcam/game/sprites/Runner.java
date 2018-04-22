@@ -24,12 +24,12 @@ public class Runner {
     public float maxSpeed = 150;
     static float runSpeed = 50;
     static float speedIncrease = 50;
-    static float jumpValue = 65;
+    static float jumpValue;
     static float jumpIncrease = 10;
     static float jumpHeightIncrease = 50;
     public final float STARTING_X = 30;
     public final float STARTING_Y = 112;
-    static float jumpHeight = 525;
+    static float jumpHeight;
     static final int NORMAL_HEALTH = 50;
     static final int MAX_HEALTH = 50;
     static final int ONE_HIT_WONDER_HEALTH = 4;
@@ -43,8 +43,8 @@ public class Runner {
     public static final float CONTACT_BOUNDS_OFFSET_X = 1;
     public static int powerUpCounter;
     public float health;
-    private long startingTime, lavaDamageTimeStart;
-    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, lavaInvulnerable, isIdle, isSmoking;
+    private long startingTime, lavaDamageTimeStart, damageTimeStart;
+    public boolean isMaintainHighSpeed, isOnGround, isJumping, isDead, animatingDeath, isFalling, isOnTopEnemy, isTouched, lavaInvulnerable, isIdle, isSmoking, damageInvulnerable;
     Vector2 position, velocity, speed, previousPosition;
     TextureAtlas.AtlasRegion regionStand, regionJump, regionDeath;
     Array<TextureAtlas.AtlasRegion> regionRun;
@@ -73,6 +73,7 @@ public class Runner {
         isFalling = false;
         isTouched = false;
         lavaInvulnerable = false;
+        damageInvulnerable = false;
         isOnTopEnemy = false;
         isIdle = false;
         gravity = -25; //reset gravity
@@ -237,6 +238,16 @@ public class Runner {
                 lavaDamageTimeStart = millis();
                 lavaInvulnerable = false;
                 isSmoking = false;
+                setDamageStatus(Runner.Damage.CLEAR);
+            }
+        }
+
+        //damage invulnerable
+        if(damageInvulnerable){
+            if(timeSinceMillis(damageTimeStart) > 750){
+                damageTimeStart = millis();
+                damageInvulnerable = false;
+                setDamageStatus(Runner.Damage.CLEAR);
             }
         }
 
@@ -353,6 +364,10 @@ public class Runner {
 
     public void setLavaDamageTimeStart(long time) {
         lavaDamageTimeStart = time;
+    }
+
+    public void setDamageTimeStart(long time) {
+        damageTimeStart = time;
     }
 
     public void run(){

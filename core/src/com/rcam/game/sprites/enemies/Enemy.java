@@ -17,6 +17,8 @@ import com.rcam.game.sprites.Runner;
 
 import java.util.Vector;
 
+import static com.badlogic.gdx.utils.TimeUtils.millis;
+
 /**
  * Created by Rod on 4/18/2017.
  */
@@ -133,24 +135,26 @@ public class Enemy {
                 runnerOntop = true;
                 runner.isFalling = false;
             }else{
-                if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0) {
-                        if(prefs.getBoolean("SoundOn")) {
-                            hurtSound.play();
-                        }
-                        runner.health -= getDamage();
-                        runner.setDamageStatus(Runner.Damage.TAKE);
-                        if (prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
-                            runner.setHeartStatus(Runner.Heart.REMOVE);
-                            hud.removeHeart();
-                        }else {
-                            hud.healthUpdate();
-                        }
+                if (runner.health > 0 && !touched && Float.compare((intersectionBounds.y), runner.getIntersectionBounds().y) > 0 && !runner.damageInvulnerable) {
+                    if(prefs.getBoolean("SoundOn")) {
+                        hurtSound.play();
+                    }
+                    runner.health -= getDamage();
+                    runner.setDamageStatus(Runner.Damage.TAKE);
+                    if (prefs.getString("GameMode").equals("My Heart Will Go On") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
+                        runner.setHeartStatus(Runner.Heart.REMOVE);
+                        hud.removeHeart();
+                    }else {
+                        hud.healthUpdate();
+                    }
 
-                        touched = true;
+                    touched = true;
 //                        if(enemyTouchSlows) {
 //                            runner.isTouched = true;
 //                            runner.setVelocityX(runner.getVelocity().x - 50);
 //                        }
+                    runner.damageInvulnerable = true;
+                    runner.setDamageTimeStart(millis());
                 } else if (runner.health <= 0) {
                     runner.isDead = true;
                 }
