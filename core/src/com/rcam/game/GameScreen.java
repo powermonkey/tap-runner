@@ -569,42 +569,31 @@ public class GameScreen implements Screen{
         runner.stateTime += delta;
         TextureRegion currentRunnerFrame = runner.animationFast.getKeyFrame(runner.stateTime, true);
 
-        Color spriteColor = game.batch.getColor();
+        runnerDamageAnimation();
         if(runner.isDead){
             game.batch.draw(runner.getRegionDeath(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(runner.isIdle && !runner.isJumping){
             game.batch.draw(runner.getRegionStand(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isOnGround) {
-            if(runner.getDamageStatus() == Runner.Damage.TAKE) {
-                game.batch.setColor(spriteColor.r, spriteColor.g, spriteColor.b, .3f);
-                game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
-            } else {
-                game.batch.setColor(spriteColor.r, spriteColor.g, spriteColor.b, 1f);
-                game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
-            }
+            game.batch.draw(runner.getRegionJump(), (int)runner.getPosition().x, (int)runner.getPosition().y);
         }else if(!runner.isIdle) {
-            if(runner.getDamageStatus() == Runner.Damage.TAKE) {
-                game.batch.setColor(spriteColor.r, spriteColor.g, spriteColor.b, .3f);
-                game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
-            } else {
-                game.batch.setColor(spriteColor.r, spriteColor.g, spriteColor.b, 1f);
-                game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
-            }
+            game.batch.draw(currentRunnerFrame, (int)runner.getPosition().x, (int)runner.getPosition().y);
         }
     }
 
-//    public void runnerDamageAnimation(TextureRegion currentRunnerFrame)
-//    {
-//
-//        final Color frameColor = new Color(.65f,.65f,.65f,.65f);
-//
-//        if(runner.getDamageStatus() == Runner.Damage.TAKE) {
-//            game.batch.setColor(frameColor);
-//
-//        } else {
-//            game.batch.setColor(Color.WHITE);
-//        }
-//    }
+    public void runnerDamageAnimation()
+    {
+        Color spriteColor = game.batch.getColor();
+        if(runner.getDamageStatus() == Runner.Damage.TAKE) {
+            if(runner.isDead){
+                game.batch.setColor(Color.WHITE);
+            } else {
+                game.batch.setColor(spriteColor.r, spriteColor.g, spriteColor.b, .6f);
+            }
+        } else {
+            game.batch.setColor(Color.WHITE);
+        }
+    }
 
     public void updateEnemy(float delta){
         GroundEnemy groundEnemyRenderItem;

@@ -232,21 +232,14 @@ public class Runner {
        //make runner come back to the ground
         speed.add(0, gravity);
 
-        //lava invulnerable
-        if(lavaInvulnerable){
-            if(timeSinceMillis(lavaDamageTimeStart) > 750){
-                lavaDamageTimeStart = millis();
-                lavaInvulnerable = false;
-                isSmoking = false;
-                setDamageStatus(Runner.Damage.CLEAR);
-            }
-        }
-
         //damage invulnerable
         if(damageInvulnerable){
             if(timeSinceMillis(damageTimeStart) > 750){
                 damageTimeStart = millis();
                 damageInvulnerable = false;
+                if(prefs.getString("GameMode").equals("The Ground Is Lava") || prefs.getString("GameMode").equals("First Degree Burn") || prefs.getString("GameMode").equals("Burn Baby Burn")) {
+                    isSmoking = false;
+                }
                 setDamageStatus(Runner.Damage.CLEAR);
             }
         }
@@ -362,9 +355,9 @@ public class Runner {
         position.y = y;
     }
 
-    public void setLavaDamageTimeStart(long time) {
-        lavaDamageTimeStart = time;
-    }
+//    public void setLavaDamageTimeStart(long time) {
+//        lavaDamageTimeStart = time;
+//    }
 
     public void setDamageTimeStart(long time) {
         damageTimeStart = time;
