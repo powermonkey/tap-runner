@@ -72,7 +72,8 @@ public class Lava {
 
     public void checkLavaCollision(Runner runner, Hud hud){
         if(getBounds().overlaps(runner.getBounds())){
-            if(runner.health > 0 && !runner.lavaInvulnerable && !runner.isDead){
+//            if(runner.health > 0 && !runner.lavaInvulnerable && !runner.isDead){
+            if(runner.health > 0 && !runner.damageInvulnerable && !runner.isDead){
                 if(prefs.getBoolean("SoundOn")) {
                     lavaBurnSound.play();
                 }
@@ -87,8 +88,8 @@ public class Lava {
                 runner.isSmoking = true;
 
                 touched = true;
-                runner.lavaInvulnerable = true;
-                runner.setLavaDamageTimeStart(millis());
+                runner.damageInvulnerable = true;
+                runner.setDamageTimeStart(millis());
 //                runner.lavaBounce();
             } else if (runner.health <= 0) {
                 runner.isDead = true;

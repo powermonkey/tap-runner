@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.StringBuilder;
@@ -507,9 +508,11 @@ public class GameScreen implements Screen{
     }
 
     public void renderSmoke(float delta){
+        Color spriteColor = game.batch.getColor();
         smoke.stateTime += delta;
         TextureRegion currentSmokeFrameSlow = smoke.smokeAnimationSlow.getKeyFrame(smoke.stateTime, true);
         TextureRegion currentSmokeFrameFast = smoke.smokeAnimationFast.getKeyFrame(smoke.stateTime, true);
+        game.batch.setColor(spriteColor.r, spriteColor.g, spriteColor.b, 1f);
         game.batch.draw(currentSmokeFrameSlow, (int)runner.getPosition().x - 20, (int)runner.getPosition().y - 10);
         game.batch.draw(currentSmokeFrameFast, (int)runner.getPosition().x - 30, (int)runner.getPosition().y + 20);
     }
@@ -580,17 +583,13 @@ public class GameScreen implements Screen{
 
     public void runnerDamageAnimation()
     {
+        Color spriteColor = game.batch.getColor();
         if(runner.getDamageStatus() == Runner.Damage.TAKE) {
-            game.batch.setColor(Color.BROWN);
-            float delay = .05f; // seconds
-
-            Timer.schedule(new Timer.Task(){
-                @Override
-                public void run() {
-                    runner.setDamageStatus(Runner.Damage.CLEAR);
-                }
-            }, delay);
-
+            if(runner.isDead){
+                game.batch.setColor(Color.WHITE);
+            } else {
+                game.batch.setColor(spriteColor.r, spriteColor.g, spriteColor.b, .6f);
+            }
         } else {
             game.batch.setColor(Color.WHITE);
         }
