@@ -76,7 +76,7 @@ public class Runner {
         damageInvulnerable = false;
         isOnTopEnemy = false;
         isIdle = false;
-        gravity = -25; //reset gravity
+        gravity = -24; //reset gravity
         jumpHeight = 525; //reset jump height
         jumpValue = 71; //reset jump
         regionStand = GameAssetLoader.regionStand;
