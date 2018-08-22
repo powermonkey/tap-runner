@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "com.rcam.game"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
     }
 }
 
