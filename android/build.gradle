@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "25.0.2"
-    compileSdkVersion 25
+    buildToolsVersion "28.0.3"
+    compileSdkVersion 28
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -12,15 +12,15 @@ android {
             jniLibs.srcDirs = ['libs']
         }
 
-        instrumentTest.setRoot('tests')
+        androidTest.setRoot('tests')
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
         applicationId "com.rcam.game"
-        minSdkVersion 14
-        targetSdkVersion 26
+        minSdkVersion 17
+        targetSdkVersion 28
     }
 }
 
@@ -126,4 +126,16 @@ idea {
             }
         }
     }
+}
+
+repositories {
+    jcenter()
+    maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
+}
+
+dependencies {
+    implementation('com.mopub:mopub-sdk:5.4.1@aar') {
+        transitive = true
+    }
+    implementation 'com.google.android.gms:play-services-ads:17.1.1'
 }
