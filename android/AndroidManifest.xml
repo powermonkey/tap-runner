@@ -6,7 +6,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="25" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +27,26 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
 
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <!-- twitter mopub -->
+        <!--<activity android:name="com.mopub.mobileads.MoPubActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"/>-->
+
+        <!--<activity android:name="com.mopub.mobileads.MraidActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"/>-->
+
+        <!--<activity android:name="com.mopub.common.MoPubBrowser"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"/>-->
+
+        <!--<activity android:name="com.mopub.mobileads.MraidVideoPlayerActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"/>-->
+
+        <!--<activity android:name="com.mopub.mobileads.RewardedMraidActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"/>-->
+
+        <!--<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />-->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5225464865745943~5842605515"/>
     </application>
 
 </manifest>
