@@ -21,7 +21,8 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 public class AndroidLauncher extends AndroidApplication implements AdsController{
-	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-5225464865745943/1272805115";
+	private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
+	private static final String BANNER_MOPUB_UNIT_ID = "3b78209c5d42421794dde9fb688e95ba";
 //	private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
 
 
@@ -50,7 +51,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 		setContentView(layout);
 
 //		SdkConfiguration sdkConfiguration =
-//				new SdkConfiguration.Builder("3b78209c5d42421794dde9fb688e95ba").build();
+//				new SdkConfiguration.Builder(BANNER_MOPUB_UNIT_ID).build();
 //
 //		MoPub.initializeSdk(this, sdkConfiguration, null);
 	}

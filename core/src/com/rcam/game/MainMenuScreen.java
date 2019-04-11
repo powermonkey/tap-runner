@@ -34,7 +34,7 @@ public class MainMenuScreen implements Screen {
     final TapRunner game;
     OrthographicCamera cam;
     Table rootTable, table, titleTable, titleTableInner, tableAudioState;
-    TextButton exit, newGame, options, records, credits;
+    TextButton exit, newGame, options, records, credits, moreGames, privacy;
     ImageTextButton rate;
     Stage stage;
     static Preferences prefs;
@@ -95,7 +95,9 @@ public class MainMenuScreen implements Screen {
         options = new TextButton("Game Modes", buttonStyle);
         records = new TextButton("Records", buttonStyle);
         credits = new TextButton("Credits", buttonStyle);
+        privacy = new TextButton("Privacy Policy", buttonStyle);
         exit = new TextButton("Exit", buttonStyle);
+        moreGames = new TextButton("More Games", buttonStyle);
 
         ImageTextButton.ImageTextButtonStyle rateButtonStyle = new ImageTextButton.ImageTextButtonStyle();
         rateButtonStyle.imageUp = new TextureRegionDrawable(new TextureRegion(star));
@@ -112,8 +114,10 @@ public class MainMenuScreen implements Screen {
         settingsButtonListener(options);
         recordsButtonListener(records);
         creditsButtonListener(credits);
+        privacyButtonListener(privacy);
         exitButtonListener(exit);
         rateButtonListener(rate);
+        moreGamesButtonListener(moreGames);
 
 //        stage.setDebugAll(true);
 
@@ -129,27 +133,29 @@ public class MainMenuScreen implements Screen {
         titleTable.setBackground(patchDrawableGreen);
         titleTable.pad(20);
 
-        table.add(newGame).center().uniform().width(200).height(50).expandX().padTop(10);
+        table.add(newGame).center().uniform().width(300).height(50).expandX().padTop(10);
         table.row();
-        table.add(options).center().uniform().width(200).height(50).expandX().padTop(10);
+        table.add(options).center().uniform().width(300).height(50).expandX().padTop(10);
         table.row();
-        table.add(records).center().uniform().width(200).height(50).expandX().padTop(10);
+        table.add(records).center().uniform().width(300).height(50).expandX().padTop(10);
         table.row();
-        table.add(credits).center().uniform().width(200).height(50).expandX().padTop(10);
+        table.add(credits).center().uniform().width(300).height(50).expandX().padTop(10);
         table.row();
-        table.add(rate).center().uniform().width(200).height(50).expandX().padTop(10);
+        table.add(moreGames).center().uniform().width(300).height(50).expandX().padTop(10);
         table.row();
-        table.add(exit).center().uniform().width(200).height(50).expandX().padTop(10);
+        table.add(rate).center().uniform().width(300).height(50).expandX().padTop(10);
+        table.row();
+        table.add(privacy).center().uniform().width(300).height(50).expandX().padTop(10);
+        table.row();
+        table.add(exit).center().uniform().width(300).height(50).expandX().padTop(10);
         table.row();
         table.center().center();
         table.pad(20);
         table.setBackground(patchDrawableGreen);
 
-
-
         rootTable.add(titleTable);
         rootTable.row();
-        rootTable.add(table).width(TapRunner.WIDTH * 0.5f).pad(20);
+        rootTable.add(table).width(350).pad(20);
         rootTable.row();
         rootTable.center().center();
 
@@ -233,6 +239,28 @@ public class MainMenuScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.net.openURI("https://play.google.com/store/apps/details?id=com.rcam.game");
+
+                return true;
+            }
+        });
+    }
+
+    public void moreGamesButtonListener(TextButton button) {
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.net.openURI("https://play.google.com/store/apps/developer?id=Rodolfo+C.+Cam+II");
+
+                return true;
+            }
+        });
+    }
+
+    public void privacyButtonListener(TextButton button) {
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.net.openURI("https://sites.google.com/view/happy-runnings-game/privacy-policy");
 
                 return true;
             }
